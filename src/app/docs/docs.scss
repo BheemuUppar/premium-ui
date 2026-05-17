@@ -11,18 +11,17 @@ app-root {
 
 .pui-topnav {
   position: sticky;
-  top: var(--pui-space-md);
+  top: 0;
   z-index: var(--pui-z-index-sticky);
-  width: min(100% - 2rem, 92rem);
+  width: 100%;
   height: 4.25rem;
   display: grid;
   grid-template-columns: 12rem minmax(14rem, 24rem) minmax(18rem, 1fr) auto;
   align-items: center;
   gap: var(--pui-space-md);
-  margin: var(--pui-space-md) auto 0;
+  margin: 0;
   padding: 0 var(--pui-space-lg);
   border: 1px solid var(--pui-docs-chrome-border);
-  border-radius: var(--pui-radius-lg) var(--pui-radius-lg) 0 0;
   background: var(--pui-docs-chrome);
   color: var(--pui-docs-chrome-text);
   box-shadow: var(--pui-shadow-lg);
@@ -173,11 +172,11 @@ app-root {
 }
 
 .pui-docs-shell {
-  width: min(100% - 2rem, 92rem);
+  width: 100%;
   min-height: calc(100dvh - 5.25rem);
   display: grid;
   grid-template-columns: 15rem minmax(0, 1fr) 13rem;
-  margin: 0 auto var(--pui-space-xl);
+  margin: 0 0 var(--pui-space-xl);
   border: 1px solid var(--pui-border);
   border-top: 0;
   background: var(--pui-docs-canvas);

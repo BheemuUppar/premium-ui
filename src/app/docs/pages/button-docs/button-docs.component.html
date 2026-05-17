@@ -74,13 +74,15 @@
           <h3 id="overview-code-title">Code Example</h3>
           <div class="pui-code-shell">
             <div class="pui-code-tabs" aria-label="Code language tabs">
-              <button type="button" class="pui-code-tab pui-code-tab--active">HTML</button>
-              <button type="button" class="pui-code-tab">Angular</button>
-              <button type="button" class="pui-code-tab">React</button>
-              <button type="button" class="pui-code-tab">Vue</button>
-              <button type="button" class="pui-code-copy" (click)="copyCode(examples[0].code)">Copy</button>
+              <button type="button" class="pui-code-tab pui-code-tab--active" (click)="currentCodeTab.set('html')">HTML</button>
+              <button type="button" class="pui-code-tab" (click)="currentCodeTab.set('ts')">TypeScript</button>
+              <button type="button" class="pui-code-copy" (click)="copyCode(currentCodeTab() === 'html' ? htmlExample : tsExample)">Copy</button>
             </div>
-            <pre><code>{{ examples[0].code }}</code></pre>
+            @if (currentCodeTab() === 'html') {
+              <pre><code>{{ htmlExample }}</code></pre>
+            } @else {
+              <pre><code>{{ tsExample }}</code></pre>
+            }
           </div>
         </section>
       }

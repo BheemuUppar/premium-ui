@@ -46,6 +46,8 @@ export class ButtonDocsComponent {
     return this.isDocsTab(tab) ? tab : 'overview';
   });
 
+  protected readonly currentCodeTab = signal<'html' | 'ts'>('html');
+
   protected readonly tabs: readonly PuiDocsTab[] = [
     { label: 'Overview', route: ['/docs/components/button/overview'] },
     { label: 'Examples', route: ['/docs/components/button/examples'] },
@@ -57,6 +59,18 @@ export class ButtonDocsComponent {
 
   protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];
   protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];
+
+  protected readonly htmlExample = '<pui-button>Save changes</pui-button>';
+
+  protected readonly tsExample = `import { Component } from '@angular/core';
+import { PuiButtonComponent } from '@premium-ui/components';
+
+@Component({
+  selector: 'app-example',
+  imports: [PuiButtonComponent],
+  template: '<pui-button>Save changes</pui-button>'
+})
+export class ExampleComponent {}`;
 
   protected readonly examples: readonly PuiButtonExample[] = [
     {
