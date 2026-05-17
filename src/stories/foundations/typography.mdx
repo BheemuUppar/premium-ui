@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+The typography scale is built on Inter-compatible system fallbacks, consistent weights, and WCAG-friendly line heights.
+
+<div style={{ display: 'grid', gap: '1rem' }}>
+  {['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'].map((size) => (
+    <div key={size} style={{ fontFamily: 'var(--pui-font-family)', fontSize: `var(--pui-font-size-${size})`, lineHeight: 'var(--pui-line-height-normal)' }}>
+      --pui-font-size-{size}
+    </div>
+  ))}
+</div>

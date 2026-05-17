@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Shadows" />
+
+# Shadows
+
+Shadows are intentionally subtle so components can feel layered without becoming heavy.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(10rem, 1fr))', gap: '1rem' }}>
+  {['sm', 'md', 'lg', 'xl'].map((size) => (
+    <div key={size} style={{ padding: '1.5rem', border: '1px solid var(--pui-color-border)', borderRadius: 'var(--pui-radius-md)', background: 'var(--pui-color-surface)', boxShadow: `var(--pui-shadow-${size})`, fontFamily: 'var(--pui-font-family)' }}>
+      --pui-shadow-{size}
+    </div>
+  ))}
+</div>

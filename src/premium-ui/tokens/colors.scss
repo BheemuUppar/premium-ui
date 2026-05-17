@@ -1,0 +1,30 @@
+:root,
+[data-theme='light'] {
+  --pui-color-primary: #4f46e5;
+  --pui-color-primary-hover: #4338ca;
+  --pui-color-secondary: #0f172a;
+  --pui-color-success: #0f9f6e;
+  --pui-color-warning: #b7791f;
+  --pui-color-danger: #dc2626;
+  --pui-color-background: #f8fafc;
+  --pui-color-surface: #ffffff;
+  --pui-color-border: #d8dee9;
+  --pui-color-text: #0f172a;
+  --pui-color-muted: #5f6b7a;
+  --pui-color-focus-ring: #7c3aed;
+  --pui-background: var(--pui-color-background);
+  --pui-surface: var(--pui-color-surface);
+  --pui-surface-raised: #ffffff;
+  --pui-text: var(--pui-color-text);
+  --pui-muted: var(--pui-color-muted);
+  --pui-border: var(--pui-color-border);
+  --pui-ring: var(--pui-color-focus-ring);
+  --pui-code-background: #f1f5f9;
+  --pui-docs-page: #f6f8fb;
+  --pui-docs-chrome: #080d17;
+  --pui-docs-chrome-text: #f8fafc;
+  --pui-docs-chrome-muted: #aab4c3;
+  --pui-docs-chrome-border: #242b38;
+  --pui-docs-active-soft: #ede9fe;
+  --pui-docs-canvas: #ffffff;
+}

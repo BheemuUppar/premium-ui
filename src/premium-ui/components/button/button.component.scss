@@ -1,0 +1,138 @@
+@use './button.tokens';
+
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+:host(.pui-button--secondary) {
+  --pui-button-bg: var(--pui-color-secondary);
+  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-secondary) 88%, var(--pui-color-surface));
+  --pui-button-color: var(--pui-color-background);
+}
+
+:host(.pui-button--outline) {
+  --pui-button-bg: transparent;
+  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-primary) 8%, transparent);
+  --pui-button-border: var(--pui-color-border);
+  --pui-button-color: var(--pui-color-text);
+}
+
+:host(.pui-button--ghost) {
+  --pui-button-bg: transparent;
+  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-primary) 10%, transparent);
+  --pui-button-color: var(--pui-color-text);
+}
+
+:host(.pui-button--danger) {
+  --pui-button-bg: var(--pui-color-danger);
+  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-danger) 86%, #000000);
+  --pui-button-color: #ffffff;
+}
+
+:host(.pui-button--sm) {
+  --pui-button-height: 2rem;
+  --pui-button-padding: 0 var(--pui-space-sm);
+  --pui-button-font-size: var(--pui-font-size-xs);
+}
+
+:host(.pui-button--lg) {
+  --pui-button-height: 3rem;
+  --pui-button-padding: 0 var(--pui-space-lg);
+  --pui-button-font-size: var(--pui-font-size-md);
+}
+
+.pui-button__control {
+  min-width: var(--pui-button-height);
+  min-height: var(--pui-button-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pui-button-gap);
+  padding: var(--pui-button-padding);
+  border: 1px solid var(--pui-button-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-button-bg);
+  color: var(--pui-button-color);
+  box-shadow: var(--pui-shadow-sm);
+  cursor: pointer;
+  font-family: var(--pui-font-family);
+  font-size: var(--pui-button-font-size);
+  font-weight: var(--pui-font-weight-semibold);
+  line-height: 1;
+  letter-spacing: var(--pui-letter-spacing-normal);
+  transition:
+    background-color var(--pui-duration-normal) var(--pui-easing-standard),
+    border-color var(--pui-duration-normal) var(--pui-easing-standard),
+    box-shadow var(--pui-duration-normal) var(--pui-easing-standard),
+    transform var(--pui-duration-fast) var(--pui-easing-standard);
+  user-select: none;
+}
+
+.pui-button__control:hover:not(:disabled) {
+  background: var(--pui-button-bg-hover);
+  box-shadow: var(--pui-shadow-md);
+}
+
+.pui-button__control:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: var(--pui-shadow-sm);
+}
+
+.pui-button__control:focus {
+  outline: none;
+}
+
+.pui-button__control:focus-visible {
+  outline: 2px solid var(--pui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.pui-button__control:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.pui-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+}
+
+.pui-button__icon:empty {
+  display: none;
+}
+
+.pui-button__label {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.pui-button__spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--pui-radius-full);
+  animation: pui-button-spin var(--pui-duration-slow) linear infinite;
+}
+
+@keyframes pui-button-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pui-button__control {
+    transition: none;
+  }
+
+  .pui-button__spinner {
+    animation-duration: 1s;
+  }
+}

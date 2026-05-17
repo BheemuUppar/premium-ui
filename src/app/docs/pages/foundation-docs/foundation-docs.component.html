@@ -1,0 +1,30 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero" id="installation">
+    <p class="pui-eyebrow">Foundations</p>
+    <h1>{{ sectionTitle() }}</h1>
+    <p>
+      Premium UI foundations are semantic, theme-aware, and intentionally small so components stay
+      easy to customize without adopting a heavy styling runtime.
+    </p>
+  </header>
+
+  <section class="pui-doc-section" id="basic-usage" aria-labelledby="tokens-title">
+    <h2 id="tokens-title">Semantic tokens</h2>
+    <div class="pui-token-grid">
+      @for (token of tokenRows; track token) {
+        <article>
+          <span [style.background]="'var(' + token + ')'"></span>
+          <code>{{ token }}</code>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="pui-doc-section" id="accessibility" aria-labelledby="foundation-a11y-title">
+    <h2 id="foundation-a11y-title">Accessibility notes</h2>
+    <p>
+      Foundation colors are semantic rather than decorative. Components consume text, muted, border,
+      ring, surface, and background roles so light and dark themes retain readable contrast.
+    </p>
+  </section>
+</article>

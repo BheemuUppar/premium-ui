@@ -1,0 +1,39 @@
+<header class="pui-topnav">
+  <a class="pui-brand" routerLink="/docs/components/button/overview" aria-label="Premium UI documentation home">
+    <span class="pui-brand__mark" aria-hidden="true">P</span>
+    <span>
+      <span class="pui-brand__name">Premium UI</span>
+      <span class="pui-brand__meta">Docs</span>
+    </span>
+  </a>
+
+  <label class="pui-search">
+    <span class="pui-sr-only">Search documentation</span>
+    <span aria-hidden="true">Search</span>
+    <input type="search" placeholder="Search components..." [value]="searchTerm()" (input)="onSearch($event)" />
+    <kbd>Ctrl K</kbd>
+  </label>
+
+  <nav class="pui-topnav__links" aria-label="Primary documentation links">
+    <a routerLink="/docs/components/button/overview">Docs</a>
+    <a routerLink="/docs/components/button/overview" routerLinkActive="pui-topnav__link--active">Components</a>
+    <a href="https://figma.com" target="_blank" rel="noopener">Figma</a>
+    <a href="#changelog">Changelog</a>
+  </nav>
+
+  <div class="pui-topnav__actions">
+    <select aria-label="Select documentation version">
+      <option>v0.1.0</option>
+      <option>next</option>
+    </select>
+
+    <button class="pui-icon-button pui-icon-button--square" type="button" (click)="themeService.toggleTheme()" [attr.aria-pressed]="themeService.theme() === 'dark'">
+      <span aria-hidden="true">{{ themeService.theme() === 'dark' ? 'Light' : 'Dark' }}</span>
+      <span class="pui-sr-only">Toggle color theme</span>
+    </button>
+
+    <a class="pui-icon-button pui-icon-button--square" href="https://github.com" target="_blank" rel="noopener" aria-label="Open GitHub">
+      GH
+    </a>
+  </div>
+</header>

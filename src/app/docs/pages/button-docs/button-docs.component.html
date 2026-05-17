@@ -1,0 +1,288 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero" id="overview">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/button/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/button/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span>Button</span>
+    </nav>
+    <h1>Button</h1>
+    <p>
+      Buttons allow users to take actions, and make choices, with a single tap.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Button documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a
+        class="pui-tab"
+        [routerLink]="tab.route"
+        routerLinkActive="pui-tab--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section" id="basic-usage" aria-labelledby="overview-title">
+          <h2 id="overview-title">Overview</h2>
+          <p>
+            Buttons are used to trigger actions or events. They are one of the most common and
+            essential components in any interface.
+          </p>
+        </section>
+
+        <section class="pui-doc-section" id="variants" aria-labelledby="overview-variants-title">
+          <h2 id="overview-variants-title">Examples</h2>
+          <h3>Variants</h3>
+          <p>Buttons come in different styles to communicate the hierarchy of actions.</p>
+          <div class="pui-preview-row">
+            @for (variant of variants; track variant) {
+              <pui-button [variant]="variant">{{ variant }}</pui-button>
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="sizes" aria-labelledby="overview-sizes-title">
+          <h3 id="overview-sizes-title">Sizes</h3>
+          <p>Choose the button size that fits your context.</p>
+          <div class="pui-preview-row">
+            @for (size of sizes; track size) {
+              <pui-button [size]="size">{{ size }}</pui-button>
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="states" aria-labelledby="overview-states-title">
+          <h3 id="overview-states-title">States</h3>
+          <p>Buttons support various states.</p>
+          <div class="pui-preview-row">
+            <pui-button>Default</pui-button>
+            <pui-button>Hover</pui-button>
+            <pui-button variant="secondary">Active</pui-button>
+            <pui-button [disabled]="true">Disabled</pui-button>
+            <pui-button [loading]="true">Loading</pui-button>
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="api" aria-labelledby="overview-code-title">
+          <h3 id="overview-code-title">Code Example</h3>
+          <div class="pui-code-shell">
+            <div class="pui-code-tabs" aria-label="Code language tabs">
+              <button type="button" class="pui-code-tab pui-code-tab--active">HTML</button>
+              <button type="button" class="pui-code-tab">Angular</button>
+              <button type="button" class="pui-code-tab">React</button>
+              <button type="button" class="pui-code-tab">Vue</button>
+              <button type="button" class="pui-code-copy" (click)="copyCode(examples[0].code)">Copy</button>
+            </div>
+            <pre><code>{{ examples[0].code }}</code></pre>
+          </div>
+        </section>
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section" id="variants" aria-labelledby="variants-title">
+          <p class="pui-eyebrow">Examples</p>
+          <h2 id="variants-title">Variants</h2>
+          <div class="pui-showcase-grid">
+            @for (variant of variants; track variant) {
+              <div class="pui-example-card">
+                <div class="pui-example-card__preview">
+                  <pui-button [variant]="variant">{{ variant }}</pui-button>
+                </div>
+                <div class="pui-example-card__meta">
+                  <strong>{{ variant }}</strong>
+                  <code>&lt;pui-button variant="{{ variant }}"&gt;</code>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="sizes" aria-labelledby="sizes-title">
+          <h2 id="sizes-title">Sizes</h2>
+          <div class="pui-preview-row">
+            @for (size of sizes; track size) {
+              <pui-button [size]="size">{{ size }}</pui-button>
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="states" aria-labelledby="states-title">
+          <h2 id="states-title">States and snippets</h2>
+          <div class="pui-example-list">
+            @for (example of examples; track example.title) {
+              <article class="pui-code-example">
+                <div class="pui-code-example__preview">
+                  @if (example.icon) {
+                    <pui-button [variant]="example.variant || 'primary'" [size]="example.size || 'md'">
+                      <span puiButtonIcon aria-hidden="true">+</span>
+                      New item
+                    </pui-button>
+                  } @else {
+                    <pui-button
+                      [variant]="example.variant || 'primary'"
+                      [size]="example.size || 'md'"
+                      [loading]="example.loading || false"
+                      [disabled]="example.disabled || false"
+                    >
+                      {{ example.loading ? 'Saving' : example.disabled ? 'Unavailable' : 'Save changes' }}
+                    </pui-button>
+                  }
+                </div>
+                <div>
+                  <h3>{{ example.title }}</h3>
+                  <p>{{ example.description }}</p>
+                  <details class="pui-code-block">
+                    <summary>Code</summary>
+                    <button type="button" (click)="copyCode(example.code)">Copy</button>
+                    <pre><code>{{ example.code }}</code></pre>
+                  </details>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section" id="api" aria-labelledby="api-title">
+          <p class="pui-eyebrow">API Guide</p>
+          <h2 id="api-title">Inputs</h2>
+          <div class="pui-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Input</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Default</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of apiRows; track row.name) {
+                  <tr>
+                    <th scope="row"><code>{{ row.name }}</code></th>
+                    <td><code>{{ row.type }}</code></td>
+                    <td><code>{{ row.defaultValue }}</code></td>
+                    <td>{{ row.description }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Outputs</h2>
+          <div class="pui-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Output</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Default</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of outputRows; track row.name) {
+                  <tr>
+                    <th scope="row"><code>{{ row.name }}</code></th>
+                    <td><code>{{ row.type }}</code></td>
+                    <td><code>{{ row.defaultValue }}</code></td>
+                    <td>{{ row.description }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section" id="accessibility" aria-labelledby="a11y-title">
+          <p class="pui-eyebrow">Accessibility</p>
+          <h2 id="a11y-title">Keyboard and screen reader support</h2>
+          <ul class="pui-check-list">
+            <li>Uses a native button element for keyboard activation with Enter and Space.</li>
+            <li>Applies visible focus styles through <code>:focus-visible</code>.</li>
+            <li>Sets <code>aria-busy</code> while loading and prevents duplicate activation.</li>
+            <li>Supports <code>ariaLabel</code> for icon-only controls.</li>
+            <li>Disabled and loading states stop events before emitting <code>pressed</code>.</li>
+          </ul>
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section" id="states" aria-labelledby="theming-title">
+          <p class="pui-eyebrow">Theming</p>
+          <h2 id="theming-title">CSS variable contract</h2>
+          <p>
+            Button styling is powered by semantic tokens, so consumers can theme globally or override
+            component-level variables in a scoped surface.
+          </p>
+          <pre class="pui-token-code"><code>{{ themeCode }}</code></pre>
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section" id="playground" aria-labelledby="playground-title">
+          <p class="pui-eyebrow">Playground</p>
+          <h2 id="playground-title">Tune the button</h2>
+          <div class="pui-playground">
+            <form class="pui-playground__controls" aria-label="Button playground controls">
+              <label>
+                Variant
+                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
+                  @for (variant of variants; track variant) {
+                    <option [value]="variant">{{ variant }}</option>
+                  }
+                </select>
+              </label>
+
+              <label>
+                Size
+                <select [value]="playgroundSize()" (change)="updateSize($event)">
+                  @for (size of sizes; track size) {
+                    <option [value]="size">{{ size }}</option>
+                  }
+                </select>
+              </label>
+
+              <label class="pui-checkbox">
+                <input type="checkbox" [checked]="playgroundDisabled()" (change)="updateDisabled($event)" />
+                Disabled
+              </label>
+
+              <label class="pui-checkbox">
+                <input type="checkbox" [checked]="playgroundLoading()" (change)="updateLoading($event)" />
+                Loading
+              </label>
+            </form>
+
+            <div class="pui-playground__preview">
+              <pui-button
+                [variant]="playgroundVariant()"
+                [size]="playgroundSize()"
+                [disabled]="playgroundDisabled()"
+                [loading]="playgroundLoading()"
+              >
+                Preview action
+              </pui-button>
+            </div>
+
+            <details class="pui-code-block" open>
+              <summary>Generated code</summary>
+              <button type="button" (click)="copyCode(playgroundCode())">Copy</button>
+              <pre><code>{{ playgroundCode() }}</code></pre>
+            </details>
+          </div>
+        </section>
+      }
+    }
+  </div>
+</article>

@@ -1,0 +1,10 @@
+<aside class="pui-toc" aria-label="On this page">
+  <p>On this page</p>
+  <nav>
+    @for (item of items(); track item.id) {
+      <a [href]="'#' + item.id" [class.pui-toc__link--active]="isActive(item.id)">
+        {{ item.label }}
+      </a>
+    }
+  </nav>
+</aside>

@@ -1,0 +1,34 @@
+[data-theme='dark'] {
+  color-scheme: dark;
+  --pui-color-primary: #8b8cff;
+  --pui-color-primary-hover: #a5a6ff;
+  --pui-color-secondary: #e5e7eb;
+  --pui-color-success: #34d399;
+  --pui-color-warning: #fbbf24;
+  --pui-color-danger: #f87171;
+  --pui-color-background: #090b12;
+  --pui-color-surface: #111827;
+  --pui-color-border: #293241;
+  --pui-color-text: #f8fafc;
+  --pui-color-muted: #a7b0bf;
+  --pui-color-focus-ring: #c4b5fd;
+  --pui-background: var(--pui-color-background);
+  --pui-surface: var(--pui-color-surface);
+  --pui-surface-raised: #172033;
+  --pui-text: var(--pui-color-text);
+  --pui-muted: var(--pui-color-muted);
+  --pui-border: var(--pui-color-border);
+  --pui-ring: var(--pui-color-focus-ring);
+  --pui-code-background: #151c2c;
+  --pui-docs-page: #080d17;
+  --pui-docs-chrome: #050812;
+  --pui-docs-chrome-text: #f8fafc;
+  --pui-docs-chrome-muted: #aab4c3;
+  --pui-docs-chrome-border: #20283a;
+  --pui-docs-active-soft: #2b2153;
+  --pui-docs-canvas: #0d1421;
+  --pui-shadow-sm: 0 1px 2px rgb(0 0 0 / 28%);
+  --pui-shadow-md: 0 8px 24px rgb(0 0 0 / 32%);
+  --pui-shadow-lg: 0 16px 40px rgb(0 0 0 / 36%);
+  --pui-shadow-xl: 0 28px 70px rgb(0 0 0 / 40%);
+}

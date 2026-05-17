@@ -1,0 +1,43 @@
+<aside class="pui-sidebar" aria-label="Documentation sidebar">
+  <p class="pui-sidebar__label">Components</p>
+
+  <label class="pui-sidebar-search">
+    <span class="pui-sr-only">Filter components</span>
+    <input type="search" placeholder="Filter components..." (input)="updateQuery($event)" />
+  </label>
+
+  <nav class="pui-sidebar__nav" aria-label="Components and foundations">
+    @for (group of filteredGroups(); track group.id) {
+      <section class="pui-nav-group">
+        <button
+          class="pui-nav-group__button"
+          type="button"
+          (click)="toggleGroup(group.id)"
+          [attr.aria-expanded]="!isCollapsed(group.id)"
+          [attr.aria-controls]="'nav-group-' + group.id"
+        >
+          <span>{{ group.label }}</span>
+          <span aria-hidden="true">{{ isCollapsed(group.id) ? '+' : '-' }}</span>
+        </button>
+
+        @if (!isCollapsed(group.id)) {
+          <div class="pui-nav-group__items" [id]="'nav-group-' + group.id">
+            @for (item of group.items; track item.label) {
+              <a
+                class="pui-sidebar-link"
+                [routerLink]="item.route"
+                routerLinkActive="pui-sidebar-link--active"
+                [routerLinkActiveOptions]="{ exact: false }"
+              >
+                <span>{{ item.label }}</span>
+                @if (item.badge) {
+                  <small>{{ item.badge }}</small>
+                }
+              </a>
+            }
+          </div>
+        }
+      </section>
+    }
+  </nav>
+</aside>

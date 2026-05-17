@@ -1,0 +1,1 @@
+Read all files inside .ai/ before generating code.

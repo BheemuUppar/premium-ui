@@ -1,0 +1,10 @@
+:host {
+  --pui-button-bg: var(--pui-color-primary);
+  --pui-button-bg-hover: var(--pui-color-primary-hover);
+  --pui-button-border: transparent;
+  --pui-button-color: #ffffff;
+  --pui-button-height: 2.5rem;
+  --pui-button-padding: 0 var(--pui-space-md);
+  --pui-button-font-size: var(--pui-font-size-sm);
+  --pui-button-gap: var(--pui-space-xs);
+}

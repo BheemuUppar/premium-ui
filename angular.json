@@ -71,6 +71,44 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "premium-ui:build",
+            "tsConfig": "tsconfig.storybook.json",
+            "port": 6006,
+            "styles": [
+              "src/styles.scss"
+            ],
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ]
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": ".storybook",
+            "browserTarget": "premium-ui:build",
+            "tsConfig": "tsconfig.storybook.json",
+            "outputDir": "dist/storybook/premium-ui",
+            "styles": [
+              "src/styles.scss"
+            ],
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "."
+            ]
+          }
         }
       }
     }

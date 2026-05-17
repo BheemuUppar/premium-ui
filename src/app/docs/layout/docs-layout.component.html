@@ -1,0 +1,11 @@
+<app-docs-top-nav />
+
+<div class="pui-docs-shell">
+  <app-docs-sidebar />
+
+  <main class="pui-docs-main" id="main-content" tabindex="-1">
+    <router-outlet />
+  </main>
+
+  <app-docs-toc [items]="tocItems" />
+</div>

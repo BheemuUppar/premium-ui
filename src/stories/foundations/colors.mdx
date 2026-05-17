@@ -1,0 +1,16 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+Semantic CSS variables use the `--pui-color-*` prefix and are theme-aware.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(10rem, 1fr))', gap: '1rem' }}>
+  {['primary', 'secondary', 'success', 'warning', 'danger', 'background', 'surface', 'border', 'text', 'muted', 'focus-ring'].map((name) => (
+    <div key={name} style={{ border: '1px solid var(--pui-color-border)', borderRadius: 'var(--pui-radius-md)', overflow: 'hidden', background: 'var(--pui-color-surface)' }}>
+      <div style={{ height: '4rem', background: `var(--pui-color-${name})`, borderBottom: '1px solid var(--pui-color-border)' }} />
+      <div style={{ padding: '0.75rem', fontFamily: 'var(--pui-font-family)', fontSize: 'var(--pui-font-size-sm)' }}>--pui-color-{name}</div>
+    </div>
+  ))}
+</div>

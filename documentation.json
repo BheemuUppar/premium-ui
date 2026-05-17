@@ -1,0 +1,2816 @@
+{
+    "pipes": [],
+    "interfaces": [
+        {
+            "name": "PuiApiRow",
+            "id": "interface-PuiApiRow-8c3032a31c26670aaa8c441dbfd080dc0780871ad2da1e66fe2892ef28bf2076125b18cad50f2f6326ae527d5fff042c0c133bc8323cc48e59a9027d825e491d",
+            "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "defaultValue",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "type",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "PuiButtonExample",
+            "id": "interface-PuiButtonExample-8c3032a31c26670aaa8c441dbfd080dc0780871ad2da1e66fe2892ef28bf2076125b18cad50f2f6326ae527d5fff042c0c133bc8323cc48e59a9027d825e491d",
+            "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
+            "properties": [
+                {
+                    "name": "code",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "disabled",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "icon",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 19,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "loading",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "size",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PuiButtonSize",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "variant",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PuiButtonVariant",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "PuiDocsNavGroup",
+            "id": "interface-PuiDocsNavGroup-46c8fc998388c31a2920382870e84df3695de3a7300adeac1582ad1cf67e5a656972bb280c0c867480b61ddb5095b219385d34f9e7780c3e2749ad8a2f0ce55d",
+            "file": "src/app/docs/docs.types.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface PuiDocsNavItem {\n  readonly label: string;\n  readonly route: readonly string[];\n  readonly badge?: string;\n}\n\nexport interface PuiDocsNavGroup {\n  readonly id: string;\n  readonly label: string;\n  readonly items: readonly PuiDocsNavItem[];\n}\n\nexport interface PuiDocsTocItem {\n  readonly id: string;\n  readonly label: string;\n}\n\nexport interface PuiDocsTab {\n  readonly label: string;\n  readonly route: readonly string[];\n}\n",
+            "properties": [
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 8,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "items",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "PuiDocsNavItem",
+            "id": "interface-PuiDocsNavItem-46c8fc998388c31a2920382870e84df3695de3a7300adeac1582ad1cf67e5a656972bb280c0c867480b61ddb5095b219385d34f9e7780c3e2749ad8a2f0ce55d",
+            "file": "src/app/docs/docs.types.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface PuiDocsNavItem {\n  readonly label: string;\n  readonly route: readonly string[];\n  readonly badge?: string;\n}\n\nexport interface PuiDocsNavGroup {\n  readonly id: string;\n  readonly label: string;\n  readonly items: readonly PuiDocsNavItem[];\n}\n\nexport interface PuiDocsTocItem {\n  readonly id: string;\n  readonly label: string;\n}\n\nexport interface PuiDocsTab {\n  readonly label: string;\n  readonly route: readonly string[];\n}\n",
+            "properties": [
+                {
+                    "name": "badge",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 4,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 2,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "route",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 3,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "PuiDocsTab",
+            "id": "interface-PuiDocsTab-46c8fc998388c31a2920382870e84df3695de3a7300adeac1582ad1cf67e5a656972bb280c0c867480b61ddb5095b219385d34f9e7780c3e2749ad8a2f0ce55d",
+            "file": "src/app/docs/docs.types.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface PuiDocsNavItem {\n  readonly label: string;\n  readonly route: readonly string[];\n  readonly badge?: string;\n}\n\nexport interface PuiDocsNavGroup {\n  readonly id: string;\n  readonly label: string;\n  readonly items: readonly PuiDocsNavItem[];\n}\n\nexport interface PuiDocsTocItem {\n  readonly id: string;\n  readonly label: string;\n}\n\nexport interface PuiDocsTab {\n  readonly label: string;\n  readonly route: readonly string[];\n}\n",
+            "properties": [
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "route",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "PuiDocsTocItem",
+            "id": "interface-PuiDocsTocItem-46c8fc998388c31a2920382870e84df3695de3a7300adeac1582ad1cf67e5a656972bb280c0c867480b61ddb5095b219385d34f9e7780c3e2749ad8a2f0ce55d",
+            "file": "src/app/docs/docs.types.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface PuiDocsNavItem {\n  readonly label: string;\n  readonly route: readonly string[];\n  readonly badge?: string;\n}\n\nexport interface PuiDocsNavGroup {\n  readonly id: string;\n  readonly label: string;\n  readonly items: readonly PuiDocsNavItem[];\n}\n\nexport interface PuiDocsTocItem {\n  readonly id: string;\n  readonly label: string;\n}\n\nexport interface PuiDocsTab {\n  readonly label: string;\n  readonly route: readonly string[];\n}\n",
+            "properties": [
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "label",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        }
+    ],
+    "injectables": [
+        {
+            "name": "PuiThemeService",
+            "id": "injectable-PuiThemeService-0540a95867eeb457cfd4860def5abd840a5875ace9d007f1201ee8ad4f2090db9e09aab43185c04e3e503f35cc5064c1ed31bb9db87e0367be6cc6bec6ec6de9",
+            "file": "src/app/docs/services/theme.service.ts",
+            "properties": [
+                {
+                    "name": "theme",
+                    "defaultValue": "signal<PuiDocsTheme>('light')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "methods": [
+                {
+                    "name": "toggleTheme",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable, signal } from '@angular/core';\n\nexport type PuiDocsTheme = 'light' | 'dark';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class PuiThemeService {\n  readonly theme = signal<PuiDocsTheme>('light');\n\n  toggleTheme(): void {\n    this.theme.update((theme) => (theme === 'light' ? 'dark' : 'light'));\n  }\n}\n",
+            "extends": [],
+            "type": "injectable"
+        }
+    ],
+    "guards": [],
+    "interceptors": [],
+    "classes": [],
+    "directives": [],
+    "components": [
+        {
+            "name": "App",
+            "id": "component-App-de6e7d9d1527d820a23e7603542b159c77c126269d31a4d4faa4e4bf07ba12513d8dcd2d510627989361213079a539edb07d525e185c602573c203f3072d0a84",
+            "file": "src/app/app.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "host": {},
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-root",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./app.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "themeService",
+                    "defaultValue": "inject(PuiThemeService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "RouterOutlet"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, inject } from '@angular/core';\nimport { RouterOutlet } from '@angular/router';\nimport { PuiThemeService } from './docs/services/theme.service';\n\n@Component({\n  selector: 'app-root',\n  imports: [RouterOutlet],\n  templateUrl: './app.html',\n  styleUrl: './app.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[attr.data-theme]': 'themeService.theme()'\n  }\n})\nexport class App {\n  protected readonly themeService = inject(PuiThemeService);\n}\n",
+            "styleUrl": "./app.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<router-outlet />\n"
+        },
+        {
+            "name": "ButtonDocsComponent",
+            "id": "component-ButtonDocsComponent-8c3032a31c26670aaa8c441dbfd080dc0780871ad2da1e66fe2892ef28bf2076125b18cad50f2f6326ae527d5fff042c0c133bc8323cc48e59a9027d825e491d",
+            "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-button-docs",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./button-docs.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "apiRows",
+                    "defaultValue": "[\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 91,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "currentTab",
+                    "defaultValue": "computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 44,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "examples",
+                    "defaultValue": "[\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 61,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "outputRows",
+                    "defaultValue": "[\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 100,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundCode",
+                    "defaultValue": "computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 115,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundDisabled",
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 112,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundLoading",
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 113,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundSize",
+                    "defaultValue": "signal<PuiButtonSize>('md')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 111,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundVariant",
+                    "defaultValue": "signal<PuiButtonVariant>('primary')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 110,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "route",
+                    "defaultValue": "inject(ActivatedRoute)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 37,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "routeTab",
+                    "defaultValue": "toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 39,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "sizes",
+                    "defaultValue": "['sm', 'md', 'lg']",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 59,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "tabs",
+                    "defaultValue": "[\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 49,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "themeCode",
+                    "defaultValue": "`:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 104,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "variants",
+                    "defaultValue": "['primary', 'secondary', 'outline', 'ghost', 'danger']",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 58,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "copyCode",
+                    "args": [
+                        {
+                            "name": "code",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 123,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "code",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isButtonSize",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "PuiButtonSize",
+                    "typeParameters": [],
+                    "line": 157,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isButtonVariant",
+                    "args": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "PuiButtonVariant",
+                    "typeParameters": [],
+                    "line": 153,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "value",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isDocsTab",
+                    "args": [
+                        {
+                            "name": "tab",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "PuiDocsButtonTab",
+                    "typeParameters": [],
+                    "line": 149,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "tab",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateDisabled",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 141,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateLoading",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 145,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateSize",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 134,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateVariant",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 127,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "PuiButtonComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "RouterLink"
+                },
+                {
+                    "name": "RouterLinkActive"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
+            "styleUrl": "./button-docs.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<article class=\"pui-doc-page\">\n  <header class=\"pui-doc-hero\" id=\"overview\">\n    <nav class=\"pui-breadcrumb\" aria-label=\"Breadcrumb\">\n      <a routerLink=\"/docs/components/button/overview\">Home</a>\n      <span aria-hidden=\"true\">/</span>\n      <a routerLink=\"/docs/components/button/overview\">Components</a>\n      <span aria-hidden=\"true\">/</span>\n      <span>Button</span>\n    </nav>\n    <h1>Button</h1>\n    <p>\n      Buttons allow users to take actions, and make choices, with a single tap.\n    </p>\n  </header>\n\n  <nav class=\"pui-tabs\" aria-label=\"Button documentation tabs\">\n    @for (tab of tabs; track tab.label) {\n      <a\n        class=\"pui-tab\"\n        [routerLink]=\"tab.route\"\n        routerLinkActive=\"pui-tab--active\"\n        [routerLinkActiveOptions]=\"{ exact: true }\"\n      >\n        {{ tab.label }}\n      </a>\n    }\n  </nav>\n\n  <div class=\"pui-tab-panel\">\n    @switch (currentTab()) {\n      @case ('overview') {\n        <section class=\"pui-doc-section\" id=\"basic-usage\" aria-labelledby=\"overview-title\">\n          <h2 id=\"overview-title\">Overview</h2>\n          <p>\n            Buttons are used to trigger actions or events. They are one of the most common and\n            essential components in any interface.\n          </p>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"variants\" aria-labelledby=\"overview-variants-title\">\n          <h2 id=\"overview-variants-title\">Examples</h2>\n          <h3>Variants</h3>\n          <p>Buttons come in different styles to communicate the hierarchy of actions.</p>\n          <div class=\"pui-preview-row\">\n            @for (variant of variants; track variant) {\n              <pui-button [variant]=\"variant\">{{ variant }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"sizes\" aria-labelledby=\"overview-sizes-title\">\n          <h3 id=\"overview-sizes-title\">Sizes</h3>\n          <p>Choose the button size that fits your context.</p>\n          <div class=\"pui-preview-row\">\n            @for (size of sizes; track size) {\n              <pui-button [size]=\"size\">{{ size }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"overview-states-title\">\n          <h3 id=\"overview-states-title\">States</h3>\n          <p>Buttons support various states.</p>\n          <div class=\"pui-preview-row\">\n            <pui-button>Default</pui-button>\n            <pui-button>Hover</pui-button>\n            <pui-button variant=\"secondary\">Active</pui-button>\n            <pui-button [disabled]=\"true\">Disabled</pui-button>\n            <pui-button [loading]=\"true\">Loading</pui-button>\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"api\" aria-labelledby=\"overview-code-title\">\n          <h3 id=\"overview-code-title\">Code Example</h3>\n          <div class=\"pui-code-shell\">\n            <div class=\"pui-code-tabs\" aria-label=\"Code language tabs\">\n              <button type=\"button\" class=\"pui-code-tab pui-code-tab--active\">HTML</button>\n              <button type=\"button\" class=\"pui-code-tab\">Angular</button>\n              <button type=\"button\" class=\"pui-code-tab\">React</button>\n              <button type=\"button\" class=\"pui-code-tab\">Vue</button>\n              <button type=\"button\" class=\"pui-code-copy\" (click)=\"copyCode(examples[0].code)\">Copy</button>\n            </div>\n            <pre><code>{{ examples[0].code }}</code></pre>\n          </div>\n        </section>\n      }\n\n      @case ('examples') {\n        <section class=\"pui-doc-section\" id=\"variants\" aria-labelledby=\"variants-title\">\n          <p class=\"pui-eyebrow\">Examples</p>\n          <h2 id=\"variants-title\">Variants</h2>\n          <div class=\"pui-showcase-grid\">\n            @for (variant of variants; track variant) {\n              <div class=\"pui-example-card\">\n                <div class=\"pui-example-card__preview\">\n                  <pui-button [variant]=\"variant\">{{ variant }}</pui-button>\n                </div>\n                <div class=\"pui-example-card__meta\">\n                  <strong>{{ variant }}</strong>\n                  <code>&lt;pui-button variant=\"{{ variant }}\"&gt;</code>\n                </div>\n              </div>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"sizes\" aria-labelledby=\"sizes-title\">\n          <h2 id=\"sizes-title\">Sizes</h2>\n          <div class=\"pui-preview-row\">\n            @for (size of sizes; track size) {\n              <pui-button [size]=\"size\">{{ size }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"states-title\">\n          <h2 id=\"states-title\">States and snippets</h2>\n          <div class=\"pui-example-list\">\n            @for (example of examples; track example.title) {\n              <article class=\"pui-code-example\">\n                <div class=\"pui-code-example__preview\">\n                  @if (example.icon) {\n                    <pui-button [variant]=\"example.variant || 'primary'\" [size]=\"example.size || 'md'\">\n                      <span puiButtonIcon aria-hidden=\"true\">+</span>\n                      New item\n                    </pui-button>\n                  } @else {\n                    <pui-button\n                      [variant]=\"example.variant || 'primary'\"\n                      [size]=\"example.size || 'md'\"\n                      [loading]=\"example.loading || false\"\n                      [disabled]=\"example.disabled || false\"\n                    >\n                      {{ example.loading ? 'Saving' : example.disabled ? 'Unavailable' : 'Save changes' }}\n                    </pui-button>\n                  }\n                </div>\n                <div>\n                  <h3>{{ example.title }}</h3>\n                  <p>{{ example.description }}</p>\n                  <details class=\"pui-code-block\">\n                    <summary>Code</summary>\n                    <button type=\"button\" (click)=\"copyCode(example.code)\">Copy</button>\n                    <pre><code>{{ example.code }}</code></pre>\n                  </details>\n                </div>\n              </article>\n            }\n          </div>\n        </section>\n      }\n\n      @case ('api') {\n        <section class=\"pui-doc-section\" id=\"api\" aria-labelledby=\"api-title\">\n          <p class=\"pui-eyebrow\">API Guide</p>\n          <h2 id=\"api-title\">Inputs</h2>\n          <div class=\"pui-table-wrap\">\n            <table>\n              <thead>\n                <tr>\n                  <th scope=\"col\">Input</th>\n                  <th scope=\"col\">Type</th>\n                  <th scope=\"col\">Default</th>\n                  <th scope=\"col\">Description</th>\n                </tr>\n              </thead>\n              <tbody>\n                @for (row of apiRows; track row.name) {\n                  <tr>\n                    <th scope=\"row\"><code>{{ row.name }}</code></th>\n                    <td><code>{{ row.type }}</code></td>\n                    <td><code>{{ row.defaultValue }}</code></td>\n                    <td>{{ row.description }}</td>\n                  </tr>\n                }\n              </tbody>\n            </table>\n          </div>\n\n          <h2>Outputs</h2>\n          <div class=\"pui-table-wrap\">\n            <table>\n              <thead>\n                <tr>\n                  <th scope=\"col\">Output</th>\n                  <th scope=\"col\">Type</th>\n                  <th scope=\"col\">Default</th>\n                  <th scope=\"col\">Description</th>\n                </tr>\n              </thead>\n              <tbody>\n                @for (row of outputRows; track row.name) {\n                  <tr>\n                    <th scope=\"row\"><code>{{ row.name }}</code></th>\n                    <td><code>{{ row.type }}</code></td>\n                    <td><code>{{ row.defaultValue }}</code></td>\n                    <td>{{ row.description }}</td>\n                  </tr>\n                }\n              </tbody>\n            </table>\n          </div>\n        </section>\n      }\n\n      @case ('accessibility') {\n        <section class=\"pui-doc-section\" id=\"accessibility\" aria-labelledby=\"a11y-title\">\n          <p class=\"pui-eyebrow\">Accessibility</p>\n          <h2 id=\"a11y-title\">Keyboard and screen reader support</h2>\n          <ul class=\"pui-check-list\">\n            <li>Uses a native button element for keyboard activation with Enter and Space.</li>\n            <li>Applies visible focus styles through <code>:focus-visible</code>.</li>\n            <li>Sets <code>aria-busy</code> while loading and prevents duplicate activation.</li>\n            <li>Supports <code>ariaLabel</code> for icon-only controls.</li>\n            <li>Disabled and loading states stop events before emitting <code>pressed</code>.</li>\n          </ul>\n        </section>\n      }\n\n      @case ('theming') {\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"theming-title\">\n          <p class=\"pui-eyebrow\">Theming</p>\n          <h2 id=\"theming-title\">CSS variable contract</h2>\n          <p>\n            Button styling is powered by semantic tokens, so consumers can theme globally or override\n            component-level variables in a scoped surface.\n          </p>\n          <pre class=\"pui-token-code\"><code>{{ themeCode }}</code></pre>\n        </section>\n      }\n\n      @case ('playground') {\n        <section class=\"pui-doc-section\" id=\"playground\" aria-labelledby=\"playground-title\">\n          <p class=\"pui-eyebrow\">Playground</p>\n          <h2 id=\"playground-title\">Tune the button</h2>\n          <div class=\"pui-playground\">\n            <form class=\"pui-playground__controls\" aria-label=\"Button playground controls\">\n              <label>\n                Variant\n                <select [value]=\"playgroundVariant()\" (change)=\"updateVariant($event)\">\n                  @for (variant of variants; track variant) {\n                    <option [value]=\"variant\">{{ variant }}</option>\n                  }\n                </select>\n              </label>\n\n              <label>\n                Size\n                <select [value]=\"playgroundSize()\" (change)=\"updateSize($event)\">\n                  @for (size of sizes; track size) {\n                    <option [value]=\"size\">{{ size }}</option>\n                  }\n                </select>\n              </label>\n\n              <label class=\"pui-checkbox\">\n                <input type=\"checkbox\" [checked]=\"playgroundDisabled()\" (change)=\"updateDisabled($event)\" />\n                Disabled\n              </label>\n\n              <label class=\"pui-checkbox\">\n                <input type=\"checkbox\" [checked]=\"playgroundLoading()\" (change)=\"updateLoading($event)\" />\n                Loading\n              </label>\n            </form>\n\n            <div class=\"pui-playground__preview\">\n              <pui-button\n                [variant]=\"playgroundVariant()\"\n                [size]=\"playgroundSize()\"\n                [disabled]=\"playgroundDisabled()\"\n                [loading]=\"playgroundLoading()\"\n              >\n                Preview action\n              </pui-button>\n            </div>\n\n            <details class=\"pui-code-block\" open>\n              <summary>Generated code</summary>\n              <button type=\"button\" (click)=\"copyCode(playgroundCode())\">Copy</button>\n              <pre><code>{{ playgroundCode() }}</code></pre>\n            </details>\n          </div>\n        </section>\n      }\n    }\n  </div>\n</article>\n"
+        },
+        {
+            "name": "ComingSoonDocsComponent",
+            "id": "component-ComingSoonDocsComponent-d64391d9a8c0b7f1db44d9170099cb595a65a9df03690a8732191f8c116cf930b2a88bbeaae4664302882a41421460263a8e74f3dedee8fe2435a4fa837a02de",
+            "file": "src/app/docs/pages/coming-soon-docs/coming-soon-docs.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-coming-soon-docs",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./coming-soon-docs.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "componentName",
+                    "defaultValue": "computed(() =>\n    this.componentParam()\n      .split('-')\n      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))\n      .join(' ')\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "componentParam",
+                    "defaultValue": "toSignal(this.route.paramMap.pipe(map((params) => params.get('component') ?? 'component')), {\n    initialValue: 'component'\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "route",
+                    "defaultValue": "inject(ActivatedRoute)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "PuiButtonComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "RouterLink"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\n\n@Component({\n  selector: 'app-coming-soon-docs',\n  imports: [PuiButtonComponent, RouterLink],\n  templateUrl: './coming-soon-docs.component.html',\n  styleUrl: './coming-soon-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ComingSoonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n  private readonly componentParam = toSignal(this.route.paramMap.pipe(map((params) => params.get('component') ?? 'component')), {\n    initialValue: 'component'\n  });\n\n  protected readonly componentName = computed(() =>\n    this.componentParam()\n      .split('-')\n      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))\n      .join(' ')\n  );\n}\n",
+            "styleUrl": "./coming-soon-docs.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<article class=\"pui-doc-page\">\n  <header class=\"pui-doc-hero\" id=\"installation\">\n    <p class=\"pui-eyebrow\">Component</p>\n    <h1>{{ componentName() }}</h1>\n    <p>\n      This route is ready for a full component page. The documentation shell, tabs, table of contents,\n      and theme system are already in place for the next component.\n    </p>\n    <pui-button routerLink=\"/docs/components/button/overview\">Open Button docs</pui-button>\n  </header>\n</article>\n"
+        },
+        {
+            "name": "DocsLayoutComponent",
+            "id": "component-DocsLayoutComponent-2acc98a84a39e6c980bf554a28af58cd79448dd614515230db1a2966fbf22f273f4ca2b95cf0718e880f1732160d90aded2038a6289caff0a089cc49884717f1",
+            "file": "src/app/docs/layout/docs-layout.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-docs-layout",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./docs-layout.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "tocItems",
+                    "defaultValue": "[\n    { id: 'installation', label: 'Installation' },\n    { id: 'basic-usage', label: 'Basic Usage' },\n    { id: 'variants', label: 'Variants' },\n    { id: 'sizes', label: 'Sizes' },\n    { id: 'states', label: 'States' },\n    { id: 'accessibility', label: 'Accessibility' },\n    { id: 'api', label: 'API' },\n    { id: 'playground', label: 'Playground' }\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "DocsSidebarComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "DocsTocComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "DocsTopNavComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "RouterOutlet"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component } from '@angular/core';\nimport { RouterOutlet } from '@angular/router';\nimport { DocsSidebarComponent } from '../shell/docs-sidebar.component';\nimport { DocsTocComponent } from '../shell/docs-toc.component';\nimport { DocsTopNavComponent } from '../shell/docs-top-nav.component';\nimport type { PuiDocsTocItem } from '../docs.types';\n\n@Component({\n  selector: 'app-docs-layout',\n  imports: [DocsSidebarComponent, DocsTocComponent, DocsTopNavComponent, RouterOutlet],\n  templateUrl: './docs-layout.component.html',\n  styleUrl: './docs-layout.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DocsLayoutComponent {\n  protected readonly tocItems: readonly PuiDocsTocItem[] = [\n    { id: 'installation', label: 'Installation' },\n    { id: 'basic-usage', label: 'Basic Usage' },\n    { id: 'variants', label: 'Variants' },\n    { id: 'sizes', label: 'Sizes' },\n    { id: 'states', label: 'States' },\n    { id: 'accessibility', label: 'Accessibility' },\n    { id: 'api', label: 'API' },\n    { id: 'playground', label: 'Playground' }\n  ];\n}\n",
+            "styleUrl": "./docs-layout.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<app-docs-top-nav />\n\n<div class=\"pui-docs-shell\">\n  <app-docs-sidebar />\n\n  <main class=\"pui-docs-main\" id=\"main-content\" tabindex=\"-1\">\n    <router-outlet />\n  </main>\n\n  <app-docs-toc [items]=\"tocItems\" />\n</div>\n"
+        },
+        {
+            "name": "DocsSidebarComponent",
+            "id": "component-DocsSidebarComponent-61cbbba0787b3e49eab4c398974cc05d7ef206746d1d077d84c653f862d0278256e0d91c9acc168c69e64d295390944fb5b0dbf06a620eec36d22f76f2a35788",
+            "file": "src/app/docs/shell/docs-sidebar.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-docs-sidebar",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./docs-sidebar.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "collapsedGroups",
+                    "defaultValue": "signal<readonly string[]>([\n    'foundations',\n    'feedback',\n    'navigation',\n    'overlays',\n    'data-display',\n    'layout',\n    'utilities'\n  ])",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "filteredGroups",
+                    "defaultValue": "computed(() => {\n    const query = this.query().trim().toLowerCase();\n\n    if (!query) {\n      return this.groups;\n    }\n\n    return this.groups\n      .map((group) => ({\n        ...group,\n        items: group.items.filter((item) => item.label.toLowerCase().includes(query))\n      }))\n      .filter((group) => group.items.length > 0);\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 95,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "groups",
+                    "defaultValue": "[\n    {\n      id: 'foundations',\n      label: 'Foundations',\n      items: [\n        { label: 'Colors', route: ['/docs/foundations/colors'] },\n        { label: 'Typography', route: ['/docs/foundations/typography'] },\n        { label: 'Spacing', route: ['/docs/foundations/spacing'] }\n      ]\n    },\n    {\n      id: 'forms',\n      label: 'Forms',\n      items: [\n        { label: 'Button', route: ['/docs/components/button/overview'], badge: 'Ready' },\n        { label: 'Input', route: ['/docs/components/input'] },\n        { label: 'Checkbox', route: ['/docs/components/checkbox'] }\n      ]\n    },\n    {\n      id: 'feedback',\n      label: 'Feedback',\n      items: [\n        { label: 'Alert', route: ['/docs/components/alert'] },\n        { label: 'Toast', route: ['/docs/components/toast'] },\n        { label: 'Progress', route: ['/docs/components/progress'] }\n      ]\n    },\n    {\n      id: 'navigation',\n      label: 'Navigation',\n      items: [\n        { label: 'Tabs', route: ['/docs/components/tabs'] },\n        { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }\n      ]\n    },\n    {\n      id: 'overlays',\n      label: 'Overlays',\n      items: [\n        { label: 'Modal', route: ['/docs/components/modal'] },\n        { label: 'Tooltip', route: ['/docs/components/tooltip'] }\n      ]\n    },\n    {\n      id: 'data-display',\n      label: 'Data Display',\n      items: [\n        { label: 'Card', route: ['/docs/components/card'] },\n        { label: 'Badge', route: ['/docs/components/badge'] },\n        { label: 'Table', route: ['/docs/components/table'] }\n      ]\n    },\n    {\n      id: 'layout',\n      label: 'Layout',\n      items: [\n        { label: 'Container', route: ['/docs/components/container'] },\n        { label: 'Stack', route: ['/docs/components/stack'] }\n      ]\n    },\n    {\n      id: 'utilities',\n      label: 'Utilities',\n      items: [\n        { label: 'Visually Hidden', route: ['/docs/components/visually-hidden'] },\n        { label: 'Portal', route: ['/docs/components/portal'] }\n      ]\n    }\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "query",
+                    "defaultValue": "signal('')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "isCollapsed",
+                    "args": [
+                        {
+                            "name": "groupId",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 115,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "groupId",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "toggleGroup",
+                    "args": [
+                        {
+                            "name": "groupId",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 119,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "groupId",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateQuery",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 110,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "RouterLink"
+                },
+                {
+                    "name": "RouterLinkActive"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\nimport type { PuiDocsNavGroup } from '../docs.types';\n\n@Component({\n  selector: 'app-docs-sidebar',\n  imports: [RouterLink, RouterLinkActive],\n  templateUrl: './docs-sidebar.component.html',\n  styleUrl: './docs-sidebar.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DocsSidebarComponent {\n  protected readonly query = signal('');\n  protected readonly collapsedGroups = signal<readonly string[]>([\n    'foundations',\n    'feedback',\n    'navigation',\n    'overlays',\n    'data-display',\n    'layout',\n    'utilities'\n  ]);\n\n  private readonly groups: readonly PuiDocsNavGroup[] = [\n    {\n      id: 'foundations',\n      label: 'Foundations',\n      items: [\n        { label: 'Colors', route: ['/docs/foundations/colors'] },\n        { label: 'Typography', route: ['/docs/foundations/typography'] },\n        { label: 'Spacing', route: ['/docs/foundations/spacing'] }\n      ]\n    },\n    {\n      id: 'forms',\n      label: 'Forms',\n      items: [\n        { label: 'Button', route: ['/docs/components/button/overview'], badge: 'Ready' },\n        { label: 'Input', route: ['/docs/components/input'] },\n        { label: 'Checkbox', route: ['/docs/components/checkbox'] }\n      ]\n    },\n    {\n      id: 'feedback',\n      label: 'Feedback',\n      items: [\n        { label: 'Alert', route: ['/docs/components/alert'] },\n        { label: 'Toast', route: ['/docs/components/toast'] },\n        { label: 'Progress', route: ['/docs/components/progress'] }\n      ]\n    },\n    {\n      id: 'navigation',\n      label: 'Navigation',\n      items: [\n        { label: 'Tabs', route: ['/docs/components/tabs'] },\n        { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }\n      ]\n    },\n    {\n      id: 'overlays',\n      label: 'Overlays',\n      items: [\n        { label: 'Modal', route: ['/docs/components/modal'] },\n        { label: 'Tooltip', route: ['/docs/components/tooltip'] }\n      ]\n    },\n    {\n      id: 'data-display',\n      label: 'Data Display',\n      items: [\n        { label: 'Card', route: ['/docs/components/card'] },\n        { label: 'Badge', route: ['/docs/components/badge'] },\n        { label: 'Table', route: ['/docs/components/table'] }\n      ]\n    },\n    {\n      id: 'layout',\n      label: 'Layout',\n      items: [\n        { label: 'Container', route: ['/docs/components/container'] },\n        { label: 'Stack', route: ['/docs/components/stack'] }\n      ]\n    },\n    {\n      id: 'utilities',\n      label: 'Utilities',\n      items: [\n        { label: 'Visually Hidden', route: ['/docs/components/visually-hidden'] },\n        { label: 'Portal', route: ['/docs/components/portal'] }\n      ]\n    }\n  ];\n\n  protected readonly filteredGroups = computed(() => {\n    const query = this.query().trim().toLowerCase();\n\n    if (!query) {\n      return this.groups;\n    }\n\n    return this.groups\n      .map((group) => ({\n        ...group,\n        items: group.items.filter((item) => item.label.toLowerCase().includes(query))\n      }))\n      .filter((group) => group.items.length > 0);\n  });\n\n  protected updateQuery(event: Event): void {\n    const input = event.target as HTMLInputElement;\n    this.query.set(input.value);\n  }\n\n  protected isCollapsed(groupId: string): boolean {\n    return this.collapsedGroups().includes(groupId);\n  }\n\n  protected toggleGroup(groupId: string): void {\n    this.collapsedGroups.update((groups) =>\n      groups.includes(groupId) ? groups.filter((id) => id !== groupId) : [...groups, groupId]\n    );\n  }\n}\n",
+            "styleUrl": "./docs-sidebar.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<aside class=\"pui-sidebar\" aria-label=\"Documentation sidebar\">\n  <p class=\"pui-sidebar__label\">Components</p>\n\n  <label class=\"pui-sidebar-search\">\n    <span class=\"pui-sr-only\">Filter components</span>\n    <input type=\"search\" placeholder=\"Filter components...\" (input)=\"updateQuery($event)\" />\n  </label>\n\n  <nav class=\"pui-sidebar__nav\" aria-label=\"Components and foundations\">\n    @for (group of filteredGroups(); track group.id) {\n      <section class=\"pui-nav-group\">\n        <button\n          class=\"pui-nav-group__button\"\n          type=\"button\"\n          (click)=\"toggleGroup(group.id)\"\n          [attr.aria-expanded]=\"!isCollapsed(group.id)\"\n          [attr.aria-controls]=\"'nav-group-' + group.id\"\n        >\n          <span>{{ group.label }}</span>\n          <span aria-hidden=\"true\">{{ isCollapsed(group.id) ? '+' : '-' }}</span>\n        </button>\n\n        @if (!isCollapsed(group.id)) {\n          <div class=\"pui-nav-group__items\" [id]=\"'nav-group-' + group.id\">\n            @for (item of group.items; track item.label) {\n              <a\n                class=\"pui-sidebar-link\"\n                [routerLink]=\"item.route\"\n                routerLinkActive=\"pui-sidebar-link--active\"\n                [routerLinkActiveOptions]=\"{ exact: false }\"\n              >\n                <span>{{ item.label }}</span>\n                @if (item.badge) {\n                  <small>{{ item.badge }}</small>\n                }\n              </a>\n            }\n          </div>\n        }\n      </section>\n    }\n  </nav>\n</aside>\n"
+        },
+        {
+            "name": "DocsTocComponent",
+            "id": "component-DocsTocComponent-ee98db5573ba28da9bb8327a482278b337cfc7403672b4658f5cf5086a9420aa78be34e8f8f3af1edf3919f672b806cad1efee878978a67711b3c0ad13eb8d98",
+            "file": "src/app/docs/shell/docs-toc.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-docs-toc",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./docs-toc.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "items",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "readonly PuiDocsTocItem[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": true
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "activeId",
+                    "defaultValue": "signal<string | null>(null)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "document",
+                    "defaultValue": "inject(DOCUMENT)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "platformId",
+                    "defaultValue": "inject(PLATFORM_ID)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "isActive",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "boolean",
+                    "typeParameters": [],
+                    "line": 23,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "observeSections",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 27,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { DOCUMENT, isPlatformBrowser } from '@angular/common';\nimport { ChangeDetectionStrategy, Component, PLATFORM_ID, afterNextRender, inject, input, signal } from '@angular/core';\nimport type { PuiDocsTocItem } from '../docs.types';\n\n@Component({\n  selector: 'app-docs-toc',\n  templateUrl: './docs-toc.component.html',\n  styleUrl: './docs-toc.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DocsTocComponent {\n  readonly items = input.required<readonly PuiDocsTocItem[]>();\n\n  protected readonly activeId = signal<string | null>(null);\n\n  private readonly document = inject(DOCUMENT);\n  private readonly platformId = inject(PLATFORM_ID);\n\n  constructor() {\n    afterNextRender(() => this.observeSections());\n  }\n\n  protected isActive(id: string): boolean {\n    return this.activeId() === id;\n  }\n\n  private observeSections(): void {\n    if (!isPlatformBrowser(this.platformId) || typeof IntersectionObserver === 'undefined') {\n      return;\n    }\n\n    const sections = this.items()\n      .map((item) => this.document.getElementById(item.id))\n      .filter((section): section is HTMLElement => section !== null);\n\n    if (sections.length === 0) {\n      return;\n    }\n\n    this.activeId.set(sections[0].id);\n\n    const observer = new IntersectionObserver(\n      (entries) => {\n        const visibleEntry = entries\n          .filter((entry) => entry.isIntersecting)\n          .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)[0];\n\n        if (visibleEntry?.target.id) {\n          this.activeId.set(visibleEntry.target.id);\n        }\n      },\n      {\n        rootMargin: '-96px 0px -65% 0px',\n        threshold: [0, 0.2, 0.6]\n      }\n    );\n\n    sections.forEach((section) => observer.observe(section));\n  }\n}\n",
+            "styleUrl": "./docs-toc.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 17
+            },
+            "extends": [],
+            "templateData": "<aside class=\"pui-toc\" aria-label=\"On this page\">\n  <p>On this page</p>\n  <nav>\n    @for (item of items(); track item.id) {\n      <a [href]=\"'#' + item.id\" [class.pui-toc__link--active]=\"isActive(item.id)\">\n        {{ item.label }}\n      </a>\n    }\n  </nav>\n</aside>\n"
+        },
+        {
+            "name": "DocsTopNavComponent",
+            "id": "component-DocsTopNavComponent-124664bc6e3f7702b93c902b0bdde4fc3659ce1376345090e88515378a6c5b8794194133ed27eafbffb88f7e7bd66ef6510c08c2b22e29e450e1246882519ba1",
+            "file": "src/app/docs/shell/docs-top-nav.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-docs-top-nav",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./docs-top-nav.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "searchTerm",
+                    "defaultValue": "signal('')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "themeService",
+                    "defaultValue": "inject(PuiThemeService)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onSearch",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "RouterLink"
+                },
+                {
+                    "name": "RouterLinkActive"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\nimport { PuiThemeService } from '../services/theme.service';\n\n@Component({\n  selector: 'app-docs-top-nav',\n  imports: [RouterLink, RouterLinkActive],\n  templateUrl: './docs-top-nav.component.html',\n  styleUrl: './docs-top-nav.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DocsTopNavComponent {\n  protected readonly themeService = inject(PuiThemeService);\n  protected readonly searchTerm = signal('');\n\n  protected onSearch(event: Event): void {\n    const input = event.target as HTMLInputElement;\n    this.searchTerm.set(input.value);\n  }\n}\n",
+            "styleUrl": "./docs-top-nav.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<header class=\"pui-topnav\">\n  <a class=\"pui-brand\" routerLink=\"/docs/components/button/overview\" aria-label=\"Premium UI documentation home\">\n    <span class=\"pui-brand__mark\" aria-hidden=\"true\">P</span>\n    <span>\n      <span class=\"pui-brand__name\">Premium UI</span>\n      <span class=\"pui-brand__meta\">Docs</span>\n    </span>\n  </a>\n\n  <label class=\"pui-search\">\n    <span class=\"pui-sr-only\">Search documentation</span>\n    <span aria-hidden=\"true\">Search</span>\n    <input type=\"search\" placeholder=\"Search components...\" [value]=\"searchTerm()\" (input)=\"onSearch($event)\" />\n    <kbd>Ctrl K</kbd>\n  </label>\n\n  <nav class=\"pui-topnav__links\" aria-label=\"Primary documentation links\">\n    <a routerLink=\"/docs/components/button/overview\">Docs</a>\n    <a routerLink=\"/docs/components/button/overview\" routerLinkActive=\"pui-topnav__link--active\">Components</a>\n    <a href=\"https://figma.com\" target=\"_blank\" rel=\"noopener\">Figma</a>\n    <a href=\"#changelog\">Changelog</a>\n  </nav>\n\n  <div class=\"pui-topnav__actions\">\n    <select aria-label=\"Select documentation version\">\n      <option>v0.1.0</option>\n      <option>next</option>\n    </select>\n\n    <button class=\"pui-icon-button pui-icon-button--square\" type=\"button\" (click)=\"themeService.toggleTheme()\" [attr.aria-pressed]=\"themeService.theme() === 'dark'\">\n      <span aria-hidden=\"true\">{{ themeService.theme() === 'dark' ? 'Light' : 'Dark' }}</span>\n      <span class=\"pui-sr-only\">Toggle color theme</span>\n    </button>\n\n    <a class=\"pui-icon-button pui-icon-button--square\" href=\"https://github.com\" target=\"_blank\" rel=\"noopener\" aria-label=\"Open GitHub\">\n      GH\n    </a>\n  </div>\n</header>\n"
+        },
+        {
+            "name": "FoundationDocsComponent",
+            "id": "component-FoundationDocsComponent-49d49097c5a0f203b1c825df7dab156f79de58c626cd327d3b38786a65b1a4218511849572a6a918de20ddbf729c82b5bfd5359e1edaeba539d68e2dff2355d0",
+            "file": "src/app/docs/pages/foundation-docs/foundation-docs.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-foundation-docs",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./foundation-docs.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "route",
+                    "defaultValue": "inject(ActivatedRoute)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "sectionParam",
+                    "defaultValue": "toSignal(this.route.paramMap.pipe(map((params) => params.get('section') ?? 'colors')), {\n    initialValue: 'colors'\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "sectionTitle",
+                    "defaultValue": "computed(() => {\n    const section = this.sectionParam();\n    return section.charAt(0).toUpperCase() + section.slice(1);\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "tokenRows",
+                    "defaultValue": "[\n    '--pui-background',\n    '--pui-surface',\n    '--pui-text',\n    '--pui-muted',\n    '--pui-border',\n    '--pui-ring',\n    '--pui-space-md',\n    '--pui-radius-md',\n    '--pui-shadow-sm'\n  ] as const",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute } from '@angular/router';\nimport { map } from 'rxjs';\n\n@Component({\n  selector: 'app-foundation-docs',\n  templateUrl: './foundation-docs.component.html',\n  styleUrl: './foundation-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class FoundationDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n  private readonly sectionParam = toSignal(this.route.paramMap.pipe(map((params) => params.get('section') ?? 'colors')), {\n    initialValue: 'colors'\n  });\n\n  protected readonly sectionTitle = computed(() => {\n    const section = this.sectionParam();\n    return section.charAt(0).toUpperCase() + section.slice(1);\n  });\n\n  protected readonly tokenRows = [\n    '--pui-background',\n    '--pui-surface',\n    '--pui-text',\n    '--pui-muted',\n    '--pui-border',\n    '--pui-ring',\n    '--pui-space-md',\n    '--pui-radius-md',\n    '--pui-shadow-sm'\n  ] as const;\n}\n",
+            "styleUrl": "./foundation-docs.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<article class=\"pui-doc-page\">\n  <header class=\"pui-doc-hero\" id=\"installation\">\n    <p class=\"pui-eyebrow\">Foundations</p>\n    <h1>{{ sectionTitle() }}</h1>\n    <p>\n      Premium UI foundations are semantic, theme-aware, and intentionally small so components stay\n      easy to customize without adopting a heavy styling runtime.\n    </p>\n  </header>\n\n  <section class=\"pui-doc-section\" id=\"basic-usage\" aria-labelledby=\"tokens-title\">\n    <h2 id=\"tokens-title\">Semantic tokens</h2>\n    <div class=\"pui-token-grid\">\n      @for (token of tokenRows; track token) {\n        <article>\n          <span [style.background]=\"'var(' + token + ')'\"></span>\n          <code>{{ token }}</code>\n        </article>\n      }\n    </div>\n  </section>\n\n  <section class=\"pui-doc-section\" id=\"accessibility\" aria-labelledby=\"foundation-a11y-title\">\n    <h2 id=\"foundation-a11y-title\">Accessibility notes</h2>\n    <p>\n      Foundation colors are semantic rather than decorative. Components consume text, muted, border,\n      ring, surface, and background roles so light and dark themes retain readable contrast.\n    </p>\n  </section>\n</article>\n"
+        },
+        {
+            "name": "PuiButtonComponent",
+            "id": "component-PuiButtonComponent-c060aa17da9bcfd57d6fa2e9eab96315d3cc1ddc2bd2bbca9190e8705cd44210e08f494b86709031e91f8608b9d6a3daebc3d59826a489d1a8c4f8ee148ff005",
+            "file": "src/premium-ui/components/button/button.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "host": {},
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pui-button",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./button.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "ariaLabel",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false, { transform: booleanAttribute }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "loading",
+                    "defaultValue": "false, { transform: booleanAttribute }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'md'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PuiButtonSize",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 22,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "'button'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PuiButtonType",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "variant",
+                    "defaultValue": "'primary'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PuiButtonVariant",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "pressed",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "MouseEvent",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 27,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "isDisabled",
+                    "defaultValue": "computed(() => this.disabled() || this.loading())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "handleClick",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 31,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "MouseEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, booleanAttribute, computed, input, output } from '@angular/core';\nimport type { PuiButtonSize, PuiButtonType, PuiButtonVariant } from './button.types';\n\n@Component({\n  selector: 'pui-button',\n  templateUrl: './button.component.html',\n  styleUrl: './button.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  host: {\n    '[class.pui-button--primary]': \"variant() === 'primary'\",\n    '[class.pui-button--secondary]': \"variant() === 'secondary'\",\n    '[class.pui-button--outline]': \"variant() === 'outline'\",\n    '[class.pui-button--ghost]': \"variant() === 'ghost'\",\n    '[class.pui-button--danger]': \"variant() === 'danger'\",\n    '[class.pui-button--sm]': \"size() === 'sm'\",\n    '[class.pui-button--md]': \"size() === 'md'\",\n    '[class.pui-button--lg]': \"size() === 'lg'\"\n  }\n})\nexport class PuiButtonComponent {\n  readonly variant = input<PuiButtonVariant>('primary');\n  readonly size = input<PuiButtonSize>('md');\n  readonly type = input<PuiButtonType>('button');\n  readonly disabled = input(false, { transform: booleanAttribute });\n  readonly loading = input(false, { transform: booleanAttribute });\n  readonly ariaLabel = input<string | null>(null);\n  readonly pressed = output<MouseEvent>();\n\n  protected readonly isDisabled = computed(() => this.disabled() || this.loading());\n\n  protected handleClick(event: MouseEvent): void {\n    if (this.isDisabled()) {\n      event.preventDefault();\n      event.stopPropagation();\n      return;\n    }\n\n    this.pressed.emit(event);\n  }\n}\n",
+            "styleUrl": "./button.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<button\n  class=\"pui-button__control\"\n  [attr.type]=\"type()\"\n  [disabled]=\"isDisabled()\"\n  [attr.aria-busy]=\"loading() ? 'true' : null\"\n  [attr.aria-label]=\"ariaLabel() || null\"\n  (click)=\"handleClick($event)\"\n>\n  @if (loading()) {\n    <span class=\"pui-button__spinner\" aria-hidden=\"true\"></span>\n  }\n  <span class=\"pui-button__icon\" aria-hidden=\"true\">\n    <ng-content select=\"[puiButtonIcon]\"></ng-content>\n  </span>\n  <span class=\"pui-button__label\">\n    <ng-content></ng-content>\n  </span>\n</button>\n"
+        }
+    ],
+    "modules": [],
+    "miscellaneous": {
+        "variables": [
+            {
+                "name": "appConfig",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/app.config.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "ApplicationConfig",
+                "defaultValue": "{\r\n  providers: [\r\n    provideBrowserGlobalErrorListeners(),\r\n    provideRouter(routes)\r\n  ]\r\n}"
+            },
+            {
+                "name": "config",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": ".storybook/main.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StorybookConfig",
+                "defaultValue": "{\n  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],\n  framework: {\n    name: '@storybook/angular',\n    options: {}\n  }\n}"
+            },
+            {
+                "name": "Disabled",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    disabled: true\n  }\n}"
+            },
+            {
+                "name": "Loading",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  args: {\n    loading: true\n  }\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PuiButtonComponent>",
+                "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
+            },
+            {
+                "name": "preview",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": ".storybook/preview.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Preview",
+                "defaultValue": "{\n  globalTypes: {\n    theme: {\n      description: 'Theme',\n      defaultValue: 'light',\n      toolbar: {\n        title: 'Theme',\n        icon: 'circlehollow',\n        items: [\n          { value: 'light', title: 'Light' },\n          { value: 'dark', title: 'Dark' }\n        ],\n        dynamicTitle: true\n      }\n    }\n  },\n  decorators: [\n    (story, context) => {\n      const theme = context.globals['theme'] === 'dark' ? 'dark' : 'light';\n\n      return {\n        template: `<div data-theme=\"${theme}\" style=\"min-height: 100vh; padding: 2rem; background: var(--pui-color-background); color: var(--pui-color-text);\"><story /></div>`\n      };\n    }\n  ],\n  parameters: {\n    backgrounds: {\n      disable: true\n    },\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i\n      }\n    },\n    a11y: {\n      test: 'error'\n    },\n    options: {\n      storySort: {\n        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing', 'Shadows'], 'Components', 'Forms', 'Feedback', 'Navigation', 'Overlays']\n      }\n    }\n  }\n}"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
+            },
+            {
+                "name": "routes",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/app.routes.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Routes",
+                "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'docs/components/button/overview',\n    pathMatch: 'full'\n  },\n  {\n    path: 'docs',\n    loadComponent: () => \"import('./docs/layout/docs-layout.component').then((component) => component.DocsLayoutComponent)\",\n    children: [\n      {\n        path: '',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button/:tab',\n        loadComponent: () => \"import('./docs/pages/button-docs/button-docs.component').then((component) => component.ButtonDocsComponent)\"\n      },\n      {\n        path: 'foundations/:section',\n        loadComponent: () => \"import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)\"\n      },\n      {\n        path: 'components/:component',\n        loadComponent: () => \"import('./docs/pages/coming-soon-docs/coming-soon-docs.component').then((component) => component.ComingSoonDocsComponent)\"\n      }\n    ]\n  },\n  {\n    path: '**',\n    redirectTo: 'docs/components/button/overview'\n  }\n]"
+            },
+            {
+                "name": "Sizes",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
+            },
+            {
+                "name": "Variants",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
+            },
+            {
+                "name": "WithIcon",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\n  render: () => ({\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
+            }
+        ],
+        "functions": [],
+        "typealiases": [
+            {
+                "name": "PuiButtonSize",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "PuiSize",
+                "file": "src/premium-ui/components/button/button.types.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "PuiButtonType",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"button\" | \"submit\" | \"reset\"",
+                "file": "src/premium-ui/components/button/button.types.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "PuiButtonVariant",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"primary\" | \"secondary\" | \"outline\" | \"ghost\" | \"danger\"",
+                "file": "src/premium-ui/components/button/button.types.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "PuiDocsButtonTab",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"overview\" | \"examples\" | \"api\" | \"accessibility\" | \"theming\" | \"playground\"",
+                "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "PuiDocsTheme",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"light\" | \"dark\"",
+                "file": "src/app/docs/services/theme.service.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "PuiIntent",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"primary\" | \"secondary\" | \"success\" | \"warning\" | \"danger\"",
+                "file": "src/premium-ui/types/common.types.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "PuiSize",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"sm\" | \"md\" | \"lg\"",
+                "file": "src/premium-ui/types/common.types.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<PuiButtonComponent>",
+                "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            }
+        ],
+        "enumerations": [],
+        "groupedVariables": {
+            "src/app/app.config.ts": [
+                {
+                    "name": "appConfig",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/app.config.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ApplicationConfig",
+                    "defaultValue": "{\r\n  providers: [\r\n    provideBrowserGlobalErrorListeners(),\r\n    provideRouter(routes)\r\n  ]\r\n}"
+                }
+            ],
+            ".storybook/main.ts": [
+                {
+                    "name": "config",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": ".storybook/main.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StorybookConfig",
+                    "defaultValue": "{\n  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],\n  framework: {\n    name: '@storybook/angular',\n    options: {}\n  }\n}"
+                }
+            ],
+            "src/premium-ui/components/button/button.stories.ts": [
+                {
+                    "name": "Disabled",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    disabled: true\n  }\n}"
+                },
+                {
+                    "name": "Loading",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  args: {\n    loading: true\n  }\n}"
+                },
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PuiButtonComponent>",
+                    "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
+                },
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "Sizes",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
+                },
+                {
+                    "name": "Variants",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
+                },
+                {
+                    "name": "WithIcon",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
+                }
+            ],
+            ".storybook/preview.ts": [
+                {
+                    "name": "preview",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": ".storybook/preview.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Preview",
+                    "defaultValue": "{\n  globalTypes: {\n    theme: {\n      description: 'Theme',\n      defaultValue: 'light',\n      toolbar: {\n        title: 'Theme',\n        icon: 'circlehollow',\n        items: [\n          { value: 'light', title: 'Light' },\n          { value: 'dark', title: 'Dark' }\n        ],\n        dynamicTitle: true\n      }\n    }\n  },\n  decorators: [\n    (story, context) => {\n      const theme = context.globals['theme'] === 'dark' ? 'dark' : 'light';\n\n      return {\n        template: `<div data-theme=\"${theme}\" style=\"min-height: 100vh; padding: 2rem; background: var(--pui-color-background); color: var(--pui-color-text);\"><story /></div>`\n      };\n    }\n  ],\n  parameters: {\n    backgrounds: {\n      disable: true\n    },\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i\n      }\n    },\n    a11y: {\n      test: 'error'\n    },\n    options: {\n      storySort: {\n        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing', 'Shadows'], 'Components', 'Forms', 'Feedback', 'Navigation', 'Overlays']\n      }\n    }\n  }\n}"
+                }
+            ],
+            "src/app/app.routes.ts": [
+                {
+                    "name": "routes",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/app.routes.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Routes",
+                    "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'docs/components/button/overview',\n    pathMatch: 'full'\n  },\n  {\n    path: 'docs',\n    loadComponent: () => \"import('./docs/layout/docs-layout.component').then((component) => component.DocsLayoutComponent)\",\n    children: [\n      {\n        path: '',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button/:tab',\n        loadComponent: () => \"import('./docs/pages/button-docs/button-docs.component').then((component) => component.ButtonDocsComponent)\"\n      },\n      {\n        path: 'foundations/:section',\n        loadComponent: () => \"import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)\"\n      },\n      {\n        path: 'components/:component',\n        loadComponent: () => \"import('./docs/pages/coming-soon-docs/coming-soon-docs.component').then((component) => component.ComingSoonDocsComponent)\"\n      }\n    ]\n  },\n  {\n    path: '**',\n    redirectTo: 'docs/components/button/overview'\n  }\n]"
+                }
+            ]
+        },
+        "groupedFunctions": {},
+        "groupedEnumerations": {},
+        "groupedTypeAliases": {
+            "src/premium-ui/components/button/button.types.ts": [
+                {
+                    "name": "PuiButtonSize",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "PuiSize",
+                    "file": "src/premium-ui/components/button/button.types.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                },
+                {
+                    "name": "PuiButtonType",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"button\" | \"submit\" | \"reset\"",
+                    "file": "src/premium-ui/components/button/button.types.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "PuiButtonVariant",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"primary\" | \"secondary\" | \"outline\" | \"ghost\" | \"danger\"",
+                    "file": "src/premium-ui/components/button/button.types.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/app/docs/pages/button-docs/button-docs.component.ts": [
+                {
+                    "name": "PuiDocsButtonTab",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"overview\" | \"examples\" | \"api\" | \"accessibility\" | \"theming\" | \"playground\"",
+                    "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/app/docs/services/theme.service.ts": [
+                {
+                    "name": "PuiDocsTheme",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"light\" | \"dark\"",
+                    "file": "src/app/docs/services/theme.service.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/premium-ui/types/common.types.ts": [
+                {
+                    "name": "PuiIntent",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"primary\" | \"secondary\" | \"success\" | \"warning\" | \"danger\"",
+                    "file": "src/premium-ui/types/common.types.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "PuiSize",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"sm\" | \"md\" | \"lg\"",
+                    "file": "src/premium-ui/types/common.types.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/premium-ui/components/button/button.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<PuiButtonComponent>",
+                    "file": "src/premium-ui/components/button/button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
+            ]
+        }
+    },
+    "routes": {
+        "name": "<root>",
+        "kind": "module",
+        "children": [
+            {
+                "name": "docs",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/button",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/button/:tab",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "foundations/:section",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/:component",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "**",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "docs/components/button/overview",
+                "kind": "route-redirect",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/button/overview",
+                "kind": "route-redirect",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/button/overview",
+                "kind": "route-redirect",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "docs/components/button/overview",
+                "kind": "route-redirect",
+                "filename": "src/app/app.routes.ts"
+            }
+        ]
+    },
+    "coverage": {
+        "count": 0,
+        "status": "low",
+        "files": [
+            {
+                "filePath": ".storybook/main.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "config",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": ".storybook/preview.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "preview",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.config.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "appConfig",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.routes.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "routes",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/app.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "App",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/docs.types.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PuiDocsNavGroup",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/docs.types.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PuiDocsNavItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/docs.types.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PuiDocsTab",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/docs.types.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PuiDocsTocItem",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/layout/docs-layout.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DocsLayoutComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/button-docs/button-docs.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ButtonDocsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/24",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/button-docs/button-docs.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PuiApiRow",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/button-docs/button-docs.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PuiButtonExample",
+                "coveragePercent": 0,
+                "coverageCount": "0/9",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/button-docs/button-docs.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiDocsButtonTab",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/coming-soon-docs/coming-soon-docs.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ComingSoonDocsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/foundation-docs/foundation-docs.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "FoundationDocsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/services/theme.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "PuiThemeService",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/services/theme.service.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiDocsTheme",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/shell/docs-sidebar.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DocsSidebarComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/shell/docs-toc.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DocsTocComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/shell/docs-top-nav.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "DocsTopNavComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PuiButtonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/10",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Disabled",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Loading",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Sizes",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Variants",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "WithIcon",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.types.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiButtonSize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.types.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiButtonType",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/button/button.types.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiButtonVariant",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/types/common.types.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiIntent",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/types/common.types.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiSize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            }
+        ]
+    }
+}
