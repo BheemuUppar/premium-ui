@@ -38,6 +38,9 @@ const meta: Meta<PuiButtonComponent> = {
   },
   render: (args) => ({
     props: args,
+    moduleMetadata: {
+      imports: [PuiButtonComponent]
+    },
     template: `<pui-button [variant]="variant" [size]="size" [type]="type" [disabled]="disabled" [loading]="loading" [ariaLabel]="ariaLabel">Button</pui-button>`
   })
 };
@@ -50,6 +53,9 @@ export const Primary: Story = {};
 
 export const Variants: Story = {
   render: () => ({
+    moduleMetadata: {
+      imports: [PuiButtonComponent]
+    },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;">
         <pui-button variant="primary">Primary</pui-button>
@@ -64,6 +70,9 @@ export const Variants: Story = {
 
 export const Sizes: Story = {
   render: () => ({
+    moduleMetadata: {
+      imports: [PuiButtonComponent]
+    },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;">
         <pui-button size="sm">Small</pui-button>
@@ -88,6 +97,9 @@ export const Disabled: Story = {
 
 export const WithIcon: Story = {
   render: () => ({
+    moduleMetadata: {
+      imports: [PuiButtonComponent]
+    },
     template: `
       <pui-button>
         <span puiButtonIcon aria-hidden="true">+</span>

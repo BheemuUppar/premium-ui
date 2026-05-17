@@ -53,3 +53,20 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## AI agent files
+
+This repository includes multiple AI instruction files so different agents can work with the same codebase and source of truth.
+
+- `.github/copilot-instructions.md`: GitHub Copilot / Copilot Chat guidance.
+- `.gemini/GEMINI.md`: Gemini-oriented guidance.
+- `.windsurf/rules/`: Windsurf-specific agent rules and review instructions.
+- `.ai/*.md`: Shared repository context, architecture details, and style guidance for any AI assistant.
+
+When using any AI assistant:
+
+- consult `.ai/project-overview.md` and `.ai/agent-context.md` first
+- preserve Angular 21 standalone component architecture
+- respect SCSS token theming and CSS variable conventions
+- keep components accessible, performant, and tree-shakable
+- prefer the most specific AI instruction file available for the target agent

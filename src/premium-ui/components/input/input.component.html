@@ -1,0 +1,13 @@
+<input
+  class="pui-input__control"
+  [type]="type()"
+  [value]="value()"
+  [placeholder]="placeholder()"
+  [disabled]="disabled()"
+  [readonly]="readOnly()"
+  [attr.aria-label]="ariaLabel() || null"
+  (input)="handleInput($event)"
+  (change)="handleChange($event)"
+  (focus)="handleFocus($event)"
+  (blur)="handleBlur($event)"
+/>

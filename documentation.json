@@ -3,12 +3,12 @@
     "interfaces": [
         {
             "name": "PuiApiRow",
-            "id": "interface-PuiApiRow-8c3032a31c26670aaa8c441dbfd080dc0780871ad2da1e66fe2892ef28bf2076125b18cad50f2f6326ae527d5fff042c0c133bc8323cc48e59a9027d825e491d",
+            "id": "interface-PuiApiRow-a655e4c6c5760d079a1f359a7e3d33cc34d19271d18cc15f424b80b6b49bc81017009267cc5a9ed4b1c8fe3417f7f70e979069639e103a64e231c75c7a1f5763",
             "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly currentCodeTab = signal<'html' | 'ts'>('html');\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly htmlExample = '<pui-button>Save changes</pui-button>';\n\n  protected readonly tsExample = `import { Component } from '@angular/core';\nimport { PuiButtonComponent } from '@premium-ui/components';\n\n@Component({\n  selector: 'app-example',\n  imports: [PuiButtonComponent],\n  template: '<pui-button>Save changes</pui-button>'\n})\nexport class ExampleComponent {}`;\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
             "properties": [
                 {
                     "name": "defaultValue",
@@ -69,13 +69,83 @@
             "extends": []
         },
         {
+            "name": "PuiApiRow",
+            "id": "interface-PuiApiRow-a32115fc496316145b466c61b29e1980eca6c1509d2c4176d3f07f62cbfaa1cc30ca7961f7ea797275b02915de35c5d1c3e1b685362fd9aa739c8a20d4d89732-1",
+            "file": "src/app/docs/pages/input-docs/input-docs.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\r\nimport { toSignal } from '@angular/core/rxjs-interop';\r\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\r\nimport { map } from 'rxjs';\r\nimport { PuiInputComponent } from '../../../../premium-ui/components/input';\r\nimport type { PuiDocsTab } from '../../docs.types';\r\nimport type { PuiInputType } from '../../../../premium-ui/components/input';\r\nimport type { PuiSize } from '../../../../premium-ui/types/common.types';\r\n\r\ntype PuiDocsInputTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\r\n\r\ninterface PuiApiRow {\r\n  readonly name: string;\r\n  readonly type: string;\r\n  readonly defaultValue: string;\r\n  readonly description: string;\r\n}\r\n\r\n@Component({\r\n  selector: 'app-input-docs',\r\n  imports: [PuiInputComponent, RouterLink, RouterLinkActive],\r\n  templateUrl: './input-docs.component.html',\r\n  styleUrl: './input-docs.component.scss',\r\n  changeDetection: ChangeDetectionStrategy.OnPush\r\n})\r\nexport class InputDocsComponent {\r\n  private readonly route = inject(ActivatedRoute);\r\n\r\n  private readonly routeTab = toSignal(\r\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\r\n    { initialValue: 'overview' }\r\n  );\r\n\r\n  protected readonly currentTab = computed<PuiDocsInputTab>(() => {\r\n    const tab = this.routeTab();\r\n    return this.isDocsTab(tab) ? tab : 'overview';\r\n  });\r\n\r\n  protected readonly tabs: readonly PuiDocsTab[] = [\r\n    { label: 'Overview', route: ['/docs/components/input/overview'] },\r\n    { label: 'Examples', route: ['/docs/components/input/examples'] },\r\n    { label: 'API Guide', route: ['/docs/components/input/api'] },\r\n    { label: 'Accessibility', route: ['/docs/components/input/accessibility'] },\r\n    { label: 'Theming', route: ['/docs/components/input/theming'] },\r\n    { label: 'Playground', route: ['/docs/components/input/playground'] }\r\n  ];\r\n\r\n  protected readonly inputTypes: readonly PuiInputType[] = ['text', 'email', 'password', 'search', 'tel', 'url', 'number'];\r\n  protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];\r\n\r\n  protected readonly apiRows: readonly PuiApiRow[] = [\r\n    { name: 'type', type: 'PuiInputType', defaultValue: 'text', description: 'Sets the native input type.' },\r\n    { name: 'size', type: 'PuiSize', defaultValue: 'md', description: 'Controls the input height and font size.' },\r\n    { name: 'placeholder', type: 'string | null', defaultValue: 'null', description: 'Text shown when the field is empty.' },\r\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Accessible label for the input when needed.' },\r\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables user interaction.' },\r\n    { name: 'readOnly', type: 'boolean', defaultValue: 'false', description: 'Makes the input read-only.' }\r\n  ];\r\n\r\n  protected readonly themeCode = `:root {\r\n  --pui-input-background: #ffffff;\r\n  --pui-input-border: #d1d5db;\r\n  --pui-input-border-hover: #6366f1;\r\n}`;\r\n\r\n  protected readonly playgroundType = signal<PuiInputType>('text');\r\n  protected readonly playgroundSize = signal<PuiSize>('md');\r\n  protected readonly playgroundPlaceholder = signal('Enter text');\r\n  protected readonly playgroundDisabled = signal(false);\r\n  protected readonly playgroundReadOnly = signal(false);\r\n\r\n  protected readonly playgroundCode = computed(() => {\r\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\r\n    const readOnly = this.playgroundReadOnly() ? ' [readOnly]=\"true\"' : '';\r\n    return `<pui-input type=\"${this.playgroundType()}\" size=\"${this.playgroundSize()}\" placeholder=\"${this.playgroundPlaceholder()}\"${disabled}${readOnly}></pui-input>`;\r\n  });\r\n\r\n  protected copyCode(code: string): void {\r\n    void navigator.clipboard?.writeText(code);\r\n  }\r\n\r\n  protected updateType(event: Event): void {\r\n    const value = (event.target as HTMLSelectElement).value as PuiInputType;\r\n    this.playgroundType.set(value);\r\n  }\r\n\r\n  protected updateSize(event: Event): void {\r\n    const value = (event.target as HTMLSelectElement).value as PuiSize;\r\n    this.playgroundSize.set(value);\r\n  }\r\n\r\n  protected updatePlaceholder(event: Event): void {\r\n    this.playgroundPlaceholder.set((event.target as HTMLInputElement).value);\r\n  }\r\n\r\n  protected updateDisabled(event: Event): void {\r\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\r\n  }\r\n\r\n  protected updateReadOnly(event: Event): void {\r\n    this.playgroundReadOnly.set((event.target as HTMLInputElement).checked);\r\n  }\r\n\r\n  private isDocsTab(tab: string): tab is PuiDocsInputTab {\r\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\r\n  }\r\n}\r\n",
+            "properties": [
+                {
+                    "name": "defaultValue",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 16,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "type",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14,
+                    "modifierKind": [
+                        148
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": [],
+            "isDuplicate": true,
+            "duplicateId": 1,
+            "duplicateName": "PuiApiRow-1"
+        },
+        {
             "name": "PuiButtonExample",
-            "id": "interface-PuiButtonExample-8c3032a31c26670aaa8c441dbfd080dc0780871ad2da1e66fe2892ef28bf2076125b18cad50f2f6326ae527d5fff042c0c133bc8323cc48e59a9027d825e491d",
+            "id": "interface-PuiButtonExample-a655e4c6c5760d079a1f359a7e3d33cc34d19271d18cc15f424b80b6b49bc81017009267cc5a9ed4b1c8fe3417f7f70e979069639e103a64e231c75c7a1f5763",
             "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly currentCodeTab = signal<'html' | 'ts'>('html');\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly htmlExample = '<pui-button>Save changes</pui-button>';\n\n  protected readonly tsExample = `import { Component } from '@angular/core';\nimport { PuiButtonComponent } from '@premium-ui/components';\n\n@Component({\n  selector: 'app-example',\n  imports: [PuiButtonComponent],\n  template: '<pui-button>Save changes</pui-button>'\n})\nexport class ExampleComponent {}`;\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
             "properties": [
                 {
                     "name": "code",
@@ -487,7 +557,7 @@
         },
         {
             "name": "ButtonDocsComponent",
-            "id": "component-ButtonDocsComponent-8c3032a31c26670aaa8c441dbfd080dc0780871ad2da1e66fe2892ef28bf2076125b18cad50f2f6326ae527d5fff042c0c133bc8323cc48e59a9027d825e491d",
+            "id": "component-ButtonDocsComponent-a655e4c6c5760d079a1f359a7e3d33cc34d19271d18cc15f424b80b6b49bc81017009267cc5a9ed4b1c8fe3417f7f70e979069639e103a64e231c75c7a1f5763",
             "file": "src/app/docs/pages/button-docs/button-docs.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -515,7 +585,22 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 91,
+                    "line": 105,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "currentCodeTab",
+                    "defaultValue": "signal<'html' | 'ts'>('html')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 49,
                     "modifierKind": [
                         124,
                         148
@@ -545,7 +630,22 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 61,
+                    "line": 75,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "htmlExample",
+                    "defaultValue": "'<pui-button>Save changes</pui-button>'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 63,
                     "modifierKind": [
                         124,
                         148
@@ -560,7 +660,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 100,
+                    "line": 114,
                     "modifierKind": [
                         124,
                         148
@@ -575,7 +675,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 115,
+                    "line": 129,
                     "modifierKind": [
                         124,
                         148
@@ -590,7 +690,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 112,
+                    "line": 126,
                     "modifierKind": [
                         124,
                         148
@@ -605,7 +705,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 113,
+                    "line": 127,
                     "modifierKind": [
                         124,
                         148
@@ -620,7 +720,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 111,
+                    "line": 125,
                     "modifierKind": [
                         124,
                         148
@@ -635,7 +735,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 110,
+                    "line": 124,
                     "modifierKind": [
                         124,
                         148
@@ -680,7 +780,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 59,
+                    "line": 61,
                     "modifierKind": [
                         124,
                         148
@@ -695,7 +795,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 49,
+                    "line": 51,
                     "modifierKind": [
                         124,
                         148
@@ -710,7 +810,22 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 104,
+                    "line": 118,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "tsExample",
+                    "defaultValue": "`import { Component } from '@angular/core';\nimport { PuiButtonComponent } from '@premium-ui/components';\n\n@Component({\n  selector: 'app-example',\n  imports: [PuiButtonComponent],\n  template: '<pui-button>Save changes</pui-button>'\n})\nexport class ExampleComponent {}`",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 65,
                     "modifierKind": [
                         124,
                         148
@@ -725,7 +840,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 58,
+                    "line": 60,
                     "modifierKind": [
                         124,
                         148
@@ -748,7 +863,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 123,
+                    "line": 137,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -783,7 +898,7 @@
                     "optional": false,
                     "returnType": "PuiButtonSize",
                     "typeParameters": [],
-                    "line": 157,
+                    "line": 171,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -818,7 +933,7 @@
                     "optional": false,
                     "returnType": "PuiButtonVariant",
                     "typeParameters": [],
-                    "line": 153,
+                    "line": 167,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -853,7 +968,7 @@
                     "optional": false,
                     "returnType": "PuiDocsButtonTab",
                     "typeParameters": [],
-                    "line": 149,
+                    "line": 163,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -888,7 +1003,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 141,
+                    "line": 155,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -923,7 +1038,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 145,
+                    "line": 159,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -958,7 +1073,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 134,
+                    "line": 148,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -993,7 +1108,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 127,
+                    "line": 141,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "modifierKind": [
@@ -1034,13 +1149,13 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\nimport { toSignal } from '@angular/core/rxjs-interop';\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\nimport { map } from 'rxjs';\nimport { PuiButtonComponent } from '../../../../premium-ui/components/button';\nimport type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';\nimport type { PuiDocsTab } from '../../docs.types';\n\ntype PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\n\ninterface PuiButtonExample {\n  readonly title: string;\n  readonly description: string;\n  readonly code: string;\n  readonly variant?: PuiButtonVariant;\n  readonly size?: PuiButtonSize;\n  readonly loading?: boolean;\n  readonly disabled?: boolean;\n  readonly icon?: boolean;\n}\n\ninterface PuiApiRow {\n  readonly name: string;\n  readonly type: string;\n  readonly defaultValue: string;\n  readonly description: string;\n}\n\n@Component({\n  selector: 'app-button-docs',\n  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],\n  templateUrl: './button-docs.component.html',\n  styleUrl: './button-docs.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class ButtonDocsComponent {\n  private readonly route = inject(ActivatedRoute);\n\n  private readonly routeTab = toSignal(\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\n    { initialValue: 'overview' }\n  );\n\n  protected readonly currentTab = computed<PuiDocsButtonTab>(() => {\n    const tab = this.routeTab();\n    return this.isDocsTab(tab) ? tab : 'overview';\n  });\n\n  protected readonly currentCodeTab = signal<'html' | 'ts'>('html');\n\n  protected readonly tabs: readonly PuiDocsTab[] = [\n    { label: 'Overview', route: ['/docs/components/button/overview'] },\n    { label: 'Examples', route: ['/docs/components/button/examples'] },\n    { label: 'API Guide', route: ['/docs/components/button/api'] },\n    { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },\n    { label: 'Theming', route: ['/docs/components/button/theming'] },\n    { label: 'Playground', route: ['/docs/components/button/playground'] }\n  ];\n\n  protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];\n  protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];\n\n  protected readonly htmlExample = '<pui-button>Save changes</pui-button>';\n\n  protected readonly tsExample = `import { Component } from '@angular/core';\nimport { PuiButtonComponent } from '@premium-ui/components';\n\n@Component({\n  selector: 'app-example',\n  imports: [PuiButtonComponent],\n  template: '<pui-button>Save changes</pui-button>'\n})\nexport class ExampleComponent {}`;\n\n  protected readonly examples: readonly PuiButtonExample[] = [\n    {\n      title: 'Basic usage',\n      description: 'Use the default primary button for the most important action on a surface.',\n      code: '<pui-button>Save changes</pui-button>'\n    },\n    {\n      title: 'Outline with icon',\n      description: 'Project an icon into the icon slot while keeping the label accessible.',\n      variant: 'outline',\n      icon: true,\n      code: `<pui-button variant=\"outline\">\n  <span puiButtonIcon aria-hidden=\"true\">+</span>\n  New item\n</pui-button>`\n    },\n    {\n      title: 'Loading state',\n      description: 'Loading disables pointer actions and exposes aria-busy.',\n      loading: true,\n      code: '<pui-button [loading]=\"true\">Saving</pui-button>'\n    },\n    {\n      title: 'Disabled state',\n      description: 'Disabled buttons remain visible but do not emit pressed events.',\n      disabled: true,\n      code: '<pui-button [disabled]=\"true\">Unavailable</pui-button>'\n    }\n  ];\n\n  protected readonly apiRows: readonly PuiApiRow[] = [\n    { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },\n    { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },\n    { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },\n    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }\n  ];\n\n  protected readonly outputRows: readonly PuiApiRow[] = [\n    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }\n  ];\n\n  protected readonly themeCode = `:root {\n  --pui-color-primary: #4f46e5;\n  --pui-color-primary-hover: #4338ca;\n  --pui-radius-md: 0.5rem;\n}`;\n\n  protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');\n  protected readonly playgroundSize = signal<PuiButtonSize>('md');\n  protected readonly playgroundDisabled = signal(false);\n  protected readonly playgroundLoading = signal(false);\n\n  protected readonly playgroundCode = computed(() => {\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\n    const loading = this.playgroundLoading() ? ' [loading]=\"true\"' : '';\n    return `<pui-button variant=\"${this.playgroundVariant()}\" size=\"${this.playgroundSize()}\"${disabled}${loading}>\n  Preview action\n</pui-button>`;\n  });\n\n  protected copyCode(code: string): void {\n    void navigator.clipboard?.writeText(code);\n  }\n\n  protected updateVariant(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonVariant(value)) {\n      this.playgroundVariant.set(value);\n    }\n  }\n\n  protected updateSize(event: Event): void {\n    const value = (event.target as HTMLSelectElement).value;\n    if (this.isButtonSize(value)) {\n      this.playgroundSize.set(value);\n    }\n  }\n\n  protected updateDisabled(event: Event): void {\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\n  }\n\n  protected updateLoading(event: Event): void {\n    this.playgroundLoading.set((event.target as HTMLInputElement).checked);\n  }\n\n  private isDocsTab(tab: string): tab is PuiDocsButtonTab {\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\n  }\n\n  private isButtonVariant(value: string): value is PuiButtonVariant {\n    return this.variants.includes(value as PuiButtonVariant);\n  }\n\n  private isButtonSize(value: string): value is PuiButtonSize {\n    return this.sizes.includes(value as PuiButtonSize);\n  }\n}\n",
             "styleUrl": "./button-docs.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<article class=\"pui-doc-page\">\n  <header class=\"pui-doc-hero\" id=\"overview\">\n    <nav class=\"pui-breadcrumb\" aria-label=\"Breadcrumb\">\n      <a routerLink=\"/docs/components/button/overview\">Home</a>\n      <span aria-hidden=\"true\">/</span>\n      <a routerLink=\"/docs/components/button/overview\">Components</a>\n      <span aria-hidden=\"true\">/</span>\n      <span>Button</span>\n    </nav>\n    <h1>Button</h1>\n    <p>\n      Buttons allow users to take actions, and make choices, with a single tap.\n    </p>\n  </header>\n\n  <nav class=\"pui-tabs\" aria-label=\"Button documentation tabs\">\n    @for (tab of tabs; track tab.label) {\n      <a\n        class=\"pui-tab\"\n        [routerLink]=\"tab.route\"\n        routerLinkActive=\"pui-tab--active\"\n        [routerLinkActiveOptions]=\"{ exact: true }\"\n      >\n        {{ tab.label }}\n      </a>\n    }\n  </nav>\n\n  <div class=\"pui-tab-panel\">\n    @switch (currentTab()) {\n      @case ('overview') {\n        <section class=\"pui-doc-section\" id=\"basic-usage\" aria-labelledby=\"overview-title\">\n          <h2 id=\"overview-title\">Overview</h2>\n          <p>\n            Buttons are used to trigger actions or events. They are one of the most common and\n            essential components in any interface.\n          </p>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"variants\" aria-labelledby=\"overview-variants-title\">\n          <h2 id=\"overview-variants-title\">Examples</h2>\n          <h3>Variants</h3>\n          <p>Buttons come in different styles to communicate the hierarchy of actions.</p>\n          <div class=\"pui-preview-row\">\n            @for (variant of variants; track variant) {\n              <pui-button [variant]=\"variant\">{{ variant }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"sizes\" aria-labelledby=\"overview-sizes-title\">\n          <h3 id=\"overview-sizes-title\">Sizes</h3>\n          <p>Choose the button size that fits your context.</p>\n          <div class=\"pui-preview-row\">\n            @for (size of sizes; track size) {\n              <pui-button [size]=\"size\">{{ size }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"overview-states-title\">\n          <h3 id=\"overview-states-title\">States</h3>\n          <p>Buttons support various states.</p>\n          <div class=\"pui-preview-row\">\n            <pui-button>Default</pui-button>\n            <pui-button>Hover</pui-button>\n            <pui-button variant=\"secondary\">Active</pui-button>\n            <pui-button [disabled]=\"true\">Disabled</pui-button>\n            <pui-button [loading]=\"true\">Loading</pui-button>\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"api\" aria-labelledby=\"overview-code-title\">\n          <h3 id=\"overview-code-title\">Code Example</h3>\n          <div class=\"pui-code-shell\">\n            <div class=\"pui-code-tabs\" aria-label=\"Code language tabs\">\n              <button type=\"button\" class=\"pui-code-tab pui-code-tab--active\">HTML</button>\n              <button type=\"button\" class=\"pui-code-tab\">Angular</button>\n              <button type=\"button\" class=\"pui-code-tab\">React</button>\n              <button type=\"button\" class=\"pui-code-tab\">Vue</button>\n              <button type=\"button\" class=\"pui-code-copy\" (click)=\"copyCode(examples[0].code)\">Copy</button>\n            </div>\n            <pre><code>{{ examples[0].code }}</code></pre>\n          </div>\n        </section>\n      }\n\n      @case ('examples') {\n        <section class=\"pui-doc-section\" id=\"variants\" aria-labelledby=\"variants-title\">\n          <p class=\"pui-eyebrow\">Examples</p>\n          <h2 id=\"variants-title\">Variants</h2>\n          <div class=\"pui-showcase-grid\">\n            @for (variant of variants; track variant) {\n              <div class=\"pui-example-card\">\n                <div class=\"pui-example-card__preview\">\n                  <pui-button [variant]=\"variant\">{{ variant }}</pui-button>\n                </div>\n                <div class=\"pui-example-card__meta\">\n                  <strong>{{ variant }}</strong>\n                  <code>&lt;pui-button variant=\"{{ variant }}\"&gt;</code>\n                </div>\n              </div>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"sizes\" aria-labelledby=\"sizes-title\">\n          <h2 id=\"sizes-title\">Sizes</h2>\n          <div class=\"pui-preview-row\">\n            @for (size of sizes; track size) {\n              <pui-button [size]=\"size\">{{ size }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"states-title\">\n          <h2 id=\"states-title\">States and snippets</h2>\n          <div class=\"pui-example-list\">\n            @for (example of examples; track example.title) {\n              <article class=\"pui-code-example\">\n                <div class=\"pui-code-example__preview\">\n                  @if (example.icon) {\n                    <pui-button [variant]=\"example.variant || 'primary'\" [size]=\"example.size || 'md'\">\n                      <span puiButtonIcon aria-hidden=\"true\">+</span>\n                      New item\n                    </pui-button>\n                  } @else {\n                    <pui-button\n                      [variant]=\"example.variant || 'primary'\"\n                      [size]=\"example.size || 'md'\"\n                      [loading]=\"example.loading || false\"\n                      [disabled]=\"example.disabled || false\"\n                    >\n                      {{ example.loading ? 'Saving' : example.disabled ? 'Unavailable' : 'Save changes' }}\n                    </pui-button>\n                  }\n                </div>\n                <div>\n                  <h3>{{ example.title }}</h3>\n                  <p>{{ example.description }}</p>\n                  <details class=\"pui-code-block\">\n                    <summary>Code</summary>\n                    <button type=\"button\" (click)=\"copyCode(example.code)\">Copy</button>\n                    <pre><code>{{ example.code }}</code></pre>\n                  </details>\n                </div>\n              </article>\n            }\n          </div>\n        </section>\n      }\n\n      @case ('api') {\n        <section class=\"pui-doc-section\" id=\"api\" aria-labelledby=\"api-title\">\n          <p class=\"pui-eyebrow\">API Guide</p>\n          <h2 id=\"api-title\">Inputs</h2>\n          <div class=\"pui-table-wrap\">\n            <table>\n              <thead>\n                <tr>\n                  <th scope=\"col\">Input</th>\n                  <th scope=\"col\">Type</th>\n                  <th scope=\"col\">Default</th>\n                  <th scope=\"col\">Description</th>\n                </tr>\n              </thead>\n              <tbody>\n                @for (row of apiRows; track row.name) {\n                  <tr>\n                    <th scope=\"row\"><code>{{ row.name }}</code></th>\n                    <td><code>{{ row.type }}</code></td>\n                    <td><code>{{ row.defaultValue }}</code></td>\n                    <td>{{ row.description }}</td>\n                  </tr>\n                }\n              </tbody>\n            </table>\n          </div>\n\n          <h2>Outputs</h2>\n          <div class=\"pui-table-wrap\">\n            <table>\n              <thead>\n                <tr>\n                  <th scope=\"col\">Output</th>\n                  <th scope=\"col\">Type</th>\n                  <th scope=\"col\">Default</th>\n                  <th scope=\"col\">Description</th>\n                </tr>\n              </thead>\n              <tbody>\n                @for (row of outputRows; track row.name) {\n                  <tr>\n                    <th scope=\"row\"><code>{{ row.name }}</code></th>\n                    <td><code>{{ row.type }}</code></td>\n                    <td><code>{{ row.defaultValue }}</code></td>\n                    <td>{{ row.description }}</td>\n                  </tr>\n                }\n              </tbody>\n            </table>\n          </div>\n        </section>\n      }\n\n      @case ('accessibility') {\n        <section class=\"pui-doc-section\" id=\"accessibility\" aria-labelledby=\"a11y-title\">\n          <p class=\"pui-eyebrow\">Accessibility</p>\n          <h2 id=\"a11y-title\">Keyboard and screen reader support</h2>\n          <ul class=\"pui-check-list\">\n            <li>Uses a native button element for keyboard activation with Enter and Space.</li>\n            <li>Applies visible focus styles through <code>:focus-visible</code>.</li>\n            <li>Sets <code>aria-busy</code> while loading and prevents duplicate activation.</li>\n            <li>Supports <code>ariaLabel</code> for icon-only controls.</li>\n            <li>Disabled and loading states stop events before emitting <code>pressed</code>.</li>\n          </ul>\n        </section>\n      }\n\n      @case ('theming') {\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"theming-title\">\n          <p class=\"pui-eyebrow\">Theming</p>\n          <h2 id=\"theming-title\">CSS variable contract</h2>\n          <p>\n            Button styling is powered by semantic tokens, so consumers can theme globally or override\n            component-level variables in a scoped surface.\n          </p>\n          <pre class=\"pui-token-code\"><code>{{ themeCode }}</code></pre>\n        </section>\n      }\n\n      @case ('playground') {\n        <section class=\"pui-doc-section\" id=\"playground\" aria-labelledby=\"playground-title\">\n          <p class=\"pui-eyebrow\">Playground</p>\n          <h2 id=\"playground-title\">Tune the button</h2>\n          <div class=\"pui-playground\">\n            <form class=\"pui-playground__controls\" aria-label=\"Button playground controls\">\n              <label>\n                Variant\n                <select [value]=\"playgroundVariant()\" (change)=\"updateVariant($event)\">\n                  @for (variant of variants; track variant) {\n                    <option [value]=\"variant\">{{ variant }}</option>\n                  }\n                </select>\n              </label>\n\n              <label>\n                Size\n                <select [value]=\"playgroundSize()\" (change)=\"updateSize($event)\">\n                  @for (size of sizes; track size) {\n                    <option [value]=\"size\">{{ size }}</option>\n                  }\n                </select>\n              </label>\n\n              <label class=\"pui-checkbox\">\n                <input type=\"checkbox\" [checked]=\"playgroundDisabled()\" (change)=\"updateDisabled($event)\" />\n                Disabled\n              </label>\n\n              <label class=\"pui-checkbox\">\n                <input type=\"checkbox\" [checked]=\"playgroundLoading()\" (change)=\"updateLoading($event)\" />\n                Loading\n              </label>\n            </form>\n\n            <div class=\"pui-playground__preview\">\n              <pui-button\n                [variant]=\"playgroundVariant()\"\n                [size]=\"playgroundSize()\"\n                [disabled]=\"playgroundDisabled()\"\n                [loading]=\"playgroundLoading()\"\n              >\n                Preview action\n              </pui-button>\n            </div>\n\n            <details class=\"pui-code-block\" open>\n              <summary>Generated code</summary>\n              <button type=\"button\" (click)=\"copyCode(playgroundCode())\">Copy</button>\n              <pre><code>{{ playgroundCode() }}</code></pre>\n            </details>\n          </div>\n        </section>\n      }\n    }\n  </div>\n</article>\n"
+            "templateData": "<article class=\"pui-doc-page\">\n  <header class=\"pui-doc-hero\" id=\"overview\">\n    <nav class=\"pui-breadcrumb\" aria-label=\"Breadcrumb\">\n      <a routerLink=\"/docs/components/button/overview\">Home</a>\n      <span aria-hidden=\"true\">/</span>\n      <a routerLink=\"/docs/components/button/overview\">Components</a>\n      <span aria-hidden=\"true\">/</span>\n      <span>Button</span>\n    </nav>\n    <h1>Button</h1>\n    <p>\n      Buttons allow users to take actions, and make choices, with a single tap.\n    </p>\n  </header>\n\n  <nav class=\"pui-tabs\" aria-label=\"Button documentation tabs\">\n    @for (tab of tabs; track tab.label) {\n      <a\n        class=\"pui-tab\"\n        [routerLink]=\"tab.route\"\n        routerLinkActive=\"pui-tab--active\"\n        [routerLinkActiveOptions]=\"{ exact: true }\"\n      >\n        {{ tab.label }}\n      </a>\n    }\n  </nav>\n\n  <div class=\"pui-tab-panel\">\n    @switch (currentTab()) {\n      @case ('overview') {\n        <section class=\"pui-doc-section\" id=\"basic-usage\" aria-labelledby=\"overview-title\">\n          <h2 id=\"overview-title\">Overview</h2>\n          <p>\n            Buttons are used to trigger actions or events. They are one of the most common and\n            essential components in any interface.\n          </p>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"variants\" aria-labelledby=\"overview-variants-title\">\n          <h2 id=\"overview-variants-title\">Examples</h2>\n          <h3>Variants</h3>\n          <p>Buttons come in different styles to communicate the hierarchy of actions.</p>\n          <div class=\"pui-preview-row\">\n            @for (variant of variants; track variant) {\n              <pui-button [variant]=\"variant\">{{ variant }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"sizes\" aria-labelledby=\"overview-sizes-title\">\n          <h3 id=\"overview-sizes-title\">Sizes</h3>\n          <p>Choose the button size that fits your context.</p>\n          <div class=\"pui-preview-row\">\n            @for (size of sizes; track size) {\n              <pui-button [size]=\"size\">{{ size }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"overview-states-title\">\n          <h3 id=\"overview-states-title\">States</h3>\n          <p>Buttons support various states.</p>\n          <div class=\"pui-preview-row\">\n            <pui-button>Default</pui-button>\n            <pui-button>Hover</pui-button>\n            <pui-button variant=\"secondary\">Active</pui-button>\n            <pui-button [disabled]=\"true\">Disabled</pui-button>\n            <pui-button [loading]=\"true\">Loading</pui-button>\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"api\" aria-labelledby=\"overview-code-title\">\n          <h3 id=\"overview-code-title\">Code Example</h3>\n          <div class=\"pui-code-shell\">\n            <div class=\"pui-code-tabs\" aria-label=\"Code language tabs\">\n              <button type=\"button\" class=\"pui-code-tab pui-code-tab--active\" (click)=\"currentCodeTab.set('html')\">HTML</button>\n              <button type=\"button\" class=\"pui-code-tab\" (click)=\"currentCodeTab.set('ts')\">TypeScript</button>\n              <button type=\"button\" class=\"pui-code-copy\" (click)=\"copyCode(currentCodeTab() === 'html' ? htmlExample : tsExample)\">Copy</button>\n            </div>\n            @if (currentCodeTab() === 'html') {\n              <pre><code>{{ htmlExample }}</code></pre>\n            } @else {\n              <pre><code>{{ tsExample }}</code></pre>\n            }\n          </div>\n        </section>\n      }\n\n      @case ('examples') {\n        <section class=\"pui-doc-section\" id=\"variants\" aria-labelledby=\"variants-title\">\n          <p class=\"pui-eyebrow\">Examples</p>\n          <h2 id=\"variants-title\">Variants</h2>\n          <div class=\"pui-showcase-grid\">\n            @for (variant of variants; track variant) {\n              <div class=\"pui-example-card\">\n                <div class=\"pui-example-card__preview\">\n                  <pui-button [variant]=\"variant\">{{ variant }}</pui-button>\n                </div>\n                <div class=\"pui-example-card__meta\">\n                  <strong>{{ variant }}</strong>\n                  <code>&lt;pui-button variant=\"{{ variant }}\"&gt;</code>\n                </div>\n              </div>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"sizes\" aria-labelledby=\"sizes-title\">\n          <h2 id=\"sizes-title\">Sizes</h2>\n          <div class=\"pui-preview-row\">\n            @for (size of sizes; track size) {\n              <pui-button [size]=\"size\">{{ size }}</pui-button>\n            }\n          </div>\n        </section>\n\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"states-title\">\n          <h2 id=\"states-title\">States and snippets</h2>\n          <div class=\"pui-example-list\">\n            @for (example of examples; track example.title) {\n              <article class=\"pui-code-example\">\n                <div class=\"pui-code-example__preview\">\n                  @if (example.icon) {\n                    <pui-button [variant]=\"example.variant || 'primary'\" [size]=\"example.size || 'md'\">\n                      <span puiButtonIcon aria-hidden=\"true\">+</span>\n                      New item\n                    </pui-button>\n                  } @else {\n                    <pui-button\n                      [variant]=\"example.variant || 'primary'\"\n                      [size]=\"example.size || 'md'\"\n                      [loading]=\"example.loading || false\"\n                      [disabled]=\"example.disabled || false\"\n                    >\n                      {{ example.loading ? 'Saving' : example.disabled ? 'Unavailable' : 'Save changes' }}\n                    </pui-button>\n                  }\n                </div>\n                <div>\n                  <h3>{{ example.title }}</h3>\n                  <p>{{ example.description }}</p>\n                  <details class=\"pui-code-block\">\n                    <summary>Code</summary>\n                    <button type=\"button\" (click)=\"copyCode(example.code)\">Copy</button>\n                    <pre><code>{{ example.code }}</code></pre>\n                  </details>\n                </div>\n              </article>\n            }\n          </div>\n        </section>\n      }\n\n      @case ('api') {\n        <section class=\"pui-doc-section\" id=\"api\" aria-labelledby=\"api-title\">\n          <p class=\"pui-eyebrow\">API Guide</p>\n          <h2 id=\"api-title\">Inputs</h2>\n          <div class=\"pui-table-wrap\">\n            <table>\n              <thead>\n                <tr>\n                  <th scope=\"col\">Input</th>\n                  <th scope=\"col\">Type</th>\n                  <th scope=\"col\">Default</th>\n                  <th scope=\"col\">Description</th>\n                </tr>\n              </thead>\n              <tbody>\n                @for (row of apiRows; track row.name) {\n                  <tr>\n                    <th scope=\"row\"><code>{{ row.name }}</code></th>\n                    <td><code>{{ row.type }}</code></td>\n                    <td><code>{{ row.defaultValue }}</code></td>\n                    <td>{{ row.description }}</td>\n                  </tr>\n                }\n              </tbody>\n            </table>\n          </div>\n\n          <h2>Outputs</h2>\n          <div class=\"pui-table-wrap\">\n            <table>\n              <thead>\n                <tr>\n                  <th scope=\"col\">Output</th>\n                  <th scope=\"col\">Type</th>\n                  <th scope=\"col\">Default</th>\n                  <th scope=\"col\">Description</th>\n                </tr>\n              </thead>\n              <tbody>\n                @for (row of outputRows; track row.name) {\n                  <tr>\n                    <th scope=\"row\"><code>{{ row.name }}</code></th>\n                    <td><code>{{ row.type }}</code></td>\n                    <td><code>{{ row.defaultValue }}</code></td>\n                    <td>{{ row.description }}</td>\n                  </tr>\n                }\n              </tbody>\n            </table>\n          </div>\n        </section>\n      }\n\n      @case ('accessibility') {\n        <section class=\"pui-doc-section\" id=\"accessibility\" aria-labelledby=\"a11y-title\">\n          <p class=\"pui-eyebrow\">Accessibility</p>\n          <h2 id=\"a11y-title\">Keyboard and screen reader support</h2>\n          <ul class=\"pui-check-list\">\n            <li>Uses a native button element for keyboard activation with Enter and Space.</li>\n            <li>Applies visible focus styles through <code>:focus-visible</code>.</li>\n            <li>Sets <code>aria-busy</code> while loading and prevents duplicate activation.</li>\n            <li>Supports <code>ariaLabel</code> for icon-only controls.</li>\n            <li>Disabled and loading states stop events before emitting <code>pressed</code>.</li>\n          </ul>\n        </section>\n      }\n\n      @case ('theming') {\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"theming-title\">\n          <p class=\"pui-eyebrow\">Theming</p>\n          <h2 id=\"theming-title\">CSS variable contract</h2>\n          <p>\n            Button styling is powered by semantic tokens, so consumers can theme globally or override\n            component-level variables in a scoped surface.\n          </p>\n          <pre class=\"pui-token-code\"><code>{{ themeCode }}</code></pre>\n        </section>\n      }\n\n      @case ('playground') {\n        <section class=\"pui-doc-section\" id=\"playground\" aria-labelledby=\"playground-title\">\n          <p class=\"pui-eyebrow\">Playground</p>\n          <h2 id=\"playground-title\">Tune the button</h2>\n          <div class=\"pui-playground\">\n            <form class=\"pui-playground__controls\" aria-label=\"Button playground controls\">\n              <label>\n                Variant\n                <select [value]=\"playgroundVariant()\" (change)=\"updateVariant($event)\">\n                  @for (variant of variants; track variant) {\n                    <option [value]=\"variant\">{{ variant }}</option>\n                  }\n                </select>\n              </label>\n\n              <label>\n                Size\n                <select [value]=\"playgroundSize()\" (change)=\"updateSize($event)\">\n                  @for (size of sizes; track size) {\n                    <option [value]=\"size\">{{ size }}</option>\n                  }\n                </select>\n              </label>\n\n              <label class=\"pui-checkbox\">\n                <input type=\"checkbox\" [checked]=\"playgroundDisabled()\" (change)=\"updateDisabled($event)\" />\n                Disabled\n              </label>\n\n              <label class=\"pui-checkbox\">\n                <input type=\"checkbox\" [checked]=\"playgroundLoading()\" (change)=\"updateLoading($event)\" />\n                Loading\n              </label>\n            </form>\n\n            <div class=\"pui-playground__preview\">\n              <pui-button\n                [variant]=\"playgroundVariant()\"\n                [size]=\"playgroundSize()\"\n                [disabled]=\"playgroundDisabled()\"\n                [loading]=\"playgroundLoading()\"\n              >\n                Preview action\n              </pui-button>\n            </div>\n\n            <details class=\"pui-code-block\" open>\n              <summary>Generated code</summary>\n              <button type=\"button\" (click)=\"copyCode(playgroundCode())\">Copy</button>\n              <pre><code>{{ playgroundCode() }}</code></pre>\n            </details>\n          </div>\n        </section>\n      }\n    }\n  </div>\n</article>\n"
         },
         {
             "name": "ComingSoonDocsComponent",
@@ -1208,7 +1323,7 @@
         },
         {
             "name": "DocsSidebarComponent",
-            "id": "component-DocsSidebarComponent-61cbbba0787b3e49eab4c398974cc05d7ef206746d1d077d84c653f862d0278256e0d91c9acc168c69e64d295390944fb5b0dbf06a620eec36d22f76f2a35788",
+            "id": "component-DocsSidebarComponent-afd9fa76d54e599d06ba1f1bed2946da6e3d801a1c6dbc3f054b6802568fcbd1cdd48873cd9423894b5f0620e983a786d2b77df635b3dc11de3fdc250735ec33",
             "file": "src/app/docs/shell/docs-sidebar.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1259,7 +1374,7 @@
                 },
                 {
                     "name": "groups",
-                    "defaultValue": "[\n    {\n      id: 'foundations',\n      label: 'Foundations',\n      items: [\n        { label: 'Colors', route: ['/docs/foundations/colors'] },\n        { label: 'Typography', route: ['/docs/foundations/typography'] },\n        { label: 'Spacing', route: ['/docs/foundations/spacing'] }\n      ]\n    },\n    {\n      id: 'forms',\n      label: 'Forms',\n      items: [\n        { label: 'Button', route: ['/docs/components/button/overview'], badge: 'Ready' },\n        { label: 'Input', route: ['/docs/components/input'] },\n        { label: 'Checkbox', route: ['/docs/components/checkbox'] }\n      ]\n    },\n    {\n      id: 'feedback',\n      label: 'Feedback',\n      items: [\n        { label: 'Alert', route: ['/docs/components/alert'] },\n        { label: 'Toast', route: ['/docs/components/toast'] },\n        { label: 'Progress', route: ['/docs/components/progress'] }\n      ]\n    },\n    {\n      id: 'navigation',\n      label: 'Navigation',\n      items: [\n        { label: 'Tabs', route: ['/docs/components/tabs'] },\n        { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }\n      ]\n    },\n    {\n      id: 'overlays',\n      label: 'Overlays',\n      items: [\n        { label: 'Modal', route: ['/docs/components/modal'] },\n        { label: 'Tooltip', route: ['/docs/components/tooltip'] }\n      ]\n    },\n    {\n      id: 'data-display',\n      label: 'Data Display',\n      items: [\n        { label: 'Card', route: ['/docs/components/card'] },\n        { label: 'Badge', route: ['/docs/components/badge'] },\n        { label: 'Table', route: ['/docs/components/table'] }\n      ]\n    },\n    {\n      id: 'layout',\n      label: 'Layout',\n      items: [\n        { label: 'Container', route: ['/docs/components/container'] },\n        { label: 'Stack', route: ['/docs/components/stack'] }\n      ]\n    },\n    {\n      id: 'utilities',\n      label: 'Utilities',\n      items: [\n        { label: 'Visually Hidden', route: ['/docs/components/visually-hidden'] },\n        { label: 'Portal', route: ['/docs/components/portal'] }\n      ]\n    }\n  ]",
+                    "defaultValue": "[\n    {\n      id: 'foundations',\n      label: 'Foundations',\n      items: [\n        { label: 'Colors', route: ['/docs/foundations/colors'] },\n        { label: 'Typography', route: ['/docs/foundations/typography'] },\n        { label: 'Spacing', route: ['/docs/foundations/spacing'] }\n      ]\n    },\n    {\n      id: 'forms',\n      label: 'Forms',\n      items: [\n        { label: 'Button', route: ['/docs/components/button/overview'], badge: 'Ready' },\n        { label: 'Input', route: ['/docs/components/input/overview'], badge: 'Ready' },\n        { label: 'Checkbox', route: ['/docs/components/checkbox'] }\n      ]\n    },\n    {\n      id: 'feedback',\n      label: 'Feedback',\n      items: [\n        { label: 'Alert', route: ['/docs/components/alert'] },\n        { label: 'Toast', route: ['/docs/components/toast'] },\n        { label: 'Progress', route: ['/docs/components/progress'] }\n      ]\n    },\n    {\n      id: 'navigation',\n      label: 'Navigation',\n      items: [\n        { label: 'Tabs', route: ['/docs/components/tabs'] },\n        { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }\n      ]\n    },\n    {\n      id: 'overlays',\n      label: 'Overlays',\n      items: [\n        { label: 'Modal', route: ['/docs/components/modal'] },\n        { label: 'Tooltip', route: ['/docs/components/tooltip'] }\n      ]\n    },\n    {\n      id: 'data-display',\n      label: 'Data Display',\n      items: [\n        { label: 'Card', route: ['/docs/components/card'] },\n        { label: 'Badge', route: ['/docs/components/badge'] },\n        { label: 'Table', route: ['/docs/components/table'] }\n      ]\n    },\n    {\n      id: 'layout',\n      label: 'Layout',\n      items: [\n        { label: 'Container', route: ['/docs/components/container'] },\n        { label: 'Stack', route: ['/docs/components/stack'] }\n      ]\n    },\n    {\n      id: 'utilities',\n      label: 'Utilities',\n      items: [\n        { label: 'Visually Hidden', route: ['/docs/components/visually-hidden'] },\n        { label: 'Portal', route: ['/docs/components/portal'] }\n      ]\n    }\n  ]",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "unknown",
@@ -1411,7 +1526,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\nimport type { PuiDocsNavGroup } from '../docs.types';\n\n@Component({\n  selector: 'app-docs-sidebar',\n  imports: [RouterLink, RouterLinkActive],\n  templateUrl: './docs-sidebar.component.html',\n  styleUrl: './docs-sidebar.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DocsSidebarComponent {\n  protected readonly query = signal('');\n  protected readonly collapsedGroups = signal<readonly string[]>([\n    'foundations',\n    'feedback',\n    'navigation',\n    'overlays',\n    'data-display',\n    'layout',\n    'utilities'\n  ]);\n\n  private readonly groups: readonly PuiDocsNavGroup[] = [\n    {\n      id: 'foundations',\n      label: 'Foundations',\n      items: [\n        { label: 'Colors', route: ['/docs/foundations/colors'] },\n        { label: 'Typography', route: ['/docs/foundations/typography'] },\n        { label: 'Spacing', route: ['/docs/foundations/spacing'] }\n      ]\n    },\n    {\n      id: 'forms',\n      label: 'Forms',\n      items: [\n        { label: 'Button', route: ['/docs/components/button/overview'], badge: 'Ready' },\n        { label: 'Input', route: ['/docs/components/input'] },\n        { label: 'Checkbox', route: ['/docs/components/checkbox'] }\n      ]\n    },\n    {\n      id: 'feedback',\n      label: 'Feedback',\n      items: [\n        { label: 'Alert', route: ['/docs/components/alert'] },\n        { label: 'Toast', route: ['/docs/components/toast'] },\n        { label: 'Progress', route: ['/docs/components/progress'] }\n      ]\n    },\n    {\n      id: 'navigation',\n      label: 'Navigation',\n      items: [\n        { label: 'Tabs', route: ['/docs/components/tabs'] },\n        { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }\n      ]\n    },\n    {\n      id: 'overlays',\n      label: 'Overlays',\n      items: [\n        { label: 'Modal', route: ['/docs/components/modal'] },\n        { label: 'Tooltip', route: ['/docs/components/tooltip'] }\n      ]\n    },\n    {\n      id: 'data-display',\n      label: 'Data Display',\n      items: [\n        { label: 'Card', route: ['/docs/components/card'] },\n        { label: 'Badge', route: ['/docs/components/badge'] },\n        { label: 'Table', route: ['/docs/components/table'] }\n      ]\n    },\n    {\n      id: 'layout',\n      label: 'Layout',\n      items: [\n        { label: 'Container', route: ['/docs/components/container'] },\n        { label: 'Stack', route: ['/docs/components/stack'] }\n      ]\n    },\n    {\n      id: 'utilities',\n      label: 'Utilities',\n      items: [\n        { label: 'Visually Hidden', route: ['/docs/components/visually-hidden'] },\n        { label: 'Portal', route: ['/docs/components/portal'] }\n      ]\n    }\n  ];\n\n  protected readonly filteredGroups = computed(() => {\n    const query = this.query().trim().toLowerCase();\n\n    if (!query) {\n      return this.groups;\n    }\n\n    return this.groups\n      .map((group) => ({\n        ...group,\n        items: group.items.filter((item) => item.label.toLowerCase().includes(query))\n      }))\n      .filter((group) => group.items.length > 0);\n  });\n\n  protected updateQuery(event: Event): void {\n    const input = event.target as HTMLInputElement;\n    this.query.set(input.value);\n  }\n\n  protected isCollapsed(groupId: string): boolean {\n    return this.collapsedGroups().includes(groupId);\n  }\n\n  protected toggleGroup(groupId: string): void {\n    this.collapsedGroups.update((groups) =>\n      groups.includes(groupId) ? groups.filter((id) => id !== groupId) : [...groups, groupId]\n    );\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';\nimport { RouterLink, RouterLinkActive } from '@angular/router';\nimport type { PuiDocsNavGroup } from '../docs.types';\n\n@Component({\n  selector: 'app-docs-sidebar',\n  imports: [RouterLink, RouterLinkActive],\n  templateUrl: './docs-sidebar.component.html',\n  styleUrl: './docs-sidebar.component.scss',\n  changeDetection: ChangeDetectionStrategy.OnPush\n})\nexport class DocsSidebarComponent {\n  protected readonly query = signal('');\n  protected readonly collapsedGroups = signal<readonly string[]>([\n    'foundations',\n    'feedback',\n    'navigation',\n    'overlays',\n    'data-display',\n    'layout',\n    'utilities'\n  ]);\n\n  private readonly groups: readonly PuiDocsNavGroup[] = [\n    {\n      id: 'foundations',\n      label: 'Foundations',\n      items: [\n        { label: 'Colors', route: ['/docs/foundations/colors'] },\n        { label: 'Typography', route: ['/docs/foundations/typography'] },\n        { label: 'Spacing', route: ['/docs/foundations/spacing'] }\n      ]\n    },\n    {\n      id: 'forms',\n      label: 'Forms',\n      items: [\n        { label: 'Button', route: ['/docs/components/button/overview'], badge: 'Ready' },\n        { label: 'Input', route: ['/docs/components/input/overview'], badge: 'Ready' },\n        { label: 'Checkbox', route: ['/docs/components/checkbox'] }\n      ]\n    },\n    {\n      id: 'feedback',\n      label: 'Feedback',\n      items: [\n        { label: 'Alert', route: ['/docs/components/alert'] },\n        { label: 'Toast', route: ['/docs/components/toast'] },\n        { label: 'Progress', route: ['/docs/components/progress'] }\n      ]\n    },\n    {\n      id: 'navigation',\n      label: 'Navigation',\n      items: [\n        { label: 'Tabs', route: ['/docs/components/tabs'] },\n        { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }\n      ]\n    },\n    {\n      id: 'overlays',\n      label: 'Overlays',\n      items: [\n        { label: 'Modal', route: ['/docs/components/modal'] },\n        { label: 'Tooltip', route: ['/docs/components/tooltip'] }\n      ]\n    },\n    {\n      id: 'data-display',\n      label: 'Data Display',\n      items: [\n        { label: 'Card', route: ['/docs/components/card'] },\n        { label: 'Badge', route: ['/docs/components/badge'] },\n        { label: 'Table', route: ['/docs/components/table'] }\n      ]\n    },\n    {\n      id: 'layout',\n      label: 'Layout',\n      items: [\n        { label: 'Container', route: ['/docs/components/container'] },\n        { label: 'Stack', route: ['/docs/components/stack'] }\n      ]\n    },\n    {\n      id: 'utilities',\n      label: 'Utilities',\n      items: [\n        { label: 'Visually Hidden', route: ['/docs/components/visually-hidden'] },\n        { label: 'Portal', route: ['/docs/components/portal'] }\n      ]\n    }\n  ];\n\n  protected readonly filteredGroups = computed(() => {\n    const query = this.query().trim().toLowerCase();\n\n    if (!query) {\n      return this.groups;\n    }\n\n    return this.groups\n      .map((group) => ({\n        ...group,\n        items: group.items.filter((item) => item.label.toLowerCase().includes(query))\n      }))\n      .filter((group) => group.items.length > 0);\n  });\n\n  protected updateQuery(event: Event): void {\n    const input = event.target as HTMLInputElement;\n    this.query.set(input.value);\n  }\n\n  protected isCollapsed(groupId: string): boolean {\n    return this.collapsedGroups().includes(groupId);\n  }\n\n  protected toggleGroup(groupId: string): void {\n    this.collapsedGroups.update((groups) =>\n      groups.includes(groupId) ? groups.filter((id) => id !== groupId) : [...groups, groupId]\n    );\n  }\n}\n",
             "styleUrl": "./docs-sidebar.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
@@ -1687,7 +1802,7 @@
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<header class=\"pui-topnav\">\n  <a class=\"pui-brand\" routerLink=\"/docs/components/button/overview\" aria-label=\"Premium UI documentation home\">\n    <span class=\"pui-brand__mark\" aria-hidden=\"true\">P</span>\n    <span>\n      <span class=\"pui-brand__name\">Premium UI</span>\n      <span class=\"pui-brand__meta\">Docs</span>\n    </span>\n  </a>\n\n  <label class=\"pui-search\">\n    <span class=\"pui-sr-only\">Search documentation</span>\n    <span aria-hidden=\"true\">Search</span>\n    <input type=\"search\" placeholder=\"Search components...\" [value]=\"searchTerm()\" (input)=\"onSearch($event)\" />\n    <kbd>Ctrl K</kbd>\n  </label>\n\n  <nav class=\"pui-topnav__links\" aria-label=\"Primary documentation links\">\n    <a routerLink=\"/docs/components/button/overview\">Docs</a>\n    <a routerLink=\"/docs/components/button/overview\" routerLinkActive=\"pui-topnav__link--active\">Components</a>\n    <a href=\"https://figma.com\" target=\"_blank\" rel=\"noopener\">Figma</a>\n    <a href=\"#changelog\">Changelog</a>\n  </nav>\n\n  <div class=\"pui-topnav__actions\">\n    <select aria-label=\"Select documentation version\">\n      <option>v0.1.0</option>\n      <option>next</option>\n    </select>\n\n    <button class=\"pui-icon-button pui-icon-button--square\" type=\"button\" (click)=\"themeService.toggleTheme()\" [attr.aria-pressed]=\"themeService.theme() === 'dark'\">\n      <span aria-hidden=\"true\">{{ themeService.theme() === 'dark' ? 'Light' : 'Dark' }}</span>\n      <span class=\"pui-sr-only\">Toggle color theme</span>\n    </button>\n\n    <a class=\"pui-icon-button pui-icon-button--square\" href=\"https://github.com\" target=\"_blank\" rel=\"noopener\" aria-label=\"Open GitHub\">\n      GH\n    </a>\n  </div>\n</header>\n"
+            "templateData": "<header class=\"pui-topnav\">\n  <a class=\"pui-brand\" routerLink=\"/docs/components/button/overview\" aria-label=\"Premium UI documentation home\">\n    <span class=\"pui-brand__mark\" aria-hidden=\"true\">P</span>\n    <span>\n      <span class=\"pui-brand__name\">Premium UI</span>\n      <span class=\"pui-brand__meta\">Docs</span>\n    </span>\n  </a>\n\n  <label class=\"pui-search\">\n    <span class=\"pui-sr-only\">Search documentation</span>\n    <span aria-hidden=\"true\">Search</span>\n    <input type=\"search\" placeholder=\"Search components...\" [value]=\"searchTerm()\" (input)=\"onSearch($event)\" />\n    <kbd>Ctrl K</kbd>\n  </label>\n\n  <nav class=\"pui-topnav__links\" aria-label=\"Primary documentation links\">\n    <a routerLink=\"/docs/components/button/overview\">Docs</a>\n    <a routerLink=\"/docs/components/button/overview\" routerLinkActive=\"pui-topnav__link--active\">Components</a>\n  </nav>\n\n  <div class=\"pui-topnav__actions\">\n    <select aria-label=\"Select documentation version\">\n      <option>v0.1.0</option>\n      <option>next</option>\n    </select>\n\n    <button class=\"pui-icon-button pui-icon-button--square\" type=\"button\" (click)=\"themeService.toggleTheme()\" [attr.aria-pressed]=\"themeService.theme() === 'dark'\">\n      <span aria-hidden=\"true\">{{ themeService.theme() === 'dark' ? 'Light' : 'Dark' }}</span>\n      <span class=\"pui-sr-only\">Toggle color theme</span>\n    </button>\n\n    <a class=\"pui-icon-button pui-icon-button--square\" href=\"https://github.com\" target=\"_blank\" rel=\"noopener\" aria-label=\"Open GitHub\">\n      GH\n    </a>\n  </div>\n</header>\n"
         },
         {
             "name": "FoundationDocsComponent",
@@ -1788,6 +1903,513 @@
             "stylesData": "",
             "extends": [],
             "templateData": "<article class=\"pui-doc-page\">\n  <header class=\"pui-doc-hero\" id=\"installation\">\n    <p class=\"pui-eyebrow\">Foundations</p>\n    <h1>{{ sectionTitle() }}</h1>\n    <p>\n      Premium UI foundations are semantic, theme-aware, and intentionally small so components stay\n      easy to customize without adopting a heavy styling runtime.\n    </p>\n  </header>\n\n  <section class=\"pui-doc-section\" id=\"basic-usage\" aria-labelledby=\"tokens-title\">\n    <h2 id=\"tokens-title\">Semantic tokens</h2>\n    <div class=\"pui-token-grid\">\n      @for (token of tokenRows; track token) {\n        <article>\n          <span [style.background]=\"'var(' + token + ')'\"></span>\n          <code>{{ token }}</code>\n        </article>\n      }\n    </div>\n  </section>\n\n  <section class=\"pui-doc-section\" id=\"accessibility\" aria-labelledby=\"foundation-a11y-title\">\n    <h2 id=\"foundation-a11y-title\">Accessibility notes</h2>\n    <p>\n      Foundation colors are semantic rather than decorative. Components consume text, muted, border,\n      ring, surface, and background roles so light and dark themes retain readable contrast.\n    </p>\n  </section>\n</article>\n"
+        },
+        {
+            "name": "InputDocsComponent",
+            "id": "component-InputDocsComponent-a32115fc496316145b466c61b29e1980eca6c1509d2c4176d3f07f62cbfaa1cc30ca7961f7ea797275b02915de35c5d1c3e1b685362fd9aa739c8a20d4d89732",
+            "file": "src/app/docs/pages/input-docs/input-docs.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-input-docs",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./input-docs.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "apiRows",
+                    "defaultValue": "[\r\n    { name: 'type', type: 'PuiInputType', defaultValue: 'text', description: 'Sets the native input type.' },\r\n    { name: 'size', type: 'PuiSize', defaultValue: 'md', description: 'Controls the input height and font size.' },\r\n    { name: 'placeholder', type: 'string | null', defaultValue: 'null', description: 'Text shown when the field is empty.' },\r\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Accessible label for the input when needed.' },\r\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables user interaction.' },\r\n    { name: 'readOnly', type: 'boolean', defaultValue: 'false', description: 'Makes the input read-only.' }\r\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 51,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "currentTab",
+                    "defaultValue": "computed<PuiDocsInputTab>(() => {\r\n    const tab = this.routeTab();\r\n    return this.isDocsTab(tab) ? tab : 'overview';\r\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "inputTypes",
+                    "defaultValue": "['text', 'email', 'password', 'search', 'tel', 'url', 'number']",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 48,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundCode",
+                    "defaultValue": "computed(() => {\r\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\r\n    const readOnly = this.playgroundReadOnly() ? ' [readOnly]=\"true\"' : '';\r\n    return `<pui-input type=\"${this.playgroundType()}\" size=\"${this.playgroundSize()}\" placeholder=\"${this.playgroundPlaceholder()}\"${disabled}${readOnly}></pui-input>`;\r\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 72,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundDisabled",
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 69,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundPlaceholder",
+                    "defaultValue": "signal('Enter text')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 68,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundReadOnly",
+                    "defaultValue": "signal(false)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 70,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundSize",
+                    "defaultValue": "signal<PuiSize>('md')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 67,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "playgroundType",
+                    "defaultValue": "signal<PuiInputType>('text')",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 66,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "route",
+                    "defaultValue": "inject(ActivatedRoute)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 27,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "routeTab",
+                    "defaultValue": "toSignal(\r\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\r\n    { initialValue: 'overview' }\r\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29,
+                    "modifierKind": [
+                        123,
+                        148
+                    ]
+                },
+                {
+                    "name": "sizes",
+                    "defaultValue": "['sm', 'md', 'lg']",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 49,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "tabs",
+                    "defaultValue": "[\r\n    { label: 'Overview', route: ['/docs/components/input/overview'] },\r\n    { label: 'Examples', route: ['/docs/components/input/examples'] },\r\n    { label: 'API Guide', route: ['/docs/components/input/api'] },\r\n    { label: 'Accessibility', route: ['/docs/components/input/accessibility'] },\r\n    { label: 'Theming', route: ['/docs/components/input/theming'] },\r\n    { label: 'Playground', route: ['/docs/components/input/playground'] }\r\n  ]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 39,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                },
+                {
+                    "name": "themeCode",
+                    "defaultValue": "`:root {\r\n  --pui-input-background: #ffffff;\r\n  --pui-input-border: #d1d5db;\r\n  --pui-input-border-hover: #6366f1;\r\n}`",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 60,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "copyCode",
+                    "args": [
+                        {
+                            "name": "code",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 78,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "code",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "isDocsTab",
+                    "args": [
+                        {
+                            "name": "tab",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "PuiDocsInputTab",
+                    "typeParameters": [],
+                    "line": 104,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        123
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "tab",
+                            "type": "string",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateDisabled",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 96,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updatePlaceholder",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 92,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateReadOnly",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 100,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateSize",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 87,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "updateType",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 82,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [
+                {
+                    "name": "PuiInputComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "RouterLink"
+                },
+                {
+                    "name": "RouterLinkActive"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';\r\nimport { toSignal } from '@angular/core/rxjs-interop';\r\nimport { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';\r\nimport { map } from 'rxjs';\r\nimport { PuiInputComponent } from '../../../../premium-ui/components/input';\r\nimport type { PuiDocsTab } from '../../docs.types';\r\nimport type { PuiInputType } from '../../../../premium-ui/components/input';\r\nimport type { PuiSize } from '../../../../premium-ui/types/common.types';\r\n\r\ntype PuiDocsInputTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';\r\n\r\ninterface PuiApiRow {\r\n  readonly name: string;\r\n  readonly type: string;\r\n  readonly defaultValue: string;\r\n  readonly description: string;\r\n}\r\n\r\n@Component({\r\n  selector: 'app-input-docs',\r\n  imports: [PuiInputComponent, RouterLink, RouterLinkActive],\r\n  templateUrl: './input-docs.component.html',\r\n  styleUrl: './input-docs.component.scss',\r\n  changeDetection: ChangeDetectionStrategy.OnPush\r\n})\r\nexport class InputDocsComponent {\r\n  private readonly route = inject(ActivatedRoute);\r\n\r\n  private readonly routeTab = toSignal(\r\n    this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),\r\n    { initialValue: 'overview' }\r\n  );\r\n\r\n  protected readonly currentTab = computed<PuiDocsInputTab>(() => {\r\n    const tab = this.routeTab();\r\n    return this.isDocsTab(tab) ? tab : 'overview';\r\n  });\r\n\r\n  protected readonly tabs: readonly PuiDocsTab[] = [\r\n    { label: 'Overview', route: ['/docs/components/input/overview'] },\r\n    { label: 'Examples', route: ['/docs/components/input/examples'] },\r\n    { label: 'API Guide', route: ['/docs/components/input/api'] },\r\n    { label: 'Accessibility', route: ['/docs/components/input/accessibility'] },\r\n    { label: 'Theming', route: ['/docs/components/input/theming'] },\r\n    { label: 'Playground', route: ['/docs/components/input/playground'] }\r\n  ];\r\n\r\n  protected readonly inputTypes: readonly PuiInputType[] = ['text', 'email', 'password', 'search', 'tel', 'url', 'number'];\r\n  protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];\r\n\r\n  protected readonly apiRows: readonly PuiApiRow[] = [\r\n    { name: 'type', type: 'PuiInputType', defaultValue: 'text', description: 'Sets the native input type.' },\r\n    { name: 'size', type: 'PuiSize', defaultValue: 'md', description: 'Controls the input height and font size.' },\r\n    { name: 'placeholder', type: 'string | null', defaultValue: 'null', description: 'Text shown when the field is empty.' },\r\n    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Accessible label for the input when needed.' },\r\n    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables user interaction.' },\r\n    { name: 'readOnly', type: 'boolean', defaultValue: 'false', description: 'Makes the input read-only.' }\r\n  ];\r\n\r\n  protected readonly themeCode = `:root {\r\n  --pui-input-background: #ffffff;\r\n  --pui-input-border: #d1d5db;\r\n  --pui-input-border-hover: #6366f1;\r\n}`;\r\n\r\n  protected readonly playgroundType = signal<PuiInputType>('text');\r\n  protected readonly playgroundSize = signal<PuiSize>('md');\r\n  protected readonly playgroundPlaceholder = signal('Enter text');\r\n  protected readonly playgroundDisabled = signal(false);\r\n  protected readonly playgroundReadOnly = signal(false);\r\n\r\n  protected readonly playgroundCode = computed(() => {\r\n    const disabled = this.playgroundDisabled() ? ' [disabled]=\"true\"' : '';\r\n    const readOnly = this.playgroundReadOnly() ? ' [readOnly]=\"true\"' : '';\r\n    return `<pui-input type=\"${this.playgroundType()}\" size=\"${this.playgroundSize()}\" placeholder=\"${this.playgroundPlaceholder()}\"${disabled}${readOnly}></pui-input>`;\r\n  });\r\n\r\n  protected copyCode(code: string): void {\r\n    void navigator.clipboard?.writeText(code);\r\n  }\r\n\r\n  protected updateType(event: Event): void {\r\n    const value = (event.target as HTMLSelectElement).value as PuiInputType;\r\n    this.playgroundType.set(value);\r\n  }\r\n\r\n  protected updateSize(event: Event): void {\r\n    const value = (event.target as HTMLSelectElement).value as PuiSize;\r\n    this.playgroundSize.set(value);\r\n  }\r\n\r\n  protected updatePlaceholder(event: Event): void {\r\n    this.playgroundPlaceholder.set((event.target as HTMLInputElement).value);\r\n  }\r\n\r\n  protected updateDisabled(event: Event): void {\r\n    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);\r\n  }\r\n\r\n  protected updateReadOnly(event: Event): void {\r\n    this.playgroundReadOnly.set((event.target as HTMLInputElement).checked);\r\n  }\r\n\r\n  private isDocsTab(tab: string): tab is PuiDocsInputTab {\r\n    return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);\r\n  }\r\n}\r\n",
+            "styleUrl": "./input-docs.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<article class=\"pui-doc-page\">\r\n  <header class=\"pui-doc-hero\">\r\n    <nav class=\"pui-breadcrumb\" aria-label=\"Breadcrumb\">\r\n      <a routerLink=\"/docs/components/input/overview\">Home</a>\r\n      <span aria-hidden=\"true\">/</span>\r\n      <a routerLink=\"/docs/components/input/overview\">Components</a>\r\n      <span aria-hidden=\"true\">/</span>\r\n      <span>Input</span>\r\n    </nav>\r\n    <h1>Input</h1>\r\n    <p>Inputs let users enter, edit, and submit text or numeric values inside forms.</p>\r\n  </header>\r\n\r\n  <nav class=\"pui-tabs\" aria-label=\"Input documentation tabs\">\r\n    @for (tab of tabs; track tab.label) {\r\n      <a\r\n        class=\"pui-tab\"\r\n        [routerLink]=\"tab.route\"\r\n        routerLinkActive=\"pui-tab--active\"\r\n        [routerLinkActiveOptions]=\"{ exact: true }\"\r\n      >\r\n        {{ tab.label }}\r\n      </a>\r\n    }\r\n  </nav>\r\n\r\n  <div class=\"pui-tab-panel\">\r\n    @switch (currentTab()) {\r\n      @case ('overview') {\r\n        <section class=\"pui-doc-section\" id=\"overview\" aria-labelledby=\"overview-title\">\r\n          <h2 id=\"overview-title\">Overview</h2>\r\n          <p>Use the Input component wherever users need to type text, numbers, email addresses, or search queries.</p>\r\n          <div class=\"pui-preview-row\">\r\n            <pui-input placeholder=\"Type here\"></pui-input>\r\n          </div>\r\n        </section>\r\n\r\n        <section class=\"pui-doc-section\" id=\"states\" aria-labelledby=\"states-title\">\r\n          <h3 id=\"states-title\">States</h3>\r\n          <div class=\"pui-showcase-grid\">\r\n            <div class=\"pui-example-card\">\r\n              <div class=\"pui-example-card__preview\"><pui-input placeholder=\"Default\"></pui-input></div>\r\n              <div class=\"pui-example-card__meta\"><strong>Default</strong></div>\r\n            </div>\r\n            <div class=\"pui-example-card\">\r\n              <div class=\"pui-example-card__preview\"><pui-input placeholder=\"Disabled\" [disabled]=\"true\"></pui-input></div>\r\n              <div class=\"pui-example-card__meta\"><strong>Disabled</strong></div>\r\n            </div>\r\n            <div class=\"pui-example-card\">\r\n              <div class=\"pui-example-card__preview\"><pui-input placeholder=\"Read only\" [readOnly]=\"true\" value=\"Read only\"></pui-input></div>\r\n              <div class=\"pui-example-card__meta\"><strong>Read only</strong></div>\r\n            </div>\r\n          </div>\r\n        </section>\r\n      }\r\n\r\n      @case ('examples') {\r\n        <section class=\"pui-doc-section\" id=\"examples\" aria-labelledby=\"examples-title\">\r\n          <p class=\"pui-eyebrow\">Examples</p>\r\n          <h2 id=\"examples-title\">Common input types</h2>\r\n          <div class=\"pui-example-list\">\r\n            @for (type of inputTypes; track type) {\r\n              <article class=\"pui-code-example\">\r\n                <div class=\"pui-code-example__preview\">\r\n                  <pui-input [type]=\"type\" placeholder=\"{{ type }}\"></pui-input>\r\n                </div>\r\n                <div>\r\n                  <h3>{{ type }}</h3>\r\n                  <pre><code>&lt;pui-input type=\"{{ type }}\" placeholder=\"{{ type }}\"&gt;&lt;/pui-input&gt;</code></pre>\r\n                </div>\r\n              </article>\r\n            }\r\n          </div>\r\n        </section>\r\n      }\r\n\r\n      @case ('api') {\r\n        <section class=\"pui-doc-section\" id=\"api\" aria-labelledby=\"api-title\">\r\n          <p class=\"pui-eyebrow\">API Guide</p>\r\n          <h2 id=\"api-title\">Parameters</h2>\r\n          <div class=\"pui-table-wrap\">\r\n            <table>\r\n              <thead>\r\n                <tr>\r\n                  <th scope=\"col\">Input</th>\r\n                  <th scope=\"col\">Type</th>\r\n                  <th scope=\"col\">Default</th>\r\n                  <th scope=\"col\">Description</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                @for (row of apiRows; track row.name) {\r\n                  <tr>\r\n                    <th scope=\"row\"><code>{{ row.name }}</code></th>\r\n                    <td><code>{{ row.type }}</code></td>\r\n                    <td><code>{{ row.defaultValue }}</code></td>\r\n                    <td>{{ row.description }}</td>\r\n                  </tr>\r\n                }\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n        </section>\r\n      }\r\n\r\n      @case ('accessibility') {\r\n        <section class=\"pui-doc-section\" id=\"accessibility\" aria-labelledby=\"accessibility-title\">\r\n          <p class=\"pui-eyebrow\">Accessibility</p>\r\n          <h2 id=\"accessibility-title\">Accessible input usage</h2>\r\n          <p>Always provide a visible label or an <code>ariaLabel</code> when the input appears without a label.</p>\r\n          <p>The Input component exposes native focus behavior and supports keyboard input reliably.</p>\r\n        </section>\r\n      }\r\n\r\n      @case ('theming') {\r\n        <section class=\"pui-doc-section\" id=\"theming\" aria-labelledby=\"theming-title\">\r\n          <p class=\"pui-eyebrow\">Theming</p>\r\n          <h2 id=\"theming-title\">Theme tokens</h2>\r\n          <p>Override the input colors using the design token variables below.</p>\r\n          <div class=\"pui-code-shell\">\r\n            <pre><code>{{ themeCode }}</code></pre>\r\n          </div>\r\n        </section>\r\n      }\r\n\r\n      @case ('playground') {\r\n        <section class=\"pui-doc-section\" id=\"playground\" aria-labelledby=\"playground-title\">\r\n          <p class=\"pui-eyebrow\">Playground</p>\r\n          <h2 id=\"playground-title\">Configure the input</h2>\r\n          <div class=\"pui-playground\">\r\n            <div class=\"pui-playground__controls\">\r\n              <label>\r\n                Type\r\n                <select [value]=\"playgroundType()\" (change)=\"updateType($event)\">\r\n                @for (type of inputTypes; track type) {\r\n                  <option [value]=\"type\">{{ type }}</option>\r\n                }\r\n              </select>\r\n            </label>\r\n            <label>\r\n              Size\r\n              <select [value]=\"playgroundSize()\" (change)=\"updateSize($event)\">\r\n                @for (size of sizes; track size) {\r\n                  <option [value]=\"size\">{{ size }}</option>\r\n                }\r\n              </select>\r\n            </label>\r\n              <label>\r\n                Placeholder\r\n                <input type=\"text\" [value]=\"playgroundPlaceholder()\" (input)=\"updatePlaceholder($event)\" />\r\n              </label>\r\n              <label class=\"pui-checkbox\">\r\n                <input type=\"checkbox\" (change)=\"updateDisabled($event)\" /> Disabled\r\n              </label>\r\n              <label class=\"pui-checkbox\">\r\n                <input type=\"checkbox\" (change)=\"updateReadOnly($event)\" /> Read only\r\n              </label>\r\n            </div>\r\n            <div class=\"pui-playground__preview\">\r\n              <pui-input\r\n                [type]=\"playgroundType()\"\r\n                [size]=\"playgroundSize()\"\r\n                [placeholder]=\"playgroundPlaceholder()\"\r\n                [disabled]=\"playgroundDisabled()\"\r\n                [readOnly]=\"playgroundReadOnly()\"\r\n              ></pui-input>\r\n            </div>\r\n            <div class=\"pui-token-code\">\r\n              <button type=\"button\" class=\"pui-code-copy\" (click)=\"copyCode(playgroundCode())\">Copy</button>\r\n              <pre><code>{{ playgroundCode() }}</code></pre>\r\n            </div>\r\n          </div>\r\n        </section>\r\n      }\r\n    }\r\n  </div>\r\n</article>\r\n"
         },
         {
             "name": "PuiButtonComponent",
@@ -1984,6 +2606,377 @@
             "stylesData": "",
             "extends": [],
             "templateData": "<button\n  class=\"pui-button__control\"\n  [attr.type]=\"type()\"\n  [disabled]=\"isDisabled()\"\n  [attr.aria-busy]=\"loading() ? 'true' : null\"\n  [attr.aria-label]=\"ariaLabel() || null\"\n  (click)=\"handleClick($event)\"\n>\n  @if (loading()) {\n    <span class=\"pui-button__spinner\" aria-hidden=\"true\"></span>\n  }\n  <span class=\"pui-button__icon\" aria-hidden=\"true\">\n    <ng-content select=\"[puiButtonIcon]\"></ng-content>\n  </span>\n  <span class=\"pui-button__label\">\n    <ng-content></ng-content>\n  </span>\n</button>\n"
+        },
+        {
+            "name": "PuiInputComponent",
+            "id": "component-PuiInputComponent-c6a64880ca23486b97ef53ba3edf3a17eb480393bc7bf132873a53b777eb9b52540db0ddec58dbfaaa4c94a22a53c3234c91737acd5bea3b5535830e4c77e9f4",
+            "file": "src/premium-ui/components/input/input.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "host": {},
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "pui-input",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./input.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "ariaLabel",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 20,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false, { transform: booleanAttribute }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 21,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "placeholder",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 19,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "readOnly",
+                    "defaultValue": "false, { transform: booleanAttribute }",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 22,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'md'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PuiSize",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "'text'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "PuiInputType",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 17,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 23,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "blur",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "FocusEvent",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 28,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "change",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Event",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 26,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "focus",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "FocusEvent",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 27,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "input",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "InputEvent",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 25,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                },
+                {
+                    "name": "valueChange",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 24,
+                    "modifierKind": [
+                        148
+                    ],
+                    "required": false
+                }
+            ],
+            "propertiesClass": [
+                {
+                    "name": "isInteractive",
+                    "defaultValue": "computed(() => !this.disabled() && !this.readOnly())",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30,
+                    "modifierKind": [
+                        124,
+                        148
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "handleBlur",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 46,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "handleChange",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 38,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "handleFocus",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 42,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "FocusEvent",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "handleInput",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 32,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ],
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "optional": false,
+                            "dotDotDotToken": false,
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": false,
+            "imports": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, booleanAttribute, computed, input, output } from '@angular/core';\r\nimport type { PuiSize } from '../../types/common.types';\r\nimport type { PuiInputType } from './input.types.ts';\r\n\r\n@Component({\r\n  selector: 'pui-input',\r\n  templateUrl: './input.component.html',\r\n  styleUrl: './input.component.scss',\r\n  changeDetection: ChangeDetectionStrategy.OnPush,\r\n  host: {\r\n    '[class.pui-input--sm]': \"size() === 'sm'\",\r\n    '[class.pui-input--md]': \"size() === 'md'\",\r\n    '[class.pui-input--lg]': \"size() === 'lg'\"\r\n  }\r\n})\r\nexport class PuiInputComponent {\r\n  readonly type = input<PuiInputType>('text');\r\n  readonly size = input<PuiSize>('md');\r\n  readonly placeholder = input<string | null>(null);\r\n  readonly ariaLabel = input<string | null>(null);\r\n  readonly disabled = input(false, { transform: booleanAttribute });\r\n  readonly readOnly = input(false, { transform: booleanAttribute });\r\n  readonly value = input('');\r\n  readonly valueChange = output<string>();\r\n  readonly input = output<InputEvent>();\r\n  readonly change = output<Event>();\r\n  readonly focus = output<FocusEvent>();\r\n  readonly blur = output<FocusEvent>();\r\n\r\n  protected readonly isInteractive = computed(() => !this.disabled() && !this.readOnly());\r\n\r\n  protected handleInput(event: Event): void {\r\n    const value = (event.target as HTMLInputElement).value;\r\n    this.valueChange.emit(value);\r\n    this.input.emit(event as InputEvent);\r\n  }\r\n\r\n  protected handleChange(event: Event): void {\r\n    this.change.emit(event);\r\n  }\r\n\r\n  protected handleFocus(event: FocusEvent): void {\r\n    this.focus.emit(event);\r\n  }\r\n\r\n  protected handleBlur(event: FocusEvent): void {\r\n    this.blur.emit(event);\r\n  }\r\n}\r\n",
+            "styleUrl": "./input.component.scss",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "extends": [],
+            "templateData": "<input\r\n  class=\"pui-input__control\"\r\n  [type]=\"type()\"\r\n  [value]=\"value()\"\r\n  [placeholder]=\"placeholder()\"\r\n  [disabled]=\"disabled()\"\r\n  [readonly]=\"readOnly()\"\r\n  [attr.aria-label]=\"ariaLabel() || null\"\r\n  (input)=\"handleInput($event)\"\r\n  (change)=\"handleChange($event)\"\r\n  (focus)=\"handleFocus($event)\"\r\n  (blur)=\"handleBlur($event)\"\r\n/>\r\n"
         }
     ],
     "modules": [],
@@ -2037,7 +3030,27 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PuiButtonComponent>",
-                "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
+                "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
+            },
+            {
+                "name": "meta",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/input/input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Meta<PuiInputComponent>",
+                "defaultValue": "{\r\n  title: 'Components/Input',\r\n  component: PuiInputComponent,\r\n  tags: ['autodocs'],\r\n  argTypes: {\r\n    type: {\r\n      control: 'select',\r\n      options: ['text', 'email', 'password', 'search', 'tel', 'url', 'number']\r\n    },\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n    readOnly: {\r\n      control: 'boolean'\r\n    },\r\n    placeholder: {\r\n      control: 'text'\r\n    },\r\n    value: {\r\n      control: 'text'\r\n    },\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n  args: {\r\n    type: 'text',\r\n    size: 'md',\r\n    disabled: false,\r\n    readOnly: false,\r\n    placeholder: 'Enter text',\r\n    value: '',\r\n    ariaLabel: null\r\n  },\r\n  render: (args) => ({\r\n    props: args,\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `<pui-input [type]=\"type\" [size]=\"size\" [disabled]=\"disabled\" [readOnly]=\"readOnly\" [placeholder]=\"placeholder\" [value]=\"value\" [ariaLabel]=\"ariaLabel\"></pui-input>`\r\n  })\r\n}"
+            },
+            {
+                "name": "Password",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/input/input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  args: {\r\n    type: 'password',\r\n    placeholder: 'Enter password'\r\n  }\r\n}"
             },
             {
                 "name": "preview",
@@ -2060,6 +3073,16 @@
                 "defaultValue": "{}"
             },
             {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/input/input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{}"
+            },
+            {
                 "name": "routes",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -2067,7 +3090,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Routes",
-                "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'docs/components/button/overview',\n    pathMatch: 'full'\n  },\n  {\n    path: 'docs',\n    loadComponent: () => \"import('./docs/layout/docs-layout.component').then((component) => component.DocsLayoutComponent)\",\n    children: [\n      {\n        path: '',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button/:tab',\n        loadComponent: () => \"import('./docs/pages/button-docs/button-docs.component').then((component) => component.ButtonDocsComponent)\"\n      },\n      {\n        path: 'foundations/:section',\n        loadComponent: () => \"import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)\"\n      },\n      {\n        path: 'components/:component',\n        loadComponent: () => \"import('./docs/pages/coming-soon-docs/coming-soon-docs.component').then((component) => component.ComingSoonDocsComponent)\"\n      }\n    ]\n  },\n  {\n    path: '**',\n    redirectTo: 'docs/components/button/overview'\n  }\n]"
+                "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'docs/components/button/overview',\n    pathMatch: 'full'\n  },\n  {\n    path: 'docs',\n    loadComponent: () => \"import('./docs/layout/docs-layout.component').then((component) => component.DocsLayoutComponent)\",\n    children: [\n      {\n        path: '',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button/:tab',\n        loadComponent: () => \"import('./docs/pages/button-docs/button-docs.component').then((component) => component.ButtonDocsComponent)\"\n      },\n      {\n        path: 'components/input',\n        redirectTo: 'components/input/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/input/:tab',\n        loadComponent: () => \"import('./docs/pages/input-docs/input-docs.component').then((component) => component.InputDocsComponent)\"\n      },\n      {\n        path: 'foundations/:section',\n        loadComponent: () => \"import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)\"\n      },\n      {\n        path: 'components/:component',\n        loadComponent: () => \"import('./docs/pages/coming-soon-docs/coming-soon-docs.component').then((component) => component.ComingSoonDocsComponent)\"\n      }\n    ]\n  },\n  {\n    path: '**',\n    redirectTo: 'docs/components/button/overview'\n  }\n]"
             },
             {
                 "name": "Sizes",
@@ -2077,7 +3100,27 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
+                "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
+            },
+            {
+                "name": "Sizes",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/input/input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\r\n        <pui-input size=\"sm\" placeholder=\"Small\"></pui-input>\r\n        <pui-input size=\"md\" placeholder=\"Medium\"></pui-input>\r\n        <pui-input size=\"lg\" placeholder=\"Large\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
+            },
+            {
+                "name": "States",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/premium-ui/components/input/input.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-direction: column; gap: var(--pui-space-sm); width: min(28rem, 100%);\">\r\n        <pui-input placeholder=\"Default\" value=\"\" ></pui-input>\r\n        <pui-input placeholder=\"Disabled\" [disabled]=\"true\"></pui-input>\r\n        <pui-input placeholder=\"Read only\" [readOnly]=\"true\" value=\"Read only\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
             },
             {
                 "name": "Variants",
@@ -2087,7 +3130,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
+                "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
             },
             {
                 "name": "WithIcon",
@@ -2097,7 +3140,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
+                "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
             }
         ],
         "functions": [],
@@ -2147,11 +3190,33 @@
                 "kind": 193
             },
             {
+                "name": "PuiDocsInputTab",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"overview\" | \"examples\" | \"api\" | \"accessibility\" | \"theming\" | \"playground\"",
+                "file": "src/app/docs/pages/input-docs/input-docs.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
                 "name": "PuiDocsTheme",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "rawtype": "\"light\" | \"dark\"",
                 "file": "src/app/docs/services/theme.service.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "PuiInputType",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"text\" | \"email\" | \"password\" | \"search\" | \"tel\" | \"url\" | \"number\"",
+                "file": "src/premium-ui/components/input/input.types.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -2185,6 +3250,17 @@
                 "subtype": "typealias",
                 "rawtype": "StoryObj<PuiButtonComponent>",
                 "file": "src/premium-ui/components/button/button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 184
+            },
+            {
+                "name": "Story",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "StoryObj<PuiInputComponent>",
+                "file": "src/premium-ui/components/input/input.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -2246,7 +3322,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PuiButtonComponent>",
-                    "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
+                    "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
                 },
                 {
                     "name": "Primary",
@@ -2266,7 +3342,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
+                    "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
                 },
                 {
                     "name": "Variants",
@@ -2276,7 +3352,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
+                    "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
                 },
                 {
                     "name": "WithIcon",
@@ -2286,7 +3362,59 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
+                    "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
+                }
+            ],
+            "src/premium-ui/components/input/input.stories.ts": [
+                {
+                    "name": "meta",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/input/input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Meta<PuiInputComponent>",
+                    "defaultValue": "{\r\n  title: 'Components/Input',\r\n  component: PuiInputComponent,\r\n  tags: ['autodocs'],\r\n  argTypes: {\r\n    type: {\r\n      control: 'select',\r\n      options: ['text', 'email', 'password', 'search', 'tel', 'url', 'number']\r\n    },\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n    readOnly: {\r\n      control: 'boolean'\r\n    },\r\n    placeholder: {\r\n      control: 'text'\r\n    },\r\n    value: {\r\n      control: 'text'\r\n    },\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n  args: {\r\n    type: 'text',\r\n    size: 'md',\r\n    disabled: false,\r\n    readOnly: false,\r\n    placeholder: 'Enter text',\r\n    value: '',\r\n    ariaLabel: null\r\n  },\r\n  render: (args) => ({\r\n    props: args,\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `<pui-input [type]=\"type\" [size]=\"size\" [disabled]=\"disabled\" [readOnly]=\"readOnly\" [placeholder]=\"placeholder\" [value]=\"value\" [ariaLabel]=\"ariaLabel\"></pui-input>`\r\n  })\r\n}"
+                },
+                {
+                    "name": "Password",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/input/input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  args: {\r\n    type: 'password',\r\n    placeholder: 'Enter password'\r\n  }\r\n}"
+                },
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/input/input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{}"
+                },
+                {
+                    "name": "Sizes",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/input/input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\r\n        <pui-input size=\"sm\" placeholder=\"Small\"></pui-input>\r\n        <pui-input size=\"md\" placeholder=\"Medium\"></pui-input>\r\n        <pui-input size=\"lg\" placeholder=\"Large\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
+                },
+                {
+                    "name": "States",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/premium-ui/components/input/input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-direction: column; gap: var(--pui-space-sm); width: min(28rem, 100%);\">\r\n        <pui-input placeholder=\"Default\" value=\"\" ></pui-input>\r\n        <pui-input placeholder=\"Disabled\" [disabled]=\"true\"></pui-input>\r\n        <pui-input placeholder=\"Read only\" [readOnly]=\"true\" value=\"Read only\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
                 }
             ],
             ".storybook/preview.ts": [
@@ -2310,7 +3438,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Routes",
-                    "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'docs/components/button/overview',\n    pathMatch: 'full'\n  },\n  {\n    path: 'docs',\n    loadComponent: () => \"import('./docs/layout/docs-layout.component').then((component) => component.DocsLayoutComponent)\",\n    children: [\n      {\n        path: '',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button/:tab',\n        loadComponent: () => \"import('./docs/pages/button-docs/button-docs.component').then((component) => component.ButtonDocsComponent)\"\n      },\n      {\n        path: 'foundations/:section',\n        loadComponent: () => \"import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)\"\n      },\n      {\n        path: 'components/:component',\n        loadComponent: () => \"import('./docs/pages/coming-soon-docs/coming-soon-docs.component').then((component) => component.ComingSoonDocsComponent)\"\n      }\n    ]\n  },\n  {\n    path: '**',\n    redirectTo: 'docs/components/button/overview'\n  }\n]"
+                    "defaultValue": "[\n  {\n    path: '',\n    redirectTo: 'docs/components/button/overview',\n    pathMatch: 'full'\n  },\n  {\n    path: 'docs',\n    loadComponent: () => \"import('./docs/layout/docs-layout.component').then((component) => component.DocsLayoutComponent)\",\n    children: [\n      {\n        path: '',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button',\n        redirectTo: 'components/button/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/button/:tab',\n        loadComponent: () => \"import('./docs/pages/button-docs/button-docs.component').then((component) => component.ButtonDocsComponent)\"\n      },\n      {\n        path: 'components/input',\n        redirectTo: 'components/input/overview',\n        pathMatch: 'full'\n      },\n      {\n        path: 'components/input/:tab',\n        loadComponent: () => \"import('./docs/pages/input-docs/input-docs.component').then((component) => component.InputDocsComponent)\"\n      },\n      {\n        path: 'foundations/:section',\n        loadComponent: () => \"import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)\"\n      },\n      {\n        path: 'components/:component',\n        loadComponent: () => \"import('./docs/pages/coming-soon-docs/coming-soon-docs.component').then((component) => component.ComingSoonDocsComponent)\"\n      }\n    ]\n  },\n  {\n    path: '**',\n    redirectTo: 'docs/components/button/overview'\n  }\n]"
                 }
             ]
         },
@@ -2365,6 +3493,19 @@
                     "kind": 193
                 }
             ],
+            "src/app/docs/pages/input-docs/input-docs.component.ts": [
+                {
+                    "name": "PuiDocsInputTab",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"overview\" | \"examples\" | \"api\" | \"accessibility\" | \"theming\" | \"playground\"",
+                    "file": "src/app/docs/pages/input-docs/input-docs.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
             "src/app/docs/services/theme.service.ts": [
                 {
                     "name": "PuiDocsTheme",
@@ -2372,6 +3513,19 @@
                     "subtype": "typealias",
                     "rawtype": "\"light\" | \"dark\"",
                     "file": "src/app/docs/services/theme.service.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/premium-ui/components/input/input.types.ts": [
+                {
+                    "name": "PuiInputType",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"text\" | \"email\" | \"password\" | \"search\" | \"tel\" | \"url\" | \"number\"",
+                    "file": "src/premium-ui/components/input/input.types.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -2414,6 +3568,19 @@
                     "description": "",
                     "kind": 184
                 }
+            ],
+            "src/premium-ui/components/input/input.stories.ts": [
+                {
+                    "name": "Story",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "StoryObj<PuiInputComponent>",
+                    "file": "src/premium-ui/components/input/input.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 184
+                }
             ]
         }
     },
@@ -2433,6 +3600,16 @@
             },
             {
                 "name": "components/button/:tab",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/input",
+                "kind": "route-path",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/input/:tab",
                 "kind": "route-path",
                 "filename": "src/app/app.routes.ts"
             },
@@ -2463,6 +3640,11 @@
             },
             {
                 "name": "components/button/overview",
+                "kind": "route-redirect",
+                "filename": "src/app/app.routes.ts"
+            },
+            {
+                "name": "components/input/overview",
                 "kind": "route-redirect",
                 "filename": "src/app/app.routes.ts"
             },
@@ -2577,7 +3759,7 @@
                 "linktype": "component",
                 "name": "ButtonDocsComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/24",
+                "coverageCount": "0/27",
                 "status": "low"
             },
             {
@@ -2624,6 +3806,34 @@
                 "name": "FoundationDocsComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/input-docs/input-docs.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "InputDocsComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/22",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/input-docs/input-docs.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "PuiApiRow",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/docs/pages/input-docs/input-docs.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiDocsInputTab",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {
@@ -2787,6 +3997,85 @@
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
                 "name": "PuiButtonVariant",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "PuiInputComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/18",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "meta",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Password",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Sizes",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "States",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.stories.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "Story",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/premium-ui/components/input/input.types.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "PuiInputType",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

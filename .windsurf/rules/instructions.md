@@ -63,3 +63,5 @@ Documentation:
 - Include usage examples
 - Include variants
 - Include accessibility examples
+
+For shared project context and architecture guidance, consult `.ai/project-overview.md` and `.ai/agent-context.md`.

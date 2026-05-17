@@ -25,6 +25,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/button-docs/button-docs.component').then((component) => component.ButtonDocsComponent)
       },
       {
+        path: 'components/input',
+        redirectTo: 'components/input/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/input/:tab',
+        loadComponent: () => import('./docs/pages/input-docs/input-docs.component').then((component) => component.InputDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

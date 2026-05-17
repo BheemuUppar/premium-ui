@@ -1,0 +1,11 @@
+:host {
+  --pui-input-background: var(--pui-background);
+  --pui-input-border: var(--pui-border);
+  --pui-input-border-hover: var(--pui-color-primary);
+  --pui-input-color: var(--pui-text);
+  --pui-input-placeholder: var(--pui-muted);
+  --pui-input-background-disabled: var(--pui-surface);
+  --pui-input-height: 2.75rem;
+  --pui-input-padding: 0 var(--pui-space-md);
+  --pui-input-font-size: var(--pui-font-size-sm);
+}

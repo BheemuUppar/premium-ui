@@ -1,0 +1,177 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/input/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/input/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span>Input</span>
+    </nav>
+    <h1>Input</h1>
+    <p>Inputs let users enter, edit, and submit text or numeric values inside forms.</p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Input documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a
+        class="pui-tab"
+        [routerLink]="tab.route"
+        routerLinkActive="pui-tab--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section" id="overview" aria-labelledby="overview-title">
+          <h2 id="overview-title">Overview</h2>
+          <p>Use the Input component wherever users need to type text, numbers, email addresses, or search queries.</p>
+          <div class="pui-preview-row">
+            <pui-input placeholder="Type here"></pui-input>
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="states" aria-labelledby="states-title">
+          <h3 id="states-title">States</h3>
+          <div class="pui-showcase-grid">
+            <div class="pui-example-card">
+              <div class="pui-example-card__preview"><pui-input placeholder="Default"></pui-input></div>
+              <div class="pui-example-card__meta"><strong>Default</strong></div>
+            </div>
+            <div class="pui-example-card">
+              <div class="pui-example-card__preview"><pui-input placeholder="Disabled" [disabled]="true"></pui-input></div>
+              <div class="pui-example-card__meta"><strong>Disabled</strong></div>
+            </div>
+            <div class="pui-example-card">
+              <div class="pui-example-card__preview"><pui-input placeholder="Read only" [readOnly]="true" value="Read only"></pui-input></div>
+              <div class="pui-example-card__meta"><strong>Read only</strong></div>
+            </div>
+          </div>
+        </section>
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section" id="examples" aria-labelledby="examples-title">
+          <p class="pui-eyebrow">Examples</p>
+          <h2 id="examples-title">Common input types</h2>
+          <div class="pui-example-list">
+            @for (type of inputTypes; track type) {
+              <article class="pui-code-example">
+                <div class="pui-code-example__preview">
+                  <pui-input [type]="type" placeholder="{{ type }}"></pui-input>
+                </div>
+                <div>
+                  <h3>{{ type }}</h3>
+                  <pre><code>&lt;pui-input type="{{ type }}" placeholder="{{ type }}"&gt;&lt;/pui-input&gt;</code></pre>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section" id="api" aria-labelledby="api-title">
+          <p class="pui-eyebrow">API Guide</p>
+          <h2 id="api-title">Parameters</h2>
+          <div class="pui-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Input</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Default</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of apiRows; track row.name) {
+                  <tr>
+                    <th scope="row"><code>{{ row.name }}</code></th>
+                    <td><code>{{ row.type }}</code></td>
+                    <td><code>{{ row.defaultValue }}</code></td>
+                    <td>{{ row.description }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section" id="accessibility" aria-labelledby="accessibility-title">
+          <p class="pui-eyebrow">Accessibility</p>
+          <h2 id="accessibility-title">Accessible input usage</h2>
+          <p>Always provide a visible label or an <code>ariaLabel</code> when the input appears without a label.</p>
+          <p>The Input component exposes native focus behavior and supports keyboard input reliably.</p>
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
+          <p class="pui-eyebrow">Theming</p>
+          <h2 id="theming-title">Theme tokens</h2>
+          <p>Override the input colors using the design token variables below.</p>
+          <div class="pui-code-shell">
+            <pre><code>{{ themeCode }}</code></pre>
+          </div>
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section" id="playground" aria-labelledby="playground-title">
+          <p class="pui-eyebrow">Playground</p>
+          <h2 id="playground-title">Configure the input</h2>
+          <div class="pui-playground">
+            <div class="pui-playground__controls">
+              <label>
+                Type
+                <select [value]="playgroundType()" (change)="updateType($event)">
+                @for (type of inputTypes; track type) {
+                  <option [value]="type">{{ type }}</option>
+                }
+              </select>
+            </label>
+            <label>
+              Size
+              <select [value]="playgroundSize()" (change)="updateSize($event)">
+                @for (size of sizes; track size) {
+                  <option [value]="size">{{ size }}</option>
+                }
+              </select>
+            </label>
+              <label>
+                Placeholder
+                <input type="text" [value]="playgroundPlaceholder()" (input)="updatePlaceholder($event)" />
+              </label>
+              <label class="pui-checkbox">
+                <input type="checkbox" (change)="updateDisabled($event)" /> Disabled
+              </label>
+              <label class="pui-checkbox">
+                <input type="checkbox" (change)="updateReadOnly($event)" /> Read only
+              </label>
+            </div>
+            <div class="pui-playground__preview">
+              <pui-input
+                [type]="playgroundType()"
+                [size]="playgroundSize()"
+                [placeholder]="playgroundPlaceholder()"
+                [disabled]="playgroundDisabled()"
+                [readOnly]="playgroundReadOnly()"
+              ></pui-input>
+            </div>
+            <div class="pui-token-code">
+              <button type="button" class="pui-code-copy" (click)="copyCode(playgroundCode())">Copy</button>
+              <pre><code>{{ playgroundCode() }}</code></pre>
+            </div>
+          </div>
+        </section>
+      }
+    }
+  </div>
+</article>

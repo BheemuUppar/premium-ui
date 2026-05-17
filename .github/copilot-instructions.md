@@ -1,11 +1,13 @@
 
-You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
+You are GitHub Copilot working on Premium UI, a lightweight Angular 21 component library and docs shell.
+Use the project architecture described in `AGENTS.md` and the shared `.ai` context files to guide your changes.
 
 ## TypeScript Best Practices
 
 - Use strict type checking
 - Prefer type inference when the type is obvious
 - Avoid the `any` type; use `unknown` when type is uncertain
+- Use strong, precise typings for component inputs and outputs
 
 ## Angular Best Practices
 
@@ -53,3 +55,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## AI-specific guidance
+
+- Read `.ai/project-overview.md` and `.ai/agent-context.md` for project structure and conventions before making code changes.
+- Preserve Angular 21 standalone component architecture, Storybook patterns, and the repo's token-based theming.
+- For shared agent context, also consult `.windsurf/rules/instructions.md` and `.gemini/GEMINI.md`.
+- When asked to update AI agent documentation, keep the files consistent and make the context explicit for the target assistant.
