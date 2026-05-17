@@ -3000,7 +3000,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "StorybookConfig",
-                "defaultValue": "{\n  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],\n  framework: {\n    name: '@storybook/angular',\n    options: {}\n  }\n}"
+                "defaultValue": "{\n  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],\n  framework: {\n    name: '@storybook/angular',\n    options: {}\n  },\n  docs: {\n    // autodocs: 'tag'\n  }\n}"
             },
             {
                 "name": "Disabled",
@@ -3010,7 +3010,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  args: {\n    disabled: true\n  }\n}"
+                "defaultValue": "{\r\n  args: {\r\n    disabled: true\r\n  }\r\n}"
             },
             {
                 "name": "Loading",
@@ -3020,7 +3020,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  args: {\n    loading: true\n  }\n}"
+                "defaultValue": "{\r\n  args: {\r\n    loading: true\r\n  }\r\n}"
             },
             {
                 "name": "meta",
@@ -3030,7 +3030,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PuiButtonComponent>",
-                "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
+                "defaultValue": "{\r\n  title: 'Components/Button',\r\n  component: PuiButtonComponent,\r\n  tags: ['autodocs'],\r\n\r\n  argTypes: {\r\n    variant: {\r\n      control: 'select',\r\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\r\n    },\r\n\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n\r\n    type: {\r\n      control: 'inline-radio',\r\n      options: ['button', 'submit', 'reset']\r\n    },\r\n\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    loading: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n\r\n  args: {\r\n    variant: 'primary',\r\n    size: 'md',\r\n    type: 'button',\r\n    disabled: false,\r\n    loading: false,\r\n    ariaLabel: null\r\n  },\r\n\r\n  render: (args) => ({\r\n    props: args,\r\n\r\n    template: `\r\n      <pui-button\r\n        [variant]=\"variant\"\r\n        [size]=\"size\"\r\n        [type]=\"type\"\r\n        [disabled]=\"disabled\"\r\n        [loading]=\"loading\"\r\n        [ariaLabel]=\"ariaLabel\">\r\n        Button\r\n      </pui-button>\r\n    `\r\n  })\r\n}"
             },
             {
                 "name": "meta",
@@ -3040,7 +3040,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PuiInputComponent>",
-                "defaultValue": "{\r\n  title: 'Components/Input',\r\n  component: PuiInputComponent,\r\n  tags: ['autodocs'],\r\n  argTypes: {\r\n    type: {\r\n      control: 'select',\r\n      options: ['text', 'email', 'password', 'search', 'tel', 'url', 'number']\r\n    },\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n    readOnly: {\r\n      control: 'boolean'\r\n    },\r\n    placeholder: {\r\n      control: 'text'\r\n    },\r\n    value: {\r\n      control: 'text'\r\n    },\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n  args: {\r\n    type: 'text',\r\n    size: 'md',\r\n    disabled: false,\r\n    readOnly: false,\r\n    placeholder: 'Enter text',\r\n    value: '',\r\n    ariaLabel: null\r\n  },\r\n  render: (args) => ({\r\n    props: args,\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `<pui-input [type]=\"type\" [size]=\"size\" [disabled]=\"disabled\" [readOnly]=\"readOnly\" [placeholder]=\"placeholder\" [value]=\"value\" [ariaLabel]=\"ariaLabel\"></pui-input>`\r\n  })\r\n}"
+                "defaultValue": "{\r\n  title: 'Components/Input',\r\n  component: PuiInputComponent,\r\n  tags: ['autodocs'],\r\n\r\n  argTypes: {\r\n    type: {\r\n      control: 'select',\r\n      options: ['text', 'email', 'password', 'search', 'tel', 'url', 'number']\r\n    },\r\n\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    readOnly: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    placeholder: {\r\n      control: 'text'\r\n    },\r\n\r\n    value: {\r\n      control: 'text'\r\n    },\r\n\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n\r\n  args: {\r\n    type: 'text',\r\n    size: 'md',\r\n    disabled: false,\r\n    readOnly: false,\r\n    placeholder: 'Enter text',\r\n    value: '',\r\n    ariaLabel: null\r\n  },\r\n\r\n  render: (args) => ({\r\n    props: args,\r\n\r\n    template: `\r\n      <pui-input\r\n        [type]=\"type\"\r\n        [size]=\"size\"\r\n        [disabled]=\"disabled\"\r\n        [readOnly]=\"readOnly\"\r\n        [placeholder]=\"placeholder\"\r\n        [value]=\"value\"\r\n        [ariaLabel]=\"ariaLabel\">\r\n      </pui-input>\r\n    `\r\n  })\r\n}"
             },
             {
                 "name": "Password",
@@ -3060,7 +3060,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Preview",
-                "defaultValue": "{\n  globalTypes: {\n    theme: {\n      description: 'Theme',\n      defaultValue: 'light',\n      toolbar: {\n        title: 'Theme',\n        icon: 'circlehollow',\n        items: [\n          { value: 'light', title: 'Light' },\n          { value: 'dark', title: 'Dark' }\n        ],\n        dynamicTitle: true\n      }\n    }\n  },\n  decorators: [\n    (story, context) => {\n      const theme = context.globals['theme'] === 'dark' ? 'dark' : 'light';\n\n      return {\n        template: `<div data-theme=\"${theme}\" style=\"min-height: 100vh; padding: 2rem; background: var(--pui-color-background); color: var(--pui-color-text);\"><story /></div>`\n      };\n    }\n  ],\n  parameters: {\n    backgrounds: {\n      disable: true\n    },\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i\n      }\n    },\n    a11y: {\n      test: 'error'\n    },\n    options: {\n      storySort: {\n        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing', 'Shadows'], 'Components', 'Forms', 'Feedback', 'Navigation', 'Overlays']\n      }\n    }\n  }\n}"
+                "defaultValue": "{\r\n  globalTypes: {\r\n    theme: {\r\n      description: 'Theme',\r\n      defaultValue: 'light',\r\n      toolbar: {\r\n        title: 'Theme',\r\n        icon: 'circlehollow',\r\n        items: [\r\n          { value: 'light', title: 'Light' },\r\n          { value: 'dark', title: 'Dark' }\r\n        ],\r\n        dynamicTitle: true\r\n      }\r\n    }\r\n  },\r\n  decorators: [\r\n    (story, context) => {\r\n      const theme =\r\n        context.globals['theme'] === 'dark'\r\n          ? 'dark'\r\n          : 'light';\r\n  \r\n      const storyResult = story();\r\n  \r\n      return {\r\n        ...storyResult,\r\n  \r\n        template: `\r\n          <div\r\n            data-theme=\"${theme}\"\r\n            style=\"\r\n              min-height: 100vh;\r\n              padding: 2rem;\r\n              background: var(--pui-color-background);\r\n              color: var(--pui-color-text);\r\n            \"\r\n          >\r\n            ${storyResult.template}\r\n          </div>\r\n        `,\r\n  \r\n        props: storyResult.props\r\n      };\r\n    }\r\n  ],\r\n  parameters: {\r\n    backgrounds: {\r\n      disable: true\r\n    },\r\n    controls: {\r\n      matchers: {\r\n        color: /(background|color)$/i,\r\n        date: /Date$/i\r\n      }\r\n    },\r\n    a11y: {\r\n      test: 'error'\r\n    },\r\n    options: {\r\n      storySort: {\r\n        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing', 'Shadows'], 'Components', 'Forms', 'Feedback', 'Navigation', 'Overlays']\r\n      }\r\n    }\r\n  }\r\n}"
             },
             {
                 "name": "Primary",
@@ -3080,7 +3080,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{}"
+                "defaultValue": "{\r\n  args: {\r\n    size: 'sm'\r\n  }\r\n}"
             },
             {
                 "name": "routes",
@@ -3100,7 +3100,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
+                "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-wrap: wrap;\r\n          gap: var(--pui-space-sm);\r\n          align-items: center;\r\n        \"\r\n      >\r\n        <pui-button size=\"sm\">Small</pui-button>\r\n\r\n        <pui-button size=\"md\">Medium</pui-button>\r\n\r\n        <pui-button size=\"lg\">Large</pui-button>\r\n      </div>\r\n    `\r\n  })\r\n}"
             },
             {
                 "name": "Sizes",
@@ -3110,7 +3110,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\r\n        <pui-input size=\"sm\" placeholder=\"Small\"></pui-input>\r\n        <pui-input size=\"md\" placeholder=\"Medium\"></pui-input>\r\n        <pui-input size=\"lg\" placeholder=\"Large\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
+                "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-wrap: wrap;\r\n          gap: var(--pui-space-sm);\r\n          align-items: center;\r\n        \"\r\n      >\r\n        <pui-input\r\n          size=\"sm\"\r\n          placeholder=\"Small\">\r\n        </pui-input>\r\n\r\n        <pui-input\r\n          size=\"md\"\r\n          placeholder=\"Medium\">\r\n        </pui-input>\r\n\r\n        <pui-input\r\n          size=\"lg\"\r\n          placeholder=\"Large\">\r\n        </pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
             },
             {
                 "name": "States",
@@ -3120,7 +3120,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-direction: column; gap: var(--pui-space-sm); width: min(28rem, 100%);\">\r\n        <pui-input placeholder=\"Default\" value=\"\" ></pui-input>\r\n        <pui-input placeholder=\"Disabled\" [disabled]=\"true\"></pui-input>\r\n        <pui-input placeholder=\"Read only\" [readOnly]=\"true\" value=\"Read only\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
+                "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-direction: column;\r\n          gap: var(--pui-space-sm);\r\n          width: min(28rem, 100%);\r\n        \"\r\n      >\r\n        <pui-input placeholder=\"Default\"></pui-input>\r\n\r\n        <pui-input\r\n          placeholder=\"Disabled\"\r\n          [disabled]=\"true\">\r\n        </pui-input>\r\n\r\n        <pui-input\r\n          placeholder=\"Read only\"\r\n          [readOnly]=\"true\"\r\n          value=\"Read only\">\r\n        </pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
             },
             {
                 "name": "Variants",
@@ -3130,7 +3130,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
+                "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-wrap: wrap;\r\n          gap: var(--pui-space-sm);\r\n          align-items: center;\r\n        \"\r\n      >\r\n        <pui-button variant=\"primary\">Primary</pui-button>\r\n\r\n        <pui-button variant=\"secondary\">Secondary</pui-button>\r\n\r\n        <pui-button variant=\"outline\">Outline</pui-button>\r\n\r\n        <pui-button variant=\"ghost\">Ghost</pui-button>\r\n\r\n        <pui-button variant=\"danger\">Danger</pui-button>\r\n      </div>\r\n    `\r\n  })\r\n}"
             },
             {
                 "name": "WithIcon",
@@ -3140,7 +3140,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
-                "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
+                "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <pui-button>\r\n        <span aria-hidden=\"true\">+</span>\r\n        Create item\r\n      </pui-button>\r\n    `\r\n  })\r\n}"
             }
         ],
         "functions": [],
@@ -3290,7 +3290,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "StorybookConfig",
-                    "defaultValue": "{\n  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],\n  framework: {\n    name: '@storybook/angular',\n    options: {}\n  }\n}"
+                    "defaultValue": "{\n  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(ts)'],\n  addons: ['@storybook/addon-docs', '@storybook/addon-a11y'],\n  framework: {\n    name: '@storybook/angular',\n    options: {}\n  },\n  docs: {\n    // autodocs: 'tag'\n  }\n}"
                 }
             ],
             "src/premium-ui/components/button/button.stories.ts": [
@@ -3302,7 +3302,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  args: {\n    disabled: true\n  }\n}"
+                    "defaultValue": "{\r\n  args: {\r\n    disabled: true\r\n  }\r\n}"
                 },
                 {
                     "name": "Loading",
@@ -3312,7 +3312,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  args: {\n    loading: true\n  }\n}"
+                    "defaultValue": "{\r\n  args: {\r\n    loading: true\r\n  }\r\n}"
                 },
                 {
                     "name": "meta",
@@ -3322,7 +3322,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PuiButtonComponent>",
-                    "defaultValue": "{\n  title: 'Components/Button',\n  component: PuiButtonComponent,\n  tags: ['autodocs'],\n  argTypes: {\n    variant: {\n      control: 'select',\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\n    },\n    size: {\n      control: 'inline-radio',\n      options: ['sm', 'md', 'lg']\n    },\n    type: {\n      control: 'inline-radio',\n      options: ['button', 'submit', 'reset']\n    },\n    disabled: {\n      control: 'boolean'\n    },\n    loading: {\n      control: 'boolean'\n    },\n    ariaLabel: {\n      control: 'text'\n    }\n  },\n  args: {\n    variant: 'primary',\n    size: 'md',\n    type: 'button',\n    disabled: false,\n    loading: false,\n    ariaLabel: null\n  },\n  render: (args) => ({\n    props: args,\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `<pui-button [variant]=\"variant\" [size]=\"size\" [type]=\"type\" [disabled]=\"disabled\" [loading]=\"loading\" [ariaLabel]=\"ariaLabel\">Button</pui-button>`\n  })\n}"
+                    "defaultValue": "{\r\n  title: 'Components/Button',\r\n  component: PuiButtonComponent,\r\n  tags: ['autodocs'],\r\n\r\n  argTypes: {\r\n    variant: {\r\n      control: 'select',\r\n      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']\r\n    },\r\n\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n\r\n    type: {\r\n      control: 'inline-radio',\r\n      options: ['button', 'submit', 'reset']\r\n    },\r\n\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    loading: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n\r\n  args: {\r\n    variant: 'primary',\r\n    size: 'md',\r\n    type: 'button',\r\n    disabled: false,\r\n    loading: false,\r\n    ariaLabel: null\r\n  },\r\n\r\n  render: (args) => ({\r\n    props: args,\r\n\r\n    template: `\r\n      <pui-button\r\n        [variant]=\"variant\"\r\n        [size]=\"size\"\r\n        [type]=\"type\"\r\n        [disabled]=\"disabled\"\r\n        [loading]=\"loading\"\r\n        [ariaLabel]=\"ariaLabel\">\r\n        Button\r\n      </pui-button>\r\n    `\r\n  })\r\n}"
                 },
                 {
                     "name": "Primary",
@@ -3342,7 +3342,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button size=\"sm\">Small</pui-button>\n        <pui-button size=\"md\">Medium</pui-button>\n        <pui-button size=\"lg\">Large</pui-button>\n      </div>\n    `\n  })\n}"
+                    "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-wrap: wrap;\r\n          gap: var(--pui-space-sm);\r\n          align-items: center;\r\n        \"\r\n      >\r\n        <pui-button size=\"sm\">Small</pui-button>\r\n\r\n        <pui-button size=\"md\">Medium</pui-button>\r\n\r\n        <pui-button size=\"lg\">Large</pui-button>\r\n      </div>\r\n    `\r\n  })\r\n}"
                 },
                 {
                     "name": "Variants",
@@ -3352,7 +3352,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\n        <pui-button variant=\"primary\">Primary</pui-button>\n        <pui-button variant=\"secondary\">Secondary</pui-button>\n        <pui-button variant=\"outline\">Outline</pui-button>\n        <pui-button variant=\"ghost\">Ghost</pui-button>\n        <pui-button variant=\"danger\">Danger</pui-button>\n      </div>\n    `\n  })\n}"
+                    "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-wrap: wrap;\r\n          gap: var(--pui-space-sm);\r\n          align-items: center;\r\n        \"\r\n      >\r\n        <pui-button variant=\"primary\">Primary</pui-button>\r\n\r\n        <pui-button variant=\"secondary\">Secondary</pui-button>\r\n\r\n        <pui-button variant=\"outline\">Outline</pui-button>\r\n\r\n        <pui-button variant=\"ghost\">Ghost</pui-button>\r\n\r\n        <pui-button variant=\"danger\">Danger</pui-button>\r\n      </div>\r\n    `\r\n  })\r\n}"
                 },
                 {
                     "name": "WithIcon",
@@ -3362,7 +3362,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\n  render: () => ({\n    moduleMetadata: {\n      imports: [PuiButtonComponent]\n    },\n    template: `\n      <pui-button>\n        <span puiButtonIcon aria-hidden=\"true\">+</span>\n        Create item\n      </pui-button>\n    `\n  })\n}"
+                    "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <pui-button>\r\n        <span aria-hidden=\"true\">+</span>\r\n        Create item\r\n      </pui-button>\r\n    `\r\n  })\r\n}"
                 }
             ],
             "src/premium-ui/components/input/input.stories.ts": [
@@ -3374,7 +3374,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PuiInputComponent>",
-                    "defaultValue": "{\r\n  title: 'Components/Input',\r\n  component: PuiInputComponent,\r\n  tags: ['autodocs'],\r\n  argTypes: {\r\n    type: {\r\n      control: 'select',\r\n      options: ['text', 'email', 'password', 'search', 'tel', 'url', 'number']\r\n    },\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n    readOnly: {\r\n      control: 'boolean'\r\n    },\r\n    placeholder: {\r\n      control: 'text'\r\n    },\r\n    value: {\r\n      control: 'text'\r\n    },\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n  args: {\r\n    type: 'text',\r\n    size: 'md',\r\n    disabled: false,\r\n    readOnly: false,\r\n    placeholder: 'Enter text',\r\n    value: '',\r\n    ariaLabel: null\r\n  },\r\n  render: (args) => ({\r\n    props: args,\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `<pui-input [type]=\"type\" [size]=\"size\" [disabled]=\"disabled\" [readOnly]=\"readOnly\" [placeholder]=\"placeholder\" [value]=\"value\" [ariaLabel]=\"ariaLabel\"></pui-input>`\r\n  })\r\n}"
+                    "defaultValue": "{\r\n  title: 'Components/Input',\r\n  component: PuiInputComponent,\r\n  tags: ['autodocs'],\r\n\r\n  argTypes: {\r\n    type: {\r\n      control: 'select',\r\n      options: ['text', 'email', 'password', 'search', 'tel', 'url', 'number']\r\n    },\r\n\r\n    size: {\r\n      control: 'inline-radio',\r\n      options: ['sm', 'md', 'lg']\r\n    },\r\n\r\n    disabled: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    readOnly: {\r\n      control: 'boolean'\r\n    },\r\n\r\n    placeholder: {\r\n      control: 'text'\r\n    },\r\n\r\n    value: {\r\n      control: 'text'\r\n    },\r\n\r\n    ariaLabel: {\r\n      control: 'text'\r\n    }\r\n  },\r\n\r\n  args: {\r\n    type: 'text',\r\n    size: 'md',\r\n    disabled: false,\r\n    readOnly: false,\r\n    placeholder: 'Enter text',\r\n    value: '',\r\n    ariaLabel: null\r\n  },\r\n\r\n  render: (args) => ({\r\n    props: args,\r\n\r\n    template: `\r\n      <pui-input\r\n        [type]=\"type\"\r\n        [size]=\"size\"\r\n        [disabled]=\"disabled\"\r\n        [readOnly]=\"readOnly\"\r\n        [placeholder]=\"placeholder\"\r\n        [value]=\"value\"\r\n        [ariaLabel]=\"ariaLabel\">\r\n      </pui-input>\r\n    `\r\n  })\r\n}"
                 },
                 {
                     "name": "Password",
@@ -3394,7 +3394,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{}"
+                    "defaultValue": "{\r\n  args: {\r\n    size: 'sm'\r\n  }\r\n}"
                 },
                 {
                     "name": "Sizes",
@@ -3404,7 +3404,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;\">\r\n        <pui-input size=\"sm\" placeholder=\"Small\"></pui-input>\r\n        <pui-input size=\"md\" placeholder=\"Medium\"></pui-input>\r\n        <pui-input size=\"lg\" placeholder=\"Large\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
+                    "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-wrap: wrap;\r\n          gap: var(--pui-space-sm);\r\n          align-items: center;\r\n        \"\r\n      >\r\n        <pui-input\r\n          size=\"sm\"\r\n          placeholder=\"Small\">\r\n        </pui-input>\r\n\r\n        <pui-input\r\n          size=\"md\"\r\n          placeholder=\"Medium\">\r\n        </pui-input>\r\n\r\n        <pui-input\r\n          size=\"lg\"\r\n          placeholder=\"Large\">\r\n        </pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
                 },
                 {
                     "name": "States",
@@ -3414,7 +3414,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
-                    "defaultValue": "{\r\n  render: () => ({\r\n    moduleMetadata: {\r\n      imports: [PuiInputComponent]\r\n    },\r\n    template: `\r\n      <div style=\"display: flex; flex-direction: column; gap: var(--pui-space-sm); width: min(28rem, 100%);\">\r\n        <pui-input placeholder=\"Default\" value=\"\" ></pui-input>\r\n        <pui-input placeholder=\"Disabled\" [disabled]=\"true\"></pui-input>\r\n        <pui-input placeholder=\"Read only\" [readOnly]=\"true\" value=\"Read only\"></pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
+                    "defaultValue": "{\r\n  render: () => ({\r\n    template: `\r\n      <div\r\n        style=\"\r\n          display: flex;\r\n          flex-direction: column;\r\n          gap: var(--pui-space-sm);\r\n          width: min(28rem, 100%);\r\n        \"\r\n      >\r\n        <pui-input placeholder=\"Default\"></pui-input>\r\n\r\n        <pui-input\r\n          placeholder=\"Disabled\"\r\n          [disabled]=\"true\">\r\n        </pui-input>\r\n\r\n        <pui-input\r\n          placeholder=\"Read only\"\r\n          [readOnly]=\"true\"\r\n          value=\"Read only\">\r\n        </pui-input>\r\n      </div>\r\n    `\r\n  })\r\n}"
                 }
             ],
             ".storybook/preview.ts": [
@@ -3426,7 +3426,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Preview",
-                    "defaultValue": "{\n  globalTypes: {\n    theme: {\n      description: 'Theme',\n      defaultValue: 'light',\n      toolbar: {\n        title: 'Theme',\n        icon: 'circlehollow',\n        items: [\n          { value: 'light', title: 'Light' },\n          { value: 'dark', title: 'Dark' }\n        ],\n        dynamicTitle: true\n      }\n    }\n  },\n  decorators: [\n    (story, context) => {\n      const theme = context.globals['theme'] === 'dark' ? 'dark' : 'light';\n\n      return {\n        template: `<div data-theme=\"${theme}\" style=\"min-height: 100vh; padding: 2rem; background: var(--pui-color-background); color: var(--pui-color-text);\"><story /></div>`\n      };\n    }\n  ],\n  parameters: {\n    backgrounds: {\n      disable: true\n    },\n    controls: {\n      matchers: {\n        color: /(background|color)$/i,\n        date: /Date$/i\n      }\n    },\n    a11y: {\n      test: 'error'\n    },\n    options: {\n      storySort: {\n        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing', 'Shadows'], 'Components', 'Forms', 'Feedback', 'Navigation', 'Overlays']\n      }\n    }\n  }\n}"
+                    "defaultValue": "{\r\n  globalTypes: {\r\n    theme: {\r\n      description: 'Theme',\r\n      defaultValue: 'light',\r\n      toolbar: {\r\n        title: 'Theme',\r\n        icon: 'circlehollow',\r\n        items: [\r\n          { value: 'light', title: 'Light' },\r\n          { value: 'dark', title: 'Dark' }\r\n        ],\r\n        dynamicTitle: true\r\n      }\r\n    }\r\n  },\r\n  decorators: [\r\n    (story, context) => {\r\n      const theme =\r\n        context.globals['theme'] === 'dark'\r\n          ? 'dark'\r\n          : 'light';\r\n  \r\n      const storyResult = story();\r\n  \r\n      return {\r\n        ...storyResult,\r\n  \r\n        template: `\r\n          <div\r\n            data-theme=\"${theme}\"\r\n            style=\"\r\n              min-height: 100vh;\r\n              padding: 2rem;\r\n              background: var(--pui-color-background);\r\n              color: var(--pui-color-text);\r\n            \"\r\n          >\r\n            ${storyResult.template}\r\n          </div>\r\n        `,\r\n  \r\n        props: storyResult.props\r\n      };\r\n    }\r\n  ],\r\n  parameters: {\r\n    backgrounds: {\r\n      disable: true\r\n    },\r\n    controls: {\r\n      matchers: {\r\n        color: /(background|color)$/i,\r\n        date: /Date$/i\r\n      }\r\n    },\r\n    a11y: {\r\n      test: 'error'\r\n    },\r\n    options: {\r\n      storySort: {\r\n        order: ['Introduction', 'Foundations', ['Colors', 'Typography', 'Spacing', 'Shadows'], 'Components', 'Forms', 'Feedback', 'Navigation', 'Overlays']\r\n      }\r\n    }\r\n  }\r\n}"
                 }
             ],
             "src/app/app.routes.ts": [

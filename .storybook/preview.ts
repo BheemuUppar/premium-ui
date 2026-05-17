@@ -22,10 +22,31 @@ const preview: Preview = {
   },
   decorators: [
     (story, context) => {
-      const theme = context.globals['theme'] === 'dark' ? 'dark' : 'light';
-
+      const theme =
+        context.globals['theme'] === 'dark'
+          ? 'dark'
+          : 'light';
+  
+      const storyResult = story();
+  
       return {
-        template: `<div data-theme="${theme}" style="min-height: 100vh; padding: 2rem; background: var(--pui-color-background); color: var(--pui-color-text);"><story /></div>`
+        ...storyResult,
+  
+        template: `
+          <div
+            data-theme="${theme}"
+            style="
+              min-height: 100vh;
+              padding: 2rem;
+              background: var(--pui-color-background);
+              color: var(--pui-color-text);
+            "
+          >
+            ${storyResult.template}
+          </div>
+        `,
+  
+        props: storyResult.props
       };
     }
   ],

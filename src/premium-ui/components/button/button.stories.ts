@@ -5,44 +5,60 @@ const meta: Meta<PuiButtonComponent> = {
   title: 'Components/Button',
   component: PuiButtonComponent,
   tags: ['autodocs'],
+
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'outline', 'ghost', 'danger']
+      options: ['primary', 'secondary', 'outline', 'ghost', 'danger'],
     },
+
     size: {
       control: 'inline-radio',
-      options: ['sm', 'md', 'lg']
+      options: ['sm', 'md', 'lg'],
     },
+
     type: {
       control: 'inline-radio',
-      options: ['button', 'submit', 'reset']
+      options: ['button', 'submit', 'reset'],
     },
+
     disabled: {
-      control: 'boolean'
+      control: 'boolean',
     },
+
     loading: {
-      control: 'boolean'
+      control: 'boolean',
     },
+
     ariaLabel: {
-      control: 'text'
-    }
+      control: 'text',
+    },
   },
+
   args: {
     variant: 'primary',
     size: 'md',
     type: 'button',
     disabled: false,
     loading: false,
-    ariaLabel: null
+    ariaLabel: null,
   },
+
   render: (args) => ({
     props: args,
-    moduleMetadata: {
-      imports: [PuiButtonComponent]
-    },
-    template: `<pui-button [variant]="variant" [size]="size" [type]="type" [disabled]="disabled" [loading]="loading" [ariaLabel]="ariaLabel">Button</pui-button>`
-  })
+
+    template: `
+      <pui-button
+        [variant]="variant"
+        [size]="size"
+        [type]="type"
+        [disabled]="disabled"
+        [loading]="loading"
+        [ariaLabel]="ariaLabel">
+        Button
+      </pui-button>
+    `,
+  }),
 };
 
 export default meta;
@@ -53,58 +69,75 @@ export const Primary: Story = {};
 
 export const Variants: Story = {
   render: () => ({
-    moduleMetadata: {
-      imports: [PuiButtonComponent]
-    },
     template: `
-      <div style="display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;">
+      <div
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--pui-space-sm);
+          align-items: center;
+        "
+      >
         <pui-button variant="primary">Primary</pui-button>
+
         <pui-button variant="secondary">Secondary</pui-button>
+
         <pui-button variant="outline">Outline</pui-button>
+
         <pui-button variant="ghost">Ghost</pui-button>
+
         <pui-button variant="danger">Danger</pui-button>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 export const Sizes: Story = {
+  args: {
+    variant: 'ghost',
+    disabled: true,
+    loading: true,
+  },
+
   render: () => ({
-    moduleMetadata: {
-      imports: [PuiButtonComponent]
-    },
     template: `
-      <div style="display: flex; flex-wrap: wrap; gap: var(--pui-space-sm); align-items: center;">
+      <div
+        style="
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--pui-space-sm);
+          align-items: center;
+        "
+      >
         <pui-button size="sm">Small</pui-button>
+
         <pui-button size="md">Medium</pui-button>
+
         <pui-button size="lg">Large</pui-button>
       </div>
-    `
-  })
+    `,
+  }),
 };
 
 export const Loading: Story = {
   args: {
-    loading: true
-  }
+    loading: true,
+  },
 };
 
 export const Disabled: Story = {
   args: {
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const WithIcon: Story = {
   render: () => ({
-    moduleMetadata: {
-      imports: [PuiButtonComponent]
-    },
     template: `
       <pui-button>
-        <span puiButtonIcon aria-hidden="true">+</span>
+        <span aria-hidden="true">+</span>
         Create item
       </pui-button>
-    `
-  })
+    `,
+  }),
 };
