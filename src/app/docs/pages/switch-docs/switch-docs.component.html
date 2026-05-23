@@ -1,0 +1,202 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/switch/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/switch/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span>Switch</span>
+    </nav>
+    <h1>Switch</h1>
+    <p>Premium toggle controls for settings, preferences, privacy, and enterprise dashboards.</p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Switch documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a class="pui-tab" [routerLink]="tab.route" routerLinkActive="pui-tab--active" [routerLinkActiveOptions]="{ exact: true }">
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section">
+          <h2>Overview</h2>
+          <p>Elegant track-and-thumb switches with spring motion, iOS variant, and full forms support.</p>
+          <div class="pui-preview-row pui-switch-preview-stack">
+            <pui-switch [(checked)]="notifications" label="Push notifications" description="Receive alerts on this device" />
+          </div>
+          <pre class="pui-code-block"><code>{{ basicExample }}</code></pre>
+        </section>
+      }
+
+      @case ('variants') {
+        <section class="pui-doc-section">
+          <h2>Variants</h2>
+          <div class="pui-switch-preview-stack">
+            @for (variant of variants; track variant) {
+              <pui-switch [variant]="variant" [checked]="true" [label]="variant" />
+            }
+          </div>
+        </section>
+        <section class="pui-doc-section">
+          <h2>Sizes</h2>
+          <div class="pui-switch-preview-stack">
+            @for (size of sizes; track size) {
+              <pui-switch [size]="size" [checked]="true" [label]="'Size ' + size" />
+            }
+          </div>
+        </section>
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section">
+          <h2>Settings panel</h2>
+          <div class="pui-switch-settings-panel">
+            <pui-switch [(checked)]="notifications" label="Notifications" description="Product and security alerts" />
+            <pui-switch [(checked)]="darkMode" variant="ios" label="Dark mode" description="Use dark theme" />
+            <pui-switch [(checked)]="analytics" variant="soft" label="Analytics" description="Help improve the product" />
+          </div>
+        </section>
+        <section class="pui-doc-section">
+          <h2>Privacy settings</h2>
+          <div class="pui-switch-preview-stack">
+            <pui-switch [checked]="true" label="Usage analytics" description="Anonymous product analytics" />
+            <pui-switch label="Marketing cookies" description="Personalized recommendations" />
+          </div>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section">
+          <h2>pui-switch</h2>
+          <table class="pui-api-table">
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              @for (row of apiRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.defaultValue }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+        <section class="pui-doc-section">
+          <h2>Outputs</h2>
+          <table class="pui-api-table">
+            <thead><tr><th>Event</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+              @for (row of outputRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section">
+          <h2>Accessibility</h2>
+          <ul class="pui-feature-list">
+            <li><code>role="switch"</code> on the control button</li>
+            <li><code>aria-checked</code>, <code>aria-disabled</code>, <code>aria-invalid</code></li>
+            <li>Focus-visible ring via shared focus mixin</li>
+            <li>Label association and describedby wiring</li>
+          </ul>
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section">
+          <h2>Theming</h2>
+          <pre class="pui-code-block"><code>{{ themeCode }}</code></pre>
+        </section>
+      }
+
+      @case ('forms') {
+        <section class="pui-doc-section">
+          <h2>Reactive forms</h2>
+          <form [formGroup]="reactiveForm" class="pui-switch-preview-stack">
+            <pui-switch formControlName="notifications" label="Notifications" />
+            <pui-switch formControlName="autoUpdates" label="Auto updates" />
+          </form>
+          <p class="pui-doc-meta">{{ reactiveForm.value | json }}</p>
+          <pre class="pui-code-block"><code>{{ reactiveExample }}</code></pre>
+        </section>
+        <section class="pui-doc-section">
+          <h2>Signal forms</h2>
+          <pui-switch [checked]="signalEnabled()" (checkedChange)="signalEnabled.set($event)" label="Enable feature" />
+          <p class="pui-doc-meta">Signal: {{ signalEnabled() }}</p>
+          <pre class="pui-code-block"><code>{{ signalExample }}</code></pre>
+        </section>
+      }
+
+      @case ('keyboard') {
+        <section class="pui-doc-section">
+          <h2>Keyboard navigation</h2>
+          <ul class="pui-feature-list">
+            <li><kbd>Space</kbd> / <kbd>Enter</kbd> — toggle switch</li>
+            <li><kbd>Tab</kbd> / <kbd>Shift + Tab</kbd> — move focus</li>
+          </ul>
+          <pui-switch [(checked)]="notifications" label="Try keyboard toggle" />
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section">
+          <h2>Playground</h2>
+          <div class="pui-playground">
+            <div class="pui-playground__controls">
+              <label>
+                Variant
+                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
+                  @for (variant of variants; track variant) {
+                    <option [value]="variant">{{ variant }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                Size
+                <select [value]="playgroundSize()" (change)="updateSize($event)">
+                  @for (size of sizes; track size) {
+                    <option [value]="size">{{ size }}</option>
+                  }
+                </select>
+              </label>
+              <label><input type="checkbox" [checked]="playgroundChecked()" (change)="updateCheckbox(playgroundChecked, $event)" /> Checked</label>
+              <label><input type="checkbox" [checked]="playgroundDisabled()" (change)="updateCheckbox(playgroundDisabled, $event)" /> Disabled</label>
+              <label><input type="checkbox" [checked]="playgroundLoading()" (change)="updateCheckbox(playgroundLoading, $event)" /> Loading</label>
+              <label><input type="checkbox" [checked]="playgroundInvalid()" (change)="updateCheckbox(playgroundInvalid, $event)" /> Invalid</label>
+            </div>
+            <div class="pui-playground__preview">
+              <pui-switch
+                [checked]="playgroundChecked()"
+                (checkedChange)="playgroundChecked.set($event)"
+                [variant]="playgroundVariant()"
+                [size]="playgroundSize()"
+                [disabled]="playgroundDisabled()"
+                [loading]="playgroundLoading()"
+                [invalid]="playgroundInvalid()"
+                label="Enable notifications"
+                description="Interactive playground preview"
+              />
+            </div>
+            <div class="pui-code-shell">
+              <button type="button" class="pui-code-copy" (click)="copyCode(playgroundCode())">Copy</button>
+              <pre><code>{{ playgroundCode() }}</code></pre>
+            </div>
+          </div>
+        </section>
+      }
+    }
+  </div>
+</article>

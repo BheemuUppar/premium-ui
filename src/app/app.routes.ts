@@ -70,6 +70,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/radio-docs/radio-docs.component').then((component) => component.RadioDocsComponent)
       },
       {
+        path: 'components/switch',
+        redirectTo: 'components/switch/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/switch/:tab',
+        loadComponent: () => import('./docs/pages/switch-docs/switch-docs.component').then((component) => component.SwitchDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

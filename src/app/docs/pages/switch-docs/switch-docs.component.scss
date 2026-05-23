@@ -1,0 +1,18 @@
+.pui-switch-preview-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-md);
+  max-width: 28rem;
+}
+
+.pui-switch-settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-md);
+  max-width: 32rem;
+  padding: var(--pui-space-lg);
+  border: 1px solid var(--pui-color-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-color-surface);
+  box-shadow: var(--pui-shadow-sm);
+}

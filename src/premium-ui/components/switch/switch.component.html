@@ -1,0 +1,45 @@
+<div class="pui-switch__root">
+  <button
+    type="button"
+    class="pui-switch__control"
+    role="switch"
+    [id]="controlId"
+    [attr.aria-checked]="ariaChecked()"
+    [attr.aria-label]="ariaLabel() || null"
+    [attr.aria-labelledby]="label() ? labelId : null"
+    [attr.aria-invalid]="isInvalid() ? 'true' : null"
+    [attr.aria-disabled]="isDisabled() ? 'true' : null"
+    [attr.aria-required]="required() ? 'true' : null"
+    [attr.aria-describedby]="describedBy()"
+    [disabled]="isDisabled()"
+    (click)="toggle()"
+    (keydown)="handleKeydown($event)"
+    (blur)="handleBlur()"
+  >
+    <span class="pui-switch__track" aria-hidden="true">
+      <span class="pui-switch__thumb">
+        @if (loading()) {
+          <span class="pui-switch__spinner" aria-hidden="true"></span>
+        }
+      </span>
+    </span>
+  </button>
+
+  @if (label() || description() || helperText() || error()) {
+    <span class="pui-switch__body">
+      @if (label()) {
+        <span class="pui-switch__label" [id]="labelId">{{ label() }}</span>
+      }
+      <ng-content />
+      @if (description()) {
+        <span class="pui-switch__description" [id]="descriptionTextId">{{ description() }}</span>
+      }
+      @if (helperText()) {
+        <span class="pui-switch__helper" [id]="helperTextId">{{ helperText() }}</span>
+      }
+      @if (error()) {
+        <span class="pui-switch__error" [id]="errorTextId" role="alert">{{ error() }}</span>
+      }
+    </span>
+  }
+</div>

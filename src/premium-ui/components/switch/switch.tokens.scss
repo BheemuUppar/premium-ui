@@ -1,0 +1,57 @@
+:host {
+  --pui-switch-track-width: 2.75rem;
+  --pui-switch-track-height: 1.5rem;
+  --pui-switch-thumb-size: 1.125rem;
+  --pui-switch-gap: var(--pui-space-sm);
+  --pui-switch-track-bg: color-mix(in srgb, var(--pui-color-border) 55%, var(--pui-color-surface));
+  --pui-switch-track-bg-checked: var(--pui-color-primary);
+  --pui-switch-thumb-bg: var(--pui-color-surface);
+  --pui-switch-thumb-shadow: var(--pui-shadow-sm);
+  --pui-switch-focus-glow: color-mix(in srgb, var(--pui-color-primary) 28%, transparent);
+  --pui-switch-label-color: var(--pui-color-text);
+  --pui-switch-label-size: var(--pui-font-size-sm);
+  --pui-switch-description-color: var(--pui-muted);
+  --pui-switch-description-size: var(--pui-font-size-xs);
+  --pui-switch-helper-color: var(--pui-muted);
+  --pui-switch-error-color: var(--pui-color-danger);
+}
+
+:host(.pui-switch--sm) {
+  --pui-switch-track-width: 2.375rem;
+  --pui-switch-track-height: 1.25rem;
+  --pui-switch-thumb-size: 0.9375rem;
+  --pui-switch-gap: var(--pui-space-xs);
+  --pui-switch-label-size: var(--pui-font-size-xs);
+}
+
+:host(.pui-switch--lg) {
+  --pui-switch-track-width: 3.25rem;
+  --pui-switch-track-height: 1.75rem;
+  --pui-switch-thumb-size: 1.375rem;
+  --pui-switch-gap: var(--pui-space-md);
+  --pui-switch-label-size: var(--pui-font-size-md);
+}
+
+:host(.pui-switch--ios) {
+  --pui-switch-track-width: 3rem;
+  --pui-switch-track-height: 1.75rem;
+  --pui-switch-thumb-size: 1.5rem;
+  --pui-switch-track-bg: color-mix(in srgb, var(--pui-color-border) 70%, var(--pui-color-surface));
+  --pui-switch-track-bg-checked: var(--pui-color-success);
+}
+
+:host(.pui-switch--success) {
+  --pui-switch-track-bg-checked: var(--pui-color-success);
+}
+
+:host(.pui-switch--danger) {
+  --pui-switch-track-bg-checked: var(--pui-color-danger);
+}
+
+:host(.pui-switch--soft) {
+  --pui-switch-track-bg: color-mix(in srgb, var(--pui-color-primary) 12%, var(--pui-color-surface));
+}
+
+:host(.pui-switch--filled) {
+  --pui-switch-track-bg: color-mix(in srgb, var(--pui-color-primary) 18%, var(--pui-color-surface));
+}
