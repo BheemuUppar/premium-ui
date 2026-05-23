@@ -1,0 +1,16 @@
+:host {
+  display: block;
+  margin-bottom: calc(var(--pui-space-xs) * -1);
+}
+
+.pui-card__header-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--pui-space-lg);
+  width: 100%;
+}
+
+:host(.pui-card-header--split) .pui-card__header-inner {
+  align-items: center;
+}

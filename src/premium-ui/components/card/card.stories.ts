@@ -1,353 +1,475 @@
 import type { Meta, StoryObj } from '@storybook/angular';
-import { PuiCardComponent } from './card.component';
+import { PuiButtonComponent } from '../button/button.component';
+import {
+  PuiCardActionsComponent,
+  PuiCardBadgeComponent,
+  PuiCardComponent,
+  PuiCardContentComponent,
+  PuiCardFooterComponent,
+  PuiCardHeaderComponent,
+  PuiCardImageComponent,
+  PuiCardSubtitleComponent,
+  PuiCardTitleComponent,
+} from './index';
+import { HERO_IMAGE, MOVIE_IMAGE, PRODUCT_IMAGE } from './card.stories.constants';
+
+const CARD_IMPORTS = [
+  PuiCardComponent,
+  PuiCardHeaderComponent,
+  PuiCardTitleComponent,
+  PuiCardSubtitleComponent,
+  PuiCardContentComponent,
+  PuiCardFooterComponent,
+  PuiCardActionsComponent,
+  PuiCardImageComponent,
+  PuiCardBadgeComponent,
+  PuiButtonComponent,
+];
 
 const meta: Meta<PuiCardComponent> = {
   title: 'Components/Card',
   component: PuiCardComponent,
   tags: ['autodocs'],
-
+  parameters: {
+    layout: 'padded',
+  },
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'outlined', 'elevated', 'ghost'],
+      options: ['default', 'outlined', 'elevated', 'ghost', 'glass', 'gradient'],
     },
-
-    size: {
-      control: 'inline-radio',
-      options: ['sm', 'md', 'lg'],
-    },
-
-    hoverable: {
-      control: 'boolean',
-    },
-
-    interactive: {
-      control: 'boolean',
-    },
-
-    disabled: {
-      control: 'boolean',
-    },
+    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    layout: { control: 'inline-radio', options: ['vertical', 'horizontal'] },
+    hoverable: { control: 'boolean' },
+    interactive: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    highlighted: { control: 'boolean' },
+    imageZoom: { control: 'boolean' },
   },
-
   args: {
     variant: 'default',
     size: 'md',
+    layout: 'vertical',
     hoverable: false,
     interactive: false,
-    disabled: false,
+    loading: false,
+    highlighted: false,
+    imageZoom: false,
   },
-
-  render: (args) => ({
-    props: args,
-
-    template: `
-      <pui-card
-        [variant]="variant"
-        [size]="size"
-        [hoverable]="hoverable"
-        [interactive]="interactive"
-        [disabled]="disabled"
-        style="max-width: 400px;">
-        <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Card Title</h3>
-        <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-          This is a card component that provides a flexible container for content.
-        </p>
-      </pui-card>
-    `,
-  }),
 };
 
 export default meta;
 
 type Story = StoryObj<PuiCardComponent>;
 
-export const Default: Story = {};
+export const Basic: Story = {
+  render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    template: `
+      <div class="card-showcase-stage">
+        <pui-card class="card-showcase-narrow" variant="elevated" hoverable size="lg">
+          <pui-card-header split>
+            <div>
+              <pui-card-title>Revenue</pui-card-title>
+              <pui-card-subtitle>Monthly analytics overview</pui-card-subtitle>
+            </div>
+            <pui-card-badge variant="success" pill>+12%</pui-card-badge>
+          </pui-card-header>
+          <pui-card-content>
+            <div class="pui-card__metric-group">
+              <span class="pui-card__metric-label">Total MRR</span>
+              <p class="pui-card__metric pui-card__metric--display">$84,320</p>
+              <span class="pui-card__metric-trend pui-card__metric-trend--positive">↑ 12.4% vs last month</span>
+            </div>
+            <div class="pui-card__chart" aria-hidden="true"></div>
+          </pui-card-content>
+          <pui-card-footer>
+            <span class="pui-card__meta">Updated 2m ago</span>
+            <pui-card-actions>
+              <pui-button size="sm" variant="ghost">Details</pui-button>
+            </pui-card-actions>
+          </pui-card-footer>
+        </pui-card>
+      </div>
+    `,
+  }),
+};
 
 export const Variants: Story = {
   render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    props: {
+      variants: ['default', 'outlined', 'elevated', 'ghost', 'glass', 'gradient'] as const,
+    },
     template: `
-      <div
-        style="
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: var(--pui-space-lg);
-        "
-      >
-        <pui-card variant="default">
-          <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Default</h3>
-          <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-            Subtle border with soft background and minimal shadow
-          </p>
-        </pui-card>
-
-        <pui-card variant="outlined">
-          <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Outlined</h3>
-          <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-            Stronger border, no shadow, clean flat appearance
-          </p>
-        </pui-card>
-
-        <pui-card variant="elevated">
-          <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Elevated</h3>
-          <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-            Premium soft shadow with subtle lift effect
-          </p>
-        </pui-card>
-
-        <pui-card variant="ghost">
-          <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Ghost</h3>
-          <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-            Transparent background with subtle hover state
-          </p>
-        </pui-card>
+      <div class="card-showcase-grid">
+        @for (variant of variants; track variant) {
+          <pui-card [variant]="variant" hoverable size="lg">
+            <pui-card-header>
+              <pui-card-title>{{ variant }}</pui-card-title>
+              <pui-card-subtitle>Layered depth · premium surfaces</pui-card-subtitle>
+            </pui-card-header>
+            <pui-card-content>
+              Ambient shadows, inner highlights, and refined border glow on hover.
+            </pui-card-content>
+          </pui-card>
+        }
       </div>
-    `,
-  }),
-};
-
-export const Sizes: Story = {
-  render: () => ({
-    template: `
-      <div
-        style="
-          display: flex;
-          flex-direction: column;
-          gap: var(--pui-space-lg);
-        "
-      >
-        <div>
-          <p style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-muted); font-weight: 600;">Small</p>
-          <pui-card size="sm">
-            <h4 style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-text);">Compact Card</h4>
-            <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-              Reduced padding for dense layouts
-            </p>
-          </pui-card>
-        </div>
-
-        <div>
-          <p style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-muted); font-weight: 600;">Medium</p>
-          <pui-card size="md">
-            <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Standard Card</h3>
-            <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-              Default padding for most use cases
-            </p>
-          </pui-card>
-        </div>
-
-        <div>
-          <p style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-muted); font-weight: 600;">Large</p>
-          <pui-card size="lg">
-            <h2 style="margin: 0 0 var(--pui-space-md) 0; color: var(--pui-text);">Spacious Card</h2>
-            <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-              Increased padding for prominent content
-            </p>
-          </pui-card>
-        </div>
-      </div>
-    `,
-  }),
-};
-
-export const Hoverable: Story = {
-  args: {
-    hoverable: true,
-  },
-
-  render: () => ({
-    template: `
-      <pui-card variant="default" size="md" hoverable="true" style="max-width: 400px;">
-        <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Hoverable Card</h3>
-        <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-          Hover over this card to see the elevation effect
-        </p>
-      </pui-card>
     `,
   }),
 };
 
 export const Interactive: Story = {
-  args: {
-    interactive: true,
-  },
-
   render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
     template: `
-      <pui-card variant="default" size="md" interactive="true" style="max-width: 400px; cursor: pointer;">
-        <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Interactive Card</h3>
-        <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-          Click or focus on this card. It supports keyboard navigation
-        </p>
+      <pui-card class="card-showcase-narrow" variant="elevated" interactive hoverable>
+        <pui-card-title>Interactive card</pui-card-title>
+        <pui-card-content>
+          Keyboard accessible with focus-visible ring, premium lift, and border glow on hover.
+        </pui-card-content>
       </pui-card>
     `,
   }),
 };
 
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    interactive: true,
-  },
-
+export const ImageCard: Story = {
   render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
     template: `
-      <pui-card variant="default" size="md" disabled="true" interactive="true" style="max-width: 400px;">
-        <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Disabled Card</h3>
-        <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
-          This card is disabled and cannot be interacted with
-        </p>
+      <pui-card class="card-showcase-narrow" variant="elevated" imageZoom hoverable size="lg">
+        <pui-card-image
+          [src]="image"
+          alt="Abstract gradient artwork"
+          aspect="video"
+          gradientOverlay
+          zoomOnHover
+        />
+        <pui-card-header>
+          <pui-card-title>Design systems</pui-card-title>
+          <pui-card-subtitle>Cinematic media treatment</pui-card-subtitle>
+        </pui-card-header>
+        <pui-card-content>
+          Layered image shadows, soft edge fading, and smooth zoom transitions on hover.
+        </pui-card-content>
+      </pui-card>
+    `,
+    props: { image: HERO_IMAGE },
+  }),
+};
+
+export const ProductCard: Story = {
+  render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    template: `
+      <pui-card class="card-showcase-product" variant="elevated" hoverable imageZoom size="lg">
+        <div style="position: relative;">
+          <pui-card-image [src]="image" alt="Premium watch product" zoomOnHover aspect="square" />
+          <div class="card-showcase-floating-actions">
+            <pui-button size="sm" variant="ghost">♡</pui-button>
+          </div>
+        </div>
+        <pui-card-header split>
+          <div>
+            <pui-card-title>Minimal Watch</pui-card-title>
+            <pui-card-subtitle>Stainless steel · Swiss movement</pui-card-subtitle>
+          </div>
+          <pui-card-badge variant="primary" pill>-20%</pui-card-badge>
+        </pui-card-header>
+        <pui-card-content>
+          <div class="pui-card__price">
+            <span class="pui-card__price-current">$249</span>
+            <span class="pui-card__price-compare">$309</span>
+          </div>
+        </pui-card-content>
+        <pui-card-footer>
+          <div class="card-showcase-product-actions">
+            <pui-button size="sm">Add to cart</pui-button>
+            <pui-button size="sm" variant="outline">Quick view</pui-button>
+          </div>
+        </pui-card-footer>
+      </pui-card>
+    `,
+    props: { image: PRODUCT_IMAGE },
+  }),
+};
+
+export const PricingCard: Story = {
+  render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    template: `
+      <div class="card-showcase-stage">
+        <div class="card-showcase-pricing">
+          <pui-card class="card-showcase-pricing-side" variant="outlined" hoverable size="lg">
+            <pui-card-header>
+              <pui-card-title>Starter</pui-card-title>
+              <pui-card-subtitle>For individuals</pui-card-subtitle>
+            </pui-card-header>
+            <pui-card-content>
+              <div class="pui-card__price-block">
+                <div class="pui-card__price">
+                  <p class="pui-card__price-amount">$19</p>
+                  <span class="pui-card__price-period">/ month</span>
+                </div>
+              </div>
+              <ul class="pui-card__feature-list">
+                <li>5 projects</li>
+                <li>Basic analytics</li>
+                <li>Email support</li>
+              </ul>
+            </pui-card-content>
+            <pui-card-footer>
+              <div class="card-showcase-cta-footer">
+                <pui-button variant="outline">Choose plan</pui-button>
+              </div>
+            </pui-card-footer>
+          </pui-card>
+
+          <pui-card class="card-showcase-pricing-featured" variant="gradient" highlighted hoverable size="lg">
+            <pui-card-header split>
+              <div>
+                <pui-card-title>Pro</pui-card-title>
+                <pui-card-subtitle>For growing teams</pui-card-subtitle>
+              </div>
+              <pui-card-badge variant="primary" pill>Popular</pui-card-badge>
+            </pui-card-header>
+            <pui-card-content>
+              <div class="pui-card__price-block">
+                <div class="pui-card__price">
+                  <p class="pui-card__price-amount">$49</p>
+                  <span class="pui-card__price-period">/ month</span>
+                </div>
+              </div>
+              <ul class="pui-card__feature-list">
+                <li>Unlimited projects</li>
+                <li>Advanced analytics</li>
+                <li>Priority support</li>
+                <li>Custom integrations</li>
+              </ul>
+            </pui-card-content>
+            <pui-card-footer>
+              <div class="card-showcase-cta-footer">
+                <pui-button>Choose plan</pui-button>
+              </div>
+            </pui-card-footer>
+          </pui-card>
+
+          <pui-card class="card-showcase-pricing-side" variant="elevated" hoverable size="lg">
+            <pui-card-header>
+              <pui-card-title>Enterprise</pui-card-title>
+              <pui-card-subtitle>For large organizations</pui-card-subtitle>
+            </pui-card-header>
+            <pui-card-content>
+              <div class="pui-card__price-block">
+                <p class="pui-card__price-amount">Custom</p>
+              </div>
+              <ul class="pui-card__feature-list">
+                <li>Dedicated infrastructure</li>
+                <li>SSO &amp; audit logs</li>
+                <li>24/7 support</li>
+              </ul>
+            </pui-card-content>
+            <pui-card-footer>
+              <div class="card-showcase-cta-footer">
+                <pui-button variant="outline">Contact sales</pui-button>
+              </div>
+            </pui-card-footer>
+          </pui-card>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+export const DashboardAnalytics: Story = {
+  render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    template: `
+      <div class="card-showcase-stage">
+        <div class="card-showcase-dashboard">
+          @for (metric of metrics; track metric.label; let i = $index) {
+            <pui-card variant="elevated" hoverable size="lg">
+              <pui-card-header split>
+                <span class="pui-card__metric-label">{{ metric.label }}</span>
+                <pui-card-badge [variant]="metric.trend > 0 ? 'success' : 'warning'" pill>
+                  {{ metric.trend > 0 ? '+' : '' }}{{ metric.trend }}%
+                </pui-card-badge>
+              </pui-card-header>
+              <pui-card-content>
+                <div class="pui-card__metric-group">
+                  <p
+                    class="pui-card__metric"
+                    [class.pui-card__metric--display]="i === 0"
+                  >{{ metric.value }}</p>
+                  <span
+                    class="pui-card__metric-trend"
+                    [class.pui-card__metric-trend--positive]="metric.trend > 0"
+                    [class.pui-card__metric-trend--negative]="metric.trend <= 0"
+                  >
+                    {{ metric.trend > 0 ? '↑' : '↓' }} {{ metric.caption }}
+                  </span>
+                </div>
+                <div class="pui-card__chart" aria-hidden="true"></div>
+              </pui-card-content>
+            </pui-card>
+          }
+        </div>
+      </div>
+    `,
+    props: {
+      metrics: [
+        { label: 'MRR', value: '$84,320', trend: 12, caption: 'vs last month' },
+        { label: 'Active users', value: '12,480', trend: 8, caption: 'weekly active' },
+        { label: 'Churn', value: '2.1%', trend: -3, caption: 'improved retention' },
+      ],
+    },
+  }),
+};
+
+export const FeatureCard: Story = {
+  render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    template: `
+      <pui-card class="card-showcase-narrow" variant="glass" hoverable size="lg">
+        <div class="pui-card__icon" aria-hidden="true">✦</div>
+        <pui-card-title>Enterprise security</pui-card-title>
+        <pui-card-content>
+          SOC2-ready infrastructure with subtle glass surfaces, layered highlights, and premium depth.
+        </pui-card-content>
+        <pui-card-footer>
+          <pui-button variant="ghost" size="sm">Learn more →</pui-button>
+        </pui-card-footer>
       </pui-card>
     `,
   }),
 };
 
-export const DashboardExample: Story = {
+export const MediaCard: Story = {
   render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
     template: `
-      <div
-        style="
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: var(--pui-space-lg);
-        "
+      <pui-card class="card-showcase-media" variant="elevated" hoverable imageZoom interactive size="lg">
+        <pui-card-image
+          [src]="image"
+          alt="Cinematic movie poster"
+          aspect="portrait"
+          overlay
+          gradientOverlay
+          cinema
+          zoomOnHover
+        >
+          <div class="card-showcase-chip-row">
+            <span class="card-showcase-chip">4K</span>
+            <span class="card-showcase-chip">HDR</span>
+          </div>
+        </pui-card-image>
+        <pui-card-header>
+          <pui-card-title>Neon Horizon</pui-card-title>
+          <pui-card-subtitle>Sci-fi · 2h 14m · ★ 8.7</pui-card-subtitle>
+        </pui-card-header>
+        <pui-card-content>
+          Dark cinematic overlays with gradient fade and immersive poster presentation.
+        </pui-card-content>
+      </pui-card>
+    `,
+    props: { image: MOVIE_IMAGE },
+  }),
+};
+
+export const HorizontalLayout: Story = {
+  render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    template: `
+      <pui-card class="card-showcase-wide" layout="horizontal" variant="elevated" hoverable size="lg">
+        <pui-card-image [src]="image" alt="Workspace" aspect="square" position="left" zoomOnHover />
+        <div>
+          <pui-card-header>
+            <pui-card-title>Horizontal card</pui-card-title>
+            <pui-card-subtitle>Editorial layout with cinematic media</pui-card-subtitle>
+          </pui-card-header>
+          <pui-card-content>
+            Ideal for list views, product rows, and premium admin panels with asymmetric spacing.
+          </pui-card-content>
+          <pui-card-footer>
+            <pui-button size="sm" variant="ghost">Read more →</pui-button>
+          </pui-card-footer>
+        </div>
+      </pui-card>
+    `,
+    props: { image: HERO_IMAGE },
+  }),
+};
+
+export const LoadingSkeleton: Story = {
+  args: { loading: true, variant: 'elevated' },
+  render: (args) => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    props: args,
+    template: `<pui-card class="card-showcase-narrow" [loading]="loading" [variant]="variant"></pui-card>`,
+  }),
+};
+
+export const GlassPremium: Story = {
+  render: () => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    template: `
+      <div class="card-showcase-glass-stage">
+        <pui-card class="card-showcase-narrow" variant="glass" hoverable size="lg">
+          <pui-card-header split>
+            <div>
+              <pui-card-title>Glass surface</pui-card-title>
+              <pui-card-subtitle>Subtle blur · layered highlights</pui-card-subtitle>
+            </div>
+            <pui-card-badge variant="primary" pill>New</pui-card-badge>
+          </pui-card-header>
+          <pui-card-content>
+            Elegant glassmorphism with premium depth, semi-transparent borders, and soft ambient shadows.
+          </pui-card-content>
+          <pui-card-footer>
+            <pui-button size="sm">Get started</pui-button>
+          </pui-card-footer>
+        </pui-card>
+      </div>
+    `,
+  }),
+};
+
+export const Playground: Story = {
+  args: { variant: 'elevated', hoverable: true, imageZoom: true, size: 'lg' },
+  render: (args) => ({
+    moduleMetadata: { imports: CARD_IMPORTS },
+    styles: ['./card.stories.scss'],
+    props: args,
+    template: `
+      <pui-card
+        class="card-showcase-narrow"
+        [variant]="variant"
+        [size]="size"
+        [layout]="layout"
+        [hoverable]="hoverable"
+        [interactive]="interactive"
+        [loading]="loading"
+        [highlighted]="highlighted"
+        [imageZoom]="imageZoom"
       >
-        <pui-card variant="default" hoverable="true">
-          <p style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Revenue</p>
-          <h2 style="margin: 0; color: var(--pui-text); font-size: 1.875rem; font-weight: 700;">$12,450</h2>
-          <p style="margin: var(--pui-space-sm) 0 0 0; color: var(--pui-color-success); font-size: 0.875rem;">↑ 12% from last month</p>
-        </pui-card>
-
-        <pui-card variant="default" hoverable="true">
-          <p style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Users</p>
-          <h2 style="margin: 0; color: var(--pui-text); font-size: 1.875rem; font-weight: 700;">2,340</h2>
-          <p style="margin: var(--pui-space-sm) 0 0 0; color: var(--pui-color-success); font-size: 0.875rem;">↑ 5% from last week</p>
-        </pui-card>
-
-        <pui-card variant="default" hoverable="true">
-          <p style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Conversion</p>
-          <h2 style="margin: 0; color: var(--pui-text); font-size: 1.875rem; font-weight: 700;">3.24%</h2>
-          <p style="margin: var(--pui-space-sm) 0 0 0; color: var(--pui-color-warning); font-size: 0.875rem;">↓ 2% from last month</p>
-        </pui-card>
-      </div>
-    `,
-  }),
-};
-
-export const SettingsExample: Story = {
-  render: () => ({
-    template: `
-      <pui-card variant="outlined" size="md" style="max-width: 500px;">
-        <h3 style="margin: 0 0 var(--pui-space-md) 0; color: var(--pui-text);">Notification Settings</h3>
-        <div style="display: flex; flex-direction: column; gap: var(--pui-space-md);">
-          <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div>
-              <p style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-text); font-weight: 500;">Email Notifications</p>
-              <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">Receive updates via email</p>
-            </div>
-            <input type="checkbox" checked />
-          </div>
-          <div style="height: 1px; background: var(--pui-border);"></div>
-          <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div>
-              <p style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-text); font-weight: 500;">Push Notifications</p>
-              <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">Get browser notifications</p>
-            </div>
-            <input type="checkbox" />
-          </div>
-        </div>
+        <pui-card-header>
+          <pui-card-title>Playground</pui-card-title>
+          <pui-card-subtitle>Adjust controls in Storybook</pui-card-subtitle>
+        </pui-card-header>
+        <pui-card-content>Premium composable card primitives for production SaaS UIs.</pui-card-content>
       </pui-card>
-    `,
-  }),
-};
-
-export const FeatureCardExample: Story = {
-  render: () => ({
-    template: `
-      <pui-card variant="elevated" size="md" style="max-width: 400px; text-align: center;">
-        <div style="
-          width: 56px;
-          height: 56px;
-          border-radius: var(--pui-radius-lg);
-          background: color-mix(in srgb, var(--pui-color-primary) 15%, transparent);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto var(--pui-space-md) auto;
-          font-size: 1.75rem;">
-          ✨
-        </div>
-        <h3 style="margin: 0 0 var(--pui-space-sm) 0; color: var(--pui-text);">Premium Features</h3>
-        <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem; line-height: 1.6;">
-          Unlock powerful capabilities with our premium tier. Get priority support and advanced features.
-        </p>
-        <button
-          style="
-            margin-top: var(--pui-space-md);
-            padding: var(--pui-space-sm) var(--pui-space-md);
-            background: var(--pui-color-primary);
-            color: white;
-            border: none;
-            border-radius: var(--pui-radius-md);
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color var(--pui-duration-normal) var(--pui-easing-standard);">
-          Learn More
-        </button>
-      </pui-card>
-    `,
-  }),
-};
-
-export const ContentProjectionExample: Story = {
-  render: () => ({
-    template: `
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--pui-space-lg);">
-        <pui-card variant="default">
-          <img
-            src="https://images.unsplash.com/photo-1633356713697-4be7b67941d6?w=400&h=200&fit=crop"
-            alt="Product"
-            style="
-              width: 100%;
-              height: 200px;
-              object-fit: cover;
-              border-radius: var(--pui-radius-sm);
-              margin: calc(var(--pui-card-padding) * -1) calc(var(--pui-card-padding) * -1) var(--pui-space-md) calc(var(--pui-card-padding) * -1);
-            " />
-          <h3 style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-text);">Premium Product</h3>
-          <p style="margin: 0 0 var(--pui-space-md) 0; color: var(--pui-muted); font-size: 0.875rem;">
-            High-quality product with excellent features
-          </p>
-          <div style="display: flex; gap: var(--pui-space-sm);">
-            <button
-              style="
-                flex: 1;
-                padding: var(--pui-space-sm) var(--pui-space-md);
-                background: var(--pui-color-primary);
-                color: white;
-                border: none;
-                border-radius: var(--pui-radius-md);
-                cursor: pointer;
-                font-weight: 500;
-                font-size: 0.875rem;">
-              Add to Cart
-            </button>
-            <button
-              style="
-                flex: 1;
-                padding: var(--pui-space-sm) var(--pui-space-md);
-                background: transparent;
-                color: var(--pui-color-primary);
-                border: 1px solid var(--pui-color-border);
-                border-radius: var(--pui-radius-md);
-                cursor: pointer;
-                font-weight: 500;
-                font-size: 0.875rem;">
-              View Details
-            </button>
-          </div>
-        </pui-card>
-      </div>
     `,
   }),
 };

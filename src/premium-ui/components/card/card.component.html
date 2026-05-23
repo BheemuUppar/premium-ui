@@ -1,3 +1,15 @@
-<div class="pui-card__container">
-  <ng-content></ng-content>
-</div>
+@if (loading()) {
+  <div class="pui-card__skeleton" aria-hidden="true">
+    <div class="pui-card__skeleton-block pui-card__skeleton-block--media"></div>
+    <div class="pui-card__skeleton-block pui-card__skeleton-block--title"></div>
+    <div class="pui-card__skeleton-block"></div>
+    <div class="pui-card__skeleton-block pui-card__skeleton-block--short"></div>
+  </div>
+} @else {
+  <div class="pui-card__edge" aria-hidden="true"></div>
+  <div class="pui-card__surface" aria-hidden="true"></div>
+  <div class="pui-card__glow" aria-hidden="true"></div>
+  <div class="pui-card__container">
+    <ng-content />
+  </div>
+}

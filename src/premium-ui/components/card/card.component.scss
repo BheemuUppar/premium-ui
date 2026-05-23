@@ -2,19 +2,82 @@
 
 :host {
   display: block;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   border-radius: var(--pui-card-radius);
   background: var(--pui-card-bg);
   border: var(--pui-card-border-width) solid var(--pui-card-border);
-  box-shadow: var(--pui-card-shadow);
+  box-shadow: var(--pui-card-inner-highlight), var(--pui-card-inner-depth), var(--pui-card-shadow);
   transition:
-    background-color var(--pui-duration-normal) var(--pui-easing-standard),
-    border-color var(--pui-duration-normal) var(--pui-easing-standard),
-    box-shadow var(--pui-duration-normal) var(--pui-easing-standard),
-    transform var(--pui-duration-fast) var(--pui-easing-standard);
+    transform var(--pui-card-duration) var(--pui-card-easing),
+    box-shadow var(--pui-card-duration) var(--pui-card-easing),
+    border-color var(--pui-card-duration) var(--pui-card-easing);
 }
 
-:host(.pui-card--hoverable:not(.pui-card--disabled)):hover {
-  box-shadow: var(--pui-shadow-md);
+:host(.pui-card--glass) {
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+
+.pui-card__edge,
+.pui-card__surface,
+.pui-card__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.pui-card__edge {
+  z-index: 1;
+  background: var(--pui-card-edge-light);
+  transition: opacity var(--pui-card-duration) var(--pui-card-easing);
+}
+
+.pui-card__surface {
+  z-index: 0;
+  background: var(--pui-card-surface-overlay);
+  transition: background var(--pui-card-duration) var(--pui-card-easing);
+}
+
+.pui-card__glow {
+  z-index: 0;
+  opacity: 0;
+  box-shadow: var(--pui-card-hover-glow);
+  transition: opacity var(--pui-card-duration) var(--pui-card-easing);
+}
+
+:host(.pui-card--highlighted) {
+  box-shadow:
+    var(--pui-card-inner-highlight),
+    var(--pui-card-inner-depth),
+    var(--pui-card-shadow),
+    0 0 0 1px var(--pui-card-highlight-ring);
+}
+
+:host(.pui-card--hoverable:not(.pui-card--disabled)):hover,
+:host(.pui-card--image-zoom:not(.pui-card--disabled)):hover,
+:host(.pui-card--interactive:not(.pui-card--disabled)):hover {
+  border-color: color-mix(in srgb, var(--pui-color-primary) 26%, var(--pui-card-border));
+  box-shadow: var(--pui-card-inner-highlight), var(--pui-card-inner-depth), var(--pui-card-hover-shadow);
+}
+
+:host(.pui-card--hoverable:not(.pui-card--disabled)):hover .pui-card__surface,
+:host(.pui-card--image-zoom:not(.pui-card--disabled)):hover .pui-card__surface,
+:host(.pui-card--interactive:not(.pui-card--disabled)):hover .pui-card__surface {
+  background: var(--pui-card-surface-overlay-hover);
+}
+
+:host(.pui-card--hoverable:not(.pui-card--disabled)):hover,
+:host(.pui-card--image-zoom:not(.pui-card--disabled)):hover {
+  transform: translateY(calc(var(--pui-space-xs) * -1)) scale(1.002);
+}
+
+:host(.pui-card--hoverable:not(.pui-card--disabled)):hover .pui-card__glow,
+:host(.pui-card--image-zoom:not(.pui-card--disabled)):hover .pui-card__glow,
+:host(.pui-card--interactive:not(.pui-card--disabled)):hover .pui-card__glow {
+  opacity: 1;
 }
 
 :host(.pui-card--interactive) {
@@ -23,13 +86,12 @@
 }
 
 :host(.pui-card--interactive:not(.pui-card--disabled)):hover {
-  box-shadow: var(--pui-shadow-md);
-  transform: translateY(-2px);
+  transform: translateY(calc(var(--pui-space-sm) * -1)) scale(1.004);
 }
 
 :host(.pui-card--interactive:not(.pui-card--disabled)):active {
-  transform: translateY(-1px);
-  box-shadow: var(--pui-shadow-sm);
+  transform: translateY(calc(var(--pui-space-xxs) * -0.5)) scale(1.001);
+  box-shadow: var(--pui-card-inner-highlight), var(--pui-card-inner-depth), var(--pui-card-active-shadow);
 }
 
 :host(.pui-card--interactive:focus) {
@@ -43,18 +105,100 @@
 
 :host(.pui-card--disabled) {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.58;
+}
+
+:host(.pui-card--loading) {
+  pointer-events: none;
 }
 
 :host(.pui-card--ghost:not(.pui-card--disabled)):hover {
-  background: color-mix(in srgb, var(--pui-color-primary) 5%, transparent);
+  background: color-mix(in srgb, var(--pui-color-primary) 7%, var(--pui-color-surface));
 }
 
 .pui-card__container {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: var(--pui-card-gap);
   padding: var(--pui-card-padding);
   width: 100%;
   height: 100%;
+  min-height: 0;
+}
+
+:host(.pui-card--horizontal) .pui-card__container {
+  flex-direction: row;
+  align-items: stretch;
+  gap: var(--pui-space-lg);
+}
+
+:host(.pui-card--horizontal) .pui-card__container > :not(pui-card-image) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--pui-card-gap);
+}
+
+.pui-card__skeleton {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-sm);
+  padding: var(--pui-card-padding);
+}
+
+.pui-card__skeleton-block {
+  height: 0.75rem;
+  border-radius: var(--pui-radius-sm);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--pui-color-border) 32%, transparent) 0%,
+    color-mix(in srgb, var(--pui-surface-raised) 40%, transparent) 50%,
+    color-mix(in srgb, var(--pui-color-border) 32%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  animation: pui-card-shimmer 1.4s var(--pui-card-easing) infinite;
+}
+
+.pui-card__skeleton-block--media {
+  height: 10rem;
+  margin: calc(var(--pui-card-padding-y) * -1) calc(var(--pui-card-padding-x) * -1) var(--pui-space-sm);
+  border-radius: var(--pui-card-image-radius) var(--pui-card-image-radius) 0 0;
+}
+
+.pui-card__skeleton-block--title {
+  width: 54%;
+  height: 1.125rem;
+}
+
+.pui-card__skeleton-block--short {
+  width: 38%;
+}
+
+@keyframes pui-card-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host,
+  .pui-card__edge,
+  .pui-card__glow,
+  .pui-card__surface,
+  .pui-card__skeleton-block {
+    transition: none;
+    animation: none;
+  }
+
+  :host(.pui-card--hoverable:not(.pui-card--disabled)):hover,
+  :host(.pui-card--interactive:not(.pui-card--disabled)):hover,
+  :host(.pui-card--image-zoom:not(.pui-card--disabled)):hover {
+    transform: none;
+  }
 }

@@ -1,0 +1,20 @@
+<div class="pui-card-image__frame">
+  <img
+    class="pui-card-image__img"
+    [src]="src()"
+    [alt]="alt()"
+    loading="lazy"
+    decoding="async"
+  />
+  @if (gradientOverlay()) {
+    <div class="pui-card-image__gradient" aria-hidden="true"></div>
+  }
+  @if (overlay()) {
+    <div class="pui-card-image__overlay" aria-hidden="true"></div>
+  }
+  <div class="pui-card-image__vignette" aria-hidden="true"></div>
+  <div class="pui-card-image__fade" aria-hidden="true"></div>
+  <div class="pui-card-image__content">
+    <ng-content />
+  </div>
+</div>

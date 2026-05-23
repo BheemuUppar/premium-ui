@@ -2,22 +2,29 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { map } from 'rxjs';
-import { PuiCardComponent } from '../../../../premium-ui/components/card';
+import { PuiButtonComponent } from '../../../../premium-ui/components/button';
+import {
+  PuiCardActionsComponent,
+  PuiCardBadgeComponent,
+  PuiCardComponent,
+  PuiCardContentComponent,
+  PuiCardFooterComponent,
+  PuiCardHeaderComponent,
+  PuiCardImageComponent,
+  PuiCardSubtitleComponent,
+  PuiCardTitleComponent,
+} from '../../../../premium-ui/components/card';
 import type { PuiCardSize, PuiCardVariant } from '../../../../premium-ui/components/card';
 import type { PuiDocsTab } from '../../docs.types';
 
-type PuiDocsCardTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming';
-
-interface PuiCardExample {
-  readonly title: string;
-  readonly description: string;
-  readonly code: string;
-  readonly variant?: PuiCardVariant;
-  readonly size?: PuiCardSize;
-  readonly hoverable?: boolean;
-  readonly interactive?: boolean;
-  readonly disabled?: boolean;
-}
+type PuiDocsCardTab =
+  | 'overview'
+  | 'examples'
+  | 'layouts'
+  | 'api'
+  | 'accessibility'
+  | 'theming'
+  | 'playground';
 
 interface PuiApiRow {
   readonly name: string;
@@ -26,12 +33,28 @@ interface PuiApiRow {
   readonly description: string;
 }
 
+const PRODUCT_IMAGE =
+  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop';
+
 @Component({
   selector: 'app-card-docs',
-  imports: [PuiCardComponent, RouterLink, RouterLinkActive],
+  imports: [
+    PuiCardComponent,
+    PuiCardHeaderComponent,
+    PuiCardTitleComponent,
+    PuiCardSubtitleComponent,
+    PuiCardContentComponent,
+    PuiCardFooterComponent,
+    PuiCardActionsComponent,
+    PuiCardImageComponent,
+    PuiCardBadgeComponent,
+    PuiButtonComponent,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: './card-docs.component.html',
   styleUrl: './card-docs.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardDocsComponent {
   private readonly route = inject(ActivatedRoute);
@@ -46,154 +69,119 @@ export class CardDocsComponent {
     return this.isDocsTab(tab) ? tab : 'overview';
   });
 
-  protected readonly currentCodeTab = signal<'html' | 'ts'>('html');
-
   protected readonly tabs: readonly PuiDocsTab[] = [
     { label: 'Overview', route: ['/docs/components/card/overview'] },
     { label: 'Examples', route: ['/docs/components/card/examples'] },
+    { label: 'Layouts', route: ['/docs/components/card/layouts'] },
     { label: 'API Guide', route: ['/docs/components/card/api'] },
     { label: 'Accessibility', route: ['/docs/components/card/accessibility'] },
-    { label: 'Theming', route: ['/docs/components/card/theming'] }
+    { label: 'Theming', route: ['/docs/components/card/theming'] },
+    { label: 'Playground', route: ['/docs/components/card/playground'] },
   ];
 
-  protected readonly variants: readonly PuiCardVariant[] = ['default', 'outlined', 'elevated', 'ghost'];
-  protected readonly sizes: readonly PuiCardSize[] = ['sm', 'md', 'lg'];
+  protected readonly variants: readonly PuiCardVariant[] = [
+    'default',
+    'outlined',
+    'elevated',
+    'ghost',
+    'glass',
+    'gradient',
+  ];
 
-  // Fixed TS2339: Added missing structural descriptions used by the @for loops in HTML
   protected readonly variantDescriptions: Record<PuiCardVariant, string> = {
-    default: 'The standard card with a subtle border and soft background.',
-    outlined: 'A clean card variant with a distinct border outline and no background shadow.',
-    elevated: 'A premium-feeling card styled with a prominent shadow to provide surface depth.',
-    ghost: 'An ultra-subtle transparent container designed to blend cleanly into any background.'
+    default: 'Soft gradient surface with layered ambient shadows and inner highlight.',
+    outlined: 'Semi-transparent surface with subtle border and restrained depth.',
+    elevated: 'High elevation with deeper ambient shadow stack on hover.',
+    ghost: 'Borderless transparent surface for nested or minimal layouts.',
+    glass: 'Frosted glass with blur, layered highlights, and soft ambient depth.',
+    gradient: 'Primary-tinted gradient with spotlight overlay for featured content.',
   };
 
-  protected readonly sizeDescriptions: Record<PuiCardSize, string> = {
-    sm: 'Compact layout padding optimized for dense lists, dashboard widgets, and minor data feeds.',
-    md: 'Standard layout padding optimized for general content management and average readability.',
-    lg: 'Generous layout padding optimized for complex hero blocks, modal structures, and feature callouts.'
-  };
+  protected readonly sizes: readonly PuiCardSize[] = ['sm', 'md', 'lg'];
+  protected readonly productImage = PRODUCT_IMAGE;
 
-  protected readonly htmlExample = `<pui-card>
-  <h3>Card Title</h3>
-  <p>Your content here</p>
+  protected readonly htmlExample = `<pui-card hoverable>
+  <pui-card-header>
+    <pui-card-title>Revenue</pui-card-title>
+    <pui-card-subtitle>Monthly analytics</pui-card-subtitle>
+  </pui-card-header>
+  <pui-card-content>Your content here</pui-card-content>
+  <pui-card-footer>
+    <pui-card-actions>
+      <pui-button size="sm" variant="ghost">View</pui-button>
+    </pui-card-actions>
+  </pui-card-footer>
 </pui-card>`;
 
-  protected readonly tsExample = `import { Component } from '@angular/core';
-import { PuiCardComponent } from '@premium-ui/components';
-
-@Component({
-  selector: 'app-example',
-  imports: [PuiCardComponent],
-  template: \`
-    <pui-card>
-      <h3>Card Title</h3>
-      <p>Your content here</p>
-    </pui-card>
-  \`
-})
-export class ExampleComponent {}`;
-
-  protected readonly examples: readonly PuiCardExample[] = [
-    {
-      title: 'Default card',
-      description: 'The standard card with subtle border and soft background.',
-      code: `<pui-card>
-  <h3>Card Title</h3>
-  <p>This is a default card with soft styling</p>
-</pui-card>`
-    },
-    {
-      title: 'Outlined card',
-      description: 'A clean card with a stronger border and no shadow.',
-      variant: 'outlined',
-      code: `<pui-card variant="outlined">
-  <h3>Card Title</h3>
-  <p>This is an outlined card</p>
-</pui-card>`
-    },
-    {
-      title: 'Elevated card',
-      description: 'A premium card with a strong shadow for prominent content.',
-      variant: 'elevated',
-      code: `<pui-card variant="elevated">
-  <h3>Card Title</h3>
-  <p>This is an elevated card with depth</p>
-</pui-card>`
-    },
-    {
-      title: 'Ghost card',
-      description: 'A subtle card with transparent background.',
-      variant: 'ghost',
-      code: `<pui-card variant="ghost">
-  <h3>Card Title</h3>
-  <p>This is a ghost card</p>
-</pui-card>`
-    },
-    {
-      title: 'Hoverable card',
-      description: 'A card that responds to hover with elevation effect.',
-      hoverable: true,
-      code: `<pui-card [hoverable]="true">
-  <h3>Card Title</h3>
-  <p>Hover over this card</p>
-</pui-card>`
-    },
-    {
-      title: 'Interactive card',
-      description: 'A clickable card with keyboard support and hover state.',
-      interactive: true,
-      code: `<pui-card [interactive]="true">
-  <h3>Card Title</h3>
-  <p>Click this card for interaction</p>
-</pui-card>`
-    }
-  ];
-
-  protected readonly apiRows: readonly PuiApiRow[] = [
-    { name: 'variant', type: 'PuiCardVariant', defaultValue: 'default', description: 'Controls the visual treatment: default, outlined, elevated, or ghost.' },
-    { name: 'size', type: 'PuiCardSize', defaultValue: 'md', description: 'Controls padding and gap: sm, md, or lg.' },
-    { name: 'hoverable', type: 'boolean', defaultValue: 'false', description: 'Enables subtle hover elevation effect.' },
-    { name: 'interactive', type: 'boolean', defaultValue: 'false', description: 'Makes the card clickable with keyboard support and lift effect.' },
-    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction for interactive cards.' }
-  ];
-
-  protected readonly ariaCode = `<pui-card
-  interactive="true"
-  [disabled]="isDisabled"
-  role="button"
-  tabindex="0"
-  aria-disabled="false">
-  Content
+  protected readonly pricingExample = `<pui-card variant="gradient" highlighted hoverable>
+  <pui-card-header split>
+    <pui-card-title>Pro</pui-card-title>
+    <pui-card-badge variant="primary" pill>Popular</pui-card-badge>
+  </pui-card-header>
+  <pui-card-content>$49 / month</pui-card-content>
+  <pui-card-footer>
+    <pui-button>Choose plan</pui-button>
+  </pui-card-footer>
 </pui-card>`;
 
-  protected readonly themeCode = `:root {
+  protected readonly productExample = `<pui-card hoverable imageZoom>
+  <pui-card-image src="..." alt="Product" zoomOnHover aspect="square" />
+  <pui-card-title>Product name</pui-card-title>
+  <pui-card-footer>
+    <pui-button size="sm">Add to cart</pui-button>
+  </pui-card-footer>
+</pui-card>`;
+
+  protected readonly cardApiRows: readonly PuiApiRow[] = [
+    { name: 'variant', type: 'PuiCardVariant', defaultValue: 'default', description: 'Visual style: default, outlined, elevated, ghost, glass, gradient.' },
+    { name: 'size', type: 'PuiCardSize', defaultValue: 'md', description: 'Padding scale: sm, md, lg.' },
+    { name: 'layout', type: 'vertical | horizontal', defaultValue: 'vertical', description: 'Stack content vertically or place media beside content.' },
+    { name: 'hoverable', type: 'boolean', defaultValue: 'false', description: 'Enables subtle lift and shadow on hover.' },
+    { name: 'interactive', type: 'boolean', defaultValue: 'false', description: 'Makes the card clickable with keyboard support.' },
+    { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows skeleton placeholder state.' },
+    { name: 'highlighted', type: 'boolean', defaultValue: 'false', description: 'Premium emphasis ring for pricing or featured content.' },
+    { name: 'imageZoom', type: 'boolean', defaultValue: 'false', description: 'Enables image zoom on hover for nested pui-card-image.' },
+    { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction for interactive cards.' },
+  ];
+
+  protected readonly primitiveApiRows: readonly PuiApiRow[] = [
+    { name: 'pui-card-header', type: 'component', defaultValue: '-', description: 'Header region with optional split layout for title + actions.' },
+    { name: 'pui-card-title', type: 'component', defaultValue: '-', description: 'Semantic card heading.' },
+    { name: 'pui-card-subtitle', type: 'component', defaultValue: '-', description: 'Supporting header text.' },
+    { name: 'pui-card-content', type: 'component', defaultValue: '-', description: 'Main body content area.' },
+    { name: 'pui-card-footer', type: 'component', defaultValue: '-', description: 'Footer actions and metadata.' },
+    { name: 'pui-card-actions', type: 'component', defaultValue: '-', description: 'Inline action cluster, typically in header/footer.' },
+    { name: 'pui-card-image', type: 'component', defaultValue: '-', description: 'Media with aspect ratio, overlay, gradient, and zoom.' },
+    { name: 'pui-card-badge', type: 'component', defaultValue: '-', description: 'Status badge with semantic variants.' },
+  ];
+
+  protected readonly themeCode = `:host {
   --pui-card-bg: var(--pui-color-surface);
   --pui-card-border: var(--pui-color-border);
-  --pui-card-shadow: var(--pui-shadow-sm);
-  --pui-card-padding: var(--pui-space-md);
-  --pui-card-radius: var(--pui-radius-md);
-}`;
-
-  protected readonly customThemeCode = `:host {
+  --pui-card-shadow: var(--pui-shadow-lg);
+  --pui-card-hover-shadow: var(--pui-shadow-xl);
+  --pui-card-radius: var(--pui-radius-xl);
   --pui-card-padding: var(--pui-space-lg);
-  --pui-card-shadow: var(--pui-shadow-md);
 }`;
 
-  protected readonly playgroundVariant = signal<PuiCardVariant>('default');
+  protected readonly playgroundVariant = signal<PuiCardVariant>('elevated');
   protected readonly playgroundSize = signal<PuiCardSize>('md');
-  protected readonly playgroundHoverable = signal(false);
-  protected readonly playgroundInteractive = signal(false);
-  protected readonly playgroundDisabled = signal(false);
+  protected readonly playgroundHoverable = signal(true);
+  protected readonly playgroundHighlighted = signal(false);
+  protected readonly playgroundLoading = signal(false);
 
   protected readonly playgroundCode = computed(() => {
-    const variant = this.playgroundVariant() !== 'default' ? ` variant="${this.playgroundVariant()}"` : '';
-    const size = this.playgroundSize() !== 'md' ? ` size="${this.playgroundSize()}"` : '';
-    const hoverable = this.playgroundHoverable() ? ' [hoverable]="true"' : '';
-    const interactive = this.playgroundInteractive() ? ' [interactive]="true"' : '';
-    const disabled = this.playgroundDisabled() && this.playgroundInteractive() ? ' [disabled]="true"' : '';
-    return `<pui-card${variant}${size}${hoverable}${interactive}${disabled}>
-  <h3>Card Title</h3>
-  <p>Preview content</p>
+    const attrs = [
+      this.playgroundHoverable() ? ' hoverable' : '',
+      this.playgroundHighlighted() ? ' highlighted' : '',
+      this.playgroundLoading() ? ' loading' : '',
+      this.playgroundVariant() !== 'default' ? ` variant="${this.playgroundVariant()}"` : '',
+      this.playgroundSize() !== 'md' ? ` size="${this.playgroundSize()}"` : '',
+    ].join('');
+
+    return `<pui-card${attrs}>
+  <pui-card-title>Preview</pui-card-title>
+  <pui-card-content>Composable premium card</pui-card-content>
 </pui-card>`;
   });
 
@@ -202,40 +190,18 @@ export class ExampleComponent {}`;
   }
 
   protected updateVariant(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    if (this.isCardVariant(value)) {
-      this.playgroundVariant.set(value);
-    }
+    this.playgroundVariant.set((event.target as HTMLSelectElement).value as PuiCardVariant);
   }
 
   protected updateSize(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    if (this.isCardSize(value)) {
-      this.playgroundSize.set(value);
-    }
+    this.playgroundSize.set((event.target as HTMLSelectElement).value as PuiCardSize);
   }
 
-  protected updateHoverable(event: Event): void {
-    this.playgroundHoverable.set((event.target as HTMLInputElement).checked);
+  protected updateCheckbox(signalRef: ReturnType<typeof signal<boolean>>, event: Event): void {
+    signalRef.set((event.target as HTMLInputElement).checked);
   }
 
-  protected updateInteractive(event: Event): void {
-    this.playgroundInteractive.set((event.target as HTMLInputElement).checked);
-  }
-
-  protected updateDisabled(event: Event): void {
-    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);
-  }
-
-  private isDocsTab(tab: unknown): tab is PuiDocsCardTab {
-    return typeof tab === 'string' && ['overview', 'examples', 'api', 'accessibility', 'theming'].includes(tab);
-  }
-
-  private isCardVariant(value: unknown): value is PuiCardVariant {
-    return typeof value === 'string' && ['default', 'outlined', 'elevated', 'ghost'].includes(value);
-  }
-
-  private isCardSize(value: unknown): value is PuiCardSize {
-    return typeof value === 'string' && ['sm', 'md', 'lg'].includes(value);
+  private isDocsTab(tab: string): tab is PuiDocsCardTab {
+    return ['overview', 'examples', 'layouts', 'api', 'accessibility', 'theming', 'playground'].includes(tab);
   }
 }

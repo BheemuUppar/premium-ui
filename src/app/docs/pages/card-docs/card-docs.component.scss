@@ -1,34 +1,77 @@
-@import '../../docs.scss';
+:host {
+  display: block;
+}
 
-.pui-tokens-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: var(--pui-space-md);
+.pui-card-preview {
+  max-width: 24rem;
+}
 
-  thead {
-    background: color-mix(in srgb, var(--pui-color-primary) 8%, transparent);
-  }
+.pui-card-preview--narrow {
+  max-width: 18rem;
+}
 
-  th,
-  td {
-    padding: var(--pui-space-md);
-    text-align: left;
-    border-bottom: 1px solid var(--pui-border);
+.pui-card-preview--wide {
+  max-width: 36rem;
+}
 
-    code {
-      background: color-mix(in srgb, var(--pui-color-primary) 5%, transparent);
-      padding: 2px 6px;
-      border-radius: var(--pui-radius-sm);
-      font-size: 0.85em;
-    }
-  }
+.pui-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--pui-space-lg);
+}
 
-  th {
-    font-weight: 600;
-    color: var(--pui-text);
-  }
+.pui-card-metric {
+  margin: 0 0 var(--pui-space-xs);
+  font-size: var(--pui-font-size-3xl);
+  font-weight: var(--pui-font-weight-bold);
+  line-height: var(--pui-line-height-tight);
+}
 
-  tbody tr:hover {
-    background: color-mix(in srgb, var(--pui-color-primary) 4%, transparent);
-  }
+.pui-card-meta {
+  color: var(--pui-muted);
+  font-size: var(--pui-font-size-sm);
+}
+
+.pui-feature-list {
+  display: grid;
+  gap: var(--pui-space-sm);
+  margin: 0;
+  padding-left: var(--pui-space-lg);
+  color: var(--pui-muted);
+}
+
+.pui-code-block {
+  border: 1px solid var(--pui-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-code-background);
+  padding: var(--pui-space-md);
+  overflow-x: auto;
+}
+
+.pui-card-glass-demo {
+  padding: var(--pui-space-xl);
+  border-radius: var(--pui-radius-xl);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--pui-color-primary) 16%, var(--pui-color-background)),
+    var(--pui-color-background)
+  );
+}
+
+.pui-playground__controls {
+  display: grid;
+  gap: var(--pui-space-md);
+}
+
+.pui-playground__controls label {
+  display: grid;
+  gap: var(--pui-space-xs);
+  font-size: var(--pui-font-size-sm);
+}
+
+.pui-playground__preview {
+  padding: var(--pui-space-md);
+  border: 1px dashed var(--pui-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-background);
 }

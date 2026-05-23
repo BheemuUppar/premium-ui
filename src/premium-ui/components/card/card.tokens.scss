@@ -1,36 +1,168 @@
 :host {
-  --pui-card-bg: var(--pui-color-surface);
-  --pui-card-border: var(--pui-color-border);
+  --pui-card-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --pui-card-duration: 380ms;
+
+  --pui-card-bg: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--pui-color-surface) 96%, var(--pui-surface-raised) 4%) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 90%, var(--pui-color-primary) 3%) 38%,
+    color-mix(in srgb, var(--pui-color-surface) 93%, var(--pui-color-text) 2%) 100%
+  );
+  --pui-card-surface-overlay: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pui-surface-raised) 38%, transparent) 0%,
+    transparent 36%,
+    color-mix(in srgb, var(--pui-color-text) 2%, transparent) 100%
+  );
+  --pui-card-surface-overlay-hover: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pui-surface-raised) 48%, transparent) 0%,
+    transparent 32%,
+    color-mix(in srgb, var(--pui-color-primary) 3%, transparent) 100%
+  );
+  --pui-card-edge-light: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pui-surface-raised) 72%, transparent) 0%,
+    color-mix(in srgb, var(--pui-surface-raised) 18%, transparent) 12%,
+    transparent 28%
+  );
+  --pui-card-border: color-mix(in srgb, var(--pui-color-border) 44%, transparent);
   --pui-card-border-width: 1px;
-  --pui-card-shadow: var(--pui-shadow-sm);
-  --pui-card-padding: var(--pui-space-md);
-  --pui-card-radius: var(--pui-radius-md);
+  --pui-card-inner-highlight: inset 0 1px 0 color-mix(in srgb, var(--pui-surface-raised) 68%, transparent);
+  --pui-card-inner-depth: inset 0 -1px 0 color-mix(in srgb, var(--pui-color-text) 4%, transparent);
+  --pui-card-shadow-ring: 0 0 0 1px color-mix(in srgb, var(--pui-color-border) 28%, transparent);
+  --pui-card-shadow-ambient: 0 1px 1px color-mix(in srgb, var(--pui-color-text) 4%, transparent),
+    0 4px 12px color-mix(in srgb, var(--pui-color-text) 5%, transparent),
+    0 20px 48px color-mix(in srgb, var(--pui-color-text) 8%, transparent);
+  --pui-card-shadow: var(--pui-card-shadow-ring), var(--pui-card-shadow-ambient);
+  --pui-card-hover-ring: 0 0 0 1px color-mix(in srgb, var(--pui-color-primary) 22%, var(--pui-color-border) 35%);
+  --pui-card-hover-ambient: 0 2px 4px color-mix(in srgb, var(--pui-color-text) 5%, transparent),
+    0 8px 24px color-mix(in srgb, var(--pui-color-text) 7%, transparent),
+    0 32px 72px color-mix(in srgb, var(--pui-color-text) 12%, transparent);
+  --pui-card-hover-shadow: var(--pui-card-hover-ring), var(--pui-card-hover-ambient);
+  --pui-card-hover-glow: 0 0 40px color-mix(in srgb, var(--pui-color-primary) 18%, transparent);
+  --pui-card-active-shadow: var(--pui-card-shadow-ring),
+    0 1px 2px color-mix(in srgb, var(--pui-color-text) 4%, transparent),
+    0 12px 28px color-mix(in srgb, var(--pui-color-text) 7%, transparent);
+
+  --pui-card-padding-y: var(--pui-space-lg);
+  --pui-card-padding-x: calc(var(--pui-space-lg) + var(--pui-space-xxs));
+  --pui-card-padding: var(--pui-card-padding-y) var(--pui-card-padding-x);
   --pui-card-gap: var(--pui-space-md);
+  --pui-card-gap-tight: var(--pui-space-xs);
+  --pui-card-radius: calc(var(--pui-radius-xl) + var(--pui-space-xxs));
+  --pui-card-image-radius: calc(var(--pui-card-radius) - var(--pui-space-sm));
+
+  --pui-card-title-color: var(--pui-color-text);
+  --pui-card-subtitle-color: color-mix(in srgb, var(--pui-muted) 88%, var(--pui-color-text));
+  --pui-card-content-color: color-mix(in srgb, var(--pui-color-text) 82%, var(--pui-muted));
+  --pui-card-footer-border: color-mix(in srgb, var(--pui-color-border) 38%, transparent);
+  --pui-card-metric-color: var(--pui-color-text);
+  --pui-card-metric-size: var(--pui-font-size-4xl);
+  --pui-card-metric-display-size: clamp(2.5rem, 5vw, 3.25rem);
+
+  --pui-card-glass-bg: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pui-color-surface) 74%, transparent) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 58%, transparent) 100%
+  );
+  --pui-card-glass-border: color-mix(in srgb, var(--pui-surface-raised) 50%, var(--pui-color-border) 25%);
+  --pui-card-highlight-ring: color-mix(in srgb, var(--pui-color-primary) 42%, transparent);
+  --pui-card-spotlight: radial-gradient(
+    130% 100% at 50% -24%,
+    color-mix(in srgb, var(--pui-color-primary) 22%, transparent) 0%,
+    color-mix(in srgb, var(--pui-color-primary) 6%, transparent) 42%,
+    transparent 72%
+  );
+  --pui-card-spotlight-intense: radial-gradient(
+    140% 110% at 50% -30%,
+    color-mix(in srgb, var(--pui-color-primary) 32%, transparent) 0%,
+    color-mix(in srgb, var(--pui-color-primary) 10%, transparent) 48%,
+    transparent 76%
+  );
 }
 
 :host(.pui-card--sm) {
-  --pui-card-padding: var(--pui-space-sm);
+  --pui-card-padding-y: var(--pui-space-md);
+  --pui-card-padding-x: var(--pui-space-md);
   --pui-card-gap: var(--pui-space-sm);
+  --pui-card-radius: var(--pui-radius-lg);
+  --pui-card-metric-size: var(--pui-font-size-3xl);
 }
 
 :host(.pui-card--lg) {
-  --pui-card-padding: var(--pui-space-lg);
+  --pui-card-padding-y: var(--pui-space-xl);
+  --pui-card-padding-x: calc(var(--pui-space-xl) + var(--pui-space-xs));
   --pui-card-gap: var(--pui-space-lg);
+  --pui-card-radius: calc(var(--pui-radius-xl) + var(--pui-space-sm));
 }
 
 :host(.pui-card--outlined) {
-  --pui-card-bg: transparent;
-  --pui-card-border-width: 2px;
-  --pui-card-shadow: none;
+  --pui-card-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pui-color-surface) 92%, transparent) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 84%, var(--pui-color-text) 1%) 100%
+  );
+  --pui-card-surface-overlay: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pui-surface-raised) 16%, transparent) 0%,
+    transparent 100%
+  );
+  --pui-card-shadow-ambient: 0 6px 20px color-mix(in srgb, var(--pui-color-text) 5%, transparent);
 }
 
 :host(.pui-card--elevated) {
-  --pui-card-shadow: var(--pui-shadow-lg);
+  --pui-card-shadow-ambient: 0 2px 4px color-mix(in srgb, var(--pui-color-text) 5%, transparent),
+    0 12px 32px color-mix(in srgb, var(--pui-color-text) 9%, transparent),
+    0 28px 64px color-mix(in srgb, var(--pui-color-text) 11%, transparent);
+  --pui-card-hover-ambient: 0 4px 8px color-mix(in srgb, var(--pui-color-text) 6%, transparent),
+    0 16px 40px color-mix(in srgb, var(--pui-color-text) 10%, transparent),
+    0 36px 80px color-mix(in srgb, var(--pui-color-text) 14%, transparent);
+  --pui-card-hover-shadow: var(--pui-card-hover-ring), var(--pui-card-hover-ambient);
 }
 
 :host(.pui-card--ghost) {
   --pui-card-bg: transparent;
+  --pui-card-surface-overlay: transparent;
+  --pui-card-edge-light: transparent;
   --pui-card-border: transparent;
-  --pui-card-border-width: 1px;
   --pui-card-shadow: none;
+  --pui-card-inner-highlight: none;
+  --pui-card-inner-depth: none;
+  --pui-card-hover-shadow: var(--pui-card-hover-ring);
+}
+
+:host(.pui-card--glass) {
+  --pui-card-bg: var(--pui-card-glass-bg);
+  --pui-card-surface-overlay: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pui-surface-raised) 36%, transparent) 0%,
+    transparent 55%
+  );
+  --pui-card-edge-light: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pui-surface-raised) 55%, transparent) 0%,
+    transparent 22%
+  );
+  --pui-card-border: var(--pui-card-glass-border);
+  --pui-card-shadow-ambient: 0 8px 32px color-mix(in srgb, var(--pui-color-text) 8%, transparent),
+    0 24px 56px color-mix(in srgb, var(--pui-color-text) 10%, transparent);
+}
+
+:host(.pui-card--gradient) {
+  --pui-card-bg: linear-gradient(
+    152deg,
+    color-mix(in srgb, var(--pui-color-surface) 88%, var(--pui-color-primary) 12%) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 80%, var(--pui-color-primary) 20%) 100%
+  );
+  --pui-card-surface-overlay: var(--pui-card-spotlight-intense);
+  --pui-card-border: color-mix(in srgb, var(--pui-color-primary) 28%, var(--pui-color-border) 35%);
+}
+
+:host(.pui-card--highlighted) {
+  --pui-card-surface-overlay: var(--pui-card-spotlight-intense);
+  --pui-card-border: color-mix(in srgb, var(--pui-color-primary) 45%, var(--pui-color-border) 40%);
+  --pui-card-hover-glow: 0 0 52px color-mix(in srgb, var(--pui-color-primary) 26%, transparent);
+  --pui-card-shadow-ambient: 0 4px 12px color-mix(in srgb, var(--pui-color-primary) 10%, transparent),
+    0 24px 64px color-mix(in srgb, var(--pui-color-primary) 14%, transparent);
 }
