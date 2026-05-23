@@ -88,6 +88,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/toggle-docs/toggle-docs.component').then((component) => component.ToggleDocsComponent)
       },
       {
+        path: 'components/tabs',
+        redirectTo: 'components/tabs/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/tabs/:tab',
+        loadComponent: () => import('./docs/pages/tabs-docs/tabs-docs.component').then((component) => component.TabsDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

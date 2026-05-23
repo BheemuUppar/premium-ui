@@ -1,0 +1,32 @@
+@use '../../internal/styles/motion' as pui-motion;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.pui-tab-panel {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--pui-tabs-panel-padding);
+  border: 1px solid var(--pui-tabs-panel-border);
+  border-radius: var(--pui-tabs-panel-radius);
+  background: var(--pui-tabs-panel-bg);
+  animation: pui-tab-panel-enter var(--pui-duration-normal) var(--pui-easing-standard);
+}
+
+@keyframes pui-tab-panel-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@include pui-motion.pui-reduced-motion {
+  .pui-tab-panel {
+    animation: none;
+  }
+}

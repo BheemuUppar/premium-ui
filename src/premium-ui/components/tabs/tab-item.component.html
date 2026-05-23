@@ -1,0 +1,22 @@
+<button
+  #tabButton
+  type="button"
+  class="pui-tab-item__button"
+  [class.pui-tab-item__button--selected]="isSelected()"
+  [attr.aria-selected]="isSelected()"
+  [attr.aria-controls]="panelId() || null"
+  [attr.tabindex]="isSelected() ? 0 : -1"
+  [disabled]="isDisabled()"
+  (click)="onClick()"
+>
+  <span class="pui-tab-item__label">{{ label() }}</span>
+  @if (badge() !== null && badge() !== undefined) {
+    <span class="pui-tab-item__badge">
+      @if (badge() === true) {
+        <span class="pui-tab-item__badge-dot" aria-hidden="true"></span>
+      } @else {
+        {{ badge() }}
+      }
+    </span>
+  }
+</button>

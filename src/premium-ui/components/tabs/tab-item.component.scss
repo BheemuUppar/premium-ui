@@ -1,0 +1,127 @@
+@use '../../internal/styles/focus' as pui-focus;
+@use '../../internal/styles/motion' as pui-motion;
+
+:host {
+  display: flex;
+  position: relative;
+  align-items: center;
+  z-index: 1;
+}
+
+:host(.pui-tab-item--sliding) {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+:host([data-orientation='vertical']) {
+  width: 100%;
+}
+
+.pui-tab-item__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pui-space-xs);
+  width: 100%;
+  min-height: var(--pui-tabs-tab-min-height);
+  padding: var(--pui-tabs-tab-padding-y) var(--pui-tabs-tab-padding-x);
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: var(--pui-tabs-tab-color);
+  font-family: inherit;
+  font-size: var(--pui-tabs-tab-font-size);
+  font-weight: var(--pui-font-weight-medium);
+  line-height: var(--pui-line-height-tight);
+  cursor: pointer;
+  white-space: nowrap;
+  @include pui-motion.pui-transition-interaction(color, background-color, border-color, box-shadow);
+
+  &:hover:not(:disabled) {
+    color: var(--pui-tabs-tab-color-hover);
+  }
+
+  &:focus-visible {
+    @include pui-focus.pui-focus-ring;
+  }
+
+  &:disabled {
+    opacity: var(--pui-disabled-opacity);
+    cursor: not-allowed;
+  }
+
+  &--selected {
+    color: var(--pui-tabs-tab-color-selected);
+    font-weight: var(--pui-font-weight-semibold);
+    z-index: 2;
+  }
+}
+
+:host([data-variant='underline']) .pui-tab-item__button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pui-color-primary) 5%, transparent);
+}
+
+:host([data-variant='underline']) .pui-tab-item__button--selected {
+  background: transparent;
+  border-bottom: 2px solid var(--pui-tabs-underline-active);
+  margin-bottom: -1px;
+}
+
+:host([data-variant='underline'][data-orientation='vertical']) .pui-tab-item__button--selected {
+  border-bottom: none;
+  border-left: 3px solid var(--pui-tabs-underline-active);
+  margin-bottom: 0;
+  margin-left: -1px;
+}
+
+:host(.pui-tab-item--sliding) .pui-tab-item__button--selected {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+:host(.pui-tab-item--sliding) .pui-tab-item__button:hover:not(:disabled):not(.pui-tab-item__button--selected) {
+  background: color-mix(in srgb, var(--pui-color-primary) 8%, transparent);
+}
+
+.pui-tab-item__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pui-space-xs);
+  flex-shrink: 0;
+}
+
+.pui-tab-item__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 var(--pui-space-xxs);
+  border-radius: var(--pui-radius-full);
+  background: color-mix(in srgb, var(--pui-color-primary) 12%, var(--pui-color-surface));
+  color: var(--pui-color-primary);
+  font-size: var(--pui-font-size-xs);
+  font-weight: var(--pui-font-weight-semibold);
+  line-height: 1;
+  flex-shrink: 0;
+
+  .pui-tab-item__button--selected & {
+    background: color-mix(in srgb, var(--pui-color-primary) 20%, var(--pui-color-surface));
+  }
+}
+
+.pui-tab-item__badge-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--pui-color-primary);
+}
+
+@include pui-motion.pui-reduced-motion {
+  .pui-tab-item__button {
+    transition: none;
+  }
+}

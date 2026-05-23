@@ -6,4 +6,5 @@ export * from './components/checkbox';
 export * from './components/radio';
 export * from './components/switch';
 export * from './components/toggle';
+export * from './components/tabs';
 export * from './types/common.types';

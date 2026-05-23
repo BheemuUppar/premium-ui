@@ -56,7 +56,7 @@ export class DocsSidebarComponent {
       id: 'navigation',
       label: 'Navigation',
       items: [
-        { label: 'Tabs', route: ['/docs/components/tabs'] },
+        { label: 'Tabs', route: ['/docs/components/tabs/overview'], badge: 'Ready' },
         { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }
       ]
     },

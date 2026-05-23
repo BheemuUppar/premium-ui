@@ -1,0 +1,59 @@
+:host {
+  --pui-tabs-gap: var(--pui-space-md);
+  --pui-tabs-list-gap: var(--pui-space-md);
+  --pui-tabs-nav-min-width: 12rem;
+  --pui-tabs-list-padding: var(--pui-space-xxs);
+  --pui-tabs-list-radius: var(--pui-radius-md);
+  --pui-tabs-list-border: color-mix(in srgb, var(--pui-color-primary) 28%, var(--pui-color-border));
+  --pui-tabs-list-bg: color-mix(in srgb, var(--pui-color-primary) 16%, var(--pui-color-surface));
+  --pui-tabs-list-shadow: inset 0 1px 2px color-mix(in srgb, var(--pui-color-primary) 10%, transparent);
+  --pui-tabs-underline-border: var(--pui-color-border);
+  --pui-tabs-underline-active: var(--pui-color-primary);
+  --pui-tabs-tab-min-height: 2.5rem;
+  --pui-tabs-tab-padding-x: var(--pui-space-md);
+  --pui-tabs-tab-padding-y: var(--pui-space-sm);
+  --pui-tabs-tab-font-size: var(--pui-font-size-sm);
+  --pui-tabs-tab-color: color-mix(in srgb, var(--pui-color-text) 70%, transparent);
+  --pui-tabs-tab-color-hover: var(--pui-color-primary);
+  --pui-tabs-tab-color-selected: var(--pui-color-primary);
+  --pui-tabs-indicator-bg: var(--pui-color-surface);
+  --pui-tabs-indicator-shadow:
+    var(--pui-shadow-sm),
+    0 1px 2px color-mix(in srgb, var(--pui-color-text) 8%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--pui-color-primary) 12%, transparent);
+  --pui-tabs-indicator-radius: calc(var(--pui-tabs-list-radius) - var(--pui-space-xxs));
+  --pui-tabs-indicator-index: 0;
+  --pui-tabs-indicator-count: 1;
+  --pui-tabs-panel-padding: var(--pui-space-lg);
+  --pui-tabs-panel-radius: var(--pui-radius-md);
+  --pui-tabs-panel-border: var(--pui-color-border);
+  --pui-tabs-panel-bg: var(--pui-color-surface);
+}
+
+:host(.pui-tabs--sm) {
+  --pui-tabs-tab-min-height: 2rem;
+  --pui-tabs-tab-padding-x: var(--pui-space-sm);
+  --pui-tabs-tab-padding-y: var(--pui-space-xs);
+  --pui-tabs-tab-font-size: var(--pui-font-size-xs);
+}
+
+:host(.pui-tabs--lg) {
+  --pui-tabs-tab-min-height: 3rem;
+  --pui-tabs-tab-padding-x: var(--pui-space-lg);
+  --pui-tabs-tab-padding-y: var(--pui-space-md);
+  --pui-tabs-tab-font-size: var(--pui-font-size-md);
+}
+
+:host(.pui-tabs--segmented-soft) {
+  --pui-tabs-list-bg: color-mix(in srgb, var(--pui-color-primary) 12%, var(--pui-color-surface));
+  --pui-tabs-list-shadow: inset 0 1px 3px color-mix(in srgb, var(--pui-color-primary) 12%, transparent);
+  --pui-tabs-indicator-bg: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-color-surface));
+  --pui-tabs-indicator-shadow:
+    0 1px 2px color-mix(in srgb, var(--pui-color-primary) 6%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-color-surface));
+}
+
+:host(.pui-tabs--pill) {
+  --pui-tabs-list-radius: var(--pui-radius-full);
+  --pui-tabs-indicator-radius: var(--pui-radius-full);
+}
