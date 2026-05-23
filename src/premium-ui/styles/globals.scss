@@ -13,3 +13,7 @@ body {
   outline: 2px solid var(--pui-color-focus-ring);
   outline-offset: 2px;
 }
+
+.cdk-overlay-pane.pui-select__overlay-pane {
+  z-index: var(--pui-z-index-dropdown);
+}

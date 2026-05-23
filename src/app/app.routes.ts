@@ -43,6 +43,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/card-docs/card-docs.component').then((component) => component.CardDocsComponent)
       },
       {
+        path: 'components/select',
+        redirectTo: 'components/select/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/select/:tab',
+        loadComponent: () => import('./docs/pages/select-docs/select-docs.component').then((component) => component.SelectDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

@@ -1,0 +1,33 @@
+:host {
+  --pui-select-bg: var(--pui-color-surface);
+  --pui-select-border: var(--pui-color-border);
+  --pui-select-border-hover: var(--pui-color-primary);
+  --pui-select-color: var(--pui-color-text);
+  --pui-select-placeholder: var(--pui-muted);
+  --pui-select-radius: var(--pui-radius-md);
+  --pui-select-height: 2.75rem;
+  --pui-select-padding: 0 var(--pui-space-md);
+  --pui-select-font-size: var(--pui-font-size-sm);
+  --pui-select-gap: var(--pui-space-xs);
+  --pui-select-panel-bg: var(--pui-color-surface);
+  --pui-select-panel-border: var(--pui-color-border);
+  --pui-select-panel-shadow: var(--pui-shadow-lg);
+  --pui-select-option-hover: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-color-surface));
+  --pui-select-option-selected: color-mix(in srgb, var(--pui-color-primary) 14%, var(--pui-color-surface));
+  --pui-select-option-active: color-mix(in srgb, var(--pui-color-primary) 18%, var(--pui-color-surface));
+  --pui-select-option-disabled: var(--pui-muted);
+  --pui-select-chip-bg: color-mix(in srgb, var(--pui-color-primary) 10%, var(--pui-color-surface));
+  --pui-select-chip-color: var(--pui-color-text);
+}
+
+:host(.pui-select--sm) {
+  --pui-select-height: 2.25rem;
+  --pui-select-font-size: var(--pui-font-size-sm);
+  --pui-select-padding: 0 var(--pui-space-sm);
+}
+
+:host(.pui-select--lg) {
+  --pui-select-height: 3rem;
+  --pui-select-font-size: var(--pui-font-size-md);
+  --pui-select-padding: 0 var(--pui-space-lg);
+}

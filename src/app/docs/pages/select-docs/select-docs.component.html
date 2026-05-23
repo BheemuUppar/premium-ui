@@ -1,0 +1,461 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero" id="overview">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/select/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/select/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span>Select</span>
+    </nav>
+    <h1>Select</h1>
+    <p>
+      A feature-driven combobox for single and multi selection with search, virtualization,
+      async loading, and full keyboard support.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Select documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a
+        class="pui-tab"
+        [routerLink]="tab.route"
+        routerLinkActive="pui-tab--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section" id="basic-usage" aria-labelledby="overview-title">
+          <h2 id="overview-title">Overview</h2>
+          <p>
+            Enable features declaratively through inputs. Combine searchable, multiple, and
+            virtualScroll as needed without separate component variants.
+          </p>
+          <div class="pui-preview-row">
+            <pui-select
+              class="pui-select-preview"
+              [value]="selectedFramework()"
+              (valueChange)="selectedFramework.set($event)"
+              [options]="frameworkOptions"
+              clearable
+              placeholder="Select a framework"
+            />
+            <p style="margin-top: var(--pui-space-sm); color: var(--pui-muted); font-size: var(--pui-font-size-sm);">
+              Selected: {{ selectedFramework() }}
+            </p>
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="features" aria-labelledby="features-title">
+          <h2 id="features-title">Features</h2>
+          <ul class="pui-feature-list">
+            <li>Single and multi select with clearable values</li>
+            <li>Local and async search with debounced searchChange events</li>
+            <li>Virtual scroll for 10k+ options via Angular CDK</li>
+            <li>Custom option and empty templates</li>
+            <li>Disabled options, loading, and empty states</li>
+            <li>ARIA combobox with active descendant keyboard navigation</li>
+          </ul>
+        </section>
+
+        <section class="pui-doc-section" id="sizes" aria-labelledby="sizes-title">
+          <h2 id="sizes-title">Sizes</h2>
+          <div class="pui-preview-row" style="display: flex; flex-direction: column; gap: var(--pui-space-md);">
+            @for (size of sizes; track size) {
+              <pui-select
+                class="pui-select-preview"
+                [size]="size"
+                [options]="frameworkOptions"
+                [placeholder]="size + ' select'"
+              />
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="code-example" aria-labelledby="code-title">
+          <h2 id="code-title">Code Example</h2>
+          <div class="pui-code-shell">
+            <div class="pui-code-tabs" aria-label="Code language tabs">
+              <button
+                type="button"
+                class="pui-code-tab"
+                [class.pui-code-tab--active]="currentCodeTab() === 'html'"
+                (click)="currentCodeTab.set('html')"
+              >
+                HTML
+              </button>
+              <button
+                type="button"
+                class="pui-code-tab"
+                [class.pui-code-tab--active]="currentCodeTab() === 'ts'"
+                (click)="currentCodeTab.set('ts')"
+              >
+                TypeScript
+              </button>
+              <button
+                type="button"
+                class="pui-code-copy"
+                (click)="copyCode(currentCodeTab() === 'html' ? htmlExample : tsExample)"
+              >
+                Copy
+              </button>
+            </div>
+            @if (currentCodeTab() === 'html') {
+              <pre><code>{{ htmlExample }}</code></pre>
+            } @else {
+              <pre><code>{{ tsExample }}</code></pre>
+            }
+          </div>
+        </section>
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section" id="examples" aria-labelledby="examples-title">
+          <p class="pui-eyebrow">Examples</p>
+          <h2 id="examples-title">Common patterns</h2>
+          <div class="pui-example-list">
+            @for (example of examples; track example.title) {
+              <article class="pui-code-example">
+                <div class="pui-code-example__preview">
+                  <pui-select
+                    class="pui-select-preview"
+                    [value]="selectedFramework()"
+              (valueChange)="selectedFramework.set($event)"
+                    [options]="example.virtualScroll ? largeOptions : example.multiple ? countryOptions : frameworkOptions"
+                    [searchable]="example.searchable ?? false"
+                    [multiple]="example.multiple ?? false"
+                    [virtualScroll]="example.virtualScroll ?? false"
+                    [clearable]="example.clearable ?? false"
+                    [loading]="example.loading ?? false"
+                    [placeholder]="example.title"
+                  />
+                </div>
+                <div>
+                  <h3>{{ example.title }}</h3>
+                  <p>{{ example.description }}</p>
+                  <pre><code>{{ example.code }}</code></pre>
+                </div>
+              </article>
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="parent-integration" aria-labelledby="integration-title">
+          <h2 id="integration-title">Parent integration</h2>
+          <p>
+            Selection state is owned by the parent via <code>[(value)]</code>, signals, or Angular forms.
+            The trigger label is always derived from the current value — never duplicated internally.
+          </p>
+
+          <article class="pui-code-example">
+            <div class="pui-code-example__preview">
+              <pui-select
+                class="pui-select-preview"
+                [value]="selectedFramework()"
+                (valueChange)="selectedFramework.set($event)"
+                clearable
+                placeholder="Declarative options"
+              >
+                <pui-option value="angular">Angular</pui-option>
+                <pui-option value="react">React</pui-option>
+                <pui-option value="vue">Vue</pui-option>
+              </pui-select>
+            </div>
+            <div>
+              <h3>Declarative API</h3>
+              <pre><code>{{ declarativeExample }}</code></pre>
+            </div>
+          </article>
+
+          <article class="pui-code-example">
+            <div class="pui-code-example__preview">
+              <pui-select
+                class="pui-select-preview"
+                [value]="selectedFrameworks()"
+                (valueChange)="selectedFrameworks.set($event)"
+                multiple
+                clearable
+                placeholder="Multiselect"
+              >
+                <pui-option value="angular">Angular</pui-option>
+                <pui-option value="react">React</pui-option>
+                <pui-option value="vue">Vue</pui-option>
+              </pui-select>
+            </div>
+            <div>
+              <h3>Multiselect</h3>
+              <pre><code>{{ multiExample }}</code></pre>
+            </div>
+          </article>
+
+          <article class="pui-code-example">
+            <div class="pui-code-example__preview">
+              <pui-select
+                class="pui-select-preview"
+                [(ngModel)]="ngModelFramework"
+                [options]="frameworkOptions"
+                clearable
+                placeholder="ngModel"
+              />
+            </div>
+            <div>
+              <h3>ngModel</h3>
+              <pre><code>{{ ngModelExample }}</code></pre>
+            </div>
+          </article>
+
+          <article class="pui-code-example">
+            <div class="pui-code-example__preview">
+              <form [formGroup]="reactiveForm">
+                <pui-select
+                  class="pui-select-preview"
+                  formControlName="framework"
+                  [options]="frameworkOptions"
+                  clearable
+                  placeholder="Reactive form"
+                />
+              </form>
+            </div>
+            <div>
+              <h3>Reactive forms</h3>
+              <pre><code>{{ reactiveFormExample }}</code></pre>
+            </div>
+          </article>
+
+          <article class="pui-code-example">
+            <div>
+              <h3>Signal state</h3>
+              <pre><code>{{ signalExample }}</code></pre>
+            </div>
+          </article>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section" id="api" aria-labelledby="api-title">
+          <p class="pui-eyebrow">API Guide</p>
+          <h2 id="api-title">Inputs</h2>
+          <div class="pui-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Input</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Default</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of inputRows; track row.name) {
+                  <tr>
+                    <th scope="row"><code>{{ row.name }}</code></th>
+                    <td><code>{{ row.type }}</code></td>
+                    <td><code>{{ row.defaultValue }}</code></td>
+                    <td>{{ row.description }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="outputs-title">Outputs</h2>
+          <div class="pui-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Output</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of outputRows; track row.name) {
+                  <tr>
+                    <th scope="row"><code>{{ row.name }}</code></th>
+                    <td><code>{{ row.type }}</code></td>
+                    <td>{{ row.description }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section" id="accessibility" aria-labelledby="a11y-title">
+          <p class="pui-eyebrow">Accessibility</p>
+          <h2 id="a11y-title">Keyboard and ARIA</h2>
+          <p>
+            Select implements the ARIA combobox pattern with listbox popup, active descendant
+            management, and full keyboard support.
+          </p>
+          <div class="pui-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Key</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><code>ArrowDown / ArrowUp</code></th><td>Navigate options</td></tr>
+                <tr><th scope="row"><code>Enter / Space</code></th><td>Open panel or select active option</td></tr>
+                <tr><th scope="row"><code>Escape</code></th><td>Close panel</td></tr>
+                <tr><th scope="row"><code>Tab</code></th><td>Close panel and move focus</td></tr>
+                <tr><th scope="row"><code>Home / End</code></th><td>Jump to first or last enabled option</td></tr>
+                <tr><th scope="row"><code>Typeahead</code></th><td>Jump to matching option by label</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            Provide <code>ariaLabel</code> when the trigger has no visible label. Focus-visible
+            styles use <code>--pui-color-focus-ring</code> for WCAG AA contrast in light and dark themes.
+          </p>
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
+          <p class="pui-eyebrow">Theming</p>
+          <h2 id="theming-title">CSS variables</h2>
+          <p>Customize appearance without modifying component source using semantic tokens.</p>
+          <div class="pui-token-code">
+            <button type="button" class="pui-code-copy" (click)="copyCode(themeCode)">Copy</button>
+            <pre><code>{{ themeCode }}</code></pre>
+          </div>
+
+          <h3>Component-level override</h3>
+          <div class="pui-token-code">
+            <button type="button" class="pui-code-copy" (click)="copyCode(customThemeCode)">Copy</button>
+            <pre><code>{{ customThemeCode }}</code></pre>
+          </div>
+
+          <div class="pui-preview-row">
+            <pui-select
+              class="pui-select-preview"
+              [options]="frameworkOptions"
+              searchable
+              clearable
+              placeholder="Themed select preview"
+            />
+          </div>
+        </section>
+      }
+
+      @case ('performance') {
+        <section class="pui-doc-section" id="performance" aria-labelledby="performance-title">
+          <p class="pui-eyebrow">Performance</p>
+          <h2 id="performance-title">Scalable rendering</h2>
+          <p>
+            Enable <code>virtualScroll</code> for large datasets. The panel renders only visible
+            rows via Angular CDK virtual scroll, keeping DOM nodes minimal even with 10k+ items.
+          </p>
+          <ul class="pui-feature-list">
+            <li>Features initialize lazily — search UI renders only when searchable and open</li>
+            <li>OnPush change detection with signal-derived filtered options</li>
+            <li>Debounced async search to reduce network and render churn</li>
+            <li>Fixed itemHeight for predictable virtual scroll measurements</li>
+          </ul>
+          <div class="pui-preview-row">
+            <pui-select
+              class="pui-select-preview"
+              [options]="largeOptions"
+              [value]="selectedFramework()"
+              (valueChange)="selectedFramework.set($event)"
+              searchable
+              virtualScroll
+              clearable
+              placeholder="10,000 virtualized options"
+            />
+          </div>
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section" id="playground" aria-labelledby="playground-title">
+          <p class="pui-eyebrow">Playground</p>
+          <h2 id="playground-title">Interactive preview</h2>
+          <div class="pui-playground">
+            <div class="pui-playground__controls">
+              <label>
+                Size
+                <select [value]="playgroundSize()" (change)="updateSize($event)">
+                  @for (size of sizes; track size) {
+                    <option [value]="size">{{ size }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="playgroundSearchable()"
+                  (change)="updateCheckbox(playgroundSearchable, $event)"
+                />
+                Searchable
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="playgroundMultiple()"
+                  (change)="updateCheckbox(playgroundMultiple, $event)"
+                />
+                Multiple
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="playgroundVirtualScroll()"
+                  (change)="updateCheckbox(playgroundVirtualScroll, $event)"
+                />
+                Virtual scroll
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="playgroundClearable()"
+                  (change)="updateCheckbox(playgroundClearable, $event)"
+                />
+                Clearable
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="playgroundDisabled()"
+                  (change)="updateCheckbox(playgroundDisabled, $event)"
+                />
+                Disabled
+              </label>
+            </div>
+            <div class="pui-playground__preview">
+              <pui-select
+                class="pui-select-preview"
+                [options]="playgroundVirtualScroll() ? largeOptions : frameworkOptions"
+                [(value)]="playgroundValue"
+                [size]="playgroundSize()"
+                [searchable]="playgroundSearchable()"
+                [multiple]="playgroundMultiple()"
+                [virtualScroll]="playgroundVirtualScroll()"
+                [clearable]="playgroundClearable()"
+                [disabled]="playgroundDisabled()"
+                placeholder="Playground select"
+              />
+            </div>
+            <p style="margin-top: var(--pui-space-sm); color: var(--pui-muted); font-size: var(--pui-font-size-sm);">
+              Value: {{ playgroundValue() | json }}
+            </p>
+            <div class="pui-code-shell">
+              <button type="button" class="pui-code-copy" (click)="copyCode(playgroundCode())">Copy</button>
+              <pre><code>{{ playgroundCode() }}</code></pre>
+            </div>
+          </div>
+        </section>
+      }
+    }
+  </div>
+</article>

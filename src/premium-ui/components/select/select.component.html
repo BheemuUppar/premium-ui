@@ -1,0 +1,196 @@
+<button
+  #trigger="cdkOverlayOrigin"
+  #triggerButton
+  cdkOverlayOrigin
+  type="button"
+  class="pui-select__trigger"
+  role="combobox"
+  [id]="triggerId"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-haspopup]="'listbox'"
+  [attr.aria-controls]="isOpen() ? listboxId : null"
+  [attr.aria-activedescendant]="isOpen() ? activeDescendantId() : null"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-disabled]="isDisabled() ? 'true' : null"
+  [disabled]="isDisabled()"
+  (click)="togglePanel()"
+  (keydown)="handleTriggerKeydown($event)"
+>
+  <span class="pui-select__value">
+    @if (multiple()) {
+      @if (triggerDisplay().kind === 'multiple') {
+        @if (multiDisplay() === 'text') {
+          <span class="pui-select__label">{{ triggerDisplay().summary }}</span>
+        } @else {
+          <span class="pui-select__chips">
+            @for (chip of triggerDisplay().chips; track chip.value) {
+              <span class="pui-select__chip">
+                <span class="pui-select__chip-label">{{ chip.label }}</span>
+                @if (!isDisabled()) {
+                  <button
+                    type="button"
+                    class="pui-select__chip-remove"
+                    [attr.aria-label]="'Remove ' + chip.label"
+                    (click)="handleRemoveChip($event, chip.value)"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                }
+              </span>
+            }
+          </span>
+        }
+      } @else {
+        <span class="pui-select__placeholder">{{ placeholder() || 'Select options' }}</span>
+      }
+    } @else if (triggerDisplay().kind === 'single') {
+      <span class="pui-select__label">{{ triggerDisplay().label }}</span>
+    } @else {
+      <span class="pui-select__placeholder">{{ placeholder() || 'Select an option' }}</span>
+    }
+  </span>
+
+  <span class="pui-select__actions">
+    @if (clearable() && hasValue() && !isDisabled()) {
+      <button
+        type="button"
+        class="pui-select__clear"
+        aria-label="Clear selection"
+        (click)="handleClear($event)"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    }
+
+    @if (loading()) {
+      <span class="pui-select__spinner" aria-hidden="true"></span>
+    } @else {
+      <span class="pui-select__chevron" aria-hidden="true"></span>
+    }
+  </span>
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen()"
+  [cdkConnectedOverlayPositions]="overlayPositions"
+  [cdkConnectedOverlayWidth]="triggerWidth()"
+  [cdkConnectedOverlayHasBackdrop]="false"
+  [cdkConnectedOverlayFlexibleDimensions]="true"
+  [cdkConnectedOverlayPush]="true"
+  [cdkConnectedOverlayPanelClass]="overlayPanelClass"
+  (overlayOutsideClick)="closePanel()"
+  (detach)="closePanel()"
+>
+  <div
+    class="pui-select__panel"
+    [attr.data-theme]="panelTheme()"
+    role="listbox"
+    [id]="listboxId"
+    [attr.aria-multiselectable]="multiple() ? 'true' : null"
+    [attr.aria-label]="ariaLabel() || 'Options'"
+    [style.max-height.px]="maxPanelHeight()"
+    (keydown)="handlePanelKeydown($event)"
+  >
+    @if (searchable()) {
+      <div class="pui-select__search">
+        <input
+          #searchInput
+          type="search"
+          class="pui-select__search-input"
+          placeholder="Search..."
+          [value]="searchQuery()"
+          (input)="handleSearchInput($event)"
+          (keydown)="handlePanelKeydown($event)"
+        />
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="pui-select__loading" role="status" aria-live="polite">
+        <span class="pui-select__spinner" aria-hidden="true"></span>
+        <span>Loading options...</span>
+      </div>
+    } @else if (filteredOptions().length === 0) {
+      <div class="pui-select__empty" role="status" aria-live="polite">
+        @if (emptyTemplate()) {
+          <ng-container *ngTemplateOutlet="emptyTemplate()!" />
+        } @else {
+          {{ emptyMessage() }}
+        }
+      </div>
+    } @else if (virtualScroll()) {
+      <cdk-virtual-scroll-viewport
+        class="pui-select__viewport"
+        [itemSize]="itemHeight()"
+        [style.height.px]="viewportHeight()"
+      >
+        <div
+          *cdkVirtualFor="let option of filteredOptions(); trackBy: trackOption; let index = index"
+          class="pui-select__option"
+          role="option"
+          [id]="getOptionId(index)"
+          [class.pui-select__option--selected]="isSelected(option)"
+          [class.pui-select__option--active]="isActive(index)"
+          [class.pui-select__option--disabled]="option.disabled"
+          [attr.aria-selected]="isSelected(option)"
+          [attr.aria-disabled]="option.disabled ? 'true' : null"
+          [style.height.px]="itemHeight()"
+          (click)="handleOptionClick(option, index)"
+        >
+          <ng-container
+            *ngTemplateOutlet="optionRow; context: buildOptionContext(option, index)"
+          />
+        </div>
+      </cdk-virtual-scroll-viewport>
+    } @else {
+      <div class="pui-select__list" role="presentation">
+        @for (option of filteredOptions(); track trackOption($index, option); let index = $index) {
+          <div
+            class="pui-select__option"
+            role="option"
+            [id]="getOptionId(index)"
+            [class.pui-select__option--selected]="isSelected(option)"
+            [class.pui-select__option--active]="isActive(index)"
+            [class.pui-select__option--disabled]="option.disabled"
+            [attr.aria-selected]="isSelected(option)"
+            [attr.aria-disabled]="option.disabled ? 'true' : null"
+            [style.min-height.px]="itemHeight()"
+            (click)="handleOptionClick(option, index)"
+          >
+            <ng-container
+              *ngTemplateOutlet="optionRow; context: buildOptionContext(option, index)"
+            />
+          </div>
+        }
+      </div>
+    }
+  </div>
+</ng-template>
+
+<ng-template #optionRow let-option let-selected="selected" let-active="active" let-index="index">
+  @if (optionTemplate()) {
+    <ng-container
+      *ngTemplateOutlet="optionTemplate()!; context: buildOptionContext(option, index)"
+    />
+  } @else {
+    <span class="pui-select__option-leading">
+      @if (multiple()) {
+        <span
+          class="pui-select__option-checkbox"
+          [class.pui-select__option-checkbox--checked]="selected"
+          aria-hidden="true"
+        ></span>
+      }
+      <span class="pui-select__option-label">{{ option.label }}</span>
+    </span>
+    @if (selected) {
+      <span class="pui-select__option-check" aria-hidden="true">✓</span>
+    }
+  }
+</ng-template>
+
+<ng-content select="pui-option" />
+
+<ng-content select="[puiSelectOption]" />

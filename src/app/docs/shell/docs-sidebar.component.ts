@@ -36,6 +36,7 @@ export class DocsSidebarComponent {
       items: [
         { label: 'Button', route: ['/docs/components/button/overview'], badge: 'Ready' },
         { label: 'Input', route: ['/docs/components/input/overview'], badge: 'Ready' },
+        { label: 'Select', route: ['/docs/components/select/overview'], badge: 'Ready' },
         { label: 'Checkbox', route: ['/docs/components/checkbox'] }
       ]
     },
