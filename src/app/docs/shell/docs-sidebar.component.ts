@@ -16,7 +16,6 @@ export class DocsSidebarComponent {
     'feedback',
     'navigation',
     'overlays',
-    'data-display',
     'layout',
     'utilities'
   ]);
@@ -69,7 +68,7 @@ export class DocsSidebarComponent {
       id: 'data-display',
       label: 'Data Display',
       items: [
-        { label: 'Card', route: ['/docs/components/card'] },
+        { label: 'Card', route: ['/docs/components/card/overview'], badge: 'Ready' },
         { label: 'Badge', route: ['/docs/components/badge'] },
         { label: 'Table', route: ['/docs/components/table'] }
       ]

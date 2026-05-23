@@ -62,3 +62,23 @@ Use the project architecture described in `AGENTS.md` and the shared `.ai` conte
 - Preserve Angular 21 standalone component architecture, Storybook patterns, and the repo's token-based theming.
 - For shared agent context, also consult `.windsurf/rules/instructions.md` and `.gemini/GEMINI.md`.
 - When asked to update AI agent documentation, keep the files consistent and make the context explicit for the target assistant.
+
+## IMPORTANT RULES:
+
+- Always use standalone Angular components
+- Always use OnPush change detection
+- Always use existing tokens
+- Never hardcode colors
+- Never hardcode spacing
+- Always support dark mode
+- Use semantic HTML
+- Keep DOM lightweight
+- Use existing component patterns
+- Prefer maintainability over complexity
+- Follow existing Storybook architecture
+- Follow existing docs architecture
+- Use accessibility best practices
+- Use CSS variables from token system
+- Keep components production-ready
+- Avoid giant Angular templates
+- Prefer reusable smaller sections

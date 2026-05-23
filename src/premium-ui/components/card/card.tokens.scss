@@ -1,0 +1,36 @@
+:host {
+  --pui-card-bg: var(--pui-color-surface);
+  --pui-card-border: var(--pui-color-border);
+  --pui-card-border-width: 1px;
+  --pui-card-shadow: var(--pui-shadow-sm);
+  --pui-card-padding: var(--pui-space-md);
+  --pui-card-radius: var(--pui-radius-md);
+  --pui-card-gap: var(--pui-space-md);
+}
+
+:host(.pui-card--sm) {
+  --pui-card-padding: var(--pui-space-sm);
+  --pui-card-gap: var(--pui-space-sm);
+}
+
+:host(.pui-card--lg) {
+  --pui-card-padding: var(--pui-space-lg);
+  --pui-card-gap: var(--pui-space-lg);
+}
+
+:host(.pui-card--outlined) {
+  --pui-card-bg: transparent;
+  --pui-card-border-width: 2px;
+  --pui-card-shadow: none;
+}
+
+:host(.pui-card--elevated) {
+  --pui-card-shadow: var(--pui-shadow-lg);
+}
+
+:host(.pui-card--ghost) {
+  --pui-card-bg: transparent;
+  --pui-card-border: transparent;
+  --pui-card-border-width: 1px;
+  --pui-card-shadow: none;
+}

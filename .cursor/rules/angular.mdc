@@ -1,0 +1,10 @@
+- Use standalone components exclusively.
+- Set `ChangeDetectionStrategy.OnPush` on every component.
+- Prefer `signals` and `computed` for local state.
+- Keep templates declarative and minimal; avoid complex logic.
+- Extract complex logic into services or helpers.
+- Avoid RxJS unless a stream is required; use signals where practical.
+- Use semantic HTML and native controls first.
+- Keep components single-responsibility and small.
+- Use `inject()` for services when possible.
+- Follow layered architecture: UI → services → adapters.

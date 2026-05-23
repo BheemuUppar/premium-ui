@@ -1,0 +1,9 @@
+- Use typed `Meta` and `StoryObj` for every story.
+- Keep stories modular: one file per component.
+- Avoid giant inline templates; prefer small template fragments or render functions.
+- Use reusable constants for props and templates.
+- Add controls for variants, sizes, and booleans only.
+- Include accessibility-focused stories (keyboard, ARIA states).
+- Do not import implementation-only modules into stories.
+- Mark stable stories with `tags: ['autodocs']`.
+- Keep story files free of side-effects and runtime logic.

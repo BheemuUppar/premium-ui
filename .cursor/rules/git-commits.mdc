@@ -1,0 +1,23 @@
+- Commit after every completed feature or small milestone.
+- Commit after creating a new component or API.
+- Commit after important bug fixes and Storybook fixes.
+- Commit after docs or examples updates.
+- Avoid large uncommitted change sets; keep work incremental.
+- Keep commits focused and atomic; one concern per commit.
+- Never mix unrelated changes in a single commit.
+- Ensure project builds (`npm run build`) before committing.
+- Ensure Storybook runs (`npm run storybook`) for visual changes.
+- Run formatting and linting (`npm run format && npm run lint`) pre-commit.
+- Use Conventional Commits: `type(scope): short description`.
+- Examples:
+  - `feat(button): add loading state`
+  - `feat(select): add searchable dropdown`
+  - `fix(storybook): resolve Angular decorator issue`
+  - `docs(card): improve accessibility examples`
+  - `refactor(tokens): simplify semantic naming`
+  - `perf(select): optimize virtual scroll rendering`
+- Prefer small commits to enable safe rollbacks and bisects.
+- Avoid committing unfinished or broken builds.
+- Amend or squash only to clean up WIP before merging.
+- Use descriptive, professional messages; avoid vague text like "stuff".
+- Pair related commits with clear PR titles and descriptions.

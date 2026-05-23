@@ -1,0 +1,9 @@
+- Ensure full keyboard support for interactive components.
+- Provide clear focus-visible styles for all focusable elements.
+- Use semantic HTML before ARIA.
+- Use ARIA roles and labels only when necessary.
+- Provide accessible names for icons and buttons.
+- Ensure screen-reader friendly content order.
+- Verify WCAG AA contrast for all themes.
+- Test interactive states with keyboard and screen readers.
+- Avoid relying on color alone to convey information.

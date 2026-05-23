@@ -1,0 +1,224 @@
+<article class="pui-doc-page">
+    <header class="pui-doc-hero" id="overview">
+        <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+            <a routerLink="/docs/components/card/overview">Home</a>
+            <span aria-hidden="true">/</span>
+            <a routerLink="/docs/components/card/overview">Components</a>
+            <span aria-hidden="true">/</span>
+            <span>Card</span>
+        </nav>
+
+        <h1>Card</h1>
+
+        <p>
+            Cards provide a flexible container for content with optional elevation,
+            borders, and interactive states.
+        </p>
+    </header>
+
+    <nav class="pui-tabs" aria-label="Card documentation tabs">
+        @for(tab of tabs; track tab.label) {
+        <a class="pui-tab" [routerLink]="tab.route" routerLinkActive="pui-tab--active"
+            [routerLinkActiveOptions]="{ exact: true }">
+            {{ tab.label }}
+        </a>
+        }
+    </nav>
+
+    <div class="pui-tab-panel">
+
+        @if(currentTab() === 'overview') {
+        <section class="pui-doc-section" id="basic-usage" aria-labelledby="overview-title">
+            <h2 id="overview-title">Overview</h2>
+
+            <p>
+                Cards are versatile containers that group related content and actions.
+                They work well for displaying information in a structured,
+                visually distinct area.
+            </p>
+        </section>
+
+        <section class="pui-doc-section" id="variants" aria-labelledby="overview-variants-title">
+            <h2 id="overview-variants-title">Variants</h2>
+
+            <p>
+                Cards come in four distinct styles to suit different design contexts.
+            </p>
+
+            <div class="pui-preview-row" style="gap: var(--pui-space-md); flex-wrap: wrap; display: flex;">
+                @for(variant of variants; track variant) {
+                <div style="flex: 1; min-width: 200px;">
+                    <pui-card [variant]="variant" style="height: 100%;">
+                        <strong style="text-transform: capitalize;">
+                            {{ variant }}
+                        </strong>
+
+                        <p style="margin: var(--pui-space-xs) 0 0 0; font-size: 0.875rem; color: var(--pui-muted);">
+                            {{ variantDescriptions[variant] }}
+                        </p>
+                    </pui-card>
+                </div>
+                }
+            </div>
+        </section>
+
+        <section class="pui-doc-section" id="sizes" aria-labelledby="overview-sizes-title">
+            <h2 id="overview-sizes-title">Sizes</h2>
+
+            <p>
+                Choose the card size that fits your layout needs.
+            </p>
+
+            <div class="pui-preview-row" style="display: flex; flex-direction: column; gap: var(--pui-space-md);">
+                @for(size of sizes; track size) {
+                <div>
+                    <label style="display: block; margin-bottom: var(--pui-space-sm); color: var(--pui-muted); font-size: 0.875rem; text-transform: uppercase; font-weight: 600;">
+                        Size: {{ size }}
+                    </label>
+
+                    <pui-card [size]="size">
+                        <h4 style="margin: 0 0 var(--pui-space-xs) 0; color: var(--pui-text);">
+                            Content Example
+                        </h4>
+
+                        <p style="margin: 0; color: var(--pui-muted); font-size: 0.875rem;">
+                            {{ sizeDescriptions[size] }}
+                        </p>
+                    </pui-card>
+                </div>
+                }
+            </div>
+        </section>
+
+        <section class="pui-doc-section" id="states" aria-labelledby="overview-states-title">
+            <h2 id="overview-states-title">States</h2>
+
+            <p>
+                Cards support hoverable and interactive states for enhanced user experience.
+            </p>
+
+            <div class="pui-preview-row" style="display: flex; gap: var(--pui-space-md); flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <pui-card [hoverable]="true">
+                        <strong>Hoverable</strong>
+                        <p style="margin: var(--pui-space-xs) 0 0 0; font-size: 0.875rem; color: var(--pui-muted);">
+                            Responds to hover with elevation effect
+                        </p>
+                    </pui-card>
+                </div>
+
+                <div style="flex: 1; min-width: 200px;">
+                    <pui-card [interactive]="true" style="cursor: pointer;">
+                        <strong>Interactive</strong>
+                        <p style="margin: var(--pui-space-xs) 0 0 0; font-size: 0.875rem; color: var(--pui-muted);">
+                            Clickable with keyboard support
+                        </p>
+                    </pui-card>
+                </div>
+
+                <div style="flex: 1; min-width: 200px;">
+                    <pui-card [disabled]="true" [interactive]="true">
+                        <strong>Disabled</strong>
+                        <p style="margin: var(--pui-space-xs) 0 0 0; font-size: 0.875rem; color: var(--pui-muted);">
+                            Cannot be interacted with
+                        </p>
+                    </pui-card>
+                </div>
+            </div>
+        </section>
+
+        <section class="pui-doc-section" id="code-example" aria-labelledby="overview-code-title">
+            <h3 id="overview-code-title">Code Example</h3>
+
+            <div class="pui-code-shell">
+                <div class="pui-code-tabs" aria-label="Code language tabs">
+                    <button type="button" class="pui-code-tab" [class.pui-code-tab--active]="currentCodeTab() === 'html'" (click)="currentCodeTab.set('html')">
+                        HTML
+                    </button>
+                    <button type="button" class="pui-code-tab" [class.pui-code-tab--active]="currentCodeTab() === 'ts'" (click)="currentCodeTab.set('ts')">
+                        TypeScript
+                    </button>
+                    <button type="button" class="pui-code-copy" (click)="copyCode(currentCodeTab() === 'html' ? htmlExample : tsExample)">
+                        Copy
+                    </button>
+                </div>
+
+                @if(currentCodeTab() === 'html') {
+                <pre><code>{{ htmlExample }}</code></pre>
+                } @else {
+                <pre><code>{{ tsExample }}</code></pre>
+                }
+            </div>
+        </section>
+        }
+
+        @if(currentTab() === 'api') {
+        <section class="pui-doc-section" id="api" aria-labelledby="api-title">
+            <p class="pui-eyebrow">API Guide</p>
+            <h2 id="api-title">Inputs</h2>
+
+            <div class="pui-table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Input</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Default</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (row of apiRows; track row.name) {
+                        <tr>
+                            <th scope="row"><code>{{ row.name }}</code></th>
+                            <td><code>{{ row.type }}</code></td>
+                            <td><code>{{ row.defaultValue }}</code></td>
+                            <td>{{ row.description }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        }
+
+        @if(currentTab() === 'accessibility') {
+        <section class="pui-doc-section" id="accessibility" aria-labelledby="accessibility-title">
+            <p class="pui-eyebrow">Accessibility</p>
+            <h2 id="accessibility-title">Semantic & Keyboard Support</h2>
+
+            <p>
+                Interactive cards support keyboard navigation, focus-visible states, and semantic accessibility.
+            </p>
+
+            <div class="pui-code-shell">
+                <div class="pui-code-tabs" aria-label="ARIA example">
+                    <button type="button" class="pui-code-tab pui-code-tab--active">HTML</button>
+                    <button type="button" class="pui-code-copy" (click)="copyCode(ariaCode)">Copy</button>
+                </div>
+                <pre><code>{{ ariaCode }}</code></pre>
+            </div>
+        </section>
+        }
+
+        @if(currentTab() === 'theming') {
+        <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
+            <p class="pui-eyebrow">Theming</p>
+            <h2 id="theming-title">Token-Based Styling</h2>
+
+            <p>
+                Cards use semantic CSS variables from the Premium UI token system.
+            </p>
+
+            <div class="pui-code-shell">
+                <div class="pui-code-tabs" aria-label="Theme tokens">
+                    <button type="button" class="pui-code-tab pui-code-tab--active">CSS Variables</button>
+                    <button type="button" class="pui-code-copy" (click)="copyCode(themeCode)">Copy</button>
+                </div>
+                <pre><code>{{ themeCode }}</code></pre>
+            </div>
+        </section>
+        }
+
+    </div>
+</article>

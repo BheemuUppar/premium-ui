@@ -1,0 +1,9 @@
+- Minimize rerenders with `OnPush` and signals.
+- Keep DOM shallow and semantic; avoid deep trees.
+- Use `trackBy` for `@for`/lists.
+- Lazy-load heavy modules and components.
+- Virtualize long lists; prefer incremental rendering.
+- Derive values with `computed` not repeated calculations.
+- Avoid unnecessary signals; collapse related state.
+- Batch updates to reduce change detection runs.
+- Profile before optimizing; prefer readable code.

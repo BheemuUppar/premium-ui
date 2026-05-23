@@ -1,0 +1,8 @@
+- Tokens must be semantic, not visual (e.g., `bg-card` not `blue-500`).
+- Use CSS variables (`--pui-*`) for all tokens.
+- No hardcoded colors, spacing, or radii in components.
+- Provide dark and light token maps and switch runtime-safe variables.
+- Keep typography tokens reusable and platform-agnostic.
+- Name tokens for intent (e.g., `surface`, `muted`, `accent`).
+- Document token usage and fallbacks.
+- Version tokens when changing semantics.

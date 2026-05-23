@@ -1,0 +1,10 @@
+- Component selector: `pui-` prefix.
+- File layout: `component.ts`, `.html`, `.scss`, `.types.ts`, `index.ts`.
+- Inputs: small, typed, and immutable; use `input()` helper.
+- Outputs: declarative events with clear payload types.
+- Expose feature-driven APIs (props over props+flags).
+- Prefer composition over deep inheritance.
+- Use `ng-content select` slots for extensibility.
+- Keep public API stable and documented.
+- Avoid internal DOM assumptions in consumers.
+- Export components from `premium-ui/index.ts`.

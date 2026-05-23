@@ -1,0 +1,60 @@
+@use './card.tokens';
+
+:host {
+  display: block;
+  border-radius: var(--pui-card-radius);
+  background: var(--pui-card-bg);
+  border: var(--pui-card-border-width) solid var(--pui-card-border);
+  box-shadow: var(--pui-card-shadow);
+  transition:
+    background-color var(--pui-duration-normal) var(--pui-easing-standard),
+    border-color var(--pui-duration-normal) var(--pui-easing-standard),
+    box-shadow var(--pui-duration-normal) var(--pui-easing-standard),
+    transform var(--pui-duration-fast) var(--pui-easing-standard);
+}
+
+:host(.pui-card--hoverable:not(.pui-card--disabled)):hover {
+  box-shadow: var(--pui-shadow-md);
+}
+
+:host(.pui-card--interactive) {
+  cursor: pointer;
+  user-select: none;
+}
+
+:host(.pui-card--interactive:not(.pui-card--disabled)):hover {
+  box-shadow: var(--pui-shadow-md);
+  transform: translateY(-2px);
+}
+
+:host(.pui-card--interactive:not(.pui-card--disabled)):active {
+  transform: translateY(-1px);
+  box-shadow: var(--pui-shadow-sm);
+}
+
+:host(.pui-card--interactive:focus) {
+  outline: none;
+}
+
+:host(.pui-card--interactive:focus-visible) {
+  outline: 2px solid var(--pui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+:host(.pui-card--disabled) {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+:host(.pui-card--ghost:not(.pui-card--disabled)):hover {
+  background: color-mix(in srgb, var(--pui-color-primary) 5%, transparent);
+}
+
+.pui-card__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-card-gap);
+  padding: var(--pui-card-padding);
+  width: 100%;
+  height: 100%;
+}

@@ -34,6 +34,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/input-docs/input-docs.component').then((component) => component.InputDocsComponent)
       },
       {
+        path: 'components/card',
+        redirectTo: 'components/card/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/card/:tab',
+        loadComponent: () => import('./docs/pages/card-docs/card-docs.component').then((component) => component.CardDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

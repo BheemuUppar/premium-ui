@@ -1,0 +1,9 @@
+- Docs structure: Overview → Examples → API → Accessibility → Theming.
+- Keep each docs page focused and scannable.
+- Use live examples with minimal boilerplate.
+- Move large code snippets into component TS strings.
+- Document keyboard behavior and ARIA usage per component.
+- Show theming tokens and one customization example.
+- Include performance notes and when to prefer virtualization.
+- Reuse doc sections and components across pages.
+- Avoid embedding unescaped braces or raw templates in docs HTML.
