@@ -23,6 +23,21 @@ Premium UI is entering the **consistency > speed** phase. All components must re
 | `tokens/` | Semantic token type conventions | component token files |
 | `utilities/` | ID generation, host binding helpers | all components |
 | `virtualization/` | Virtual scroll defaults | select, future data-table |
+| `workers/` | Opt-in worker data processing (search, filter, sort, rank) | select, future autocomplete, data-table |
+
+## Worker Architecture
+
+Workers are **opt-in** via `useWorker` on supported components. Default is `false` (main-thread processing).
+
+### Workers handle
+- Searching, filtering, fuzzy search, sorting, grouping, indexing, ranking, large transformations
+
+### Workers do NOT handle
+- DOM rendering, virtual scrolling, overlays, focus, keyboard, animations
+
+Datasets are initialized once per `datasetId`. Operations send query/config payloads only.
+
+Services: `PuiWorkerManager`, `PuiDataProcessorService`
 
 ## API Consistency Rules
 

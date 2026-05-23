@@ -28,6 +28,8 @@ const meta: Meta<PuiSelectComponent> = {
     disabled: { control: 'boolean' },
     loading: { control: 'boolean' },
     asyncSearch: { control: 'boolean' },
+    useWorker: { control: 'boolean' },
+    fuzzySearch: { control: 'boolean' },
     placeholder: { control: 'text' },
     itemHeight: { control: 'number' },
     maxPanelHeight: { control: 'number' },
@@ -43,6 +45,8 @@ const meta: Meta<PuiSelectComponent> = {
     disabled: false,
     loading: false,
     asyncSearch: false,
+    useWorker: false,
+    fuzzySearch: false,
     placeholder: 'Select a framework',
     itemHeight: 36,
     maxPanelHeight: 280,
@@ -62,6 +66,8 @@ const meta: Meta<PuiSelectComponent> = {
         [disabled]="disabled"
         [loading]="loading"
         [asyncSearch]="asyncSearch"
+        [useWorker]="useWorker"
+        [fuzzySearch]="fuzzySearch"
         [placeholder]="placeholder"
         [itemHeight]="itemHeight"
         [maxPanelHeight]="maxPanelHeight"
@@ -330,6 +336,41 @@ export const LargeDataset: Story = {
     options: createLargeDataset(5000),
     placeholder: '5,000 searchable options',
     maxPanelHeight: 320,
+  },
+};
+
+export const MainThreadSearch: Story = {
+  args: {
+    searchable: true,
+    virtualScroll: true,
+    clearable: true,
+    useWorker: false,
+    options: createLargeDataset(10000),
+    placeholder: 'Main-thread search (10k options)',
+  },
+};
+
+export const WorkerMode: Story = {
+  args: {
+    searchable: true,
+    virtualScroll: true,
+    clearable: true,
+    useWorker: true,
+    options: createLargeDataset(50000),
+    placeholder: 'Worker search over 50k options',
+    maxPanelHeight: 320,
+  },
+};
+
+export const WorkerFuzzySearch: Story = {
+  args: {
+    searchable: true,
+    virtualScroll: true,
+    clearable: true,
+    useWorker: true,
+    fuzzySearch: true,
+    options: createLargeDataset(10000),
+    placeholder: 'Fuzzy worker search (10k options)',
   },
 };
 

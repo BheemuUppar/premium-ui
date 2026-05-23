@@ -16,3 +16,4 @@ export * from './theming';
 export * from './tokens';
 export * from './utilities';
 export * from './virtualization';
+export * from './workers';

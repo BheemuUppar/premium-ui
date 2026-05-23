@@ -108,10 +108,10 @@
       </div>
     }
 
-    @if (loading()) {
+    @if (loading() || workerSearchLoading()) {
       <div class="pui-select__loading" role="status" aria-live="polite">
         <span class="pui-select__spinner" aria-hidden="true"></span>
-        <span>Loading options...</span>
+        <span>{{ workerSearchLoading() ? 'Searching…' : 'Loading options...' }}</span>
       </div>
     } @else if (filteredOptions().length === 0) {
       <div class="pui-select__empty" role="status" aria-live="polite">

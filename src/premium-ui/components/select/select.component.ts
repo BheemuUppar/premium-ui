@@ -22,6 +22,7 @@ import { ControlValueAccessor } from '@angular/forms';
 import type { PuiSize } from '../../types/common.types';
 import { PuiCvaBridge, providePuiCva } from '../../internal/forms';
 import { isTypeaheadKey, PUI_KEYS } from '../../internal/keyboard';
+import { PuiDataProcessorService } from '../../internal/workers';
 import { PuiOptionComponent } from './option.component';
 import { PuiCheckboxComponent } from '../checkbox/checkbox.component';
 import {
@@ -30,6 +31,7 @@ import {
   PUI_SELECT_OVERLAY_POSITIONS,
   PUI_SELECT_SEARCH_DEBOUNCE_MS,
   PUI_SELECT_TYPEAHEAD_RESET_MS,
+  PUI_SELECT_WORKER_DEBOUNCE_MS,
 } from './select.constants';
 import {
   coerceSelectValue,
@@ -56,6 +58,7 @@ import {
   toggleMultipleValue,
   valuesEqual,
 } from './select.utils';
+import { mapSelectOptionsByIndices, toSelectWorkerDataset } from './select-worker.utils';
 
 @Component({
   selector: 'pui-select',
@@ -80,8 +83,9 @@ import {
     '[class.pui-select--open]': 'isOpen()',
     '[class.pui-select--disabled]': 'isDisabled()',
     '[class.pui-select--multiple]': 'multiple()',
-    '[class.pui-select--loading]': 'loading()',
+    '[class.pui-select--loading]': 'loading() || workerSearchLoading()',
     '[class.pui-select--has-value]': 'hasValue()',
+    '[class.pui-select--worker]': 'useWorker()',
     '(keydown)': 'handleHostKeydown($event)',
   },
 })
@@ -90,7 +94,10 @@ export class PuiSelectComponent implements ControlValueAccessor {
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly cva = new PuiCvaBridge<PuiSelectValue>();
+  private readonly dataProcessor = inject(PuiDataProcessorService);
   private readonly uid = PuiSelectComponent.nextId++;
+  private readonly datasetId = `pui-select-${this.uid}`;
+  private workerSearchToken = 0;
 
   readonly options = input<readonly PuiSelectOption[]>([]);
   readonly labelKey = input('label');
@@ -107,6 +114,8 @@ export class PuiSelectComponent implements ControlValueAccessor {
   readonly maxPanelHeight = input(PUI_SELECT_DEFAULT_MAX_PANEL_HEIGHT);
   readonly size = input<PuiSize>('md');
   readonly asyncSearch = input(false, { transform: booleanAttribute });
+  readonly useWorker = input(false, { transform: booleanAttribute });
+  readonly fuzzySearch = input(false, { transform: booleanAttribute });
   readonly filterFn = input<PuiSelectFilterFn | null>(null);
   readonly ariaLabel = input<string | null>(null);
   readonly emptyMessage = input('No results found');
@@ -133,6 +142,8 @@ export class PuiSelectComponent implements ControlValueAccessor {
   protected readonly activeIndex = signal(-1);
   protected readonly triggerWidth = signal(0);
   protected readonly panelTheme = signal<PuiSelectTheme>('light');
+  protected readonly workerFilteredIndices = signal<readonly number[] | null>(null);
+  protected readonly workerSearchLoading = signal(false);
 
   protected readonly listboxId = `pui-select-listbox-${this.uid}`;
   protected readonly triggerId = `pui-select-trigger-${this.uid}`;
@@ -183,6 +194,14 @@ export class PuiSelectComponent implements ControlValueAccessor {
       return options;
     }
 
+    if (this.useWorker()) {
+      const indices = this.workerFilteredIndices();
+      if (indices === null) {
+        return options;
+      }
+      return mapSelectOptionsByIndices(options, indices);
+    }
+
     const filter = this.filterFn() ?? createDefaultFilterFn(this.labelKey());
     return options.filter((option) => filter(option, query));
   });
@@ -216,6 +235,50 @@ export class PuiSelectComponent implements ControlValueAccessor {
         this.searchQuery.set('');
         this.activeIndex.set(-1);
       }
+    });
+
+    effect(() => {
+      const useWorker = this.useWorker();
+      const searchable = this.searchable();
+      const asyncSearch = this.asyncSearch();
+      const options = this.resolvedOptions();
+      const query = this.searchQuery();
+      const fuzzy = this.fuzzySearch();
+
+      if (!useWorker || !searchable || asyncSearch) {
+        this.workerFilteredIndices.set(null);
+        this.workerSearchLoading.set(false);
+        return;
+      }
+
+      const token = ++this.workerSearchToken;
+      const items = toSelectWorkerDataset(options);
+      const trimmed = query.trim();
+
+      if (!trimmed) {
+        this.workerFilteredIndices.set(options.map((_, index) => index));
+        this.workerSearchLoading.set(false);
+        return;
+      }
+
+      this.workerSearchLoading.set(true);
+
+      void this.dataProcessor
+        .searchIndices({
+          useWorker: true,
+          datasetId: this.datasetId,
+          items,
+          query: trimmed,
+          mode: fuzzy ? 'fuzzy' : 'text',
+          debounceMs: PUI_SELECT_WORKER_DEBOUNCE_MS,
+        })
+        .then((indices) => {
+          if (token !== this.workerSearchToken) {
+            return;
+          }
+          this.workerFilteredIndices.set(indices);
+          this.workerSearchLoading.set(false);
+        });
     });
   }
 

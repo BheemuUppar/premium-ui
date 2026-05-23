@@ -272,7 +272,9 @@ export class ExampleComponent {
     { name: 'maxPanelHeight', type: 'number', defaultValue: '280', description: 'Maximum dropdown panel height in pixels.' },
     { name: 'size', type: 'PuiSize', defaultValue: 'md', description: 'Controls trigger height and typography.' },
     { name: 'asyncSearch', type: 'boolean', defaultValue: 'false', description: 'Defers filtering to the parent via searchChange events.' },
-    { name: 'filterFn', type: 'PuiSelectFilterFn | null', defaultValue: 'null', description: 'Custom local filter function for searchable mode.' },
+    { name: 'useWorker', type: 'boolean', defaultValue: 'false', description: 'Opt-in worker delegation for search/filter on large datasets. Falls back to main thread when unavailable.' },
+    { name: 'fuzzySearch', type: 'boolean', defaultValue: 'false', description: 'Enables fuzzy ranking when useWorker and searchable are active.' },
+    { name: 'filterFn', type: 'PuiSelectFilterFn | null', defaultValue: 'null', description: 'Custom local filter function for searchable mode (main thread only).' },
     { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Accessible label for the combobox trigger.' },
     { name: 'emptyMessage', type: 'string', defaultValue: 'No results found', description: 'Message shown when no options match.' },
   ];
@@ -301,24 +303,39 @@ export class ExampleComponent {
   protected readonly playgroundSearchable = signal(false);
   protected readonly playgroundMultiple = signal(false);
   protected readonly playgroundVirtualScroll = signal(false);
+  protected readonly playgroundUseWorker = signal(false);
+  protected readonly playgroundFuzzySearch = signal(false);
   protected readonly playgroundClearable = signal(true);
   protected readonly playgroundDisabled = signal(false);
 
   protected readonly playgroundValue = signal<PuiSelectValue>('angular');
+
+  protected readonly playgroundOptions = computed(() =>
+    this.playgroundVirtualScroll() || this.playgroundUseWorker()
+      ? this.largeOptions
+      : this.frameworkOptions
+  );
 
   protected readonly playgroundCode = computed(() => {
     const attrs = [
       this.playgroundSearchable() ? ' searchable' : '',
       this.playgroundMultiple() ? ' multiple' : '',
       this.playgroundVirtualScroll() ? ' virtualScroll' : '',
+      this.playgroundUseWorker() ? ' useWorker' : '',
+      this.playgroundFuzzySearch() ? ' fuzzySearch' : '',
       this.playgroundClearable() ? ' clearable' : '',
       this.playgroundDisabled() ? ' [disabled]="true"' : '',
       this.playgroundSize() !== 'md' ? ` size="${this.playgroundSize()}"` : '',
     ].join('');
 
+    const optionsBinding =
+      this.playgroundVirtualScroll() || this.playgroundUseWorker()
+        ? 'largeOptions'
+        : 'options';
+
     return `<pui-select
   [(value)]="selected"
-  [options]="options"${attrs}
+  [options]="${optionsBinding}"${attrs}
   placeholder="Select an option"
 />`;
   });
@@ -337,6 +354,19 @@ export class ExampleComponent {
     event: Event
   ): void {
     signalRef.set((event.target as HTMLInputElement).checked);
+  }
+
+  protected updateUseWorker(event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.playgroundUseWorker.set(checked);
+
+    if (checked && !this.playgroundSearchable()) {
+      this.playgroundSearchable.set(true);
+    }
+
+    if (!checked) {
+      this.playgroundFuzzySearch.set(false);
+    }
   }
 
   private isDocsTab(tab: string): tab is PuiDocsSelectTab {
