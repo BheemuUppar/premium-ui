@@ -1,0 +1,192 @@
+@use './toggle.tokens';
+@use '../../internal/styles/focus' as pui-focus;
+@use '../../internal/styles/motion' as pui-motion;
+
+:host {
+  display: inline-flex;
+  vertical-align: middle;
+  outline: none;
+}
+
+.pui-toggle__control {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pui-toggle-gap);
+  min-height: var(--pui-toggle-height);
+  padding: var(--pui-toggle-padding-y) var(--pui-toggle-padding-x);
+  margin: 0;
+  border: 1px solid var(--pui-toggle-border);
+  border-radius: var(--pui-toggle-radius);
+  background: var(--pui-toggle-bg);
+  color: var(--pui-toggle-color);
+  font-family: inherit;
+  font-size: var(--pui-toggle-font-size);
+  font-weight: var(--pui-toggle-font-weight);
+  line-height: var(--pui-line-height-tight);
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--pui-toggle-shadow);
+  overflow: hidden;
+  will-change: transform;
+  @include pui-motion.pui-transition-premium(
+    background-color,
+    border-color,
+    color,
+    box-shadow,
+    transform,
+    opacity
+  );
+}
+
+.pui-toggle__control::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--pui-toggle-bg-hover);
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity var(--pui-duration-normal) var(--pui-easing-premium),
+    transform var(--pui-duration-slow) var(--pui-easing-premium);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pui-toggle__control:focus {
+  outline: none;
+}
+
+.pui-toggle__control:focus-visible {
+  @include pui-focus.pui-focus-ring;
+}
+
+:host(:not(.pui-toggle--disabled):not(.pui-toggle--pressed):hover) .pui-toggle__control {
+  color: var(--pui-toggle-color-hover);
+  border-color: var(--pui-toggle-border-hover);
+  box-shadow: var(--pui-toggle-shadow-hover);
+  transform: translateY(var(--pui-toggle-hover-lift));
+}
+
+:host(:not(.pui-toggle--disabled):not(.pui-toggle--pressed):hover) .pui-toggle__control::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+:host(.pui-toggle--pressed) .pui-toggle__control {
+  background: var(--pui-toggle-bg-pressed);
+  border-color: var(--pui-toggle-border-pressed);
+  color: var(--pui-toggle-color-pressed);
+  box-shadow: var(--pui-toggle-shadow-pressed);
+  transform: scale(var(--pui-toggle-press-scale));
+  font-weight: var(--pui-font-weight-semibold);
+}
+
+:host(.pui-toggle--in-segmented.pui-toggle--pressed) .pui-toggle__control {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+  z-index: 2;
+}
+
+:host(.pui-toggle--in-segmented:not(.pui-toggle--pressed)) .pui-toggle__control::before {
+  opacity: 0;
+}
+
+:host(.pui-toggle--in-segmented:not(.pui-toggle--disabled):not(.pui-toggle--pressed):hover)
+  .pui-toggle__control {
+  transform: none;
+  color: var(--pui-toggle-color-hover);
+}
+
+:host(.pui-toggle--in-segmented:not(.pui-toggle--disabled):not(.pui-toggle--pressed):hover)
+  .pui-toggle__control::before {
+  opacity: 1;
+  background: color-mix(in srgb, var(--pui-color-text) 4%, transparent);
+}
+
+:host(.pui-toggle--in-toolbar.pui-toggle--pressed) .pui-toggle__control {
+  transform: scale(var(--pui-toggle-press-scale));
+}
+
+:host(.pui-toggle--glass) .pui-toggle__control {
+  backdrop-filter: blur(12px);
+}
+
+.pui-toggle__content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pui-toggle-gap);
+  transition: transform var(--pui-duration-normal) var(--pui-easing-premium);
+}
+
+:host(.pui-toggle--in-segmented.pui-toggle--pressed) .pui-toggle__content {
+  transform: translateY(-0.5px);
+}
+
+.pui-toggle__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pui-toggle-gap);
+}
+
+.pui-toggle__label ::ng-deep svg {
+  width: var(--pui-toggle-icon-size);
+  height: var(--pui-toggle-icon-size);
+  flex-shrink: 0;
+}
+
+.pui-toggle__label--hidden {
+  opacity: 0;
+}
+
+.pui-toggle__spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1em;
+  height: 1em;
+  border-radius: var(--pui-radius-full);
+  border: 2px solid color-mix(in srgb, var(--pui-color-border) 35%, transparent);
+  border-top-color: var(--pui-color-primary);
+  animation: pui-toggle-spin 0.65s linear infinite;
+}
+
+:host(.pui-toggle--icon-only) .pui-toggle__control {
+  padding: var(--pui-toggle-padding-y);
+}
+
+:host(.pui-toggle--disabled) .pui-toggle__control {
+  cursor: not-allowed;
+  opacity: var(--pui-disabled-opacity);
+  transform: none;
+  pointer-events: none;
+}
+
+:host(.pui-toggle--loading) .pui-toggle__control {
+  cursor: wait;
+}
+
+@keyframes pui-toggle-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@include pui-motion.pui-reduced-motion {
+  .pui-toggle__control,
+  .pui-toggle__control::before,
+  .pui-toggle__content,
+  .pui-toggle__spinner {
+    transition: none;
+    animation: none;
+    transform: none;
+  }
+}

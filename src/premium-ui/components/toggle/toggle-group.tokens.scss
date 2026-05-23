@@ -1,0 +1,88 @@
+:host {
+  --pui-toggle-group-gap: var(--pui-space-xxs);
+  --pui-toggle-group-padding: var(--pui-space-xxs);
+  --pui-toggle-group-radius: var(--pui-radius-md);
+  --pui-toggle-group-bg: color-mix(in srgb, var(--pui-color-text) 4%, var(--pui-color-surface));
+  --pui-toggle-group-border: color-mix(in srgb, var(--pui-color-border) 85%, transparent);
+  --pui-toggle-group-shadow: inset 0 1px 2px color-mix(in srgb, var(--pui-color-text) 6%, transparent);
+  --pui-toggle-group-surface: color-mix(in srgb, var(--pui-color-text) 2%, var(--pui-color-surface));
+  --pui-toggle-indicator-bg: var(--pui-color-surface);
+  --pui-toggle-indicator-shadow:
+    var(--pui-shadow-sm),
+    0 1px 2px color-mix(in srgb, var(--pui-color-text) 8%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--pui-color-primary) 12%, transparent);
+  --pui-toggle-indicator-radius: calc(var(--pui-toggle-group-radius) - var(--pui-space-xxs));
+  --pui-toggle-indicator-index: 0;
+  --pui-toggle-indicator-count: 1;
+}
+
+:host(.pui-toggle-group--shape-square) {
+  --pui-toggle-group-radius: var(--pui-radius-sm);
+  --pui-toggle-indicator-radius: var(--pui-radius-sm);
+}
+
+:host(.pui-toggle-group--shape-rounded) {
+  --pui-toggle-group-radius: var(--pui-radius-md);
+}
+
+:host(.pui-toggle-group--shape-pill) {
+  --pui-toggle-group-radius: var(--pui-radius-full);
+  --pui-toggle-indicator-radius: var(--pui-radius-full);
+}
+
+:host(.pui-toggle-group--density-compact) {
+  --pui-toggle-group-gap: var(--pui-space-xxs);
+  --pui-toggle-group-padding: 3px;
+}
+
+:host(.pui-toggle-group--density-comfortable) {
+  --pui-toggle-group-gap: var(--pui-space-xs);
+  --pui-toggle-group-padding: var(--pui-space-xs);
+}
+
+:host(.pui-toggle-group--subtle) {
+  --pui-toggle-group-bg: color-mix(in srgb, var(--pui-color-text) 2%, var(--pui-color-surface));
+  --pui-toggle-group-border: color-mix(in srgb, var(--pui-color-border) 50%, transparent);
+  --pui-toggle-group-shadow: none;
+}
+
+:host(.pui-toggle-group--soft) {
+  --pui-toggle-group-bg: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-color-surface));
+  --pui-toggle-group-border: color-mix(in srgb, var(--pui-color-primary) 16%, transparent);
+}
+
+:host(.pui-toggle-group--outline) {
+  --pui-toggle-group-bg: transparent;
+  --pui-toggle-group-border: var(--pui-color-border);
+  --pui-toggle-group-shadow: none;
+}
+
+:host(.pui-toggle-group--ghost) {
+  --pui-toggle-group-bg: transparent;
+  --pui-toggle-group-border: transparent;
+  --pui-toggle-group-shadow: none;
+}
+
+:host(.pui-toggle-group--elevated) {
+  --pui-toggle-group-bg: var(--pui-color-surface);
+  --pui-toggle-group-shadow: var(--pui-shadow-md);
+  --pui-toggle-indicator-shadow:
+    var(--pui-shadow-md),
+    0 0 0 1px color-mix(in srgb, var(--pui-color-primary) 14%, transparent);
+}
+
+:host(.pui-toggle-group--glass) {
+  --pui-toggle-group-bg: color-mix(in srgb, var(--pui-color-surface) 72%, transparent);
+  --pui-toggle-group-border: color-mix(in srgb, var(--pui-color-border) 45%, transparent);
+  --pui-toggle-group-shadow: var(--pui-shadow-sm);
+  --pui-toggle-indicator-bg: color-mix(in srgb, var(--pui-color-surface) 88%, transparent);
+}
+
+:host(.pui-toggle-group--toolbar) {
+  --pui-toggle-group-gap: var(--pui-space-xxs);
+  --pui-toggle-group-padding: var(--pui-space-xxs);
+  --pui-toggle-group-radius: var(--pui-radius-md);
+  --pui-toggle-group-bg: var(--pui-color-surface);
+  --pui-toggle-group-border: color-mix(in srgb, var(--pui-color-border) 80%, transparent);
+  --pui-toggle-group-shadow: var(--pui-shadow-sm);
+}

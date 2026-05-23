@@ -39,7 +39,8 @@ export class DocsSidebarComponent {
         { label: 'Select', route: ['/docs/components/select/overview'], badge: 'Ready' },
         { label: 'Checkbox', route: ['/docs/components/checkbox/overview'], badge: 'Ready' },
         { label: 'Radio', route: ['/docs/components/radio/overview'], badge: 'Ready' },
-        { label: 'Switch', route: ['/docs/components/switch/overview'], badge: 'Ready' }
+        { label: 'Switch', route: ['/docs/components/switch/overview'], badge: 'Ready' },
+        { label: 'Toggle', route: ['/docs/components/toggle/overview'], badge: 'Ready' }
       ]
     },
     {

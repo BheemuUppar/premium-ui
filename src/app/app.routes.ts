@@ -79,6 +79,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/switch-docs/switch-docs.component').then((component) => component.SwitchDocsComponent)
       },
       {
+        path: 'components/toggle',
+        redirectTo: 'components/toggle/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/toggle/:tab',
+        loadComponent: () => import('./docs/pages/toggle-docs/toggle-docs.component').then((component) => component.ToggleDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

@@ -1,0 +1,23 @@
+<button
+  #control
+  type="button"
+  class="pui-toggle__control"
+  role="button"
+  [id]="controlId"
+  [attr.aria-pressed]="ariaPressed()"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-disabled]="isDisabled() ? 'true' : null"
+  [disabled]="isDisabled()"
+  [attr.tabindex]="rovingTabIndex()"
+  (click)="handleClick()"
+  (blur)="handleBlur()"
+>
+  <span class="pui-toggle__content">
+    @if (loading()) {
+      <span class="pui-toggle__spinner" aria-hidden="true"></span>
+    }
+    <span class="pui-toggle__label" [class.pui-toggle__label--hidden]="loading()">
+      <ng-content />
+    </span>
+  </span>
+</button>

@@ -1,0 +1,143 @@
+:host {
+  --pui-toggle-height: 2.125rem;
+  --pui-toggle-padding-x: var(--pui-space-md);
+  --pui-toggle-padding-y: var(--pui-space-xs);
+  --pui-toggle-gap: var(--pui-space-xs);
+  --pui-toggle-radius: var(--pui-radius-md);
+  --pui-toggle-font-size: var(--pui-font-size-sm);
+  --pui-toggle-font-weight: var(--pui-font-weight-medium);
+  --pui-toggle-bg: transparent;
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-text) 5%, transparent);
+  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-primary) 10%, var(--pui-color-surface));
+  --pui-toggle-color: var(--pui-muted);
+  --pui-toggle-color-hover: var(--pui-color-text);
+  --pui-toggle-color-pressed: var(--pui-color-primary);
+  --pui-toggle-border: transparent;
+  --pui-toggle-border-hover: transparent;
+  --pui-toggle-border-pressed: transparent;
+  --pui-toggle-shadow: none;
+  --pui-toggle-shadow-hover: none;
+  --pui-toggle-shadow-pressed: var(--pui-shadow-sm);
+  --pui-toggle-glow: color-mix(in srgb, var(--pui-color-primary) 18%, transparent);
+  --pui-toggle-icon-size: 1rem;
+  --pui-toggle-press-scale: 0.97;
+  --pui-toggle-hover-lift: -1px;
+}
+
+:host(.pui-toggle--sm) {
+  --pui-toggle-height: 1.75rem;
+  --pui-toggle-padding-x: var(--pui-space-sm);
+  --pui-toggle-font-size: var(--pui-font-size-xs);
+  --pui-toggle-icon-size: 0.875rem;
+}
+
+:host(.pui-toggle--lg) {
+  --pui-toggle-height: 2.5rem;
+  --pui-toggle-padding-x: var(--pui-space-lg);
+  --pui-toggle-font-size: var(--pui-font-size-md);
+  --pui-toggle-icon-size: 1.125rem;
+}
+
+:host(.pui-toggle--shape-square) {
+  --pui-toggle-radius: var(--pui-radius-sm);
+}
+
+:host(.pui-toggle--shape-rounded) {
+  --pui-toggle-radius: var(--pui-radius-md);
+}
+
+:host(.pui-toggle--shape-pill) {
+  --pui-toggle-radius: var(--pui-radius-full);
+}
+
+:host(.pui-toggle--density-compact) {
+  --pui-toggle-height: 1.75rem;
+  --pui-toggle-padding-x: var(--pui-space-sm);
+  --pui-toggle-padding-y: var(--pui-space-xxs);
+  --pui-toggle-gap: var(--pui-space-xxs);
+  --pui-toggle-font-size: var(--pui-font-size-xs);
+}
+
+:host(.pui-toggle--density-comfortable) {
+  --pui-toggle-height: 2.375rem;
+  --pui-toggle-padding-x: var(--pui-space-lg);
+  --pui-toggle-padding-y: var(--pui-space-sm);
+  --pui-toggle-gap: var(--pui-space-sm);
+}
+
+:host(.pui-toggle--default) {
+  --pui-toggle-color: var(--pui-color-text);
+}
+
+:host(.pui-toggle--subtle) {
+  --pui-toggle-color: var(--pui-muted);
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-text) 4%, transparent);
+  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-text) 8%, var(--pui-color-surface));
+  --pui-toggle-color-pressed: var(--pui-color-text);
+  --pui-toggle-shadow-pressed: none;
+}
+
+:host(.pui-toggle--soft) {
+  --pui-toggle-bg: color-mix(in srgb, var(--pui-color-primary) 6%, transparent);
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-primary) 10%, transparent);
+  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-primary) 16%, var(--pui-color-surface));
+}
+
+:host(.pui-toggle--outline) {
+  --pui-toggle-border: var(--pui-color-border);
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-text) 3%, var(--pui-color-surface));
+  --pui-toggle-border-pressed: color-mix(in srgb, var(--pui-color-primary) 30%, var(--pui-color-border));
+}
+
+:host(.pui-toggle--ghost) {
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-text) 5%, transparent);
+  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-primary) 12%, transparent);
+  --pui-toggle-shadow-pressed: none;
+}
+
+:host(.pui-toggle--elevated) {
+  --pui-toggle-bg: var(--pui-color-surface);
+  --pui-toggle-shadow: var(--pui-shadow-sm);
+  --pui-toggle-shadow-hover: var(--pui-shadow-md);
+  --pui-toggle-shadow-pressed: var(--pui-shadow-md);
+  --pui-toggle-bg-pressed: var(--pui-color-surface);
+  --pui-toggle-border-pressed: color-mix(in srgb, var(--pui-color-primary) 25%, transparent);
+}
+
+:host(.pui-toggle--glass) {
+  --pui-toggle-bg: color-mix(in srgb, var(--pui-color-surface) 60%, transparent);
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-surface) 75%, transparent);
+  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-surface) 90%, transparent);
+  --pui-toggle-border: color-mix(in srgb, var(--pui-color-border) 40%, transparent);
+}
+
+:host(.pui-toggle--in-segmented) {
+  --pui-toggle-bg: transparent;
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-text) 4%, transparent);
+  --pui-toggle-bg-pressed: transparent;
+  --pui-toggle-border: transparent;
+  --pui-toggle-shadow: none;
+  --pui-toggle-shadow-hover: none;
+  --pui-toggle-shadow-pressed: none;
+  --pui-toggle-color: var(--pui-muted);
+  --pui-toggle-color-pressed: var(--pui-color-text);
+  --pui-toggle-press-scale: 1;
+  --pui-toggle-hover-lift: 0;
+}
+
+:host(.pui-toggle--in-toolbar) {
+  --pui-toggle-height: 1.875rem;
+  --pui-toggle-padding-x: var(--pui-space-sm);
+  --pui-toggle-radius: var(--pui-radius-sm);
+  --pui-toggle-bg-hover: color-mix(in srgb, var(--pui-color-text) 6%, var(--pui-color-surface));
+  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-primary) 12%, var(--pui-color-surface));
+  --pui-toggle-shadow-pressed: inset 0 1px 2px color-mix(in srgb, var(--pui-color-text) 8%, transparent);
+  --pui-toggle-press-scale: 0.96;
+  --pui-toggle-hover-lift: 0;
+}
+
+:host(.pui-toggle--icon-only) {
+  --pui-toggle-padding-x: var(--pui-space-sm);
+  aspect-ratio: 1;
+  min-width: var(--pui-toggle-height);
+}

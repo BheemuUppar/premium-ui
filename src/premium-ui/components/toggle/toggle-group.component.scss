@@ -1,0 +1,93 @@
+@use './toggle-group.tokens';
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+}
+
+.pui-toggle-group__inner {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  gap: var(--pui-toggle-group-gap);
+  width: 100%;
+}
+
+:host(.pui-toggle-group--horizontal) .pui-toggle-group__inner {
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+:host(.pui-toggle-group--vertical) .pui-toggle-group__inner {
+  flex-direction: column;
+}
+
+:host(.pui-toggle-group--segmented) {
+  padding: var(--pui-toggle-group-padding);
+  border: 1px solid var(--pui-toggle-group-border);
+  border-radius: var(--pui-toggle-group-radius);
+  background: var(--pui-toggle-group-bg);
+  box-shadow: var(--pui-toggle-group-shadow);
+}
+
+:host(.pui-toggle-group--segmented) .pui-toggle-group__inner {
+  gap: 0;
+}
+
+:host(.pui-toggle-group--segmented) ::ng-deep .pui-toggle {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+:host(.pui-toggle-group--segmented) ::ng-deep .pui-toggle__control {
+  width: 100%;
+}
+
+:host(.pui-toggle-group--toolbar) {
+  padding: var(--pui-toggle-group-padding);
+  border: 1px solid var(--pui-toggle-group-border);
+  border-radius: var(--pui-toggle-group-radius);
+  background: var(--pui-toggle-group-bg);
+  box-shadow: var(--pui-toggle-group-shadow);
+}
+
+:host(.pui-toggle-group--glass) {
+  backdrop-filter: blur(16px);
+}
+
+:host(.pui-toggle-group--disabled) {
+  opacity: var(--pui-disabled-opacity);
+  pointer-events: none;
+}
+
+.pui-toggle-group__indicator {
+  position: absolute;
+  top: var(--pui-toggle-group-padding);
+  bottom: var(--pui-toggle-group-padding);
+  left: var(--pui-toggle-group-padding);
+  width: calc(
+    (100% - (2 * var(--pui-toggle-group-padding))) / var(--pui-toggle-indicator-count)
+  );
+  border-radius: var(--pui-toggle-indicator-radius);
+  background: var(--pui-toggle-indicator-bg);
+  box-shadow: var(--pui-toggle-indicator-shadow);
+  transform: translate3d(calc(var(--pui-toggle-indicator-index) * 100%), 0, 0);
+  transition: transform var(--pui-duration-slow) var(--pui-easing-premium);
+  will-change: transform;
+  pointer-events: none;
+  z-index: 0;
+}
+
+:host(.pui-toggle-group--vertical.pui-toggle-group--segmented) .pui-toggle-group__indicator {
+  width: calc(100% - (2 * var(--pui-toggle-group-padding)));
+  height: calc(
+    (100% - (2 * var(--pui-toggle-group-padding))) / var(--pui-toggle-indicator-count)
+  );
+  transform: translate3d(0, calc(var(--pui-toggle-indicator-index) * 100%), 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pui-toggle-group__indicator {
+    transition: none;
+  }
+}
