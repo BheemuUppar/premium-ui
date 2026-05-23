@@ -13,5 +13,6 @@ Important conventions:
 - Component stories live next to component source files
 - Docs pages are lazy-loaded under `src/app/docs/pages`
 - Avoid new NgModules in modern code
+- Shared internal architecture lives under `src/premium-ui/internal/` — see `.ai/architecture.md`
 
 AI assistants should read this file before making architecture or component-level changes.

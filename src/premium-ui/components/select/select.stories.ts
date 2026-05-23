@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/angular';
 import { Component, signal } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { PuiOptionComponent } from './option.component';
 import { PuiSelectComponent } from './select.component';
@@ -9,7 +9,6 @@ import {
   COUNTRY_OPTIONS,
   FRAMEWORK_OPTIONS,
   LARGE_DATASET,
-  STORY_GRID,
   STORY_LAYOUT,
   createLargeDataset,
 } from './select.stories.constants';
@@ -106,7 +105,10 @@ class DeclarativeSingleDemoComponent {
 }
 
 export const SingleSelectDeclarative: Story = {
-  render: () => ({ template: `<pui-select-declarative-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [DeclarativeSingleDemoComponent] },
+    template: `<pui-select-declarative-demo />`,
+  }),
 };
 
 export const MultiSelect: Story = {
@@ -138,7 +140,10 @@ class DeclarativeMultiDemoComponent {
 }
 
 export const MultiSelectDeclarative: Story = {
-  render: () => ({ template: `<pui-select-multi-declarative-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [DeclarativeMultiDemoComponent] },
+    template: `<pui-select-multi-declarative-demo />`,
+  }),
 };
 
 export const Searchable: Story = {
@@ -203,7 +208,10 @@ class SignalStateDemoComponent {
 }
 
 export const SignalStateExample: Story = {
-  render: () => ({ template: `<pui-select-signal-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [SignalStateDemoComponent] },
+    template: `<pui-select-signal-demo />`,
+  }),
 };
 
 @Component({
@@ -235,7 +243,10 @@ class ReactiveFormDemoComponent {
 }
 
 export const ReactiveFormExample: Story = {
-  render: () => ({ template: `<pui-select-reactive-form-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [ReactiveFormDemoComponent] },
+    template: `<pui-select-reactive-form-demo />`,
+  }),
 };
 
 @Component({
@@ -259,7 +270,10 @@ class NgModelDemoComponent {
 }
 
 export const NgModelExample: Story = {
-  render: () => ({ template: `<pui-select-ngmodel-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [NgModelDemoComponent] },
+    template: `<pui-select-ngmodel-demo />`,
+  }),
 };
 
 @Component({
@@ -302,7 +316,10 @@ class AsyncSelectDemoComponent {
 }
 
 export const AsyncSearch: Story = {
-  render: () => ({ template: `<pui-select-async-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [AsyncSelectDemoComponent] },
+    template: `<pui-select-async-demo />`,
+  }),
 };
 
 export const LargeDataset: Story = {

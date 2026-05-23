@@ -1,0 +1,40 @@
+@mixin pui-transition-interaction($properties...) {
+  $list: ();
+
+  @each $property in $properties {
+    $list: append($list, $property var(--pui-duration-normal) var(--pui-easing-standard), comma);
+  }
+
+  transition: $list;
+}
+
+@mixin pui-transition-premium($properties...) {
+  $list: ();
+
+  @each $property in $properties {
+    $list: append($list, $property var(--pui-duration-slow) var(--pui-easing-premium), comma);
+  }
+
+  transition: $list;
+}
+
+@keyframes pui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@mixin pui-spinner($size: 1rem) {
+  width: $size;
+  height: $size;
+  border-radius: var(--pui-radius-full);
+  border: 2px solid color-mix(in srgb, var(--pui-color-border) 40%, transparent);
+  border-top-color: var(--pui-color-primary);
+  animation: pui-spin 0.7s linear infinite;
+}
+
+@mixin pui-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

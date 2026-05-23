@@ -11,7 +11,6 @@ import {
   contentChild,
   contentChildren,
   effect,
-  forwardRef,
   inject,
   input,
   model,
@@ -19,8 +18,10 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
 import type { PuiSize } from '../../types/common.types';
+import { PuiCvaBridge, providePuiCva } from '../../internal/forms';
+import { isTypeaheadKey, PUI_KEYS } from '../../internal/keyboard';
 import { PuiOptionComponent } from './option.component';
 import { PuiCheckboxComponent } from '../checkbox/checkbox.component';
 import {
@@ -70,13 +71,7 @@ import {
   templateUrl: './select.component.html',
   styleUrl: './select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => PuiSelectComponent),
-      multi: true,
-    },
-  ],
+  providers: [providePuiCva(PuiSelectComponent)],
   host: {
     class: 'pui-select',
     '[class.pui-select--sm]': "size() === 'sm'",
@@ -94,6 +89,7 @@ export class PuiSelectComponent implements ControlValueAccessor {
   private static nextId = 0;
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
+  private readonly cva = new PuiCvaBridge<PuiSelectValue>();
   private readonly uid = PuiSelectComponent.nextId++;
 
   readonly options = input<readonly PuiSelectOption[]>([]);
@@ -126,10 +122,6 @@ export class PuiSelectComponent implements ControlValueAccessor {
   private readonly triggerRef = viewChild.required<ElementRef<HTMLButtonElement>>('triggerButton');
   private readonly searchInputRef = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
-  private onChange: (value: PuiSelectValue) => void = () => {};
-  private onTouched: () => void = () => {};
-  private readonly formDisabled = signal(false);
-
   private typeaheadBuffer = '';
   private typeaheadTimer: ReturnType<typeof setTimeout> | null = null;
   private searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -145,7 +137,7 @@ export class PuiSelectComponent implements ControlValueAccessor {
   protected readonly listboxId = `pui-select-listbox-${this.uid}`;
   protected readonly triggerId = `pui-select-trigger-${this.uid}`;
 
-  protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
+  protected readonly isDisabled = computed(() => this.disabled() || this.cva.formDisabled());
 
   protected readonly resolvedOptions = computed(() => {
     const projected = this.projectedOptions();
@@ -232,15 +224,15 @@ export class PuiSelectComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: (value: PuiSelectValue) => void): void {
-    this.onChange = fn;
+    this.cva.registerOnChange(fn);
   }
 
   registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
+    this.cva.registerOnTouched(fn);
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.formDisabled.set(isDisabled);
+    this.cva.setDisabledState(isDisabled);
   }
 
   protected togglePanel(): void {
@@ -283,25 +275,25 @@ export class PuiSelectComponent implements ControlValueAccessor {
 
     this.isOpen.set(false);
     this.openChange.emit(false);
-    this.onTouched();
+    this.cva.markTouched();
     this.triggerRef().nativeElement.focus();
   }
 
   protected handleTriggerKeydown(event: KeyboardEvent): void {
     switch (event.key) {
-      case 'ArrowDown':
-      case 'ArrowUp':
-      case 'Enter':
-      case ' ':
+      case PUI_KEYS.ARROW_DOWN:
+      case PUI_KEYS.ARROW_UP:
+      case PUI_KEYS.ENTER:
+      case PUI_KEYS.SPACE:
         event.preventDefault();
         this.openPanel();
         break;
-      case 'Escape':
+      case PUI_KEYS.ESCAPE:
         event.preventDefault();
         this.closePanel();
         break;
       default:
-        if (this.isTypeaheadKey(event.key)) {
+        if (isTypeaheadKey(event.key)) {
           event.preventDefault();
           this.handleTypeahead(event.key);
         }
@@ -311,37 +303,37 @@ export class PuiSelectComponent implements ControlValueAccessor {
 
   protected handlePanelKeydown(event: KeyboardEvent): void {
     switch (event.key) {
-      case 'ArrowDown':
+      case PUI_KEYS.ARROW_DOWN:
         event.preventDefault();
         this.moveActiveIndex(1);
         break;
-      case 'ArrowUp':
+      case PUI_KEYS.ARROW_UP:
         event.preventDefault();
         this.moveActiveIndex(-1);
         break;
-      case 'Enter':
+      case PUI_KEYS.ENTER:
         event.preventDefault();
         this.selectActiveOption();
         break;
-      case 'Escape':
+      case PUI_KEYS.ESCAPE:
         event.preventDefault();
         this.closePanel();
         break;
-      case 'Tab':
+      case PUI_KEYS.TAB:
         this.closePanel();
         break;
-      case 'Home':
+      case PUI_KEYS.HOME:
         event.preventDefault();
         this.setActiveIndex(findNextEnabledIndex(this.filteredOptions(), -1, 1));
         break;
-      case 'End':
+      case PUI_KEYS.END:
         event.preventDefault();
         this.setActiveIndex(
           findNextEnabledIndex(this.filteredOptions(), this.filteredOptions().length, -1)
         );
         break;
       default:
-        if (!this.searchable() && this.isTypeaheadKey(event.key)) {
+        if (!this.searchable() && isTypeaheadKey(event.key)) {
           event.preventDefault();
           this.handleTypeahead(event.key);
         }
@@ -382,6 +374,22 @@ export class PuiSelectComponent implements ControlValueAccessor {
 
     this.setActiveIndex(index);
     this.commitSelection(option);
+  }
+
+  protected handleOptionKeydown(
+    event: KeyboardEvent,
+    option: PuiSelectOption,
+    index: number
+  ): void {
+    if (option.disabled) {
+      return;
+    }
+
+    if (event.key === PUI_KEYS.ENTER || event.key === PUI_KEYS.SPACE) {
+      event.preventDefault();
+      this.setActiveIndex(index);
+      this.commitSelection(option);
+    }
   }
 
   protected handleClear(event: MouseEvent): void {
@@ -484,8 +492,8 @@ export class PuiSelectComponent implements ControlValueAccessor {
   private updateValue(nextValue: PuiSelectValue, option: PuiSelectOption | null): void {
     const normalized = coerceSelectValue(nextValue, this.multiple());
     this.value.set(normalized);
-    this.onChange(normalized);
-    this.onTouched();
+    this.cva.emitChange(normalized);
+    this.cva.markTouched();
     this.selectionChange.emit({ value: normalized, option });
   }
 
@@ -508,9 +516,5 @@ export class PuiSelectComponent implements ControlValueAccessor {
     if (index >= 0) {
       this.setActiveIndex(index);
     }
-  }
-
-  private isTypeaheadKey(key: string): boolean {
-    return key.length === 1 && !/\s/.test(key);
   }
 }

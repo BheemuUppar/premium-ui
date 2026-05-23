@@ -1,4 +1,5 @@
 @use './select.tokens';
+@use '../../internal/styles/focus' as pui-focus;
 
 :host {
   display: inline-flex;
@@ -37,8 +38,7 @@
 }
 
 .pui-select__trigger:focus-visible {
-  outline: 2px solid var(--pui-color-focus-ring);
-  outline-offset: 2px;
+  @include pui-focus.pui-focus-ring;
 }
 
 :host(.pui-select--open) .pui-select__trigger {
@@ -191,8 +191,7 @@
 }
 
 .pui-select__search-input:focus-visible {
-  outline: 2px solid var(--pui-color-focus-ring);
-  outline-offset: 1px;
+  @include pui-focus.pui-focus-ring(1px);
 }
 
 .pui-select__list,

@@ -156,7 +156,10 @@ class IndeterminateDemoComponent {
 }
 
 export const Indeterminate: Story = {
-  render: () => ({ template: `<pui-checkbox-indeterminate-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [IndeterminateDemoComponent] },
+    template: `<pui-checkbox-indeterminate-demo />`,
+  }),
 };
 
 export const Disabled: Story = {
@@ -282,7 +285,10 @@ class ReactiveFormsDemoComponent {
 }
 
 export const ReactiveForms: Story = {
-  render: () => ({ template: `<pui-checkbox-reactive-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [ReactiveFormsDemoComponent] },
+    template: `<pui-checkbox-reactive-demo />`,
+  }),
 };
 
 @Component({
@@ -316,7 +322,10 @@ class SignalFormsDemoComponent {
 }
 
 export const SignalForms: Story = {
-  render: () => ({ template: `<pui-checkbox-signal-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [SignalFormsDemoComponent] },
+    template: `<pui-checkbox-signal-demo />`,
+  }),
 };
 
 @Component({
@@ -349,7 +358,10 @@ class EventEmissionDemoComponent {
 }
 
 export const EventEmission: Story = {
-  render: () => ({ template: `<pui-checkbox-event-demo />` }),
+  render: () => ({
+    moduleMetadata: { imports: [EventEmissionDemoComponent] },
+    template: `<pui-checkbox-event-demo />`,
+  }),
 };
 
 export const DarkTheme: Story = {

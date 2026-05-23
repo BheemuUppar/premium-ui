@@ -5,11 +5,11 @@ import {
   forwardRef,
   input,
   model,
-  signal,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
+import { PuiCvaBridge, providePuiCva } from '../../internal/forms';
+import { PUI_CHECKBOX_GROUP } from '../../internal/selection';
 import type { PuiCheckboxOrientation, PuiCheckboxValue } from './checkbox.types';
-import { PUI_CHECKBOX_GROUP } from './checkbox-group.token';
 
 @Component({
   selector: 'pui-checkbox-group',
@@ -21,11 +21,7 @@ import { PUI_CHECKBOX_GROUP } from './checkbox-group.token';
       provide: PUI_CHECKBOX_GROUP,
       useExisting: forwardRef(() => PuiCheckboxGroupComponent),
     },
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => PuiCheckboxGroupComponent),
-      multi: true,
-    },
+    providePuiCva(PuiCheckboxGroupComponent),
   ],
   host: {
     class: 'pui-checkbox-group',
@@ -35,19 +31,16 @@ import { PUI_CHECKBOX_GROUP } from './checkbox-group.token';
   },
 })
 export class PuiCheckboxGroupComponent implements ControlValueAccessor {
+  private readonly cva = new PuiCvaBridge<PuiCheckboxValue[]>();
+
   readonly value = model<PuiCheckboxValue[]>([]);
   readonly name = input<string | null>(null);
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly orientation = input<PuiCheckboxOrientation>('vertical');
   readonly ariaLabel = input<string | null>(null);
 
-  private readonly formDisabled = signal(false);
-
-  private onChange: (value: PuiCheckboxValue[]) => void = () => undefined;
-  private onTouched: () => void = () => undefined;
-
   isDisabled(): boolean {
-    return this.disabled() || this.formDisabled();
+    return this.disabled() || this.cva.formDisabled();
   }
 
   containsValue(itemValue: PuiCheckboxValue): boolean {
@@ -73,8 +66,7 @@ export class PuiCheckboxGroupComponent implements ControlValueAccessor {
     }
 
     this.value.set(current);
-    this.onChange(current);
-    this.onTouched();
+    this.cva.commit(current);
   }
 
   writeValue(value: PuiCheckboxValue[] | null): void {
@@ -82,14 +74,14 @@ export class PuiCheckboxGroupComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: (value: PuiCheckboxValue[]) => void): void {
-    this.onChange = fn;
+    this.cva.registerOnChange(fn);
   }
 
   registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
+    this.cva.registerOnTouched(fn);
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.formDisabled.set(isDisabled);
+    this.cva.setDisabledState(isDisabled);
   }
 }

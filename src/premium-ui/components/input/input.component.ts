@@ -22,28 +22,28 @@ export class PuiInputComponent {
   readonly readOnly = input(false, { transform: booleanAttribute });
   readonly value = input('');
   readonly valueChange = output<string>();
-  readonly input = output<InputEvent>();
-  readonly change = output<Event>();
-  readonly focus = output<FocusEvent>();
-  readonly blur = output<FocusEvent>();
+  readonly textInput = output<InputEvent>();
+  readonly nativeChange = output<Event>();
+  readonly focused = output<FocusEvent>();
+  readonly blurred = output<FocusEvent>();
 
   protected readonly isInteractive = computed(() => !this.disabled() && !this.readOnly());
 
   protected handleInput(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
     this.valueChange.emit(value);
-    this.input.emit(event as InputEvent);
+    this.textInput.emit(event as InputEvent);
   }
 
   protected handleChange(event: Event): void {
-    this.change.emit(event);
+    this.nativeChange.emit(event);
   }
 
   protected handleFocus(event: FocusEvent): void {
-    this.focus.emit(event);
+    this.focused.emit(event);
   }
 
   protected handleBlur(event: FocusEvent): void {
-    this.blur.emit(event);
+    this.blurred.emit(event);
   }
 }

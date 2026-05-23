@@ -1,4 +1,5 @@
 @use './card.tokens';
+@use '../../internal/styles/focus' as pui-focus;
 
 :host {
   display: block;
@@ -99,8 +100,7 @@
 }
 
 :host(.pui-card--interactive:focus-visible) {
-  outline: 2px solid var(--pui-color-focus-ring);
-  outline-offset: 2px;
+  @include pui-focus.pui-focus-ring;
 }
 
 :host(.pui-card--disabled) {

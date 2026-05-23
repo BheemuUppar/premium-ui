@@ -4,32 +4,25 @@ import {
   booleanAttribute,
   computed,
   effect,
-  forwardRef,
   inject,
   input,
   model,
-  signal,
   viewChild,
   ElementRef,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
+import { joinDescribedBy, toAriaChecked } from '../../internal/accessibility';
+import { PuiCvaBridge, providePuiCva } from '../../internal/forms';
+import { PUI_CHECKBOX_GROUP } from '../../internal/selection';
+import { createPuiId } from '../../internal/utilities';
 import type { PuiCheckboxSize, PuiCheckboxVariant, PuiCheckboxValue } from './checkbox.types';
-import { PUI_CHECKBOX_GROUP } from './checkbox-group.token';
-
-let nextCheckboxId = 0;
 
 @Component({
   selector: 'pui-checkbox',
   templateUrl: './checkbox.component.html',
   styleUrl: './checkbox.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => PuiCheckboxComponent),
-      multi: true,
-    },
-  ],
+  providers: [providePuiCva(PuiCheckboxComponent)],
   host: {
     class: 'pui-checkbox',
     '[class.pui-checkbox--default]': "variant() === 'default'",
@@ -51,6 +44,7 @@ let nextCheckboxId = 0;
 })
 export class PuiCheckboxComponent implements ControlValueAccessor {
   private readonly group = inject(PUI_CHECKBOX_GROUP, { optional: true });
+  private readonly cva = new PuiCvaBridge<boolean>();
 
   readonly variant = input<PuiCheckboxVariant>('default');
   readonly size = input<PuiCheckboxSize>('md');
@@ -67,11 +61,9 @@ export class PuiCheckboxComponent implements ControlValueAccessor {
   readonly helper = input<string | null>(null);
   readonly error = input<string | null>(null);
 
-  private readonly checkboxId = `pui-checkbox-${++nextCheckboxId}`;
+  private readonly checkboxId = createPuiId('pui-checkbox');
   private readonly helperId = `${this.checkboxId}-helper`;
   private readonly errorId = `${this.checkboxId}-error`;
-
-  protected readonly formDisabled = signal(false);
 
   private readonly nativeInput = viewChild<ElementRef<HTMLInputElement>>('nativeInput');
 
@@ -89,30 +81,24 @@ export class PuiCheckboxComponent implements ControlValueAccessor {
   );
 
   protected readonly isDisabled = computed(
-    () => this.disabled() || this.formDisabled() || this.group?.isDisabled() === true
+    () => this.disabled() || this.cva.formDisabled() || this.group?.isDisabled() === true
   );
 
   protected readonly isInvalid = computed(() => this.invalid() || !!this.error());
 
   protected readonly checkboxName = computed(() => this.name() ?? this.group?.name() ?? null);
 
-  protected readonly describedBy = computed(() => {
-    const ids: string[] = [];
-    if (this.helper()) {
-      ids.push(this.helperId);
-    }
-    if (this.error()) {
-      ids.push(this.errorId);
-    }
-    return ids.length ? ids.join(' ') : null;
-  });
+  protected readonly describedBy = computed(() =>
+    joinDescribedBy([this.helper() ? this.helperId : null, this.error() ? this.errorId : null])
+  );
+
+  protected readonly ariaChecked = computed(() =>
+    toAriaChecked(this.isChecked(), this.showIndeterminate())
+  );
 
   protected readonly inputId = this.checkboxId;
   protected readonly helperTextId = this.helperId;
   protected readonly errorTextId = this.errorId;
-
-  private onChange: (value: boolean) => void = () => undefined;
-  private onTouched: () => void = () => undefined;
 
   constructor() {
     effect(() => {
@@ -131,15 +117,15 @@ export class PuiCheckboxComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
-    this.onChange = fn;
+    this.cva.registerOnChange(fn);
   }
 
   registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
+    this.cva.registerOnTouched(fn);
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.formDisabled.set(isDisabled);
+    this.cva.setDisabledState(isDisabled);
   }
 
   protected handleChange(event: Event): void {
@@ -156,13 +142,12 @@ export class PuiCheckboxComponent implements ControlValueAccessor {
     }
 
     this.checked.set(nextChecked);
-    this.onChange(nextChecked);
-    this.onTouched();
+    this.cva.commit(nextChecked);
   }
 
   protected handleBlur(): void {
     if (!this.inGroup()) {
-      this.onTouched();
+      this.cva.markTouched();
     }
   }
 }

@@ -1,0 +1,417 @@
+# Premium UI — Validation Workflow
+
+IMPORTANT:
+This workflow MUST be executed after:
+- creating components
+- refactoring architecture
+- changing tokens
+- updating forms
+- modifying accessibility
+- modifying Storybook
+- modifying docs
+- modifying shared utilities
+
+The goal:
+- consistency
+- maintainability
+- architecture stability
+- reusable infrastructure
+- professional-grade quality
+
+---
+
+# PHASE 1 — INSTALLATION VALIDATION
+
+## STEP 1 — Install Dependencies
+
+Run:
+
+```bash
+npm install
+```
+
+---
+
+## STEP 2 — Verify Scripts
+
+Run:
+
+```bash
+npm run
+```
+
+Verify scripts exist:
+- build
+- storybook
+- lint
+- test
+
+If lint does not exist:
+
+```bash
+ng add @angular-eslint/schematics
+```
+
+Then:
+
+```bash
+npm install -D prettier eslint-config-prettier
+```
+
+---
+
+# PHASE 2 — STATIC VALIDATION
+
+## STEP 1 — Run ESLint
+
+```bash
+npm run lint
+```
+
+Fix:
+- unused imports
+- typing issues
+- template issues
+- accessibility issues
+- invalid Angular patterns
+
+Never ignore lint errors.
+
+---
+
+## STEP 2 — Search Hardcoded Values
+
+Search for:
+
+```text
+#ffffff
+#000000
+rgb(
+12px
+16px
+box-shadow
+```
+
+Replace with:
+
+```css
+var(--pui-*)
+```
+
+Never hardcode:
+- colors
+- spacing
+- shadows
+- radius
+
+---
+
+## STEP 3 — API Consistency Validation
+
+Verify ALL components use:
+
+### Sizes
+
+- sm
+- md
+- lg
+
+### Variants
+
+- default
+- filled
+- outlined
+- soft
+- ghost
+- minimal
+- card
+
+### Events
+
+- valueChange
+- checkedChange
+- openChange
+- selectedChange
+
+Avoid inconsistent naming.
+
+---
+
+# PHASE 3 — BUILD VALIDATION
+
+## STEP 1 — Production Build
+
+Run:
+
+```bash
+npm run build
+```
+
+Fix:
+- TypeScript errors
+- Angular template errors
+- invalid imports
+- standalone import issues
+- circular dependencies
+
+Requirements:
+- zero errors
+- minimal warnings
+
+---
+
+# PHASE 4 — STORYBOOK VALIDATION
+
+## STEP 1 — Run Storybook
+
+```bash
+npm run storybook
+```
+
+---
+
+## STEP 2 — Validate Stories
+
+For EVERY component verify:
+
+### Visual Validation
+
+Verify:
+- light mode
+- dark mode
+- hover states
+- focus states
+- disabled states
+- loading states
+- selected states
+- invalid states
+
+Fix:
+- overflow
+- broken spacing
+- clipping
+- inconsistent typography
+- layout issues
+
+---
+
+### Interaction Validation
+
+Verify:
+- click interaction
+- keyboard interaction
+- state updates
+- animations
+- transitions
+- event emission
+
+---
+
+### Accessibility Validation
+
+Verify:
+- focus-visible
+- aria attributes
+- semantic roles
+- screen reader support
+- keyboard-only usability
+
+Test keys:
+
+```text
+Tab
+Shift + Tab
+Enter
+Space
+Escape
+Arrow Keys
+```
+
+---
+
+### Forms Validation
+
+Verify:
+- reactive forms
+- signal forms
+- ControlValueAccessor
+- touched state
+- invalid state
+- disabled state
+
+---
+
+# PHASE 5 — ARCHITECTURE VALIDATION
+
+## STEP 1 — Verify Shared Utility Usage
+
+Ensure components reuse:
+
+```text
+internal/accessibility
+internal/forms
+internal/selection
+internal/animations
+internal/interactions
+internal/overlay
+internal/tokens
+internal/utilities
+```
+
+Avoid duplicated implementations.
+
+---
+
+## STEP 2 — Search Duplicated Logic
+
+Search for:
+- duplicated animations
+- duplicated hover states
+- duplicated accessibility handling
+- duplicated focus styles
+- duplicated selection logic
+
+Refactor into shared primitives.
+
+---
+
+# PHASE 6 — PERFORMANCE VALIDATION
+
+Verify:
+- minimal DOM
+- lightweight rendering
+- GPU-friendly animations
+- transform/opacity animations only
+
+Avoid:
+- layout thrashing
+- expensive box-shadow animations
+- unnecessary wrappers
+
+---
+
+# PHASE 7 — RESPONSIVE VALIDATION
+
+Test:
+- mobile
+- tablet
+- desktop
+
+Verify:
+- no overflow
+- proper wrapping
+- responsive spacing
+- responsive layouts
+
+---
+
+# PHASE 8 — DARK MODE VALIDATION
+
+Verify:
+- contrast
+- readability
+- borders
+- overlays
+- shadows
+- hover states
+- focus states
+
+All components must work perfectly in:
+- light theme
+- dark theme
+
+---
+
+# PHASE 9 — DOCS VALIDATION
+
+Verify docs pages contain:
+- Overview
+- Examples
+- API Guide
+- Accessibility
+- Theming
+- Playground
+
+Verify:
+- tabs work
+- navigation works
+- copy buttons work
+- examples render correctly
+
+---
+
+# PHASE 10 — REGRESSION VALIDATION
+
+After architecture changes:
+retest ALL previous components.
+
+Verify:
+- button
+- input
+- card
+- checkbox
+- select
+
+Ensure:
+new changes did NOT break old components.
+
+---
+
+# PHASE 11 — GIT WORKFLOW
+
+After validation passes:
+
+## Feature
+
+```bash
+git add .
+git commit -m "feat(component): add premium checkbox system"
+```
+
+---
+
+## Fix
+
+```bash
+git add .
+git commit -m "fix(select): resolve selected value rendering"
+```
+
+---
+
+## Refactor
+
+```bash
+git add .
+git commit -m "refactor(selection): extract shared utilities"
+```
+
+---
+
+## Docs
+
+```bash
+git add .
+git commit -m "docs(card): improve premium examples"
+```
+
+---
+
+# FINAL RULES
+
+NEVER:
+- leave lint errors
+- leave duplicated logic
+- hardcode values
+- break accessibility
+- introduce inconsistent APIs
+
+ALWAYS:
+- reuse primitives
+- reuse patterns
+- reuse tokens
+- reuse accessibility
+- reuse animations
+- reuse forms infrastructure
+
+Consistency now matters more than speed.

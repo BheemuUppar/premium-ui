@@ -33,7 +33,7 @@
       [attr.name]="checkboxName()"
       [attr.value]="value()"
       [attr.aria-label]="ariaLabel()"
-      [attr.aria-checked]="showIndeterminate() ? 'mixed' : isChecked()"
+      [attr.aria-checked]="ariaChecked()"
       [attr.aria-invalid]="isInvalid() ? 'true' : null"
       [attr.aria-disabled]="isDisabled() ? 'true' : null"
       [attr.aria-describedby]="describedBy()"

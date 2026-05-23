@@ -1,23 +1,12 @@
-import { ConnectedPosition } from '@angular/cdk/overlay';
+import { PUI_DROPDOWN_POSITIONS } from '../../internal/positioning';
+import {
+  PUI_DEFAULT_ITEM_HEIGHT,
+  PUI_DEFAULT_MAX_PANEL_HEIGHT,
+} from '../../internal/virtualization';
 
-export const PUI_SELECT_DEFAULT_ITEM_HEIGHT = 36;
-export const PUI_SELECT_DEFAULT_MAX_PANEL_HEIGHT = 280;
+export const PUI_SELECT_DEFAULT_ITEM_HEIGHT = PUI_DEFAULT_ITEM_HEIGHT;
+export const PUI_SELECT_DEFAULT_MAX_PANEL_HEIGHT = PUI_DEFAULT_MAX_PANEL_HEIGHT;
 export const PUI_SELECT_SEARCH_DEBOUNCE_MS = 200;
 export const PUI_SELECT_TYPEAHEAD_RESET_MS = 500;
 
-export const PUI_SELECT_OVERLAY_POSITIONS: ConnectedPosition[] = [
-  {
-    originX: 'start',
-    originY: 'bottom',
-    overlayX: 'start',
-    overlayY: 'top',
-    offsetY: 4,
-  },
-  {
-    originX: 'start',
-    originY: 'top',
-    overlayX: 'start',
-    overlayY: 'bottom',
-    offsetY: -4,
-  },
-];
+export const PUI_SELECT_OVERLAY_POSITIONS = PUI_DROPDOWN_POSITIONS;

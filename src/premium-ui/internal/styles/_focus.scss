@@ -1,0 +1,16 @@
+@mixin pui-focus-ring($offset: 2px) {
+  outline: 2px solid var(--pui-color-focus-ring);
+  outline-offset: $offset;
+}
+
+@mixin pui-focus-ring-on-input($offset: 2px) {
+  &:focus-visible {
+    @include pui-focus-ring($offset);
+  }
+}
+
+@mixin pui-focus-ring-adjacent($offset: 2px) {
+  &:focus-visible + * {
+    @include pui-focus-ring($offset);
+  }
+}

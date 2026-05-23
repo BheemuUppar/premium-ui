@@ -1,0 +1,26 @@
+@mixin pui-form-control-surface {
+  width: 100%;
+  min-height: var(--pui-control-height, 2.75rem);
+  padding: var(--pui-control-padding, 0 var(--pui-space-md));
+  border: 1px solid var(--pui-control-border, var(--pui-color-border));
+  border-radius: var(--pui-control-radius, var(--pui-radius-md));
+  background: var(--pui-control-bg, var(--pui-color-surface));
+  color: var(--pui-control-color, var(--pui-color-text));
+  font-family: var(--pui-font-family);
+  font-size: var(--pui-control-font-size, var(--pui-font-size-sm));
+  line-height: 1.25;
+  transition:
+    border-color var(--pui-duration-normal) var(--pui-easing-standard),
+    box-shadow var(--pui-duration-normal) var(--pui-easing-standard);
+}
+
+@mixin pui-form-control-hover {
+  &:hover:not(:disabled) {
+    border-color: var(--pui-control-border-hover, var(--pui-color-primary));
+  }
+}
+
+@mixin pui-form-control-host-width {
+  display: inline-flex;
+  width: min(28rem, 100%);
+}

@@ -1,4 +1,5 @@
 @use './button.tokens';
+@use '../../internal/styles/focus' as pui-focus;
 
 :host {
   display: inline-flex;
@@ -26,8 +27,8 @@
 
 :host(.pui-button--danger) {
   --pui-button-bg: var(--pui-color-danger);
-  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-danger) 86%, #000000);
-  --pui-button-color: #ffffff;
+  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-danger) 86%, var(--pui-color-secondary));
+  --pui-button-color: var(--pui-color-on-danger);
 }
 
 :host(.pui-button--sm) {
@@ -84,8 +85,7 @@
 }
 
 .pui-button__control:focus-visible {
-  outline: 2px solid var(--pui-color-focus-ring);
-  outline-offset: 2px;
+  @include pui-focus.pui-focus-ring;
 }
 
 .pui-button__control:disabled {

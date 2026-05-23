@@ -1,4 +1,5 @@
 @use './checkbox.tokens';
+@use '../../internal/styles/focus' as pui-focus;
 
 :host {
   display: inline-flex;
@@ -102,8 +103,7 @@
 }
 
 .pui-checkbox__native:focus-visible + .pui-checkbox__control {
-  outline: 2px solid var(--pui-color-focus-ring);
-  outline-offset: 2px;
+  @include pui-focus.pui-focus-ring;
 }
 
 .pui-checkbox__spinner {

@@ -85,6 +85,7 @@
 >
   <div
     class="pui-select__panel"
+    tabindex="-1"
     [attr.data-theme]="panelTheme()"
     role="listbox"
     [id]="listboxId"
@@ -136,8 +137,10 @@
           [class.pui-select__option--disabled]="option.disabled"
           [attr.aria-selected]="isSelected(option)"
           [attr.aria-disabled]="option.disabled ? 'true' : null"
+          [attr.tabindex]="isActive(index) ? 0 : -1"
           [style.height.px]="itemHeight()"
           (click)="handleOptionClick(option, index)"
+          (keydown)="handleOptionKeydown($event, option, index)"
         >
           <ng-container
             *ngTemplateOutlet="optionRow; context: buildOptionContext(option, index)"
@@ -156,8 +159,10 @@
             [class.pui-select__option--disabled]="option.disabled"
             [attr.aria-selected]="isSelected(option)"
             [attr.aria-disabled]="option.disabled ? 'true' : null"
+            [attr.tabindex]="isActive(index) ? 0 : -1"
             [style.min-height.px]="itemHeight()"
             (click)="handleOptionClick(option, index)"
+            (keydown)="handleOptionKeydown($event, option, index)"
           >
             <ng-container
               *ngTemplateOutlet="optionRow; context: buildOptionContext(option, index)"
