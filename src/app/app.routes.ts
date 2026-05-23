@@ -52,6 +52,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/select-docs/select-docs.component').then((component) => component.SelectDocsComponent)
       },
       {
+        path: 'components/checkbox',
+        redirectTo: 'components/checkbox/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/checkbox/:tab',
+        loadComponent: () => import('./docs/pages/checkbox-docs/checkbox-docs.component').then((component) => component.CheckboxDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

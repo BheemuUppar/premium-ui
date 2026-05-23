@@ -1,0 +1,62 @@
+@if (embedded()) {
+  <span class="pui-checkbox__embedded">
+    <input
+      #nativeInput
+      class="pui-checkbox__native"
+      type="checkbox"
+      tabindex="-1"
+      aria-hidden="true"
+      [checked]="isChecked()"
+      [disabled]="isDisabled()"
+      (change)="$event.preventDefault()"
+    />
+    <span class="pui-checkbox__control" aria-hidden="true">
+      @if (loading()) {
+        <span class="pui-checkbox__spinner"></span>
+      }
+    </span>
+  </span>
+} @else {
+  <label
+    class="pui-checkbox__root"
+    [class.pui-checkbox__root--card]="variant() === 'card'"
+    [attr.for]="inputId"
+  >
+    <input
+      #nativeInput
+      class="pui-checkbox__native"
+      type="checkbox"
+      [id]="inputId"
+      [checked]="isChecked()"
+      [disabled]="isDisabled()"
+      [readonly]="readOnly()"
+      [attr.name]="checkboxName()"
+      [attr.value]="value()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-checked]="showIndeterminate() ? 'mixed' : isChecked()"
+      [attr.aria-invalid]="isInvalid() ? 'true' : null"
+      [attr.aria-disabled]="isDisabled() ? 'true' : null"
+      [attr.aria-describedby]="describedBy()"
+      (change)="handleChange($event)"
+      (blur)="handleBlur()"
+    />
+
+    <span class="pui-checkbox__control" aria-hidden="true">
+      @if (loading()) {
+        <span class="pui-checkbox__spinner"></span>
+      }
+    </span>
+
+    <span class="pui-checkbox__body">
+      <ng-content select="pui-checkbox-label" />
+      <ng-content />
+      <ng-content select="pui-checkbox-description" />
+      @if (helper()) {
+        <span class="pui-checkbox__helper" [id]="helperTextId">{{ helper() }}</span>
+      }
+      @if (error()) {
+        <span class="pui-checkbox__error" [id]="errorTextId" role="alert">{{ error() }}</span>
+      }
+    </span>
+  </label>
+}

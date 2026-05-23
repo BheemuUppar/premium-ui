@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.pui-checkbox-group__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-md);
+}
+
+:host(.pui-checkbox-group--horizontal) .pui-checkbox-group__inner {
+  flex-flow: row wrap;
+  gap: var(--pui-space-lg);
+}
+
+:host(.pui-checkbox-group--disabled) {
+  opacity: 0.65;
+  pointer-events: none;
+}

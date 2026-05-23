@@ -1,0 +1,24 @@
+:host {
+  --pui-checkbox-size: 1rem;
+  --pui-checkbox-gap: var(--pui-space-sm);
+  --pui-checkbox-radius: var(--pui-radius-sm);
+  --pui-checkbox-border: var(--pui-color-border);
+  --pui-checkbox-bg: var(--pui-color-surface);
+  --pui-checkbox-label-color: var(--pui-color-text);
+  --pui-checkbox-label-size: var(--pui-font-size-sm);
+  --pui-checkbox-description-color: var(--pui-muted);
+  --pui-checkbox-description-size: var(--pui-font-size-xs);
+  --pui-checkbox-error-color: var(--pui-color-danger);
+}
+
+:host(.pui-checkbox--sm) {
+  --pui-checkbox-size: 0.875rem;
+  --pui-checkbox-gap: var(--pui-space-xs);
+  --pui-checkbox-label-size: var(--pui-font-size-xs);
+}
+
+:host(.pui-checkbox--lg) {
+  --pui-checkbox-size: 1.125rem;
+  --pui-checkbox-gap: var(--pui-space-md);
+  --pui-checkbox-label-size: var(--pui-font-size-md);
+}

@@ -22,6 +22,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import type { PuiSize } from '../../types/common.types';
 import { PuiOptionComponent } from './option.component';
+import { PuiCheckboxComponent } from '../checkbox/checkbox.component';
 import {
   PUI_SELECT_DEFAULT_ITEM_HEIGHT,
   PUI_SELECT_DEFAULT_MAX_PANEL_HEIGHT,
@@ -64,6 +65,7 @@ import {
     CdkFixedSizeVirtualScroll,
     CdkVirtualForOf,
     NgTemplateOutlet,
+    PuiCheckboxComponent,
   ],
   templateUrl: './select.component.html',
   styleUrl: './select.component.scss',

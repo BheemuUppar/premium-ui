@@ -1,0 +1,16 @@
+:host {
+  display: contents;
+}
+
+.pui-checkbox__label {
+  color: var(--pui-checkbox-label-color);
+  font-size: var(--pui-checkbox-label-size);
+  font-weight: var(--pui-font-weight-regular);
+  line-height: var(--pui-line-height-normal);
+}
+
+.pui-checkbox__description {
+  color: var(--pui-checkbox-description-color);
+  font-size: var(--pui-checkbox-description-size);
+  line-height: var(--pui-line-height-normal);
+}

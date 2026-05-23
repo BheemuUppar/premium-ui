@@ -1,0 +1,31 @@
+.checkbox-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--pui-space-xl);
+}
+
+.checkbox-showcase-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-md);
+  max-width: 24rem;
+}
+
+.checkbox-showcase-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--pui-space-lg);
+  max-width: 36rem;
+}
+
+.checkbox-showcase-dark {
+  padding: var(--pui-space-xl);
+  border-radius: var(--pui-radius-xl);
+  background: var(--pui-color-secondary);
+}
+
+.checkbox-showcase-meta {
+  margin-top: var(--pui-space-sm);
+  color: var(--pui-muted);
+  font-size: var(--pui-font-size-sm);
+}

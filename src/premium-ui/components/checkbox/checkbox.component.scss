@@ -1,0 +1,167 @@
+@use './checkbox.tokens';
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+}
+
+:host(.pui-checkbox--embedded) {
+  display: inline-flex;
+  flex-shrink: 0;
+  pointer-events: none;
+  vertical-align: middle;
+}
+
+.pui-checkbox__embedded {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pui-checkbox__root {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--pui-checkbox-gap);
+  cursor: pointer;
+  user-select: none;
+  max-width: 100%;
+}
+
+.pui-checkbox__root--card {
+  align-items: flex-start;
+  width: 100%;
+  padding: var(--pui-space-md);
+  border-radius: var(--pui-radius-md);
+  border: 1px solid var(--pui-color-border);
+  background: var(--pui-color-surface);
+  transition:
+    border-color var(--pui-duration-fast) var(--pui-easing-standard),
+    background-color var(--pui-duration-fast) var(--pui-easing-standard);
+}
+
+:host(.pui-checkbox--card.pui-checkbox--checked) .pui-checkbox__root--card {
+  border-color: var(--pui-color-primary);
+  background: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-color-surface));
+}
+
+:host(.pui-checkbox--card:not(.pui-checkbox--disabled):hover) .pui-checkbox__root--card {
+  border-color: color-mix(in srgb, var(--pui-color-primary) 35%, var(--pui-color-border));
+}
+
+.pui-checkbox__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pui-checkbox__control {
+  position: relative;
+  flex: 0 0 var(--pui-checkbox-size);
+  width: var(--pui-checkbox-size);
+  height: var(--pui-checkbox-size);
+  margin-top: 0.125em;
+  border: 1.5px solid var(--pui-checkbox-border);
+  border-radius: var(--pui-checkbox-radius);
+  background: var(--pui-checkbox-bg);
+  transition:
+    background-color var(--pui-duration-fast) var(--pui-easing-standard),
+    border-color var(--pui-duration-fast) var(--pui-easing-standard);
+}
+
+:host(.pui-checkbox--checked) .pui-checkbox__control {
+  border-color: var(--pui-color-primary);
+  background: var(--pui-color-primary);
+  box-shadow: inset 0 0 0 2px var(--pui-checkbox-bg);
+}
+
+:host(.pui-checkbox--indeterminate) .pui-checkbox__control {
+  border-color: var(--pui-color-primary);
+  background: var(--pui-color-primary);
+  box-shadow: inset 0 0 0 2px var(--pui-checkbox-bg);
+}
+
+:host(.pui-checkbox--indeterminate) .pui-checkbox__control::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 50%;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--pui-checkbox-bg);
+}
+
+:host(.pui-checkbox--invalid) .pui-checkbox__control {
+  border-color: var(--pui-color-danger);
+}
+
+.pui-checkbox__native:focus-visible + .pui-checkbox__control {
+  outline: 2px solid var(--pui-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.pui-checkbox__spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: calc(var(--pui-checkbox-size) * 0.55);
+  height: calc(var(--pui-checkbox-size) * 0.55);
+  border-radius: var(--pui-radius-full);
+  border: 2px solid color-mix(in srgb, var(--pui-color-border) 40%, transparent);
+  border-top-color: var(--pui-color-primary);
+  animation: pui-checkbox-spin 0.7s linear infinite;
+}
+
+.pui-checkbox__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-xxs);
+  min-width: 0;
+  flex: 1;
+  color: var(--pui-checkbox-label-color);
+  font-size: var(--pui-checkbox-label-size);
+  font-weight: var(--pui-font-weight-regular);
+  line-height: var(--pui-line-height-normal);
+}
+
+.pui-checkbox__helper {
+  color: var(--pui-checkbox-description-color);
+  font-size: var(--pui-checkbox-description-size);
+  line-height: var(--pui-line-height-normal);
+}
+
+.pui-checkbox__error {
+  color: var(--pui-checkbox-error-color);
+  font-size: var(--pui-checkbox-description-size);
+  line-height: var(--pui-line-height-normal);
+}
+
+:host(.pui-checkbox--disabled) .pui-checkbox__root {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+:host(.pui-checkbox--readonly) .pui-checkbox__root {
+  cursor: default;
+}
+
+@keyframes pui-checkbox-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pui-checkbox__control,
+  .pui-checkbox__root--card,
+  .pui-checkbox__spinner {
+    transition: none;
+    animation: none;
+  }
+}

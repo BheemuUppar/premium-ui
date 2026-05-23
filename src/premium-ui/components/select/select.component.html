@@ -177,15 +177,16 @@
   } @else {
     <span class="pui-select__option-leading">
       @if (multiple()) {
-        <span
-          class="pui-select__option-checkbox"
-          [class.pui-select__option-checkbox--checked]="selected"
-          aria-hidden="true"
-        ></span>
+        <pui-checkbox
+          embedded
+          [size]="size()"
+          [checked]="selected"
+          [disabled]="option.disabled"
+        />
       }
       <span class="pui-select__option-label">{{ option.label }}</span>
     </span>
-    @if (selected) {
+    @if (selected && !multiple()) {
       <span class="pui-select__option-check" aria-hidden="true">✓</span>
     }
   }

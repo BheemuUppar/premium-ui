@@ -1,0 +1,231 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/checkbox/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/checkbox/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span>Checkbox</span>
+    </nav>
+    <h1>Checkbox</h1>
+    <p>
+      A premium selection system for forms, filters, tables, permissions, and bulk actions.
+      Composable, accessible, and built for scale.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Checkbox documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a class="pui-tab" [routerLink]="tab.route" routerLinkActive="pui-tab--active" [routerLinkActiveOptions]="{ exact: true }">
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section">
+          <h2>Overview</h2>
+          <p>Lightweight checkboxes matching the multiselect control — same visual language across forms and dropdowns.</p>
+          <div class="pui-preview-row pui-checkbox-preview-stack">
+            <pui-checkbox [checked]="true">Email notifications</pui-checkbox>
+            <pui-checkbox>Product updates</pui-checkbox>
+          </div>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Primitives</h2>
+          <ul class="pui-feature-list">
+            <li><code>pui-checkbox</code> — core control with CVA and signal binding</li>
+            <li><code>pui-checkbox-group</code> — multi-select value management</li>
+            <li><code>pui-checkbox-label</code> / <code>pui-checkbox-description</code> — structured content</li>
+          </ul>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Basic usage</h2>
+          <pre class="pui-code-block"><code>{{ basicExample }}</code></pre>
+        </section>
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section">
+          <h2>States</h2>
+          <div class="pui-checkbox-preview-stack">
+            <pui-checkbox [checked]="true">Checked</pui-checkbox>
+            <pui-checkbox>Unchecked</pui-checkbox>
+            <pui-checkbox [indeterminate]="true">Indeterminate</pui-checkbox>
+          </div>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Checkbox group</h2>
+          <pui-checkbox-group [(value)]="selectedFrameworks" ariaLabel="Frameworks">
+            <pui-checkbox value="angular">Angular</pui-checkbox>
+            <pui-checkbox value="react">React</pui-checkbox>
+            <pui-checkbox value="vue">Vue</pui-checkbox>
+          </pui-checkbox-group>
+          <p class="pui-doc-meta">Selected: {{ selectedFrameworks() | json }}</p>
+          <pre class="pui-code-block"><code>{{ groupExample }}</code></pre>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Card checkbox</h2>
+          <div class="pui-checkbox-card-grid">
+            <pui-checkbox variant="card" value="pro">
+              <pui-checkbox-label>Pro plan</pui-checkbox-label>
+              <pui-checkbox-description>Advanced features for growing teams</pui-checkbox-description>
+            </pui-checkbox>
+          </div>
+          <pre class="pui-code-block"><code>{{ cardExample }}</code></pre>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section">
+          <h2>pui-checkbox</h2>
+          <table class="pui-api-table">
+            <thead>
+              <tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              @for (row of checkboxApiRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.defaultValue }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>pui-checkbox-group</h2>
+          <table class="pui-api-table">
+            <thead>
+              <tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              @for (row of groupApiRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.defaultValue }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Outputs</h2>
+          <table class="pui-api-table">
+            <thead>
+              <tr><th>Event</th><th>Type</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              @for (row of outputApiRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section">
+          <h2>Accessibility</h2>
+          <ul class="pui-feature-list">
+            <li>Native <code>checkbox</code> input with visually hidden but screen-reader accessible control</li>
+            <li><code>aria-checked="mixed"</code> for indeterminate state</li>
+            <li><code>aria-invalid</code> and error text via <code>role="alert"</code></li>
+            <li>Keyboard: Space toggles; focus-visible ring meets WCAG AA contrast</li>
+            <li>Groups expose <code>role="group"</code> with optional <code>aria-label</code></li>
+            <li>Helper and error text linked through <code>aria-describedby</code></li>
+          </ul>
+        </section>
+      }
+
+      @case ('forms') {
+        <section class="pui-doc-section">
+          <h2>Reactive forms</h2>
+          <form [formGroup]="reactiveForm" class="pui-checkbox-preview-stack">
+            <pui-checkbox formControlName="terms">Accept terms and conditions</pui-checkbox>
+            <pui-checkbox formControlName="marketing">Send marketing emails</pui-checkbox>
+          </form>
+          <p class="pui-doc-meta">Value: {{ reactiveForm.value | json }}</p>
+          <pre class="pui-code-block"><code>{{ reactiveExample }}</code></pre>
+        </section>
+      }
+
+      @case ('signal-forms') {
+        <section class="pui-doc-section">
+          <h2>Signal forms</h2>
+          <pui-checkbox [checked]="signalChecked()" (checkedChange)="onSignalChecked($event)">
+            Accept terms
+          </pui-checkbox>
+          <p class="pui-doc-meta">Signal value: {{ signalChecked() }}</p>
+          <pre class="pui-code-block"><code>{{ controlledExample }}</code></pre>
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section">
+          <h2>Theming tokens</h2>
+          <pre class="pui-code-block"><code>{{ themeCode }}</code></pre>
+          <div class="pui-checkbox-preview-stack">
+            <pui-checkbox [checked]="true">Checked</pui-checkbox>
+            <pui-checkbox>Unchecked</pui-checkbox>
+          </div>
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section">
+          <h2>Playground</h2>
+          <div class="pui-playground">
+            <div class="pui-playground__controls">
+              <label>Variant
+                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
+                  @for (variant of variants; track variant) {
+                    <option [value]="variant">{{ variant }}</option>
+                  }
+                </select>
+              </label>
+              <label>Size
+                <select [value]="playgroundSize()" (change)="updateSize($event)">
+                  @for (size of sizes; track size) {
+                    <option [value]="size">{{ size }}</option>
+                  }
+                </select>
+              </label>
+              <label><input type="checkbox" [checked]="playgroundChecked()" (change)="updateCheckbox($event, playgroundChecked)" /> Checked</label>
+              <label><input type="checkbox" [checked]="playgroundDisabled()" (change)="updateCheckbox($event, playgroundDisabled)" /> Disabled</label>
+              <label><input type="checkbox" [checked]="playgroundIndeterminate()" (change)="updateCheckbox($event, playgroundIndeterminate)" /> Indeterminate</label>
+            </div>
+            <div class="pui-playground__preview">
+              <pui-checkbox
+                [variant]="playgroundVariant()"
+                [size]="playgroundSize()"
+                [checked]="playgroundChecked()"
+                [disabled]="playgroundDisabled()"
+                [indeterminate]="playgroundIndeterminate()"
+              >
+                Playground checkbox
+              </pui-checkbox>
+            </div>
+            <pre class="pui-code-block"><code>{{ playgroundCode() }}</code></pre>
+          </div>
+        </section>
+      }
+    }
+  </div>
+</article>
