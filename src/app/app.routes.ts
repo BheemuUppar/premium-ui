@@ -61,6 +61,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/checkbox-docs/checkbox-docs.component').then((component) => component.CheckboxDocsComponent)
       },
       {
+        path: 'components/radio',
+        redirectTo: 'components/radio/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/radio/:tab',
+        loadComponent: () => import('./docs/pages/radio-docs/radio-docs.component').then((component) => component.RadioDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

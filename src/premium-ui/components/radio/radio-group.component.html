@@ -1,0 +1,9 @@
+<div
+  class="pui-radio-group__inner"
+  role="radiogroup"
+  [attr.aria-label]="ariaLabel()"
+  [attr.aria-required]="required() ? 'true' : null"
+  [attr.aria-invalid]="invalid() ? 'true' : null"
+>
+  <ng-content />
+</div>

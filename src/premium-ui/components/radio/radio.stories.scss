@@ -1,0 +1,51 @@
+.pui-radio-showcase-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-md);
+  max-width: 28rem;
+}
+
+.pui-radio-showcase-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pui-space-lg);
+  align-items: center;
+}
+
+.pui-radio-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--pui-space-md);
+  max-width: 48rem;
+}
+
+.pui-radio-showcase-meta {
+  margin-top: var(--pui-space-sm);
+  color: var(--pui-muted);
+  font-size: var(--pui-font-size-sm);
+}
+
+.pui-radio-payment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--pui-space-md);
+  max-width: 42rem;
+}
+
+.pui-radio-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--pui-space-md);
+  max-width: 52rem;
+}
+
+.pui-radio-dark-panel {
+  padding: var(--pui-space-lg);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-color-secondary);
+  color: var(--pui-color-background);
+}
+
+.pui-radio-dark-panel [data-theme='dark'] {
+  --pui-color-surface: color-mix(in srgb, var(--pui-color-secondary) 88%, #ffffff);
+}

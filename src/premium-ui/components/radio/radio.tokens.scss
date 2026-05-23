@@ -1,0 +1,41 @@
+:host {
+  --pui-radio-size: 1.125rem;
+  --pui-radio-dot-size: 0.4375rem;
+  --pui-radio-gap: var(--pui-space-sm);
+  --pui-radio-border: var(--pui-color-border);
+  --pui-radio-bg: var(--pui-color-surface);
+  --pui-radio-shadow: var(--pui-shadow-sm);
+  --pui-radio-glow: color-mix(in srgb, var(--pui-color-primary) 24%, transparent);
+  --pui-radio-label-color: var(--pui-color-text);
+  --pui-radio-label-size: var(--pui-font-size-sm);
+  --pui-radio-description-color: var(--pui-muted);
+  --pui-radio-description-size: var(--pui-font-size-xs);
+  --pui-radio-helper-color: var(--pui-muted);
+  --pui-radio-error-color: var(--pui-color-danger);
+}
+
+:host(.pui-radio--sm) {
+  --pui-radio-size: 1rem;
+  --pui-radio-dot-size: 0.375rem;
+  --pui-radio-gap: var(--pui-space-xs);
+  --pui-radio-label-size: var(--pui-font-size-xs);
+}
+
+:host(.pui-radio--lg) {
+  --pui-radio-size: 1.3125rem;
+  --pui-radio-dot-size: 0.5rem;
+  --pui-radio-gap: var(--pui-space-md);
+  --pui-radio-label-size: var(--pui-font-size-md);
+}
+
+:host(.pui-radio--filled) {
+  --pui-radio-bg: color-mix(in srgb, var(--pui-color-primary) 6%, var(--pui-color-surface));
+}
+
+:host(.pui-radio--outlined) {
+  --pui-radio-border: color-mix(in srgb, var(--pui-color-primary) 35%, var(--pui-color-border));
+}
+
+:host(.pui-radio--soft) {
+  --pui-radio-bg: color-mix(in srgb, var(--pui-color-primary) 10%, var(--pui-color-surface));
+}

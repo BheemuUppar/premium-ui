@@ -1,0 +1,310 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/radio/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/radio/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span>Radio</span>
+    </nav>
+    <h1>Radio</h1>
+    <p>
+      Premium single-select controls for settings, pricing, payments, and enterprise forms.
+      Accessible, composable, and built on shared Premium UI infrastructure.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Radio documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a class="pui-tab" [routerLink]="tab.route" routerLinkActive="pui-tab--active" [routerLinkActiveOptions]="{ exact: true }">
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section">
+          <h2>Overview</h2>
+          <p>Elegant radio controls with premium surfaces, smooth dot animations, and full group support.</p>
+          <div class="pui-preview-row pui-radio-preview-stack">
+            <pui-radio-group [(value)]="theme" ariaLabel="Theme preference">
+              <pui-radio value="light">Light</pui-radio>
+              <pui-radio value="dark">Dark</pui-radio>
+              <pui-radio value="system">System</pui-radio>
+            </pui-radio-group>
+          </div>
+          <pre class="pui-code-block"><code>{{ basicExample }}</code></pre>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Primitives</h2>
+          <ul class="pui-feature-list">
+            <li><code>pui-radio</code> — core option with CVA support</li>
+            <li><code>pui-radio-group</code> — single-select value management</li>
+            <li><code>pui-radio-label</code> / <code>pui-radio-description</code> — structured content</li>
+          </ul>
+        </section>
+      }
+
+      @case ('variants') {
+        <section class="pui-doc-section">
+          <h2>Variants</h2>
+          <div class="pui-radio-preview-stack">
+            @for (variant of variants; track variant) {
+              <pui-radio-group value="a" [attr.aria-label]="'Variant ' + variant">
+                <pui-radio [variant]="variant" value="a">{{ variant }}</pui-radio>
+              </pui-radio-group>
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Sizes</h2>
+          <div class="pui-radio-preview-stack">
+            @for (size of sizes; track size) {
+              <pui-radio-group value="a" ariaLabel="Size preview">
+                <pui-radio [size]="size" value="a">Size {{ size }}</pui-radio>
+              </pui-radio-group>
+            }
+          </div>
+        </section>
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section">
+          <h2>Settings — theme selection</h2>
+          <pui-radio-group [(value)]="theme" ariaLabel="Application theme">
+            <pui-radio value="light">Light</pui-radio>
+            <pui-radio value="dark">Dark</pui-radio>
+            <pui-radio value="system">System</pui-radio>
+          </pui-radio-group>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Payment method</h2>
+          <pui-radio-group [(value)]="payment" class="pui-radio-payment-grid" ariaLabel="Payment method">
+            <pui-radio variant="card" value="card">
+              <pui-radio-label>Visa</pui-radio-label>
+              <pui-radio-description>Credit card</pui-radio-description>
+            </pui-radio>
+            <pui-radio variant="card" value="paypal">
+              <pui-radio-label>PayPal</pui-radio-label>
+            </pui-radio>
+            <pui-radio variant="card" value="upi">
+              <pui-radio-label>UPI</pui-radio-label>
+            </pui-radio>
+            <pui-radio variant="card" value="apple">
+              <pui-radio-label>Apple Pay</pui-radio-label>
+            </pui-radio>
+          </pui-radio-group>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Pricing plan</h2>
+          <pui-radio-group [(value)]="plan" class="pui-radio-card-grid" ariaLabel="Pricing plan">
+            <pui-radio variant="card" value="free">
+              <pui-radio-label>Free</pui-radio-label>
+              <pui-radio-description>$0 / month</pui-radio-description>
+            </pui-radio>
+            <pui-radio variant="card" value="pro">
+              <pui-radio-label>Pro</pui-radio-label>
+              <pui-radio-description>$29 / month</pui-radio-description>
+            </pui-radio>
+            <pui-radio variant="card" value="enterprise">
+              <pui-radio-label>Enterprise</pui-radio-label>
+              <pui-radio-description>Custom pricing</pui-radio-description>
+            </pui-radio>
+          </pui-radio-group>
+          <pre class="pui-code-block"><code>{{ cardExample }}</code></pre>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Dashboard filters</h2>
+          <pui-radio-group [(value)]="filter" orientation="horizontal" class="pui-radio-filter-row" ariaLabel="Time range">
+            <pui-radio value="daily">Daily</pui-radio>
+            <pui-radio value="weekly">Weekly</pui-radio>
+            <pui-radio value="monthly">Monthly</pui-radio>
+          </pui-radio-group>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section">
+          <h2>pui-radio</h2>
+          <table class="pui-api-table">
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              @for (row of radioApiRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.defaultValue }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>pui-radio-group</h2>
+          <table class="pui-api-table">
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              @for (row of groupApiRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.defaultValue }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Outputs</h2>
+          <table class="pui-api-table">
+            <thead><tr><th>Event</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+              @for (row of outputRows; track row.name) {
+                <tr>
+                  <td><code>{{ row.name }}</code></td>
+                  <td>{{ row.type }}</td>
+                  <td>{{ row.description }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section">
+          <h2>Accessibility</h2>
+          <ul class="pui-feature-list">
+            <li><code>role="radiogroup"</code> on group container</li>
+            <li>Native radio inputs with shared <code>name</code> for correct grouping</li>
+            <li>Roving <code>tabindex</code> — selected option is tabbable</li>
+            <li><code>aria-checked</code>, <code>aria-invalid</code>, <code>aria-required</code></li>
+            <li>Focus-visible ring via shared focus mixin</li>
+          </ul>
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section">
+          <h2>Theming</h2>
+          <p>Customize via CSS custom properties on host or group.</p>
+          <pre class="pui-code-block"><code>{{ themeCode }}</code></pre>
+        </section>
+      }
+
+      @case ('forms') {
+        <section class="pui-doc-section">
+          <h2>Reactive forms</h2>
+          <form [formGroup]="reactiveForm">
+            <pui-radio-group formControlName="plan" ariaLabel="Subscription plan">
+              <pui-radio value="starter">Starter</pui-radio>
+              <pui-radio value="pro">Pro</pui-radio>
+              <pui-radio value="enterprise">Enterprise</pui-radio>
+            </pui-radio-group>
+          </form>
+          <p class="pui-doc-meta">Value: {{ reactiveForm.value | json }}</p>
+          <pre class="pui-code-block"><code>{{ reactiveExample }}</code></pre>
+        </section>
+
+        <section class="pui-doc-section">
+          <h2>Signal forms</h2>
+          <pui-radio-group [value]="signalPlan()" (valueChange)="onSignalPlanChange($event)" ariaLabel="Plan">
+            <pui-radio value="starter">Starter</pui-radio>
+            <pui-radio value="pro">Pro</pui-radio>
+          </pui-radio-group>
+          <p class="pui-doc-meta">Signal value: {{ signalPlan() }}</p>
+          <pre class="pui-code-block"><code>{{ signalExample }}</code></pre>
+        </section>
+      }
+
+      @case ('keyboard') {
+        <section class="pui-doc-section">
+          <h2>Keyboard navigation</h2>
+          <ul class="pui-feature-list">
+            <li><kbd>Arrow Up</kbd> / <kbd>Arrow Down</kbd> — move selection vertically</li>
+            <li><kbd>Arrow Left</kbd> / <kbd>Arrow Right</kbd> — move selection horizontally</li>
+            <li><kbd>Home</kbd> / <kbd>End</kbd> — first / last enabled option</li>
+            <li><kbd>Space</kbd> — select focused option</li>
+            <li><kbd>Tab</kbd> — move focus into/out of group</li>
+          </ul>
+          <pui-radio-group [(value)]="theme" ariaLabel="Keyboard demo">
+            <pui-radio value="light">Light</pui-radio>
+            <pui-radio value="dark">Dark</pui-radio>
+            <pui-radio value="system">System</pui-radio>
+          </pui-radio-group>
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section">
+          <h2>Playground</h2>
+          <div class="pui-playground">
+            <div class="pui-playground__controls">
+              <label>
+                Variant
+                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
+                  @for (variant of variants; track variant) {
+                    <option [value]="variant">{{ variant }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                Size
+                <select [value]="playgroundSize()" (change)="updateSize($event)">
+                  @for (size of sizes; track size) {
+                    <option [value]="size">{{ size }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                Orientation
+                <select [value]="playgroundOrientation()" (change)="updateOrientation($event)">
+                  @for (orientation of orientations; track orientation) {
+                    <option [value]="orientation">{{ orientation }}</option>
+                  }
+                </select>
+              </label>
+              <label>
+                <input type="checkbox" [checked]="playgroundDisabled()" (change)="updateCheckbox(playgroundDisabled, $event)" />
+                Disabled
+              </label>
+              <label>
+                <input type="checkbox" [checked]="playgroundInvalid()" (change)="updateCheckbox(playgroundInvalid, $event)" />
+                Invalid
+              </label>
+            </div>
+            <div class="pui-playground__preview">
+              <pui-radio-group
+                [(value)]="playgroundValue"
+                [orientation]="playgroundOrientation()"
+                [disabled]="playgroundDisabled()"
+                [invalid]="playgroundInvalid()"
+                ariaLabel="Playground"
+              >
+                <pui-radio [variant]="playgroundVariant()" [size]="playgroundSize()" value="a">Option A</pui-radio>
+                <pui-radio [variant]="playgroundVariant()" [size]="playgroundSize()" value="b">Option B</pui-radio>
+                <pui-radio [variant]="playgroundVariant()" [size]="playgroundSize()" value="c">Option C</pui-radio>
+              </pui-radio-group>
+            </div>
+            <p class="pui-doc-meta">Value: {{ playgroundValue() | json }}</p>
+            <div class="pui-code-shell">
+              <button type="button" class="pui-code-copy" (click)="copyCode(playgroundCode())">Copy</button>
+              <pre><code>{{ playgroundCode() }}</code></pre>
+            </div>
+          </div>
+        </section>
+      }
+    }
+  </div>
+</article>

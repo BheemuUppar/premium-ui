@@ -1,0 +1,159 @@
+@use './radio.tokens';
+@use '../../internal/styles/focus' as pui-focus;
+@use '../../internal/styles/motion' as pui-motion;
+
+:host {
+  display: inline-flex;
+  max-width: 100%;
+  outline: none;
+}
+
+.pui-radio__root {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--pui-radio-gap);
+  cursor: pointer;
+  user-select: none;
+  max-width: 100%;
+}
+
+.pui-radio__root--card {
+  width: 100%;
+  padding: var(--pui-space-md);
+  border-radius: var(--pui-radius-md);
+  border: 1px solid var(--pui-color-border);
+  background: var(--pui-color-surface);
+  box-shadow: var(--pui-radio-shadow);
+  transition:
+    border-color var(--pui-duration-normal) var(--pui-easing-premium),
+    background-color var(--pui-duration-normal) var(--pui-easing-premium),
+    box-shadow var(--pui-duration-normal) var(--pui-easing-premium),
+    transform var(--pui-duration-fast) var(--pui-easing-premium);
+}
+
+:host(.pui-radio--card.pui-radio--checked) .pui-radio__root--card {
+  border-color: var(--pui-color-primary);
+  background: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-color-surface));
+  box-shadow:
+    var(--pui-shadow-md),
+    0 0 0 1px var(--pui-radio-glow);
+}
+
+:host(.pui-radio--card:not(.pui-radio--disabled):hover) .pui-radio__root--card {
+  border-color: color-mix(in srgb, var(--pui-color-primary) 40%, var(--pui-color-border));
+  transform: translateY(-1px);
+  box-shadow: var(--pui-shadow-md);
+}
+
+.pui-radio__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pui-radio__control {
+  position: relative;
+  flex: 0 0 var(--pui-radio-size);
+  width: var(--pui-radio-size);
+  height: var(--pui-radio-size);
+  margin-top: 0.1em;
+  border: 1.5px solid var(--pui-radio-border);
+  border-radius: var(--pui-radius-full);
+  background: var(--pui-radio-bg);
+  box-shadow: var(--pui-radio-shadow);
+  transition:
+    border-color var(--pui-duration-normal) var(--pui-easing-premium),
+    background-color var(--pui-duration-normal) var(--pui-easing-premium),
+    box-shadow var(--pui-duration-normal) var(--pui-easing-premium),
+    transform var(--pui-duration-fast) var(--pui-easing-premium);
+}
+
+:host(:not(.pui-radio--disabled):hover) .pui-radio__control {
+  border-color: color-mix(in srgb, var(--pui-color-primary) 45%, var(--pui-radio-border));
+  transform: scale(1.04);
+}
+
+:host(.pui-radio--checked) .pui-radio__control {
+  border-color: var(--pui-color-primary);
+  background: color-mix(in srgb, var(--pui-color-primary) 12%, var(--pui-radio-bg));
+  box-shadow:
+    var(--pui-shadow-sm),
+    0 0 0 3px var(--pui-radio-glow);
+}
+
+.pui-radio__dot {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--pui-radio-dot-size);
+  height: var(--pui-radio-dot-size);
+  border-radius: var(--pui-radius-full);
+  background: var(--pui-color-primary);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity var(--pui-duration-normal) var(--pui-easing-premium),
+    transform var(--pui-duration-normal) var(--pui-easing-premium);
+}
+
+:host(.pui-radio--checked) .pui-radio__dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+:host(.pui-radio--invalid) .pui-radio__control {
+  border-color: var(--pui-color-danger);
+}
+
+.pui-radio__native:focus-visible + .pui-radio__control {
+  @include pui-focus.pui-focus-ring;
+}
+
+.pui-radio__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-xxs);
+  min-width: 0;
+  flex: 1;
+  color: var(--pui-radio-label-color);
+  font-size: var(--pui-radio-label-size);
+  font-weight: var(--pui-font-weight-regular);
+  line-height: var(--pui-line-height-normal);
+}
+
+.pui-radio__label,
+::ng-deep .pui-radio__label {
+  font-weight: var(--pui-font-weight-semibold);
+}
+
+.pui-radio__description,
+.pui-radio__helper,
+::ng-deep .pui-radio__description {
+  color: var(--pui-radio-description-color);
+  font-size: var(--pui-radio-description-size);
+  line-height: var(--pui-line-height-normal);
+}
+
+.pui-radio__helper {
+  color: var(--pui-radio-helper-color);
+}
+
+:host(.pui-radio--disabled) .pui-radio__root {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@include pui-motion.pui-reduced-motion {
+  .pui-radio__control,
+  .pui-radio__dot,
+  .pui-radio__root--card {
+    transition: none;
+    transform: none;
+  }
+}

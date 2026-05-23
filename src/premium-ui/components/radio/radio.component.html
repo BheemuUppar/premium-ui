@@ -1,0 +1,43 @@
+<label
+  class="pui-radio__root"
+  [class.pui-radio__root--card]="variant() === 'card'"
+  [attr.for]="inputId"
+>
+  <input
+    #nativeInput
+    class="pui-radio__native"
+    type="radio"
+    [id]="inputId"
+    [checked]="isChecked()"
+    [disabled]="isDisabled()"
+    [attr.name]="radioName()"
+    [attr.value]="value()"
+    [attr.required]="isRequired() ? true : null"
+    [attr.aria-label]="ariaLabel() || label() || null"
+    [attr.aria-checked]="isChecked()"
+    [attr.aria-invalid]="isInvalid() ? 'true' : null"
+    [attr.aria-disabled]="isDisabled() ? 'true' : null"
+    [attr.aria-describedby]="describedBy()"
+    (change)="handleChange($event)"
+    (blur)="handleBlur()"
+  />
+
+  <span class="pui-radio__control" aria-hidden="true">
+    <span class="pui-radio__dot"></span>
+  </span>
+
+  <span class="pui-radio__body">
+    @if (label()) {
+      <span class="pui-radio__label">{{ label() }}</span>
+    }
+    <ng-content select="pui-radio-label" />
+    <ng-content />
+    @if (description()) {
+      <span class="pui-radio__description" [id]="inputId + '-desc'">{{ description() }}</span>
+    }
+    <ng-content select="pui-radio-description" />
+    @if (helperText()) {
+      <span class="pui-radio__helper" [id]="helperTextId">{{ helperText() }}</span>
+    }
+  </span>
+</label>
