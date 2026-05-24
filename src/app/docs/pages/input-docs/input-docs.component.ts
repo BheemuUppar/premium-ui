@@ -3,9 +3,17 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { map } from 'rxjs';
 import { PuiInputComponent } from '../../../../premium-ui/components/input';
-import type { PuiDocsTab } from '../../docs.types';
 import type { PuiInputType } from '../../../../premium-ui/components/input';
+import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
+import { PuiSelectComponent } from '../../../../premium-ui/components/select';
+import type { PuiSelectValue } from '../../../../premium-ui/components/select';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsInputTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';
 
@@ -18,7 +26,7 @@ interface PuiApiRow {
 
 @Component({
   selector: 'app-input-docs',
-  imports: [PuiInputComponent, RouterLink, RouterLinkActive],
+  imports: [PuiInputComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, RouterLink, RouterLinkActive],
   templateUrl: './input-docs.component.html',
   styleUrl: './input-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,6 +55,8 @@ export class InputDocsComponent {
 
   protected readonly inputTypes: readonly PuiInputType[] = ['text', 'email', 'password', 'search', 'tel', 'url', 'number'];
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];
+  protected readonly typeOptions = toSelectOptions(this.inputTypes);
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
 
   protected readonly apiRows: readonly PuiApiRow[] = [
     { name: 'type', type: 'PuiInputType', defaultValue: 'text', description: 'Sets the native input type.' },
@@ -75,30 +85,47 @@ export class InputDocsComponent {
     return `<pui-input type="${this.playgroundType()}" size="${this.playgroundSize()}" placeholder="${this.playgroundPlaceholder()}"${disabled}${readOnly}></pui-input>`;
   });
 
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    {
+      id: 'html',
+      label: 'HTML',
+      code: this.playgroundCode(),
+      language: 'html',
+      filename: 'playground.component.html',
+    },
+    {
+      id: 'ts',
+      label: 'TypeScript',
+      code: this.playgroundTsExample(),
+      language: 'typescript',
+      filename: 'playground.component.ts',
+    },
+  ]);
+
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'InputPlaygroundComponent',
+      imports: [{ name: 'PuiInputComponent', path: '@premium-ui/components/input' }],
+      members: [
+        `protected readonly type = signal('${this.playgroundType()}' as const);`,
+        `protected readonly size = signal('${this.playgroundSize()}' as const);`,
+        `protected readonly placeholder = signal('${this.playgroundPlaceholder()}');`,
+        `protected readonly disabled = signal(${this.playgroundDisabled()});`,
+        `protected readonly readOnly = signal(${this.playgroundReadOnly()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundType(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundType.set(value as PuiInputType);
+    }
   }
 
-  protected updateType(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value as PuiInputType;
-    this.playgroundType.set(value);
-  }
-
-  protected updateSize(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value as PuiSize;
-    this.playgroundSize.set(value);
-  }
-
-  protected updatePlaceholder(event: Event): void {
-    this.playgroundPlaceholder.set((event.target as HTMLInputElement).value);
-  }
-
-  protected updateDisabled(event: Event): void {
-    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);
-  }
-
-  protected updateReadOnly(event: Event): void {
-    this.playgroundReadOnly.set((event.target as HTMLInputElement).checked);
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiSize);
+    }
   }
 
   private isDocsTab(tab: string): tab is PuiDocsInputTab {

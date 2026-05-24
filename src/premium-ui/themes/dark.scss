@@ -21,10 +21,10 @@
   --pui-ring: var(--pui-color-focus-ring);
   --pui-code-background: #151c2c;
   --pui-docs-page: #080d17;
-  --pui-docs-chrome: #050812;
-  --pui-docs-chrome-text: #f8fafc;
-  --pui-docs-chrome-muted: #aab4c3;
-  --pui-docs-chrome-border: #20283a;
+  --pui-docs-chrome: var(--pui-surface-raised);
+  --pui-docs-chrome-text: var(--pui-color-text);
+  --pui-docs-chrome-muted: var(--pui-color-muted);
+  --pui-docs-chrome-border: var(--pui-color-border);
   --pui-docs-active-soft: #2b2153;
   --pui-docs-canvas: #0d1421;
   --pui-shadow-sm: 0 1px 2px rgb(0 0 0 / 28%);

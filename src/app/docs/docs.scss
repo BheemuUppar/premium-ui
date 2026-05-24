@@ -1,5 +1,8 @@
+@use './tokens/docs.tokens';
+
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 app-root {
@@ -181,6 +184,8 @@ app-root {
   border-top: 0;
   background: var(--pui-docs-canvas);
   box-shadow: var(--pui-shadow-md);
+  contain: layout style;
+  isolation: isolate;
 }
 
 .pui-sidebar,
@@ -189,6 +194,8 @@ app-root {
   top: 5.25rem;
   height: calc(100dvh - 5.25rem);
   overflow: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 
 .pui-sidebar {
@@ -295,6 +302,8 @@ app-root {
 .pui-docs-main {
   min-width: 0;
   padding: var(--pui-space-xl) 1.75rem var(--pui-space-3xl);
+  overflow-x: hidden;
+  contain: inline-size layout style;
 }
 
 .pui-doc-page {
@@ -577,24 +586,53 @@ thead th {
 
 .pui-playground {
   display: grid;
-  grid-template-columns: 14rem minmax(0, 1fr);
-  gap: var(--pui-space-md);
-  padding: var(--pui-space-md);
+  grid-template-columns: minmax(15rem, 17rem) minmax(0, 1fr);
+  gap: var(--pui-space-lg);
+  padding: var(--pui-space-lg);
   margin-top: var(--pui-space-md);
+  border: 1px solid var(--pui-doc-border);
+  border-radius: var(--pui-radius-lg);
+  background: var(--pui-doc-playground-bg);
+  box-shadow: var(--pui-shadow-sm);
+  min-width: 0;
+  contain: layout style;
 }
 
 .pui-playground__controls {
   display: grid;
   gap: var(--pui-space-md);
   align-content: start;
+  align-self: start;
+  width: 100%;
+  max-width: 17rem;
+  padding: var(--pui-space-md);
+  border: 1px solid var(--pui-doc-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-doc-surface);
 }
 
-.pui-playground label {
+.pui-playground__preview {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  min-height: 14rem;
+  padding: var(--pui-space-xl);
+  border: 1px dashed color-mix(in srgb, var(--pui-color-primary) 24%, var(--pui-doc-border));
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-doc-surface);
+}
+
+.pui-playground label,
+.pui-playground-field {
   display: grid;
   gap: var(--pui-space-xs);
   color: var(--pui-muted);
   font-size: var(--pui-font-size-sm);
   font-weight: var(--pui-font-weight-semibold);
+}
+
+.pui-playground-field__label {
+  display: block;
 }
 
 .pui-playground select {
@@ -611,16 +649,11 @@ thead th {
   align-items: center;
 }
 
-.pui-playground__preview {
-  display: grid;
-  place-items: center;
-  min-height: 12rem;
-  border: 1px dashed var(--pui-border);
-  border-radius: var(--pui-radius-md);
-}
-
-.pui-playground .pui-code-block {
+.pui-playground .pui-code-block,
+.pui-playground pui-doc-code-block {
   grid-column: 1 / -1;
+  min-width: 0;
+  width: 100%;
 }
 
 .pui-token-grid article {

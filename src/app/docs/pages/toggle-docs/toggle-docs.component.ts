@@ -18,7 +18,15 @@ import type {
   PuiToggleVariant,
 } from '../../../../premium-ui/components/toggle';
 import type { PuiSelectionValue, PuiSize } from '../../../../premium-ui/types/common.types';
-import type { PuiDocsTab } from '../../docs.types';
+import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
+import { PuiSelectComponent } from '../../../../premium-ui/components/select';
+import type { PuiSelectValue } from '../../../../premium-ui/components/select';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsToggleTab =
   | 'overview'
@@ -43,6 +51,9 @@ interface PuiApiRow {
   imports: [
     PuiToggleComponent,
     PuiToggleGroupComponent,
+    PuiSelectComponent,
+    PuiCheckboxComponent,
+    PuiDocCodeBlockComponent,
     ReactiveFormsModule,
     JsonPipe,
     RouterLink,
@@ -83,6 +94,12 @@ export class ToggleDocsComponent {
   protected readonly densities = PUI_TOGGLE_DENSITIES;
   protected readonly modes: readonly PuiToggleGroupMode[] = ['default', 'segmented', 'toolbar'];
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];
+  protected readonly modeOptions = toSelectOptions(this.modes);
+  protected readonly variantOptions = toSelectOptions(this.variants);
+  protected readonly shapeOptions = toSelectOptions(this.shapes);
+  protected readonly densityOptions = toSelectOptions(this.densities);
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
+  protected readonly orientationOptions = toSelectOptions(['horizontal', 'vertical'] as const);
 
   protected readonly bold = signal(false);
   protected readonly view = signal<PuiSelectionValue>('grid');
@@ -193,41 +210,64 @@ export class ToggleDocsComponent {
 </pui-toggle-group>`;
   });
 
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    { id: 'html', label: 'HTML', code: this.playgroundCode(), language: 'html', filename: 'playground.component.html' },
+    { id: 'ts', label: 'TypeScript', code: this.playgroundTsExample(), language: 'typescript', filename: 'playground.component.ts' },
+  ]);
+
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'TogglePlaygroundComponent',
+      imports: [
+        { name: 'PuiToggleGroupComponent', path: '@premium-ui/components/toggle' },
+        { name: 'PuiToggleComponent', path: '@premium-ui/components/toggle' },
+      ],
+      members: [
+        "protected readonly view = signal('grid');",
+        `protected readonly mode = signal('${this.playgroundMode()}' as const);`,
+        `protected readonly variant = signal('${this.playgroundVariant()}' as const);`,
+        `protected readonly shape = signal('${this.playgroundShape()}' as const);`,
+        `protected readonly density = signal('${this.playgroundDensity()}' as const);`,
+        `protected readonly disabled = signal(${this.playgroundDisabled()});`,
+        `protected readonly multiple = signal(${this.playgroundMultiple()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundVariant(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundVariant.set(value as PuiToggleVariant);
+    }
   }
 
-  protected updateVariant(event: Event): void {
-    this.playgroundVariant.set((event.target as HTMLSelectElement).value as PuiToggleVariant);
+  protected setPlaygroundShape(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundShape.set(value as PuiToggleShape);
+    }
   }
 
-  protected updateShape(event: Event): void {
-    this.playgroundShape.set((event.target as HTMLSelectElement).value as PuiToggleShape);
+  protected setPlaygroundDensity(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundDensity.set(value as PuiToggleDensity);
+    }
   }
 
-  protected updateDensity(event: Event): void {
-    this.playgroundDensity.set((event.target as HTMLSelectElement).value as PuiToggleDensity);
+  protected setPlaygroundMode(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundMode.set(value as PuiToggleGroupMode);
+    }
   }
 
-  protected updateMode(event: Event): void {
-    this.playgroundMode.set((event.target as HTMLSelectElement).value as PuiToggleGroupMode);
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiSize);
+    }
   }
 
-  protected updateSize(event: Event): void {
-    this.playgroundSize.set((event.target as HTMLSelectElement).value as PuiSize);
-  }
-
-  protected updateOrientation(event: Event): void {
-    this.playgroundOrientation.set(
-      (event.target as HTMLSelectElement).value as 'horizontal' | 'vertical'
-    );
-  }
-
-  protected updateCheckbox(
-    signalRef: ReturnType<typeof signal<boolean>>,
-    event: Event
-  ): void {
-    signalRef.set((event.target as HTMLInputElement).checked);
+  protected setPlaygroundOrientation(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundOrientation.set(value as 'horizontal' | 'vertical');
+    }
   }
 
   private isDocsTab(tab: string): tab is PuiDocsToggleTab {

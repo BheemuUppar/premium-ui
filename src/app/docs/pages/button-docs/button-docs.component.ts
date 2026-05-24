@@ -4,7 +4,16 @@ import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { map } from 'rxjs';
 import { PuiButtonComponent } from '../../../../premium-ui/components/button';
 import type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/components/button';
-import type { PuiDocsTab } from '../../docs.types';
+import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
+import { PuiSelectComponent } from '../../../../premium-ui/components/select';
+import type { PuiSelectValue } from '../../../../premium-ui/components/select';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildHtmlTsTabs,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';
 
@@ -28,7 +37,7 @@ interface PuiApiRow {
 
 @Component({
   selector: 'app-button-docs',
-  imports: [PuiButtonComponent, RouterLink, RouterLinkActive],
+  imports: [PuiButtonComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, RouterLink, RouterLinkActive],
   templateUrl: './button-docs.component.html',
   styleUrl: './button-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -46,8 +55,6 @@ export class ButtonDocsComponent {
     return this.isDocsTab(tab) ? tab : 'overview';
   });
 
-  protected readonly currentCodeTab = signal<'html' | 'ts'>('html');
-
   protected readonly tabs: readonly PuiDocsTab[] = [
     { label: 'Overview', route: ['/docs/components/button/overview'] },
     { label: 'Examples', route: ['/docs/components/button/examples'] },
@@ -59,8 +66,17 @@ export class ButtonDocsComponent {
 
   protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];
   protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];
+  protected readonly variantOptions = toSelectOptions(this.variants);
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
 
   protected readonly htmlExample = '<pui-button>Save changes</pui-button>';
+
+  protected readonly basicExampleTabs = buildHtmlTsTabs(this.htmlExample, {
+    selector: 'app-button-example',
+    componentClass: 'ButtonExampleComponent',
+    imports: [{ name: 'PuiButtonComponent', path: '@premium-ui/components/button' }],
+    templateUrl: './button-example.component.html',
+  });
 
   protected readonly tsExample = `import { Component } from '@angular/core';
 import { PuiButtonComponent } from '@premium-ui/components';
@@ -134,30 +150,46 @@ export class ExampleComponent {}`;
 </pui-button>`;
   });
 
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
-  }
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    {
+      id: 'html',
+      label: 'HTML',
+      code: this.playgroundCode(),
+      language: 'html',
+      filename: 'playground.component.html',
+    },
+    {
+      id: 'ts',
+      label: 'TypeScript',
+      code: this.playgroundTsExample(),
+      language: 'typescript',
+      filename: 'playground.component.ts',
+    },
+  ]);
 
-  protected updateVariant(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    if (this.isButtonVariant(value)) {
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'ButtonPlaygroundComponent',
+      imports: [{ name: 'PuiButtonComponent', path: '@premium-ui/components/button' }],
+      members: [
+        `protected readonly variant = signal('${this.playgroundVariant()}' as const);`,
+        `protected readonly size = signal('${this.playgroundSize()}' as const);`,
+        `protected readonly disabled = signal(${this.playgroundDisabled()});`,
+        `protected readonly loading = signal(${this.playgroundLoading()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundVariant(value: PuiSelectValue | null): void {
+    if (typeof value === 'string' && this.isButtonVariant(value)) {
       this.playgroundVariant.set(value);
     }
   }
 
-  protected updateSize(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-    if (this.isButtonSize(value)) {
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string' && this.isButtonSize(value)) {
       this.playgroundSize.set(value);
     }
-  }
-
-  protected updateDisabled(event: Event): void {
-    this.playgroundDisabled.set((event.target as HTMLInputElement).checked);
-  }
-
-  protected updateLoading(event: Event): void {
-    this.playgroundLoading.set((event.target as HTMLInputElement).checked);
   }
 
   private isDocsTab(tab: string): tab is PuiDocsButtonTab {

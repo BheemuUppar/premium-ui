@@ -1,0 +1,12 @@
+@if (eyebrow()) {
+  <p class="pui-doc-section__eyebrow">{{ eyebrow() }}</p>
+}
+@if (title()) {
+  <h2 class="pui-doc-section__title">{{ title() }}</h2>
+}
+@if (description()) {
+  <p class="pui-doc-section__description">{{ description() }}</p>
+}
+<div class="pui-doc-section__content">
+  <ng-content />
+</div>

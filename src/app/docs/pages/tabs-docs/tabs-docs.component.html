@@ -1,383 +1,278 @@
-<article class="pui-doc-page">
-  <header class="pui-doc-hero">
-    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
-      <a routerLink="/docs/components/tabs/overview">Home</a>
-      <span aria-hidden="true">/</span>
-      <a routerLink="/docs/components/tabs/overview">Components</a>
-      <span aria-hidden="true">/</span>
-      <span>Tabs</span>
-    </nav>
-    <h1>Tabs</h1>
-    <p>Organize content into switchable panels with underline, segmented, and pill variants.</p>
-  </header>
+<pui-doc-layout>
+  <pui-doc-header
+    title="Tabs"
+    description="Organize content into switchable panels with underline, segmented, and pill variants."
+    [breadcrumbs]="breadcrumbs"
+  />
 
-  <nav class="pui-tabs" aria-label="Tabs documentation tabs">
-    @for (tab of tabs; track tab.label) {
-      <a class="pui-tab" [routerLink]="tab.route" routerLinkActive="pui-tab--active" [routerLinkActiveOptions]="{ exact: true }">
-        {{ tab.label }}
-      </a>
+  <pui-doc-tabs-nav [tabs]="tabs" ariaLabel="Tabs documentation" />
+
+  @switch (currentTab()) {
+    @case ('overview') {
+      <pui-doc-section
+        anchorId="tabs-intro"
+        title="Introduction"
+        description="Tabs group related content with GPU-accelerated indicators, keyboard navigation, and connected panels."
+      >
+        <pui-doc-preview>
+          <pui-tabs variant="underline" ariaLabel="Project sections">
+            <pui-tab-item id="overview" label="Overview" panelId="docs-panel-overview"></pui-tab-item>
+            <pui-tab-item id="analytics" label="Analytics" panelId="docs-panel-analytics"></pui-tab-item>
+            <pui-tab-item id="settings" label="Settings" panelId="docs-panel-settings"></pui-tab-item>
+
+            <pui-tab-panel tabId="overview" id="docs-panel-overview">
+              <h3>Overview</h3>
+              <p>High-level summary and key metrics for your project.</p>
+            </pui-tab-panel>
+            <pui-tab-panel tabId="analytics" id="docs-panel-analytics">
+              <h3>Analytics</h3>
+              <p>Traffic, conversion, and engagement data.</p>
+            </pui-tab-panel>
+            <pui-tab-panel tabId="settings" id="docs-panel-settings">
+              <h3>Settings</h3>
+              <p>Configure preferences and integrations.</p>
+            </pui-tab-panel>
+          </pui-tabs>
+        </pui-doc-preview>
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-basic" title="Basic usage" description="Compose pui-tabs with projected tab items and panels.">
+        <pui-doc-code-block [tabs]="basicExampleTabs" />
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-controlled" title="Controlled selection" description="Bind the active tab with two-way value or listen to valueChange.">
+        <pui-doc-callout title="Forms ready" variant="info">
+          pui-tabs implements ControlValueAccessor, so it works with reactive forms and signal-driven state.
+        </pui-doc-callout>
+        <pui-doc-code-block [tabs]="valueExampleTabs" />
+      </pui-doc-section>
     }
-  </nav>
 
-  <div class="pui-tab-panel">
-    @switch (currentTab()) {
-      @case ('overview') {
-        <section class="pui-doc-section">
-          <h2>Overview</h2>
-          <p>
-            Tabs group related content with a GPU-accelerated sliding indicator, roving keyboard navigation,
-            and connected panels. Use <code>pui-tabs</code> as the root with projected
-            <code>pui-tab-item</code> and <code>pui-tab-panel</code> children.
-          </p>
-          <div class="pui-tabs-preview">
-            <pui-tabs variant="underline" ariaLabel="Project sections">
-              <pui-tab-item id="overview" label="Overview" panelId="docs-panel-overview"></pui-tab-item>
-              <pui-tab-item id="analytics" label="Analytics" panelId="docs-panel-analytics"></pui-tab-item>
-              <pui-tab-item id="settings" label="Settings" panelId="docs-panel-settings"></pui-tab-item>
+    @case ('variants') {
+      <pui-doc-section
+        anchorId="tabs-variants-intro"
+        title="Variants"
+        description="Four visual styles share the same API. Segmented variants use a sliding indicator powered by CSS tokens."
+      />
 
-              <pui-tab-panel tabId="overview" id="docs-panel-overview">
-                <h3>Overview</h3>
-                <p>High-level summary and key metrics for your project.</p>
+      @for (guide of variantGuides; track guide.id) {
+        <pui-doc-section
+          [anchorId]="'tabs-variant-' + guide.id"
+          [title]="guide.title"
+          [description]="guide.description"
+        >
+          <pui-doc-callout [title]="'Best for'" variant="success">{{ guide.bestFor }}</pui-doc-callout>
+          <pui-doc-preview [compact]="isCompactVariant(guide.id)">
+            <pui-tabs [variant]="guide.id" [ariaLabel]="guide.title + ' variant'">
+              <pui-tab-item [id]="guide.id + '-a'" label="Overview" [panelId]="'panel-' + guide.id + '-a'"></pui-tab-item>
+              <pui-tab-item [id]="guide.id + '-b'" label="Analytics" [panelId]="'panel-' + guide.id + '-b'"></pui-tab-item>
+              <pui-tab-item [id]="guide.id + '-c'" label="Settings" [panelId]="'panel-' + guide.id + '-c'"></pui-tab-item>
+
+              <pui-tab-panel [tabId]="guide.id + '-a'" [id]="'panel-' + guide.id + '-a'">
+                <p>{{ guide.description }}</p>
               </pui-tab-panel>
-              <pui-tab-panel tabId="analytics" id="docs-panel-analytics">
-                <h3>Analytics</h3>
-                <p>Traffic, conversion, and engagement data.</p>
+              <pui-tab-panel [tabId]="guide.id + '-b'" [id]="'panel-' + guide.id + '-b'">
+                <p>Second panel for {{ guide.title }}.</p>
               </pui-tab-panel>
-              <pui-tab-panel tabId="settings" id="docs-panel-settings">
-                <h3>Settings</h3>
-                <p>Configure preferences and integrations.</p>
+              <pui-tab-panel [tabId]="guide.id + '-c'" [id]="'panel-' + guide.id + '-c'">
+                <p>Third panel for {{ guide.title }}.</p>
               </pui-tab-panel>
             </pui-tabs>
-          </div>
-          <pre class="pui-code-block"><code>{{ basicExample }}</code></pre>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>Controlled selection</h2>
-          <p>Bind the active tab with two-way <code>[(value)]</code> or listen to <code>valueChange</code>.</p>
-          <pre class="pui-code-block"><code>{{ valueExample }}</code></pre>
-        </section>
+          </pui-doc-preview>
+          <pui-doc-code-block [tabs]="guide.exampleTabs" />
+        </pui-doc-section>
       }
 
-      @case ('variants') {
-        <section class="pui-doc-section">
-          <h2>Variants</h2>
-          <p>Four visual styles share the same API. Segmented variants use a sliding indicator powered by CSS tokens.</p>
-        </section>
-
-        @for (guide of variantGuides; track guide.id) {
-          <section class="pui-doc-section pui-tabs-variant-guide">
-            <div class="pui-tabs-variant-guide__header">
-              <h2>{{ guide.title }}</h2>
-              <p>{{ guide.description }}</p>
-              <p class="pui-tabs-variant-guide__best-for"><strong>Best for:</strong> {{ guide.bestFor }}</p>
-            </div>
-
-            <div class="pui-tabs-preview" [class.pui-tabs-preview--fit]="guide.id === 'segmented' || guide.id === 'pill'">
-              <pui-tabs [variant]="guide.id" [ariaLabel]="guide.title + ' variant'">
-                <pui-tab-item [id]="guide.id + '-a'" label="Overview" [panelId]="'panel-' + guide.id + '-a'"></pui-tab-item>
-                <pui-tab-item [id]="guide.id + '-b'" label="Analytics" [panelId]="'panel-' + guide.id + '-b'"></pui-tab-item>
-                <pui-tab-item [id]="guide.id + '-c'" label="Settings" [panelId]="'panel-' + guide.id + '-c'"></pui-tab-item>
-
-                <pui-tab-panel [tabId]="guide.id + '-a'" [id]="'panel-' + guide.id + '-a'">
-                  <p>{{ guide.description }}</p>
-                </pui-tab-panel>
-                <pui-tab-panel [tabId]="guide.id + '-b'" [id]="'panel-' + guide.id + '-b'">
-                  <p>Second panel for {{ guide.title }}.</p>
-                </pui-tab-panel>
-                <pui-tab-panel [tabId]="guide.id + '-c'" [id]="'panel-' + guide.id + '-c'">
-                  <p>Third panel for {{ guide.title }}.</p>
-                </pui-tab-panel>
+      <pui-doc-section anchorId="tabs-sizes" title="Sizes" description="All variants support sm, md, and lg through the root size input.">
+        <pui-doc-preview>
+          @for (size of sizes; track size) {
+            <div class="pui-doc-stack-item">
+              <pui-tabs variant="segmented" [size]="size" [ariaLabel]="'Size ' + size">
+                <pui-tab-item [id]="'sz-' + size + '-1'" label="Tab A" [panelId]="'sz-panel-' + size + '-1'"></pui-tab-item>
+                <pui-tab-item [id]="'sz-' + size + '-2'" label="Tab B" [panelId]="'sz-panel-' + size + '-2'"></pui-tab-item>
+                <pui-tab-panel [tabId]="'sz-' + size + '-1'" [id]="'sz-panel-' + size + '-1'"><p>Size {{ size }}</p></pui-tab-panel>
+                <pui-tab-panel [tabId]="'sz-' + size + '-2'" [id]="'sz-panel-' + size + '-2'"><p>Size {{ size }}</p></pui-tab-panel>
               </pui-tabs>
             </div>
+          }
+        </pui-doc-preview>
+      </pui-doc-section>
 
-            <pre class="pui-code-block"><code>{{ guide.example }}</code></pre>
-          </section>
-        }
-
-        <section class="pui-doc-section">
-          <h2>Sizes</h2>
-          <p>All variants support <code>sm</code>, <code>md</code>, and <code>lg</code> via the root <code>size</code> input.</p>
-          <div class="pui-tabs-preview-stack">
-            @for (size of sizes; track size) {
-              <div>
-                <p class="pui-tabs-size-label">Size {{ size }}</p>
-                <pui-tabs variant="segmented" [size]="size" [ariaLabel]="'Size ' + size">
-                  <pui-tab-item [id]="'sz-' + size + '-1'" label="Tab A" [panelId]="'sz-panel-' + size + '-1'"></pui-tab-item>
-                  <pui-tab-item [id]="'sz-' + size + '-2'" label="Tab B" [panelId]="'sz-panel-' + size + '-2'"></pui-tab-item>
-                  <pui-tab-panel [tabId]="'sz-' + size + '-1'" [id]="'sz-panel-' + size + '-1'"><p>Size {{ size }}</p></pui-tab-panel>
-                  <pui-tab-panel [tabId]="'sz-' + size + '-2'" [id]="'sz-panel-' + size + '-2'"><p>Size {{ size }}</p></pui-tab-panel>
-                </pui-tabs>
-              </div>
-            }
-          </div>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>Orientations</h2>
-          <div class="pui-tabs-preview-stack">
-            <div>
-              <p class="pui-tabs-size-label">Horizontal</p>
-              <div class="pui-tabs-preview">
-                <pui-tabs variant="underline" orientation="horizontal" ariaLabel="Horizontal tabs">
-                  <pui-tab-item id="oh-a" label="Overview" panelId="oh-p-a"></pui-tab-item>
-                  <pui-tab-item id="oh-b" label="Settings" panelId="oh-p-b"></pui-tab-item>
-                  <pui-tab-panel tabId="oh-a" id="oh-p-a"><p>Horizontal content.</p></pui-tab-panel>
-                  <pui-tab-panel tabId="oh-b" id="oh-p-b"><p>Settings content.</p></pui-tab-panel>
-                </pui-tabs>
-              </div>
-            </div>
-            <div>
-              <p class="pui-tabs-size-label">Vertical</p>
-              <div class="pui-tabs-preview pui-tabs-preview--vertical">
-                <pui-tabs variant="underline" orientation="vertical" ariaLabel="Vertical tabs">
-                  <pui-tab-item id="ov-a" label="Profile" panelId="ov-p-a"></pui-tab-item>
-                  <pui-tab-item id="ov-b" label="Security" panelId="ov-p-b"></pui-tab-item>
-                  <pui-tab-panel tabId="ov-a" id="ov-p-a"><p>Profile settings.</p></pui-tab-panel>
-                  <pui-tab-panel tabId="ov-b" id="ov-p-b"><p>Security settings.</p></pui-tab-panel>
-                </pui-tabs>
-              </div>
-            </div>
-          </div>
-        </section>
-      }
-
-      @case ('examples') {
-        <section class="pui-doc-section">
-          <h2>Dashboard navigation</h2>
-          <div class="pui-tabs-preview">
-            <pui-tabs variant="underline" ariaLabel="Dashboard">
-              <pui-tab-item id="ex-overview" label="Overview" panelId="ex-panel-overview"></pui-tab-item>
-              <pui-tab-item id="ex-reports" label="Reports" panelId="ex-panel-reports" [badge]="3"></pui-tab-item>
-              <pui-tab-item id="ex-settings" label="Settings" panelId="ex-panel-settings"></pui-tab-item>
-
-              <pui-tab-panel tabId="ex-overview" id="ex-panel-overview">
-                <p>Welcome back. Here is your project summary.</p>
-              </pui-tab-panel>
-              <pui-tab-panel tabId="ex-reports" id="ex-panel-reports">
-                <p>Three new reports are ready for review.</p>
-              </pui-tab-panel>
-              <pui-tab-panel tabId="ex-settings" id="ex-panel-settings">
-                <p>Manage team access and notifications.</p>
-              </pui-tab-panel>
-            </pui-tabs>
-          </div>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>View switcher</h2>
-          <div class="pui-tabs-preview pui-tabs-preview--fit">
-            <pui-tabs variant="segmented" ariaLabel="View mode">
-              <pui-tab-item id="ex-grid" label="Grid" panelId="ex-panel-grid"></pui-tab-item>
-              <pui-tab-item id="ex-list" label="List" panelId="ex-panel-list"></pui-tab-item>
-              <pui-tab-panel tabId="ex-grid" id="ex-panel-grid"><p>Grid layout preview.</p></pui-tab-panel>
-              <pui-tab-panel tabId="ex-list" id="ex-panel-list"><p>List layout preview.</p></pui-tab-panel>
-            </pui-tabs>
-          </div>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>Time range filter</h2>
-          <div class="pui-tabs-preview pui-tabs-preview--fit">
-            <pui-tabs variant="segmented-soft" ariaLabel="Time range">
-              <pui-tab-item id="ex-day" label="Day" panelId="ex-panel-day"></pui-tab-item>
-              <pui-tab-item id="ex-week" label="Week" panelId="ex-panel-week"></pui-tab-item>
-              <pui-tab-item id="ex-month" label="Month" panelId="ex-panel-month"></pui-tab-item>
-              <pui-tab-panel tabId="ex-day" id="ex-panel-day"><p>Daily metrics.</p></pui-tab-panel>
-              <pui-tab-panel tabId="ex-week" id="ex-panel-week"><p>Weekly metrics.</p></pui-tab-panel>
-              <pui-tab-panel tabId="ex-month" id="ex-panel-month"><p>Monthly metrics.</p></pui-tab-panel>
-            </pui-tabs>
-          </div>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>Status filter</h2>
-          <div class="pui-tabs-preview pui-tabs-preview--fit">
-            <pui-tabs variant="pill" ariaLabel="Status filter">
-              <pui-tab-item id="ex-all" label="All" panelId="ex-panel-all"></pui-tab-item>
-              <pui-tab-item id="ex-active" label="Active" panelId="ex-panel-active"></pui-tab-item>
-              <pui-tab-item id="ex-archived" label="Archived" panelId="ex-panel-archived"></pui-tab-item>
-              <pui-tab-panel tabId="ex-all" id="ex-panel-all"><p>All records.</p></pui-tab-panel>
-              <pui-tab-panel tabId="ex-active" id="ex-panel-active"><p>Active records only.</p></pui-tab-panel>
-              <pui-tab-panel tabId="ex-archived" id="ex-panel-archived"><p>Archived records.</p></pui-tab-panel>
-            </pui-tabs>
-          </div>
-        </section>
-      }
-
-      @case ('api') {
-        <section class="pui-doc-section">
-          <h2>pui-tabs</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of tabsApiRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.defaultValue }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>pui-tabs outputs</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Event</th><th>Type</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of tabsOutputRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>pui-tab-item</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of tabItemApiRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.defaultValue }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>pui-tab-panel</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of tabPanelApiRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.defaultValue }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </section>
-      }
-
-      @case ('accessibility') {
-        <section class="pui-doc-section">
-          <h2>Accessibility</h2>
-          <ul class="pui-feature-list">
-            <li><code>role="tablist"</code> on the tab list with <code>aria-label</code> and <code>aria-orientation</code></li>
-            <li><code>role="tab"</code> on each tab with <code>aria-selected</code>, <code>aria-controls</code>, and roving <code>tabindex</code></li>
-            <li><code>role="tabpanel"</code> on the active panel with <code>aria-labelledby</code></li>
-            <li>Arrow keys, Home, and End move selection and focus</li>
-            <li>Focus ring uses shared <code>pui-focus-ring</code> mixin</li>
-          </ul>
-        </section>
-      }
-
-      @case ('theming') {
-        <section class="pui-doc-section">
-          <h2>Theming</h2>
-          <p>Tabs are styled entirely through <code>--pui-tabs-*</code> CSS custom properties defined in <code>tabs.tokens.scss</code>.</p>
-          <pre class="pui-code-block"><code>{{ themeCode }}</code></pre>
-        </section>
-      }
-
-      @case ('keyboard') {
-        <section class="pui-doc-section">
-          <h2>Keyboard navigation</h2>
-          <ul class="pui-feature-list">
-            <li><kbd>Arrow Right</kbd> / <kbd>Arrow Left</kbd> — move between tabs (horizontal)</li>
-            <li><kbd>Arrow Down</kbd> / <kbd>Arrow Up</kbd> — move between tabs (vertical)</li>
-            <li><kbd>Home</kbd> — jump to first enabled tab</li>
-            <li><kbd>End</kbd> — jump to last enabled tab</li>
-            <li><kbd>Tab</kbd> — move focus into the active panel content</li>
-          </ul>
-          <div class="pui-tabs-preview">
-            <pui-tabs variant="segmented" ariaLabel="Keyboard demo">
-              <pui-tab-item id="kb1" label="First" panelId="kb-panel-1"></pui-tab-item>
-              <pui-tab-item id="kb2" label="Second" panelId="kb-panel-2"></pui-tab-item>
-              <pui-tab-item id="kb3" label="Third" panelId="kb-panel-3"></pui-tab-item>
-              <pui-tab-panel tabId="kb1" id="kb-panel-1"><p>Try arrow keys on the tabs above.</p></pui-tab-panel>
-              <pui-tab-panel tabId="kb2" id="kb-panel-2"><p>Second panel content.</p></pui-tab-panel>
-              <pui-tab-panel tabId="kb3" id="kb-panel-3"><p>Third panel content.</p></pui-tab-panel>
-            </pui-tabs>
-          </div>
-        </section>
-      }
-
-      @case ('playground') {
-        <section class="pui-doc-section">
-          <h2>Playground</h2>
-          <div class="pui-playground">
-            <div class="pui-playground__controls">
-              <label>
-                Variant
-                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
-                  @for (variant of variants; track variant) {
-                    <option [value]="variant">{{ variant }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Orientation
-                <select [value]="playgroundOrientation()" (change)="updateOrientation($event)">
-                  @for (orientation of orientations; track orientation) {
-                    <option [value]="orientation">{{ orientation }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Size
-                <select [value]="playgroundSize()" (change)="updateSize($event)">
-                  @for (size of sizes; track size) {
-                    <option [value]="size">{{ size }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                <input type="checkbox" [checked]="playgroundDisabled()" (change)="updateCheckbox(playgroundDisabled, $event)" />
-                Disabled
-              </label>
-            </div>
-            <div class="pui-playground__preview" [class.pui-playground__preview--vertical]="playgroundOrientation() === 'vertical'">
-              <pui-tabs
-                [variant]="playgroundVariant()"
-                [orientation]="playgroundOrientation()"
-                [size]="playgroundSize()"
-                [disabled]="playgroundDisabled()"
-                [(value)]="selectedTab"
-                ariaLabel="Playground tabs"
-              >
-                <pui-tab-item id="pg-one" label="One" panelId="pg-panel-one"></pui-tab-item>
-                <pui-tab-item id="pg-two" label="Two" panelId="pg-panel-two"></pui-tab-item>
-                <pui-tab-item id="pg-three" label="Three" panelId="pg-panel-three"></pui-tab-item>
-
-                <pui-tab-panel tabId="pg-one" id="pg-panel-one"><p>Panel one content.</p></pui-tab-panel>
-                <pui-tab-panel tabId="pg-two" id="pg-panel-two"><p>Panel two content.</p></pui-tab-panel>
-                <pui-tab-panel tabId="pg-three" id="pg-panel-three"><p>Panel three content.</p></pui-tab-panel>
-              </pui-tabs>
-            </div>
-            <p class="pui-doc-meta">Selected: {{ selectedTab() }}</p>
-            <div class="pui-code-shell">
-              <button type="button" class="pui-code-copy" (click)="copyCode(playgroundCode())">Copy</button>
-              <pre><code>{{ playgroundCode() }}</code></pre>
-            </div>
-          </div>
-        </section>
-      }
+      <pui-doc-section anchorId="tabs-orientations" title="Orientations" description="Switch between horizontal and vertical layouts without changing the child API.">
+        <pui-doc-preview>
+          <pui-tabs variant="underline" orientation="vertical" ariaLabel="Vertical tabs">
+            <pui-tab-item id="ov-a" label="Profile" panelId="ov-p-a"></pui-tab-item>
+            <pui-tab-item id="ov-b" label="Security" panelId="ov-p-b"></pui-tab-item>
+            <pui-tab-panel tabId="ov-a" id="ov-p-a"><p>Profile settings.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ov-b" id="ov-p-b"><p>Security settings.</p></pui-tab-panel>
+          </pui-tabs>
+        </pui-doc-preview>
+      </pui-doc-section>
     }
-  </div>
-</article>
+
+    @case ('examples') {
+      <pui-doc-section anchorId="tabs-example-dashboard" title="Dashboard navigation">
+        <pui-doc-preview>
+          <pui-tabs variant="underline" ariaLabel="Dashboard">
+            <pui-tab-item id="ex-overview" label="Overview" panelId="ex-panel-overview"></pui-tab-item>
+            <pui-tab-item id="ex-reports" label="Reports" panelId="ex-panel-reports" [badge]="3"></pui-tab-item>
+            <pui-tab-item id="ex-settings" label="Settings" panelId="ex-panel-settings"></pui-tab-item>
+            <pui-tab-panel tabId="ex-overview" id="ex-panel-overview"><p>Welcome back. Here is your project summary.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ex-reports" id="ex-panel-reports"><p>Three new reports are ready for review.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ex-settings" id="ex-panel-settings"><p>Manage team access and notifications.</p></pui-tab-panel>
+          </pui-tabs>
+        </pui-doc-preview>
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-example-view" title="View switcher">
+        <pui-doc-preview [compact]="true">
+          <pui-tabs variant="segmented" ariaLabel="View mode">
+            <pui-tab-item id="ex-grid" label="Grid" panelId="ex-panel-grid"></pui-tab-item>
+            <pui-tab-item id="ex-list" label="List" panelId="ex-panel-list"></pui-tab-item>
+            <pui-tab-panel tabId="ex-grid" id="ex-panel-grid"><p>Grid layout preview.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ex-list" id="ex-panel-list"><p>List layout preview.</p></pui-tab-panel>
+          </pui-tabs>
+        </pui-doc-preview>
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-example-range" title="Time range filter">
+        <pui-doc-preview [compact]="true">
+          <pui-tabs variant="segmented-soft" ariaLabel="Time range">
+            <pui-tab-item id="ex-day" label="Day" panelId="ex-panel-day"></pui-tab-item>
+            <pui-tab-item id="ex-week" label="Week" panelId="ex-panel-week"></pui-tab-item>
+            <pui-tab-item id="ex-month" label="Month" panelId="ex-panel-month"></pui-tab-item>
+            <pui-tab-panel tabId="ex-day" id="ex-panel-day"><p>Daily metrics.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ex-week" id="ex-panel-week"><p>Weekly metrics.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ex-month" id="ex-panel-month"><p>Monthly metrics.</p></pui-tab-panel>
+          </pui-tabs>
+        </pui-doc-preview>
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-example-status" title="Status filter">
+        <pui-doc-preview [compact]="true">
+          <pui-tabs variant="pill" ariaLabel="Status filter">
+            <pui-tab-item id="ex-all" label="All" panelId="ex-panel-all"></pui-tab-item>
+            <pui-tab-item id="ex-active" label="Active" panelId="ex-panel-active"></pui-tab-item>
+            <pui-tab-item id="ex-archived" label="Archived" panelId="ex-panel-archived"></pui-tab-item>
+            <pui-tab-panel tabId="ex-all" id="ex-panel-all"><p>All records.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ex-active" id="ex-panel-active"><p>Active records only.</p></pui-tab-panel>
+            <pui-tab-panel tabId="ex-archived" id="ex-panel-archived"><p>Archived records.</p></pui-tab-panel>
+          </pui-tabs>
+        </pui-doc-preview>
+      </pui-doc-section>
+    }
+
+    @case ('api') {
+      <pui-doc-section anchorId="tabs-api-root" title="pui-tabs">
+        <pui-doc-api-table title="Inputs" [rows]="tabsApiRows" />
+        <pui-doc-api-table title="Outputs" [rows]="tabsOutputRows" mode="events" />
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-api-item" title="pui-tab-item">
+        <pui-doc-api-table [rows]="tabItemApiRows" />
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-api-panel" title="pui-tab-panel">
+        <pui-doc-api-table [rows]="tabPanelApiRows" />
+      </pui-doc-section>
+    }
+
+    @case ('accessibility') {
+      <pui-doc-section anchorId="tabs-a11y-semantic" title="Semantic roles" description="Tabs follow the WAI-ARIA tabs pattern with roving tabindex and labelled panels.">
+        <pui-doc-a11y-list [items]="a11yItems" />
+      </pui-doc-section>
+
+      <pui-doc-section anchorId="tabs-a11y-keyboard" title="Keyboard support">
+        <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
+      </pui-doc-section>
+    }
+
+    @case ('theming') {
+      <pui-doc-section anchorId="tabs-theming-tokens" title="Design tokens" description="Tabs are styled entirely through --pui-tabs-* CSS custom properties.">
+        <pui-doc-callout title="Token-first styling" variant="info">
+          Override semantic tab tokens locally or at the theme layer. Never hardcode colors inside component consumers.
+        </pui-doc-callout>
+        <pui-doc-code-block [code]="themeCode" language="scss" filename="tabs.theme.scss" />
+      </pui-doc-section>
+    }
+
+    @case ('keyboard') {
+      <pui-doc-section anchorId="tabs-keyboard-demo" title="Interactive demo" description="Use arrow keys, Home, and End to move selection and focus.">
+        <pui-doc-preview [compact]="true">
+          <pui-tabs variant="segmented" ariaLabel="Keyboard demo">
+            <pui-tab-item id="kb1" label="First" panelId="kb-panel-1"></pui-tab-item>
+            <pui-tab-item id="kb2" label="Second" panelId="kb-panel-2"></pui-tab-item>
+            <pui-tab-item id="kb3" label="Third" panelId="kb-panel-3"></pui-tab-item>
+            <pui-tab-panel tabId="kb1" id="kb-panel-1"><p>Try arrow keys on the tabs above.</p></pui-tab-panel>
+            <pui-tab-panel tabId="kb2" id="kb-panel-2"><p>Second panel content.</p></pui-tab-panel>
+            <pui-tab-panel tabId="kb3" id="kb-panel-3"><p>Third panel content.</p></pui-tab-panel>
+          </pui-tabs>
+        </pui-doc-preview>
+        <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
+      </pui-doc-section>
+    }
+
+    @case ('playground') {
+      <pui-doc-section anchorId="tabs-playground" title="Live playground">
+        <pui-doc-playground [meta]="playgroundMeta()">
+          <div docPlaygroundControls class="pui-doc-playground-controls">
+            <div class="pui-doc-playground-field">
+              <span class="pui-doc-playground-field__label">Variant</span>
+              <pui-select
+                [options]="variantOptions"
+                [value]="playgroundVariant()"
+                (valueChange)="setPlaygroundVariant($event)"
+                ariaLabel="Playground variant"
+              />
+            </div>
+            <div class="pui-doc-playground-field">
+              <span class="pui-doc-playground-field__label">Orientation</span>
+              <pui-select
+                [options]="orientationOptions"
+                [value]="playgroundOrientation()"
+                (valueChange)="setPlaygroundOrientation($event)"
+                ariaLabel="Playground orientation"
+              />
+            </div>
+            <div class="pui-doc-playground-field">
+              <span class="pui-doc-playground-field__label">Size</span>
+              <pui-select
+                [options]="sizeOptions"
+                [value]="playgroundSize()"
+                (valueChange)="setPlaygroundSize($event)"
+                ariaLabel="Playground size"
+              />
+            </div>
+            <pui-switch
+              label="Disabled"
+              [checked]="playgroundDisabled()"
+              (checkedChange)="playgroundDisabled.set($event)"
+            />
+          </div>
+
+          <div docPlaygroundPreview>
+            <pui-tabs
+              [variant]="playgroundVariant()"
+              [orientation]="playgroundOrientation()"
+              [size]="playgroundSize()"
+              [disabled]="playgroundDisabled()"
+              [(value)]="selectedTab"
+              ariaLabel="Playground tabs"
+            >
+              <pui-tab-item id="pg-one" label="One" panelId="pg-panel-one"></pui-tab-item>
+              <pui-tab-item id="pg-two" label="Two" panelId="pg-panel-two"></pui-tab-item>
+              <pui-tab-item id="pg-three" label="Three" panelId="pg-panel-three"></pui-tab-item>
+              <pui-tab-panel tabId="pg-one" id="pg-panel-one"><p>Panel one content.</p></pui-tab-panel>
+              <pui-tab-panel tabId="pg-two" id="pg-panel-two"><p>Panel two content.</p></pui-tab-panel>
+              <pui-tab-panel tabId="pg-three" id="pg-panel-three"><p>Panel three content.</p></pui-tab-panel>
+            </pui-tabs>
+          </div>
+
+          <div docPlaygroundCode>
+            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
+          </div>
+        </pui-doc-playground>
+      </pui-doc-section>
+    }
+  }
+</pui-doc-layout>

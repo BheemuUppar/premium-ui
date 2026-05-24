@@ -11,8 +11,15 @@ import {
   PuiCheckboxLabelComponent,
 } from '../../../../premium-ui/components/checkbox';
 import type { PuiCheckboxVariant } from '../../../../premium-ui/components/checkbox';
+import { PuiSelectComponent } from '../../../../premium-ui/components/select';
+import type { PuiSelectValue } from '../../../../premium-ui/components/select';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
-import type { PuiDocsTab } from '../../docs.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsCheckboxTab =
   | 'overview'
@@ -38,6 +45,8 @@ interface PuiApiRow {
     PuiCheckboxGroupComponent,
     PuiCheckboxLabelComponent,
     PuiCheckboxDescriptionComponent,
+    PuiSelectComponent,
+    PuiDocCodeBlockComponent,
     ReactiveFormsModule,
     JsonPipe,
     RouterLink,
@@ -80,6 +89,8 @@ export class CheckboxDocsComponent {
     'card',
   ];
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];
+  protected readonly variantOptions = toSelectOptions(this.variants);
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
 
   protected readonly selectedFrameworks = signal<string[]>(['angular']);
   protected readonly signalChecked = signal(false);
@@ -173,24 +184,39 @@ onChecked(value: boolean) {
     return `<pui-checkbox${attrs}>Playground checkbox</pui-checkbox>`;
   });
 
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    { id: 'html', label: 'HTML', code: this.playgroundCode(), language: 'html', filename: 'playground.component.html' },
+    { id: 'ts', label: 'TypeScript', code: this.playgroundTsExample(), language: 'typescript', filename: 'playground.component.ts' },
+  ]);
+
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'CheckboxPlaygroundComponent',
+      imports: [{ name: 'PuiCheckboxComponent', path: '@premium-ui/components/checkbox' }],
+      members: [
+        `protected readonly checked = signal(${this.playgroundChecked()});`,
+        `protected readonly variant = signal('${this.playgroundVariant()}' as const);`,
+        `protected readonly size = signal('${this.playgroundSize()}' as const);`,
+        `protected readonly disabled = signal(${this.playgroundDisabled()});`,
+        `protected readonly indeterminate = signal(${this.playgroundIndeterminate()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundVariant(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundVariant.set(value as PuiCheckboxVariant);
+    }
+  }
+
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiSize);
+    }
+  }
+
   protected onSignalChecked(value: boolean): void {
     this.signalChecked.set(value);
-  }
-
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
-  }
-
-  protected updateVariant(event: Event): void {
-    this.playgroundVariant.set((event.target as HTMLSelectElement).value as PuiCheckboxVariant);
-  }
-
-  protected updateSize(event: Event): void {
-    this.playgroundSize.set((event.target as HTMLSelectElement).value as PuiSize);
-  }
-
-  protected updateCheckbox(event: Event, signalRef: ReturnType<typeof signal<boolean>>): void {
-    signalRef.set((event.target as HTMLInputElement).checked);
   }
 
   private isDocsTab(tab: string): tab is PuiDocsCheckboxTab {

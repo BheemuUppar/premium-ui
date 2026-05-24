@@ -1,0 +1,86 @@
+.pui-doc-api-table__title {
+  margin: 0 0 var(--pui-space-sm);
+  color: var(--pui-text);
+  font-size: var(--pui-font-size-md);
+  font-weight: var(--pui-font-weight-semibold);
+}
+
+.pui-doc-api-table__wrap {
+  overflow-x: auto;
+  border: 1px solid var(--pui-doc-border);
+  border-radius: var(--pui-radius-lg);
+  background: var(--pui-doc-surface);
+  box-shadow: var(--pui-shadow-sm);
+}
+
+.pui-doc-api-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--pui-font-size-sm);
+}
+
+.pui-doc-api-table__table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--pui-space-sm) var(--pui-space-md);
+  border-bottom: 1px solid var(--pui-doc-border);
+  background: var(--pui-doc-code-header-bg);
+  color: var(--pui-muted);
+  font-size: var(--pui-font-size-xs);
+  font-weight: var(--pui-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.pui-doc-api-table__table td {
+  padding: var(--pui-space-sm) var(--pui-space-md);
+  border-bottom: 1px solid color-mix(in srgb, var(--pui-doc-border) 70%, transparent);
+  color: var(--pui-muted);
+  vertical-align: top;
+  line-height: var(--pui-line-height-relaxed);
+}
+
+.pui-doc-api-table__table tbody tr:nth-child(even) {
+  background: var(--pui-doc-table-stripe);
+}
+
+.pui-doc-api-table__table tbody tr:hover {
+  background: var(--pui-doc-table-row-hover);
+}
+
+.pui-doc-api-table__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.pui-doc-api-table__name {
+  color: var(--pui-text);
+  font-weight: var(--pui-font-weight-medium);
+}
+
+.pui-doc-api-table__type {
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--pui-radius-full);
+  background: var(--pui-doc-badge-type-bg);
+  color: var(--pui-doc-badge-type-text);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: var(--pui-font-size-xs);
+  white-space: nowrap;
+}
+
+.pui-doc-api-table__badge {
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--pui-radius-full);
+  background: var(--pui-doc-badge-default-bg);
+  color: var(--pui-text);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: var(--pui-font-size-xs);
+}
+
+.pui-doc-api-table__badge--bool {
+  background: var(--pui-doc-badge-bool-bg);
+  color: var(--pui-doc-badge-bool-text);
+}

@@ -1,0 +1,21 @@
+<header class="pui-doc-header">
+  @if (breadcrumbs().length > 0) {
+    <nav class="pui-doc-header__breadcrumb" aria-label="Breadcrumb">
+      @for (crumb of breadcrumbs(); track crumb.label; let last = $last) {
+        @if (crumb.route && !last) {
+          <a [routerLink]="crumb.route">{{ crumb.label }}</a>
+        } @else {
+          <span>{{ crumb.label }}</span>
+        }
+        @if (!last) {
+          <span class="pui-doc-header__separator" aria-hidden="true">/</span>
+        }
+      }
+    </nav>
+  }
+
+  <h1 class="pui-doc-header__title">{{ title() }}</h1>
+  @if (description()) {
+    <p class="pui-doc-header__description">{{ description() }}</p>
+  }
+</header>

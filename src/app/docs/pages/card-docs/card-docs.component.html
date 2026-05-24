@@ -217,23 +217,17 @@
           <h2>Playground</h2>
           <div class="pui-playground">
             <div class="pui-playground__controls">
-              <label>Variant
-                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
-                  @for (variant of variants; track variant) {
-                    <option [value]="variant">{{ variant }}</option>
-                  }
-                </select>
-              </label>
-              <label>Size
-                <select [value]="playgroundSize()" (change)="updateSize($event)">
-                  @for (size of sizes; track size) {
-                    <option [value]="size">{{ size }}</option>
-                  }
-                </select>
-              </label>
-              <label><input type="checkbox" [checked]="playgroundHoverable()" (change)="updateCheckbox(playgroundHoverable, $event)" /> Hoverable</label>
-              <label><input type="checkbox" [checked]="playgroundHighlighted()" (change)="updateCheckbox(playgroundHighlighted, $event)" /> Highlighted</label>
-              <label><input type="checkbox" [checked]="playgroundLoading()" (change)="updateCheckbox(playgroundLoading, $event)" /> Loading</label>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Variant</span>
+                <pui-select [options]="variantOptions" [value]="playgroundVariant()" (valueChange)="setPlaygroundVariant($event)" ariaLabel="Playground variant" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Size</span>
+                <pui-select [options]="sizeOptions" [value]="playgroundSize()" (valueChange)="setPlaygroundSize($event)" ariaLabel="Playground size" />
+              </div>
+              <pui-checkbox [checked]="playgroundHoverable()" (checkedChange)="playgroundHoverable.set($event)">Hoverable</pui-checkbox>
+              <pui-checkbox [checked]="playgroundHighlighted()" (checkedChange)="playgroundHighlighted.set($event)">Highlighted</pui-checkbox>
+              <pui-checkbox [checked]="playgroundLoading()" (checkedChange)="playgroundLoading.set($event)">Loading</pui-checkbox>
             </div>
             <div class="pui-playground__preview">
               <pui-card
@@ -248,7 +242,7 @@
                 <pui-card-content>Adjust controls to explore variants.</pui-card-content>
               </pui-card>
             </div>
-            <pre class="pui-code-block"><code>{{ playgroundCode() }}</code></pre>
+            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
         </section>
       }

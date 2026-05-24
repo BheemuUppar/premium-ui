@@ -72,18 +72,7 @@
 
         <section class="pui-doc-section" id="api" aria-labelledby="overview-code-title">
           <h3 id="overview-code-title">Code Example</h3>
-          <div class="pui-code-shell">
-            <div class="pui-code-tabs" aria-label="Code language tabs">
-              <button type="button" class="pui-code-tab pui-code-tab--active" (click)="currentCodeTab.set('html')">HTML</button>
-              <button type="button" class="pui-code-tab" (click)="currentCodeTab.set('ts')">TypeScript</button>
-              <button type="button" class="pui-code-copy" (click)="copyCode(currentCodeTab() === 'html' ? htmlExample : tsExample)">Copy</button>
-            </div>
-            @if (currentCodeTab() === 'html') {
-              <pre><code>{{ htmlExample }}</code></pre>
-            } @else {
-              <pre><code>{{ tsExample }}</code></pre>
-            }
-          </div>
+          <pui-doc-code-block [tabs]="basicExampleTabs" />
         </section>
       }
 
@@ -140,11 +129,7 @@
                 <div>
                   <h3>{{ example.title }}</h3>
                   <p>{{ example.description }}</p>
-                  <details class="pui-code-block">
-                    <summary>Code</summary>
-                    <button type="button" (click)="copyCode(example.code)">Copy</button>
-                    <pre><code>{{ example.code }}</code></pre>
-                  </details>
+                  <pui-doc-code-block [code]="example.code" language="html" />
                 </div>
               </article>
             }
@@ -237,33 +222,39 @@
           <h2 id="playground-title">Tune the button</h2>
           <div class="pui-playground">
             <form class="pui-playground__controls" aria-label="Button playground controls">
-              <label>
-                Variant
-                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
-                  @for (variant of variants; track variant) {
-                    <option [value]="variant">{{ variant }}</option>
-                  }
-                </select>
-              </label>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Variant</span>
+                <pui-select
+                  [options]="variantOptions"
+                  [value]="playgroundVariant()"
+                  (valueChange)="setPlaygroundVariant($event)"
+                  ariaLabel="Playground variant"
+                />
+              </div>
 
-              <label>
-                Size
-                <select [value]="playgroundSize()" (change)="updateSize($event)">
-                  @for (size of sizes; track size) {
-                    <option [value]="size">{{ size }}</option>
-                  }
-                </select>
-              </label>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Size</span>
+                <pui-select
+                  [options]="sizeOptions"
+                  [value]="playgroundSize()"
+                  (valueChange)="setPlaygroundSize($event)"
+                  ariaLabel="Playground size"
+                />
+              </div>
 
-              <label class="pui-checkbox">
-                <input type="checkbox" [checked]="playgroundDisabled()" (change)="updateDisabled($event)" />
+              <pui-checkbox
+                [checked]="playgroundDisabled()"
+                (checkedChange)="playgroundDisabled.set($event)"
+              >
                 Disabled
-              </label>
+              </pui-checkbox>
 
-              <label class="pui-checkbox">
-                <input type="checkbox" [checked]="playgroundLoading()" (change)="updateLoading($event)" />
+              <pui-checkbox
+                [checked]="playgroundLoading()"
+                (checkedChange)="playgroundLoading.set($event)"
+              >
                 Loading
-              </label>
+              </pui-checkbox>
             </form>
 
             <div class="pui-playground__preview">
@@ -277,11 +268,7 @@
               </pui-button>
             </div>
 
-            <details class="pui-code-block" open>
-              <summary>Generated code</summary>
-              <button type="button" (click)="copyCode(playgroundCode())">Copy</button>
-              <pre><code>{{ playgroundCode() }}</code></pre>
-            </details>
+            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
         </section>
       }

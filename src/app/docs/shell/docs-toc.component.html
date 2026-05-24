@@ -1,10 +1,25 @@
-<aside class="pui-toc" aria-label="On this page">
-  <p>On this page</p>
-  <nav>
-    @for (item of items(); track item.id) {
-      <a [href]="'#' + item.id" [class.pui-toc__link--active]="isActive(item.id)">
-        {{ item.label }}
-      </a>
-    }
-  </nav>
-</aside>
+@if (tocService.items().length > 0) {
+  <aside class="pui-toc" [class.pui-toc--open]="mobileOpen()" aria-label="On this page">
+    <button type="button" class="pui-toc__mobile-toggle" (click)="toggleMobile()">
+      On this page
+    </button>
+
+    <div class="pui-toc__panel">
+      <p class="pui-toc__label">On this page</p>
+      <nav class="pui-toc__nav">
+        @for (item of tocService.items(); track item.id) {
+          <a
+            class="pui-toc__link"
+            [class.pui-toc__link--active]="isActive(item.id)"
+            [class.pui-toc__link--nested]="item.level === 3"
+            [attr.data-toc-id]="item.id"
+            [href]="'#' + item.id"
+          >
+            <span class="pui-toc__indicator" aria-hidden="true"></span>
+            {{ item.label }}
+          </a>
+        }
+      </nav>
+    </div>
+  </aside>
+}

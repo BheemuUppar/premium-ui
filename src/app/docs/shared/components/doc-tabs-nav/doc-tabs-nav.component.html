@@ -1,0 +1,12 @@
+<nav class="pui-doc-tabs-nav" [attr.aria-label]="ariaLabel()">
+  @for (tab of tabs(); track tab.label) {
+    <a
+      class="pui-doc-tabs-nav__tab"
+      [routerLink]="tab.route"
+      routerLinkActive="pui-doc-tabs-nav__tab--active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      {{ tab.label }}
+    </a>
+  }
+</nav>

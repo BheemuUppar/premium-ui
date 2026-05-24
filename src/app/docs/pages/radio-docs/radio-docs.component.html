@@ -251,38 +251,20 @@
           <h2>Playground</h2>
           <div class="pui-playground">
             <div class="pui-playground__controls">
-              <label>
-                Variant
-                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
-                  @for (variant of variants; track variant) {
-                    <option [value]="variant">{{ variant }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Size
-                <select [value]="playgroundSize()" (change)="updateSize($event)">
-                  @for (size of sizes; track size) {
-                    <option [value]="size">{{ size }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Orientation
-                <select [value]="playgroundOrientation()" (change)="updateOrientation($event)">
-                  @for (orientation of orientations; track orientation) {
-                    <option [value]="orientation">{{ orientation }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                <input type="checkbox" [checked]="playgroundDisabled()" (change)="updateCheckbox(playgroundDisabled, $event)" />
-                Disabled
-              </label>
-              <label>
-                <input type="checkbox" [checked]="playgroundInvalid()" (change)="updateCheckbox(playgroundInvalid, $event)" />
-                Invalid
-              </label>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Variant</span>
+                <pui-select [options]="variantOptions" [value]="playgroundVariant()" (valueChange)="setPlaygroundVariant($event)" ariaLabel="Playground variant" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Size</span>
+                <pui-select [options]="sizeOptions" [value]="playgroundSize()" (valueChange)="setPlaygroundSize($event)" ariaLabel="Playground size" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Orientation</span>
+                <pui-select [options]="orientationOptions" [value]="playgroundOrientation()" (valueChange)="setPlaygroundOrientation($event)" ariaLabel="Playground orientation" />
+              </div>
+              <pui-checkbox [checked]="playgroundDisabled()" (checkedChange)="playgroundDisabled.set($event)">Disabled</pui-checkbox>
+              <pui-checkbox [checked]="playgroundInvalid()" (checkedChange)="playgroundInvalid.set($event)">Invalid</pui-checkbox>
             </div>
             <div class="pui-playground__preview">
               <pui-radio-group
@@ -298,10 +280,7 @@
               </pui-radio-group>
             </div>
             <p class="pui-doc-meta">Value: {{ playgroundValue() | json }}</p>
-            <div class="pui-code-shell">
-              <button type="button" class="pui-code-copy" (click)="copyCode(playgroundCode())">Copy</button>
-              <pre><code>{{ playgroundCode() }}</code></pre>
-            </div>
+            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
         </section>
       }

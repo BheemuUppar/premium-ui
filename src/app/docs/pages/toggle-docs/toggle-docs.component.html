@@ -296,47 +296,28 @@
           <h2>Playground</h2>
           <div class="pui-playground">
             <div class="pui-playground__controls">
-              <label>
-                Mode
-                <select [value]="playgroundMode()" (change)="updateMode($event)">
-                  @for (mode of modes; track mode) {
-                    <option [value]="mode">{{ mode }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Variant
-                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
-                  @for (variant of variants; track variant) {
-                    <option [value]="variant">{{ variant }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Shape
-                <select [value]="playgroundShape()" (change)="updateShape($event)">
-                  @for (shape of shapes; track shape) {
-                    <option [value]="shape">{{ shape }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Density
-                <select [value]="playgroundDensity()" (change)="updateDensity($event)">
-                  @for (density of densities; track density) {
-                    <option [value]="density">{{ density }}</option>
-                  }
-                </select>
-              </label>
-              <label>
-                Orientation
-                <select [value]="playgroundOrientation()" (change)="updateOrientation($event)">
-                  <option value="horizontal">horizontal</option>
-                  <option value="vertical">vertical</option>
-                </select>
-              </label>
-              <label><input type="checkbox" [checked]="playgroundDisabled()" (change)="updateCheckbox(playgroundDisabled, $event)" /> Disabled</label>
-              <label><input type="checkbox" [checked]="playgroundMultiple()" (change)="updateCheckbox(playgroundMultiple, $event)" /> Multiple</label>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Mode</span>
+                <pui-select [options]="modeOptions" [value]="playgroundMode()" (valueChange)="setPlaygroundMode($event)" ariaLabel="Playground mode" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Variant</span>
+                <pui-select [options]="variantOptions" [value]="playgroundVariant()" (valueChange)="setPlaygroundVariant($event)" ariaLabel="Playground variant" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Shape</span>
+                <pui-select [options]="shapeOptions" [value]="playgroundShape()" (valueChange)="setPlaygroundShape($event)" ariaLabel="Playground shape" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Density</span>
+                <pui-select [options]="densityOptions" [value]="playgroundDensity()" (valueChange)="setPlaygroundDensity($event)" ariaLabel="Playground density" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Orientation</span>
+                <pui-select [options]="orientationOptions" [value]="playgroundOrientation()" (valueChange)="setPlaygroundOrientation($event)" ariaLabel="Playground orientation" />
+              </div>
+              <pui-checkbox [checked]="playgroundDisabled()" (checkedChange)="playgroundDisabled.set($event)">Disabled</pui-checkbox>
+              <pui-checkbox [checked]="playgroundMultiple()" (checkedChange)="playgroundMultiple.set($event)">Multiple</pui-checkbox>
             </div>
             <div class="pui-playground__preview">
               <pui-toggle-group
@@ -355,10 +336,7 @@
                 <pui-toggle value="compact">Compact</pui-toggle>
               </pui-toggle-group>
             </div>
-            <div class="pui-code-shell">
-              <button type="button" class="pui-code-copy" (click)="copyCode(playgroundCode())">Copy</button>
-              <pre><code>{{ playgroundCode() }}</code></pre>
-            </div>
+            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
         </section>
       }

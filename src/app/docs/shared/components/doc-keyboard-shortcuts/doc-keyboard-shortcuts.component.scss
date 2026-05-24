@@ -1,0 +1,64 @@
+.pui-doc-keyboard__title {
+  margin: 0 0 var(--pui-space-md);
+  color: var(--pui-text);
+  font-size: var(--pui-font-size-md);
+  font-weight: var(--pui-font-weight-semibold);
+}
+
+.pui-doc-keyboard__list {
+  display: grid;
+  gap: var(--pui-space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pui-doc-keyboard__item {
+  display: grid;
+  grid-template-columns: minmax(8rem, auto) minmax(0, 1fr);
+  gap: var(--pui-space-md);
+  align-items: center;
+  padding: var(--pui-space-sm) var(--pui-space-md);
+  border: 1px solid var(--pui-doc-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-doc-surface);
+}
+
+.pui-doc-keyboard__keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pui-space-xs);
+}
+
+.pui-doc-keyboard__keys kbd {
+  min-width: 1.75rem;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--pui-doc-border);
+  border-radius: var(--pui-radius-sm);
+  background: var(--pui-doc-code-header-bg);
+  color: var(--pui-text);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: var(--pui-font-size-xs);
+  text-align: center;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--pui-color-text) 8%, transparent);
+}
+
+.pui-doc-keyboard__keys span {
+  color: var(--pui-muted);
+  font-size: var(--pui-font-size-xs);
+}
+
+.pui-doc-keyboard__item p {
+  margin: 0;
+  color: var(--pui-muted);
+  font-size: var(--pui-font-size-sm);
+  line-height: var(--pui-line-height-relaxed);
+}
+
+@media (max-width: 640px) {
+  .pui-doc-keyboard__item {
+    grid-template-columns: 1fr;
+    gap: var(--pui-space-xs);
+  }
+}

@@ -6,8 +6,16 @@ import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { map } from 'rxjs';
 import { PuiSwitchComponent } from '../../../../premium-ui/components/switch';
 import type { PuiSwitchVariant } from '../../../../premium-ui/components/switch';
+import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
+import { PuiSelectComponent } from '../../../../premium-ui/components/select';
+import type { PuiSelectValue } from '../../../../premium-ui/components/select';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
-import type { PuiDocsTab } from '../../docs.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsSwitchTab =
   | 'overview'
@@ -29,7 +37,7 @@ interface PuiApiRow {
 
 @Component({
   selector: 'app-switch-docs',
-  imports: [PuiSwitchComponent, ReactiveFormsModule, JsonPipe, RouterLink, RouterLinkActive],
+  imports: [PuiSwitchComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, ReactiveFormsModule, JsonPipe, RouterLink, RouterLinkActive],
   templateUrl: './switch-docs.component.html',
   styleUrl: './switch-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -71,6 +79,8 @@ export class SwitchDocsComponent {
     'danger',
   ];
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];
+  protected readonly variantOptions = toSelectOptions(this.variants);
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
 
   protected readonly notifications = signal(true);
   protected readonly darkMode = signal(false);
@@ -145,23 +155,48 @@ export class SwitchDocsComponent {
 />`;
   });
 
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    {
+      id: 'html',
+      label: 'HTML',
+      code: this.playgroundCode(),
+      language: 'html',
+      filename: 'playground.component.html',
+    },
+    {
+      id: 'ts',
+      label: 'TypeScript',
+      code: this.playgroundTsExample(),
+      language: 'typescript',
+      filename: 'playground.component.ts',
+    },
+  ]);
+
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'SwitchPlaygroundComponent',
+      imports: [{ name: 'PuiSwitchComponent', path: '@premium-ui/components/switch' }],
+      members: [
+        'protected readonly enabled = signal(false);',
+        `protected readonly variant = signal('${this.playgroundVariant()}' as const);`,
+        `protected readonly size = signal('${this.playgroundSize()}' as const);`,
+        `protected readonly disabled = signal(${this.playgroundDisabled()});`,
+        `protected readonly loading = signal(${this.playgroundLoading()});`,
+        `protected readonly invalid = signal(${this.playgroundInvalid()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundVariant(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundVariant.set(value as PuiSwitchVariant);
+    }
   }
 
-  protected updateVariant(event: Event): void {
-    this.playgroundVariant.set((event.target as HTMLSelectElement).value as PuiSwitchVariant);
-  }
-
-  protected updateSize(event: Event): void {
-    this.playgroundSize.set((event.target as HTMLSelectElement).value as PuiSize);
-  }
-
-  protected updateCheckbox(
-    signalRef: ReturnType<typeof signal<boolean>>,
-    event: Event
-  ): void {
-    signalRef.set((event.target as HTMLInputElement).checked);
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiSize);
+    }
   }
 
   private isDocsTab(tab: string): tab is PuiDocsSwitchTab {

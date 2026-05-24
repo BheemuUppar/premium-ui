@@ -1,0 +1,68 @@
+:root,
+[data-theme='light'] {
+  --pui-doc-content-max: 72rem;
+  --pui-doc-reading-max: 42rem;
+  --pui-doc-section-gap: var(--pui-space-xl);
+  --pui-doc-surface: var(--pui-docs-canvas);
+  --pui-doc-surface-raised: var(--pui-surface-raised);
+  --pui-doc-surface-muted: color-mix(in srgb, var(--pui-color-text) 3%, var(--pui-docs-canvas));
+  --pui-doc-border: var(--pui-border);
+  --pui-doc-border-strong: color-mix(in srgb, var(--pui-border) 80%, var(--pui-color-text));
+  --pui-doc-code-bg: var(--pui-code-background);
+  --pui-doc-code-header-bg: color-mix(in srgb, var(--pui-color-text) 4%, var(--pui-surface));
+  --pui-doc-code-border: var(--pui-border);
+  --pui-doc-code-text: var(--pui-text);
+  --pui-doc-code-tag: #22863a;
+  --pui-doc-code-attr: #6f42c1;
+  --pui-doc-code-string: #032f62;
+  --pui-doc-code-binding: #005cc5;
+  --pui-doc-code-event: #d73a49;
+  --pui-doc-code-twoway: #6f42c1;
+  --pui-doc-code-directive: #d73a49;
+  --pui-doc-code-comment: #6a737d;
+  --pui-doc-code-keyword: #d73a49;
+  --pui-doc-code-decorator: #6f42c1;
+  --pui-doc-code-type: #005cc5;
+  --pui-doc-code-function: #6f42c1;
+  --pui-doc-code-import: #24292e;
+  --pui-doc-code-variable: #e36209;
+  --pui-doc-callout-info-bg: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-docs-canvas));
+  --pui-doc-callout-info-border: color-mix(in srgb, var(--pui-color-primary) 24%, transparent);
+  --pui-doc-callout-warning-bg: color-mix(in srgb, var(--pui-color-warning) 10%, var(--pui-docs-canvas));
+  --pui-doc-callout-warning-border: color-mix(in srgb, var(--pui-color-warning) 28%, transparent);
+  --pui-doc-callout-success-bg: color-mix(in srgb, var(--pui-color-success) 10%, var(--pui-docs-canvas));
+  --pui-doc-callout-success-border: color-mix(in srgb, var(--pui-color-success) 28%, transparent);
+  --pui-doc-table-row-hover: color-mix(in srgb, var(--pui-color-primary) 5%, var(--pui-docs-canvas));
+  --pui-doc-table-stripe: color-mix(in srgb, var(--pui-color-text) 2%, var(--pui-docs-canvas));
+  --pui-doc-badge-type-bg: color-mix(in srgb, var(--pui-color-primary) 10%, var(--pui-docs-canvas));
+  --pui-doc-badge-type-text: var(--pui-color-primary);
+  --pui-doc-badge-default-bg: color-mix(in srgb, var(--pui-color-text) 6%, var(--pui-docs-canvas));
+  --pui-doc-badge-bool-bg: color-mix(in srgb, var(--pui-color-success) 12%, var(--pui-docs-canvas));
+  --pui-doc-badge-bool-text: var(--pui-color-success);
+  --pui-doc-toc-indicator: var(--pui-color-primary);
+  --pui-doc-playground-bg: var(--pui-doc-surface-muted);
+  --pui-doc-code-min-height: 12rem;
+  --pui-doc-code-max-height: 28rem;
+}
+
+[data-theme='dark'] {
+  --pui-doc-surface-muted: color-mix(in srgb, var(--pui-color-text) 4%, var(--pui-docs-canvas));
+  --pui-doc-code-header-bg: color-mix(in srgb, var(--pui-color-text) 6%, var(--pui-surface));
+  --pui-doc-code-text: #e6edf3;
+  --pui-doc-code-tag: #7ee787;
+  --pui-doc-code-attr: #d2a8ff;
+  --pui-doc-code-string: #a5d6ff;
+  --pui-doc-code-binding: #79c0ff;
+  --pui-doc-code-event: #ff7b72;
+  --pui-doc-code-twoway: #d2a8ff;
+  --pui-doc-code-directive: #ff7b72;
+  --pui-doc-code-comment: #8b949e;
+  --pui-doc-code-keyword: #ff7b72;
+  --pui-doc-code-decorator: #d2a8ff;
+  --pui-doc-code-type: #79c0ff;
+  --pui-doc-code-function: #d2a8ff;
+  --pui-doc-code-import: #c9d1d9;
+  --pui-doc-code-variable: #ffa657;
+  --pui-doc-table-row-hover: color-mix(in srgb, var(--pui-color-primary) 10%, var(--pui-docs-canvas));
+  --pui-doc-table-stripe: color-mix(in srgb, var(--pui-color-text) 4%, var(--pui-docs-canvas));
+}

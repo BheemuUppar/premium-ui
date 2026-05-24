@@ -193,23 +193,17 @@
           <h2>Playground</h2>
           <div class="pui-playground">
             <div class="pui-playground__controls">
-              <label>Variant
-                <select [value]="playgroundVariant()" (change)="updateVariant($event)">
-                  @for (variant of variants; track variant) {
-                    <option [value]="variant">{{ variant }}</option>
-                  }
-                </select>
-              </label>
-              <label>Size
-                <select [value]="playgroundSize()" (change)="updateSize($event)">
-                  @for (size of sizes; track size) {
-                    <option [value]="size">{{ size }}</option>
-                  }
-                </select>
-              </label>
-              <label><input type="checkbox" [checked]="playgroundChecked()" (change)="updateCheckbox($event, playgroundChecked)" /> Checked</label>
-              <label><input type="checkbox" [checked]="playgroundDisabled()" (change)="updateCheckbox($event, playgroundDisabled)" /> Disabled</label>
-              <label><input type="checkbox" [checked]="playgroundIndeterminate()" (change)="updateCheckbox($event, playgroundIndeterminate)" /> Indeterminate</label>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Variant</span>
+                <pui-select [options]="variantOptions" [value]="playgroundVariant()" (valueChange)="setPlaygroundVariant($event)" ariaLabel="Playground variant" />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Size</span>
+                <pui-select [options]="sizeOptions" [value]="playgroundSize()" (valueChange)="setPlaygroundSize($event)" ariaLabel="Playground size" />
+              </div>
+              <pui-checkbox [checked]="playgroundChecked()" (checkedChange)="playgroundChecked.set($event)">Checked</pui-checkbox>
+              <pui-checkbox [checked]="playgroundDisabled()" (checkedChange)="playgroundDisabled.set($event)">Disabled</pui-checkbox>
+              <pui-checkbox [checked]="playgroundIndeterminate()" (checkedChange)="playgroundIndeterminate.set($event)">Indeterminate</pui-checkbox>
             </div>
             <div class="pui-playground__preview">
               <pui-checkbox
@@ -222,7 +216,7 @@
                 Playground checkbox
               </pui-checkbox>
             </div>
-            <pre class="pui-code-block"><code>{{ playgroundCode() }}</code></pre>
+            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
         </section>
       }

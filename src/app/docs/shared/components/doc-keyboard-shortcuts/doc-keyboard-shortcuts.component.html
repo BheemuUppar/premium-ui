@@ -1,0 +1,16 @@
+<h3 class="pui-doc-keyboard__title">{{ title() }}</h3>
+<ul class="pui-doc-keyboard__list">
+  @for (shortcut of shortcuts(); track shortcut.description) {
+    <li class="pui-doc-keyboard__item">
+      <div class="pui-doc-keyboard__keys">
+        @for (key of shortcut.keys; track key; let last = $last) {
+          <kbd>{{ key }}</kbd>
+          @if (!last) {
+            <span aria-hidden="true">+</span>
+          }
+        }
+      </div>
+      <p>{{ shortcut.description }}</p>
+    </li>
+  }
+</ul>

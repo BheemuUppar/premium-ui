@@ -1,0 +1,26 @@
+<section class="pui-doc-playground">
+  <div class="pui-doc-playground__header">
+    <h3 class="pui-doc-playground__title">{{ title() }}</h3>
+    @if (meta()) {
+      <p class="pui-doc-playground__meta">{{ meta() }}</p>
+    }
+  </div>
+
+  <div class="pui-doc-playground__layout">
+    <aside class="pui-doc-playground__controls">
+      <p class="pui-doc-playground__controls-label">Controls</p>
+      <ng-content select="[docPlaygroundControls]" />
+    </aside>
+
+    <div class="pui-doc-playground__preview">
+      <p class="pui-doc-playground__preview-label">Preview</p>
+      <div class="pui-doc-playground__preview-surface">
+        <ng-content select="[docPlaygroundPreview]" />
+      </div>
+    </div>
+  </div>
+
+  <div class="pui-doc-playground__code">
+    <ng-content select="[docPlaygroundCode]" />
+  </div>
+</section>

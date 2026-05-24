@@ -1,0 +1,42 @@
+@if (title()) {
+  <h3 class="pui-doc-api-table__title">{{ title() }}</h3>
+}
+
+<div class="pui-doc-api-table__wrap">
+  <table class="pui-doc-api-table__table">
+    <thead>
+      <tr>
+        @if (mode() === 'events') {
+          <th scope="col">Event</th>
+          <th scope="col">Type</th>
+          <th scope="col">Description</th>
+        } @else {
+          <th scope="col">Property</th>
+          <th scope="col">Type</th>
+          <th scope="col">Default</th>
+          <th scope="col">Description</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows(); track row.name) {
+        <tr>
+          <td><code class="pui-doc-api-table__name">{{ row.name }}</code></td>
+          <td><span class="pui-doc-api-table__type">{{ row.type }}</span></td>
+          @if (mode() === 'properties') {
+            <td>
+              @if (isBoolean(row.defaultValue)) {
+                <span class="pui-doc-api-table__badge pui-doc-api-table__badge--bool">{{ row.defaultValue }}</span>
+              } @else if (isDefaultBadge(row.defaultValue)) {
+                <span class="pui-doc-api-table__badge">{{ row.defaultValue }}</span>
+              } @else {
+                <code>{{ row.defaultValue }}</code>
+              }
+            </td>
+          }
+          <td>{{ row.description }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

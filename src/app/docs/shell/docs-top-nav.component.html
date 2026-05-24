@@ -20,10 +20,13 @@
   </nav>
 
   <div class="pui-topnav__actions">
-    <select aria-label="Select documentation version">
-      <option>v0.1.0</option>
-      <option>next</option>
-    </select>
+    <pui-select
+      class="pui-topnav__version"
+      [options]="versionOptions"
+      [value]="selectedVersion()"
+      (valueChange)="setVersion($event)"
+      ariaLabel="Select documentation version"
+    />
 
     <button class="pui-icon-button pui-icon-button--square" type="button" (click)="themeService.toggleTheme()" [attr.aria-pressed]="themeService.theme() === 'dark'">
       <span aria-hidden="true">{{ themeService.theme() === 'dark' ? 'Light' : 'Dark' }}</span>

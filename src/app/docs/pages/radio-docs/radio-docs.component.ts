@@ -11,8 +11,16 @@ import {
   PuiRadioLabelComponent,
 } from '../../../../premium-ui/components/radio';
 import type { PuiRadioOrientation, PuiRadioValue, PuiRadioVariant } from '../../../../premium-ui/components/radio';
+import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
+import { PuiSelectComponent } from '../../../../premium-ui/components/select';
+import type { PuiSelectValue } from '../../../../premium-ui/components/select';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
-import type { PuiDocsTab } from '../../docs.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsRadioTab =
   | 'overview'
@@ -39,6 +47,9 @@ interface PuiApiRow {
     PuiRadioGroupComponent,
     PuiRadioLabelComponent,
     PuiRadioDescriptionComponent,
+    PuiSelectComponent,
+    PuiCheckboxComponent,
+    PuiDocCodeBlockComponent,
     ReactiveFormsModule,
     JsonPipe,
     RouterLink,
@@ -84,6 +95,9 @@ export class RadioDocsComponent {
   ];
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];
   protected readonly orientations: readonly PuiRadioOrientation[] = ['vertical', 'horizontal'];
+  protected readonly variantOptions = toSelectOptions(this.variants);
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
+  protected readonly orientationOptions = toSelectOptions(this.orientations);
 
   protected readonly theme = signal<PuiRadioValue>('system');
   protected readonly payment = signal<PuiRadioValue>('card');
@@ -176,27 +190,45 @@ export class RadioDocsComponent {
 </pui-radio-group>`;
   });
 
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    { id: 'html', label: 'HTML', code: this.playgroundCode(), language: 'html', filename: 'playground.component.html' },
+    { id: 'ts', label: 'TypeScript', code: this.playgroundTsExample(), language: 'typescript', filename: 'playground.component.ts' },
+  ]);
+
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'RadioPlaygroundComponent',
+      imports: [
+        { name: 'PuiRadioGroupComponent', path: '@premium-ui/components/radio' },
+        { name: 'PuiRadioComponent', path: '@premium-ui/components/radio' },
+      ],
+      members: [
+        "protected readonly selected = signal('a');",
+        `protected readonly variant = signal('${this.playgroundVariant()}' as const);`,
+        `protected readonly size = signal('${this.playgroundSize()}' as const);`,
+        `protected readonly orientation = signal('${this.playgroundOrientation()}' as const);`,
+        `protected readonly disabled = signal(${this.playgroundDisabled()});`,
+        `protected readonly invalid = signal(${this.playgroundInvalid()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundVariant(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundVariant.set(value as PuiRadioVariant);
+    }
   }
 
-  protected updateVariant(event: Event): void {
-    this.playgroundVariant.set((event.target as HTMLSelectElement).value as PuiRadioVariant);
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiSize);
+    }
   }
 
-  protected updateSize(event: Event): void {
-    this.playgroundSize.set((event.target as HTMLSelectElement).value as PuiSize);
-  }
-
-  protected updateOrientation(event: Event): void {
-    this.playgroundOrientation.set((event.target as HTMLSelectElement).value as PuiRadioOrientation);
-  }
-
-  protected updateCheckbox(
-    signalRef: ReturnType<typeof signal<boolean>>,
-    event: Event
-  ): void {
-    signalRef.set((event.target as HTMLInputElement).checked);
+  protected setPlaygroundOrientation(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundOrientation.set(value as PuiRadioOrientation);
+    }
   }
 
   protected onSignalPlanChange(value: PuiRadioValue | null): void {

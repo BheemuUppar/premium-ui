@@ -1,0 +1,53 @@
+<div class="pui-doc-code-block">
+  <div class="pui-doc-code-block__toolbar">
+    <div class="pui-doc-code-block__meta">
+      @if (hasTabs()) {
+        <div class="pui-doc-code-block__tabs" role="tablist" aria-label="Code example tabs">
+          @for (panel of panels(); track panel.id) {
+            <button
+              type="button"
+              class="pui-doc-code-block__tab"
+              role="tab"
+              [class.pui-doc-code-block__tab--active]="isActivePanel(panel.id)"
+              [attr.aria-selected]="isActivePanel(panel.id)"
+              (click)="selectTab(panel.id)"
+            >
+              {{ panel.label }}
+            </button>
+          }
+        </div>
+      } @else if (activePanel(); as panel) {
+        @if (panel.filename) {
+          <span class="pui-doc-code-block__filename">{{ panel.filename }}</span>
+        }
+        <span class="pui-doc-code-block__language">{{ panel.language }}</span>
+      }
+    </div>
+    <button
+      type="button"
+      class="pui-doc-code-block__copy"
+      [class.pui-doc-code-block__copy--copied]="copied()"
+      (click)="copyCode()"
+    >
+      {{ copied() ? 'Copied' : 'Copy' }}
+    </button>
+  </div>
+
+  <div
+    class="pui-doc-code-block__body"
+    [style.min-height.px]="bodyHeightPx()"
+    [style.max-height.px]="bodyHeightPx()"
+  >
+    @for (panel of panels(); track panel.id) {
+      <pre
+        class="pui-doc-code-block__panel"
+        role="tabpanel"
+        [class.pui-doc-code-block__panel--active]="isActivePanel(panel.id)"
+        [attr.aria-hidden]="!isActivePanel(panel.id)"
+        [attr.aria-label]="panel.label + ' code example'"
+      >
+        <code [innerHTML]="panel.highlighted"></code>
+      </pre>
+    }
+  </div>
+</div>

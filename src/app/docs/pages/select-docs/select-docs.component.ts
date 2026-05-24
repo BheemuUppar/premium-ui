@@ -7,8 +7,15 @@ import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { map } from 'rxjs';
 import { PuiOptionComponent, PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectOption, PuiSelectValue } from '../../../../premium-ui/components/select';
+import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
-import type { PuiDocsTab } from '../../docs.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildHtmlTsTabs,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsSelectTab =
   | 'overview'
@@ -62,7 +69,7 @@ function createLargeOptions(count: number): PuiSelectOption[] {
 
 @Component({
   selector: 'app-select-docs',
-  imports: [PuiSelectComponent, PuiOptionComponent, ReactiveFormsModule, FormsModule, JsonPipe, RouterLink, RouterLinkActive],
+  imports: [PuiSelectComponent, PuiOptionComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, ReactiveFormsModule, FormsModule, JsonPipe, RouterLink, RouterLinkActive],
   templateUrl: './select-docs.component.html',
   styleUrl: './select-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -80,8 +87,6 @@ export class SelectDocsComponent {
     return this.isDocsTab(tab) ? tab : 'overview';
   });
 
-  protected readonly currentCodeTab = signal<'html' | 'ts'>('html');
-
   protected readonly tabs: readonly PuiDocsTab[] = [
     { label: 'Overview', route: ['/docs/components/select/overview'] },
     { label: 'Examples', route: ['/docs/components/select/examples'] },
@@ -93,6 +98,7 @@ export class SelectDocsComponent {
   ];
 
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
   protected readonly frameworkOptions = FRAMEWORK_OPTIONS;
   protected readonly countryOptions = COUNTRY_OPTIONS;
   protected readonly largeOptions = createLargeOptions(10000);
@@ -136,6 +142,22 @@ export class ExampleComponent {
     { label: 'Vue', value: 'vue' }
   ];
 }`;
+
+  protected readonly basicExampleTabs = buildHtmlTsTabs(this.htmlExample, {
+    selector: 'app-select-example',
+    componentClass: 'SelectExampleComponent',
+    imports: [{ name: 'PuiSelectComponent', path: '@premium-ui/components/select' }],
+    templateUrl: './select-example.component.html',
+    usesSignal: true,
+    members: [
+      "protected readonly selectedFramework = signal<string | null>('angular');",
+      'protected readonly frameworks = [',
+      "  { label: 'React', value: 'react' },",
+      "  { label: 'Angular', value: 'angular' },",
+      "  { label: 'Vue', value: 'vue' },",
+      '];',
+    ],
+  });
 
   protected readonly declarativeExample = `<pui-select
   [value]="selectedFramework()"
@@ -340,24 +362,36 @@ export class ExampleComponent {
 />`;
   });
 
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    { id: 'html', label: 'HTML', code: this.playgroundCode(), language: 'html', filename: 'playground.component.html' },
+    { id: 'ts', label: 'TypeScript', code: this.playgroundTsExample(), language: 'typescript', filename: 'playground.component.ts' },
+  ]);
+
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'SelectPlaygroundComponent',
+      imports: [{ name: 'PuiSelectComponent', path: '@premium-ui/components/select' }],
+      members: [
+        "protected readonly selected = signal('angular');",
+        'protected readonly options = signal([...]);',
+        `protected readonly size = signal('${this.playgroundSize()}' as const);`,
+        `protected readonly searchable = signal(${this.playgroundSearchable()});`,
+        `protected readonly multiple = signal(${this.playgroundMultiple()});`,
+        `protected readonly virtualScroll = signal(${this.playgroundVirtualScroll()});`,
+        `protected readonly useWorker = signal(${this.playgroundUseWorker()});`,
+        `protected readonly clearable = signal(${this.playgroundClearable()});`,
+        `protected readonly disabled = signal(${this.playgroundDisabled()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiSize);
+    }
   }
 
-  protected updateSize(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value as PuiSize;
-    this.playgroundSize.set(value);
-  }
-
-  protected updateCheckbox(
-    signalRef: ReturnType<typeof signal<boolean>>,
-    event: Event
-  ): void {
-    signalRef.set((event.target as HTMLInputElement).checked);
-  }
-
-  protected updateUseWorker(event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
+  protected setPlaygroundUseWorker(checked: boolean): void {
     this.playgroundUseWorker.set(checked);
 
     if (checked && !this.playgroundSearchable()) {

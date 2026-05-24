@@ -40,12 +40,26 @@ module.exports = defineConfig([
   },
   {
     files: ['src/app/**/*.ts'],
+    ignores: ['src/app/docs/shared/**'],
     rules: {
       '@angular-eslint/component-selector': [
         'error',
         {
           type: 'element',
           prefix: 'app',
+          style: 'kebab-case',
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/app/docs/shared/**/*.ts'],
+    rules: {
+      '@angular-eslint/component-selector': [
+        'error',
+        {
+          type: 'element',
+          prefix: 'pui-doc',
           style: 'kebab-case',
         },
       ],

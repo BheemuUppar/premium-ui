@@ -15,7 +15,15 @@ import {
   PuiCardTitleComponent,
 } from '../../../../premium-ui/components/card';
 import type { PuiCardSize, PuiCardVariant } from '../../../../premium-ui/components/card';
-import type { PuiDocsTab } from '../../docs.types';
+import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
+import { PuiSelectComponent } from '../../../../premium-ui/components/select';
+import type { PuiSelectValue } from '../../../../premium-ui/components/select';
+import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import {
+  PuiDocCodeBlockComponent,
+  buildPlaygroundTsExample,
+  toSelectOptions,
+} from '../../shared';
 
 type PuiDocsCardTab =
   | 'overview'
@@ -49,6 +57,9 @@ const PRODUCT_IMAGE =
     PuiCardImageComponent,
     PuiCardBadgeComponent,
     PuiButtonComponent,
+    PuiSelectComponent,
+    PuiCheckboxComponent,
+    PuiDocCodeBlockComponent,
     RouterLink,
     RouterLinkActive,
   ],
@@ -98,6 +109,8 @@ export class CardDocsComponent {
   };
 
   protected readonly sizes: readonly PuiCardSize[] = ['sm', 'md', 'lg'];
+  protected readonly variantOptions = toSelectOptions(this.variants);
+  protected readonly sizeOptions = toSelectOptions(this.sizes);
   protected readonly productImage = PRODUCT_IMAGE;
 
   protected readonly htmlExample = `<pui-card hoverable>
@@ -185,20 +198,39 @@ export class CardDocsComponent {
 </pui-card>`;
   });
 
-  protected copyCode(code: string): void {
-    void navigator.clipboard?.writeText(code);
+  protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
+    { id: 'html', label: 'HTML', code: this.playgroundCode(), language: 'html', filename: 'playground.component.html' },
+    { id: 'ts', label: 'TypeScript', code: this.playgroundTsExample(), language: 'typescript', filename: 'playground.component.ts' },
+  ]);
+
+  protected readonly playgroundTsExample = computed(() =>
+    buildPlaygroundTsExample({
+      componentClass: 'CardPlaygroundComponent',
+      imports: [
+        { name: 'PuiCardComponent', path: '@premium-ui/components/card' },
+        { name: 'PuiCardTitleComponent', path: '@premium-ui/components/card' },
+        { name: 'PuiCardContentComponent', path: '@premium-ui/components/card' },
+      ],
+      members: [
+        `protected readonly variant = signal('${this.playgroundVariant()}' as const);`,
+        `protected readonly size = signal('${this.playgroundSize()}' as const);`,
+        `protected readonly hoverable = signal(${this.playgroundHoverable()});`,
+        `protected readonly highlighted = signal(${this.playgroundHighlighted()});`,
+        `protected readonly loading = signal(${this.playgroundLoading()});`,
+      ],
+    })
+  );
+
+  protected setPlaygroundVariant(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundVariant.set(value as PuiCardVariant);
+    }
   }
 
-  protected updateVariant(event: Event): void {
-    this.playgroundVariant.set((event.target as HTMLSelectElement).value as PuiCardVariant);
-  }
-
-  protected updateSize(event: Event): void {
-    this.playgroundSize.set((event.target as HTMLSelectElement).value as PuiCardSize);
-  }
-
-  protected updateCheckbox(signalRef: ReturnType<typeof signal<boolean>>, event: Event): void {
-    signalRef.set((event.target as HTMLInputElement).checked);
+  protected setPlaygroundSize(value: PuiSelectValue | null): void {
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiCardSize);
+    }
   }
 
   private isDocsTab(tab: string): tab is PuiDocsCardTab {
