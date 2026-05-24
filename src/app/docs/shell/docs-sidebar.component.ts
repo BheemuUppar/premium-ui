@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import type { PuiDocsNavGroup } from '../docs.types';
+import { PuiDocsSearchService } from '../services/docs-search.service';
 
 @Component({
   selector: 'app-docs-sidebar',
@@ -10,7 +11,9 @@ import type { PuiDocsNavGroup } from '../docs.types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocsSidebarComponent {
-  protected readonly query = signal('');
+  private readonly searchService = inject(PuiDocsSearchService);
+
+  protected readonly query = this.searchService.query;
   protected readonly collapsedGroups = signal<readonly string[]>([
     'foundations',
     'feedback',
@@ -112,7 +115,7 @@ export class DocsSidebarComponent {
 
   protected updateQuery(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.query.set(input.value);
+    this.searchService.setQuery(input.value);
   }
 
   protected isCollapsed(groupId: string): boolean {

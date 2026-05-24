@@ -19,6 +19,7 @@ import {
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsSelectTab =
   | 'overview'
@@ -99,6 +100,10 @@ export class SelectDocsComponent {
     { label: 'Performance', route: ['/docs/components/select/performance'] },
     { label: 'Playground', route: ['/docs/components/select/playground'] },
   ];
+
+  constructor() {
+    useDocsPageSeo({ slug: 'select', tab: this.currentTab });
+  }
 
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];
   protected readonly sizeOptions = toSelectOptions(this.sizes);

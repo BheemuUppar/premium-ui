@@ -117,7 +117,7 @@
 .pui-doc-example__action--primary {
   border-color: color-mix(in srgb, var(--pui-color-primary) 22%, var(--pui-color-border));
   background: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-elevation-2));
-  color: var(--pui-color-primary);
+  color: color-mix(in srgb, var(--pui-color-primary) 68%, var(--pui-color-text));
 }
 
 .pui-doc-example__code {

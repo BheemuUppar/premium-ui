@@ -23,7 +23,7 @@
 
 .pui-doc-tabs-nav__tab:hover,
 .pui-doc-tabs-nav__tab--active {
-  color: var(--pui-color-primary);
+  color: color-mix(in srgb, var(--pui-color-primary) 68%, var(--pui-color-text));
   font-weight: var(--pui-font-weight-semibold);
 }
 

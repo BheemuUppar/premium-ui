@@ -387,7 +387,7 @@ app-root {
 
 .pui-tab:hover,
 .pui-tab--active {
-  color: var(--pui-color-primary);
+  color: color-mix(in srgb, var(--pui-color-primary) 68%, var(--pui-color-text));
   font-weight: var(--pui-font-weight-semibold);
 }
 
@@ -407,6 +407,7 @@ app-root {
 
 .pui-doc-section {
   margin-top: var(--pui-doc-section-gap);
+  scroll-margin-top: 6rem;
 }
 
 .pui-doc-section:first-child {
@@ -506,11 +507,33 @@ app-root {
 }
 
 .pui-doc-section > h2 {
+  position: relative;
   margin: 0 0 var(--pui-doc-subsection-gap);
   font-size: var(--pui-font-size-h2);
   line-height: var(--pui-line-height-h2);
   font-weight: var(--pui-font-weight-semibold);
   letter-spacing: var(--pui-letter-spacing-tight);
+  scroll-margin-top: 6rem;
+}
+
+.pui-doc-section > h2 .pui-doc-heading-anchor {
+  position: absolute;
+  left: -1.5rem;
+  color: var(--pui-color-text-subtle);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--pui-duration-fast) var(--pui-easing-standard);
+}
+
+.pui-doc-section > h2:hover .pui-doc-heading-anchor,
+.pui-doc-section > h2:focus-within .pui-doc-heading-anchor {
+  opacity: 1;
+}
+
+.pui-doc-section > h2 .pui-doc-heading-anchor:hover,
+.pui-doc-section > h2 .pui-doc-heading-anchor:focus-visible {
+  color: var(--pui-color-primary);
+  opacity: 1;
 }
 
 .pui-doc-section > h3 {

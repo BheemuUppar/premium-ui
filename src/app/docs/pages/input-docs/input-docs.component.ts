@@ -17,6 +17,7 @@ import {
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsInputTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';
 
@@ -50,6 +51,10 @@ export class InputDocsComponent {
     { label: 'Theming', route: ['/docs/components/input/theming'] },
     { label: 'Playground', route: ['/docs/components/input/playground'] }
   ];
+
+  constructor() {
+    useDocsPageSeo({ slug: 'input', tab: this.currentTab });
+  }
 
   protected readonly inputTypes: readonly PuiInputType[] = ['text', 'email', 'password', 'search', 'tel', 'url', 'number'];
   protected readonly sizes: readonly PuiSize[] = ['sm', 'md', 'lg'];

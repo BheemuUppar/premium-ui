@@ -27,14 +27,16 @@
               <span class="pui-select__chip">
                 <span class="pui-select__chip-label">{{ chip.label }}</span>
                 @if (!isDisabled()) {
-                  <button
-                    type="button"
+                  <span
+                    role="button"
+                    tabindex="0"
                     class="pui-select__chip-remove"
                     [attr.aria-label]="'Remove ' + chip.label"
                     (click)="handleRemoveChip($event, chip.value)"
+                    (keydown)="handleChipRemoveKeydown($event, chip.value)"
                   >
                     <span aria-hidden="true">×</span>
-                  </button>
+                  </span>
                 }
               </span>
             }
@@ -52,14 +54,16 @@
 
   <span class="pui-select__actions">
     @if (clearable() && hasValue() && !isDisabled()) {
-      <button
-        type="button"
+      <span
+        role="button"
+        tabindex="0"
         class="pui-select__clear"
         aria-label="Clear selection"
         (click)="handleClear($event)"
+        (keydown)="handleClearKeydown($event)"
       >
         <span aria-hidden="true">×</span>
-      </button>
+      </span>
     }
 
     @if (loading()) {

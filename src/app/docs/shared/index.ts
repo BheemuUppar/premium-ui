@@ -1,3 +1,4 @@
+export * from './components/doc-related-links/doc-related-links.component';
 export * from './components/doc-example/doc-example.component';
 export * from './components/doc-layout/doc-layout.component';
 export * from './components/doc-header/doc-header.component';

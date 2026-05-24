@@ -1,19 +1,21 @@
 <article class="pui-doc-page">
-  <header class="pui-doc-hero" id="overview">
+  <header class="pui-doc-hero">
     <nav class="pui-breadcrumb" aria-label="Breadcrumb">
       <a routerLink="/docs/components/button/overview">Home</a>
       <span aria-hidden="true">/</span>
       <a routerLink="/docs/components/button/overview">Components</a>
       <span aria-hidden="true">/</span>
-      <span>Button</span>
+      <span aria-current="page">Button</span>
     </nav>
-    <h1>Button</h1>
+    <h1>Angular Button Component</h1>
     <p>
-      Buttons allow users to take actions, and make choices, with a single tap.
+      Build accessible, themeable call-to-action buttons for Angular 21 applications. Premium UI
+      buttons support multiple variants, loading states, icon slots, and full keyboard interaction —
+      ideal for SaaS dashboards, forms, and marketing surfaces.
     </p>
   </header>
 
-  <nav class="pui-tabs" aria-label="Button documentation tabs">
+  <nav class="pui-tabs" aria-label="Button documentation sections">
     @for (tab of tabs; track tab.label) {
       <a
         class="pui-tab"
@@ -26,14 +28,26 @@
     }
   </nav>
 
-  <div class="pui-tab-panel">
+  <section class="pui-tab-panel" aria-label="Button documentation content">
     @switch (currentTab()) {
       @case ('overview') {
         <section class="pui-doc-section" id="basic-usage" aria-labelledby="overview-title">
-          <h2 id="overview-title">Overview</h2>
+          <h2 id="overview-title">
+            <a class="pui-doc-heading-anchor" href="#basic-usage" aria-label="Link to Overview section">#</a>
+            Overview
+          </h2>
           <p>
-            Buttons are used to trigger actions or events. They are one of the most common and
-            essential components in any interface.
+            Buttons are the primary action control in Angular interfaces. Use them to submit forms,
+            confirm dialogs, navigate workflows, and trigger commands. Premium UI ships
+            <code>pui-button</code> as a standalone Angular component with OnPush change detection,
+            signal-friendly inputs, and semantic tokens for light and dark themes.
+          </p>
+          <p>
+            Choose a variant to communicate hierarchy: <strong>primary</strong> for the main action,
+            <strong>secondary</strong> or <strong>outline</strong> for supporting actions, and
+            <strong>ghost</strong> for low-emphasis toolbar controls. Pair buttons with
+            <a routerLink="/docs/components/input/overview">inputs</a> and
+            <a routerLink="/docs/components/checkbox/overview">checkboxes</a> in form layouts.
           </p>
         </section>
 
@@ -94,6 +108,8 @@
             </pui-doc-example>
           </div>
         </section>
+
+        <pui-doc-related-links [links]="relatedLinks" />
       }
 
       @case ('examples') {
@@ -253,5 +269,5 @@
         </section>
       }
     }
-  </div>
+  </section>
 </article>

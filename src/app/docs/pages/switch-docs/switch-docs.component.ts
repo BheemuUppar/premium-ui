@@ -19,6 +19,7 @@ import {
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsSwitchTab =
   | 'overview'
@@ -70,6 +71,10 @@ export class SwitchDocsComponent {
     { label: 'Keyboard', route: ['/docs/components/switch/keyboard'] },
     { label: 'Playground', route: ['/docs/components/switch/playground'] },
   ];
+
+  constructor() {
+    useDocsPageSeo({ slug: 'switch', tab: this.currentTab });
+  }
 
   protected readonly variants: readonly PuiSwitchVariant[] = [
     'default',

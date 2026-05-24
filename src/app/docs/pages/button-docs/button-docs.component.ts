@@ -14,10 +14,13 @@ import {
   PuiDocCodeBlockComponent,
   PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
+  PuiDocRelatedLinksComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { getRelatedLinks } from '../../seo/docs-seo.service';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';
 
@@ -41,9 +44,9 @@ interface PuiButtonExample {
     PuiCheckboxComponent,
     PuiDocApiTableComponent,
     PuiDocA11yListComponent,
-    PuiDocCodeBlockComponent,
     PuiDocExampleComponent,
     PuiDocKeyboardShortcutsComponent,
+    PuiDocRelatedLinksComponent,
     RouterLink,
     RouterLinkActive,
   ],
@@ -72,6 +75,12 @@ export class ButtonDocsComponent {
     { label: 'Theming', route: ['/docs/components/button/theming'] },
     { label: 'Playground', route: ['/docs/components/button/playground'] },
   ];
+
+  protected readonly relatedLinks = getRelatedLinks('button');
+
+  constructor() {
+    useDocsPageSeo({ slug: 'button', tab: this.currentTab });
+  }
 
   protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];
   protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];

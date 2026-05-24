@@ -30,6 +30,7 @@ import {
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsToggleTab =
   | 'overview'
@@ -94,6 +95,10 @@ export class ToggleDocsComponent {
     { label: 'Keyboard', route: ['/docs/components/toggle/keyboard'] },
     { label: 'Playground', route: ['/docs/components/toggle/playground'] },
   ];
+
+  constructor() {
+    useDocsPageSeo({ slug: 'toggle', tab: this.currentTab });
+  }
 
   protected readonly variants = PUI_TOGGLE_VARIANTS;
   protected readonly shapes = PUI_TOGGLE_SHAPES;

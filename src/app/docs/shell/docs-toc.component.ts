@@ -60,6 +60,22 @@ export class DocsTocComponent {
     this.mobileOpen.update((open) => !open);
   }
 
+  protected navigateToSection(event: Event, id: string): void {
+    event.preventDefault();
+    const target = this.document.getElementById(id);
+    if (!target) {
+      return;
+    }
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.document.defaultView?.history.replaceState(null, '', `#${id}`);
+    }
+
+    this.activeId.set(id);
+  }
+
   private setupObserver(): void {
     this.observer?.disconnect();
     this.observer = null;

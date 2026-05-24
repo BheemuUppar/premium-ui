@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /docs/
+
+Disallow: /docs/components/alert
+Disallow: /docs/components/toast
+Disallow: /docs/components/progress
+Disallow: /docs/components/breadcrumb
+Disallow: /docs/components/modal
+Disallow: /docs/components/tooltip
+Disallow: /docs/components/badge
+Disallow: /docs/components/table
+Disallow: /docs/components/container
+Disallow: /docs/components/stack
+Disallow: /docs/components/visually-hidden
+Disallow: /docs/components/portal
+
+Sitemap: https://premium-ui.dev/sitemap.xml

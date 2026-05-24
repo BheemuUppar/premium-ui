@@ -1,0 +1,17 @@
+@if (links().length > 0) {
+  <section class="pui-doc-related" aria-labelledby="pui-doc-related-title">
+    <h2 id="pui-doc-related-title" class="pui-doc-related__title">{{ title() }}</h2>
+    <ul class="pui-doc-related__list">
+      @for (link of links(); track link.label) {
+        <li>
+          <a class="pui-doc-related__link" [routerLink]="link.route">
+            <span class="pui-doc-related__label">{{ link.label }}</span>
+            @if (link.description) {
+              <span class="pui-doc-related__description">{{ link.description }}</span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+}

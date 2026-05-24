@@ -2,7 +2,16 @@
   <p class="pui-doc-section__eyebrow">{{ eyebrow() }}</p>
 }
 @if (title()) {
-  <h2 class="pui-doc-section__title">{{ title() }}</h2>
+  <h2 class="pui-doc-section__title">
+    <a
+      class="pui-doc-section__anchor"
+      [href]="'#' + anchorId()"
+      [attr.aria-label]="'Link to ' + title() + ' section'"
+    >
+      <span aria-hidden="true">#</span>
+    </a>
+    {{ title() }}
+  </h2>
 }
 @if (description()) {
   <p class="pui-doc-section__description">{{ description() }}</p>

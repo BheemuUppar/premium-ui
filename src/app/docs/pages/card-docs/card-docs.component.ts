@@ -26,6 +26,7 @@ import {
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsCardTab =
   | 'overview'
@@ -93,6 +94,10 @@ export class CardDocsComponent {
     { label: 'Theming', route: ['/docs/components/card/theming'] },
     { label: 'Playground', route: ['/docs/components/card/playground'] },
   ];
+
+  constructor() {
+    useDocsPageSeo({ slug: 'card', tab: this.currentTab });
+  }
 
   protected readonly variants: readonly PuiCardVariant[] = [
     'default',

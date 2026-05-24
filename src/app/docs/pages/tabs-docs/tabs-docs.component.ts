@@ -1,9 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   computed,
-  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -31,7 +29,7 @@ import type {
   PuiDocsTab,
   PuiDocsTocItem,
 } from '../../docs.types';
-import { PuiDocsTocService } from '../../services/docs-toc.service';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 import {
   PuiDocA11yListComponent,
   PuiDocApiTableComponent,
@@ -96,8 +94,6 @@ const TABS_IMPORTS: readonly { name: string; path: string }[] = [
 })
 export class TabsDocsComponent {
   private readonly route = inject(ActivatedRoute);
-  private readonly tocService = inject(PuiDocsTocService);
-  private readonly destroyRef = inject(DestroyRef);
 
   private readonly routeTab = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('tab') ?? 'overview')),
@@ -378,11 +374,12 @@ export class TabsDocsComponent {
   }));
 
   constructor() {
-    effect(() => {
-      this.tocService.setItems(this.tocByTab()[this.currentTab()]);
+    useDocsPageSeo({
+      slug: 'tabs',
+      tab: this.currentTab,
+      tocByTab: this.tocByTab,
+      autoToc: false,
     });
-
-    this.destroyRef.onDestroy(() => this.tocService.clear());
   }
 
   protected isCompactVariant(variant: PuiTabsVariant): boolean {

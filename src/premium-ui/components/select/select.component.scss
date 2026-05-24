@@ -119,6 +119,12 @@
   background: color-mix(in srgb, var(--pui-color-primary) 12%, var(--pui-color-surface));
 }
 
+.pui-select__chip-remove:focus-visible,
+.pui-select__clear:focus-visible {
+  @include pui-focus.pui-focus-ring;
+  outline-offset: 0;
+}
+
 .pui-select__actions {
   display: inline-flex;
   align-items: center;

@@ -455,13 +455,19 @@ export class PuiSelectComponent implements ControlValueAccessor {
     }
   }
 
-  protected handleClear(event: MouseEvent): void {
+  protected handleClear(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
     this.updateValue(this.multiple() ? [] : null, null);
   }
 
-  protected handleRemoveChip(event: MouseEvent, chipValue: string | number): void {
+  protected handleClearKeydown(event: KeyboardEvent): void {
+    if (event.key === PUI_KEYS.ENTER || event.key === PUI_KEYS.SPACE) {
+      this.handleClear(event);
+    }
+  }
+
+  protected handleRemoveChip(event: Event, chipValue: string | number): void {
     event.preventDefault();
     event.stopPropagation();
 
@@ -476,6 +482,12 @@ export class PuiSelectComponent implements ControlValueAccessor {
     const option =
       this.resolvedOptions().find((entry) => valuesEqual(entry.value, chipValue)) ?? null;
     this.updateValue(nextValue, option);
+  }
+
+  protected handleChipRemoveKeydown(event: KeyboardEvent, chipValue: string | number): void {
+    if (event.key === PUI_KEYS.ENTER || event.key === PUI_KEYS.SPACE) {
+      this.handleRemoveChip(event, chipValue);
+    }
   }
 
   protected isSelected(option: PuiSelectOption): boolean {

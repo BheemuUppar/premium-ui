@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Premium UI  Angular Design System">
+  <rect width="1200" height="630" fill="#0f1419"/>
+  <rect x="80" y="80" width="72" height="72" rx="16" fill="#6366f1"/>
+  <text x="120" y="128" fill="#ffffff" font-family="Inter, system-ui, sans-serif" font-size="40" font-weight="700" text-anchor="middle">P</text>
+  <text x="180" y="132" fill="#ffffff" font-family="Inter, system-ui, sans-serif" font-size="48" font-weight="700">Premium UI</text>
+  <text x="180" y="190" fill="#94a3b8" font-family="Inter, system-ui, sans-serif" font-size="28">Angular Design System &amp; Component Library</text>
+</svg>

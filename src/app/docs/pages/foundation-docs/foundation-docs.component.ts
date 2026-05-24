@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
+import { useFoundationPageSeo } from '../../seo/use-docs-page-seo';
 
 @Component({
   selector: 'app-foundation-docs',
@@ -19,6 +20,10 @@ export class FoundationDocsComponent {
     const section = this.sectionParam();
     return section.charAt(0).toUpperCase() + section.slice(1);
   });
+
+  constructor() {
+    useFoundationPageSeo(this.sectionParam);
+  }
 
   protected readonly tokenRows = [
     '--pui-background',

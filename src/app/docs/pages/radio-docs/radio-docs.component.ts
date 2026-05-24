@@ -24,6 +24,7 @@ import {
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsRadioTab =
   | 'overview'
@@ -85,6 +86,10 @@ export class RadioDocsComponent {
     { label: 'Keyboard', route: ['/docs/components/radio/keyboard'] },
     { label: 'Playground', route: ['/docs/components/radio/playground'] },
   ];
+
+  constructor() {
+    useDocsPageSeo({ slug: 'radio', tab: this.currentTab });
+  }
 
   protected readonly variants: readonly PuiRadioVariant[] = [
     'default',

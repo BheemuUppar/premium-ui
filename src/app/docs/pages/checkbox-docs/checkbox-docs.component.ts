@@ -23,6 +23,7 @@ import {
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
+import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
 
 type PuiDocsCheckboxTab =
   | 'overview'
@@ -81,6 +82,10 @@ export class CheckboxDocsComponent {
     { label: 'Theming', route: ['/docs/components/checkbox/theming'] },
     { label: 'Playground', route: ['/docs/components/checkbox/playground'] },
   ];
+
+  constructor() {
+    useDocsPageSeo({ slug: 'checkbox', tab: this.currentTab });
+  }
 
   protected readonly variants: readonly PuiCheckboxVariant[] = [
     'default',

@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { PuiButtonComponent } from '../../../../premium-ui/components/button';
+import { useComingSoonPageSeo } from '../../seo/use-docs-page-seo';
 
 @Component({
   selector: 'app-coming-soon-docs',
@@ -23,4 +24,8 @@ export class ComingSoonDocsComponent {
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ')
   );
+
+  constructor() {
+    useComingSoonPageSeo(this.componentParam, this.componentName);
+  }
 }

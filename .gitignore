@@ -39,6 +39,14 @@ testem.log
 /typings
 __screenshots__/
 
+# Playwright & quality reports
+/tests/results/
+/tests/reports/
+/playwright-report/
+/blob-report/
+/tests/e2e/node_modules/
+/.lighthouseci/
+
 # System files
 .DS_Store
 Thumbs.db
