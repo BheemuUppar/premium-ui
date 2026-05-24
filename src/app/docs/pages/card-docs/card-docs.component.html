@@ -59,7 +59,7 @@
 
         <section class="pui-doc-section">
           <h2>Code example</h2>
-          <pre class="pui-code-block"><code>{{ htmlExample }}</code></pre>
+          <pui-doc-code-block [code]="htmlExample" language="html" />
         </section>
       }
 
@@ -97,7 +97,7 @@
               </pui-card-footer>
             </pui-card>
           </div>
-          <pre class="pui-code-block"><code>{{ pricingExample }}</code></pre>
+          <pui-doc-code-block [code]="pricingExample" language="html" />
         </section>
 
         <section class="pui-doc-section">
@@ -112,7 +112,7 @@
               <pui-button size="sm">Add to cart</pui-button>
             </pui-card-footer>
           </pui-card>
-          <pre class="pui-code-block"><code>{{ productExample }}</code></pre>
+          <pui-doc-code-block [code]="productExample" language="html" />
         </section>
       }
 
@@ -146,68 +146,38 @@
 
       @case ('api') {
         <section class="pui-doc-section">
-          <h2>pui-card inputs</h2>
-          <div class="pui-table-wrap">
-            <table>
-              <thead>
-                <tr><th>Input</th><th>Type</th><th>Default</th><th>Description</th></tr>
-              </thead>
-              <tbody>
-                @for (row of cardApiRows; track row.name) {
-                  <tr>
-                    <th scope="row"><code>{{ row.name }}</code></th>
-                    <td><code>{{ row.type }}</code></td>
-                    <td><code>{{ row.defaultValue }}</code></td>
-                    <td>{{ row.description }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-
-          <h2>Composable primitives</h2>
-          <div class="pui-table-wrap">
-            <table>
-              <thead>
-                <tr><th>Component</th><th>Type</th><th>Description</th></tr>
-              </thead>
-              <tbody>
-                @for (row of primitiveApiRows; track row.name) {
-                  <tr>
-                    <th scope="row"><code>{{ row.name }}</code></th>
-                    <td><code>{{ row.type }}</code></td>
-                    <td>{{ row.description }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+          <p class="pui-eyebrow">API Guide</p>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-api-table title="pui-card" [rows]="cardApiRows" />
+            <pui-doc-api-table title="Composable primitives" [rows]="primitiveApiRows" />
           </div>
         </section>
       }
 
       @case ('accessibility') {
         <section class="pui-doc-section">
-          <h2>Accessibility</h2>
-          <ul class="pui-feature-list">
-            <li><code>pui-card-title</code> renders semantic heading text</li>
-            <li>Interactive cards expose <code>role="button"</code>, keyboard activation, and focus-visible</li>
-            <li><code>pui-card-image</code> requires meaningful <code>alt</code> text</li>
-            <li>Loading state sets <code>aria-busy</code> on the card host</li>
-          </ul>
+          <p class="pui-eyebrow">Accessibility</p>
+          <h2>Screen reader &amp; keyboard support</h2>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-a11y-list [items]="a11yItems" />
+          </div>
         </section>
       }
 
       @case ('theming') {
         <section class="pui-doc-section">
-          <h2>Theming tokens</h2>
-          <pre class="pui-code-block"><code>{{ themeCode }}</code></pre>
-          <div class="pui-card-grid">
-            @for (variant of variants; track variant) {
-              <pui-card [variant]="variant" hoverable>
-                <pui-card-title>{{ variant }}</pui-card-title>
-                <pui-card-content>{{ variantDescriptions[variant] }}</pui-card-content>
-              </pui-card>
-            }
+          <p class="pui-eyebrow">Theming</p>
+          <h2>CSS variables</h2>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-code-block [code]="themeCode" language="scss" filename="card.theme.scss" />
+            <div class="pui-card-grid">
+              @for (variant of variants; track variant) {
+                <pui-card [variant]="variant" hoverable>
+                  <pui-card-title>{{ variant }}</pui-card-title>
+                  <pui-card-content>{{ variantDescriptions[variant] }}</pui-card-content>
+                </pui-card>
+              }
+            </div>
           </div>
         </section>
       }

@@ -44,7 +44,7 @@
   border: 0;
   border-radius: var(--pui-radius-sm);
   background: transparent;
-  color: var(--pui-muted);
+  color: var(--pui-doc-code-muted);
   cursor: pointer;
   font: inherit;
   font-size: var(--pui-font-size-xs);
@@ -58,8 +58,8 @@
 }
 
 .pui-doc-code-block__tab--active {
-  color: var(--pui-color-primary);
-  background: color-mix(in srgb, var(--pui-color-primary) 8%, transparent);
+  color: var(--pui-color-accent);
+  background: color-mix(in srgb, var(--pui-color-accent) 12%, transparent);
 }
 
 .pui-doc-code-block__copy {
@@ -128,7 +128,7 @@
 .pui-doc-code-block__panel code {
   display: block;
   color: var(--pui-doc-code-text);
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-family: var(--pui-font-family-mono);
   font-size: 0.875rem;
   white-space: pre;
   tab-size: 2;

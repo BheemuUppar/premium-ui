@@ -7,9 +7,12 @@ import type { PuiButtonSize, PuiButtonVariant } from '../../../../premium-ui/com
 import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
 import { PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectValue } from '../../../../premium-ui/components/select';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcut, PuiDocsTab } from '../../docs.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocKeyboardShortcutsComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -28,16 +31,9 @@ interface PuiButtonExample {
   readonly icon?: boolean;
 }
 
-interface PuiApiRow {
-  readonly name: string;
-  readonly type: string;
-  readonly defaultValue: string;
-  readonly description: string;
-}
-
 @Component({
   selector: 'app-button-docs',
-  imports: [PuiButtonComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, RouterLink, RouterLinkActive],
+  imports: [PuiButtonComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, RouterLink, RouterLinkActive],
   templateUrl: './button-docs.component.html',
   styleUrl: './button-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -118,7 +114,7 @@ export class ExampleComponent {}`;
     }
   ];
 
-  protected readonly apiRows: readonly PuiApiRow[] = [
+  protected readonly apiRows: readonly PuiDocApiRow[] = [
     { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },
     { name: 'size', type: 'PuiButtonSize', defaultValue: 'md', description: 'Controls height, padding, and label size.' },
     { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },
@@ -127,8 +123,21 @@ export class ExampleComponent {}`;
     { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }
   ];
 
-  protected readonly outputRows: readonly PuiApiRow[] = [
+  protected readonly outputRows: readonly PuiDocApiRow[] = [
     { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }
+  ];
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Native button', code: 'button', description: 'Uses a semantic button element for reliable keyboard and screen reader support.' },
+    { title: 'Focus visible', code: ':focus-visible', description: 'Applies a high-contrast focus ring that meets WCAG AA requirements.' },
+    { title: 'Busy state', code: 'aria-busy', description: 'Announces loading state and prevents duplicate activation.' },
+    { title: 'Icon-only label', code: 'ariaLabel', description: 'Required when the button has no visible text label.' },
+    { title: 'Disabled & loading', description: 'Interaction is blocked and events are not emitted while disabled or loading.' },
+  ];
+
+  protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
+    { keys: ['Enter'], description: 'Activate the button when focused.' },
+    { keys: ['Space'], description: 'Activate the button when focused.' },
   ];
 
   protected readonly themeCode = `:root {

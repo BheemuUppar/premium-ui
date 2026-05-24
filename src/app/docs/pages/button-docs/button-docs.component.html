@@ -140,53 +140,8 @@
       @case ('api') {
         <section class="pui-doc-section" id="api" aria-labelledby="api-title">
           <p class="pui-eyebrow">API Guide</p>
-          <h2 id="api-title">Inputs</h2>
-          <div class="pui-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Input</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Default</th>
-                  <th scope="col">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of apiRows; track row.name) {
-                  <tr>
-                    <th scope="row"><code>{{ row.name }}</code></th>
-                    <td><code>{{ row.type }}</code></td>
-                    <td><code>{{ row.defaultValue }}</code></td>
-                    <td>{{ row.description }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-
-          <h2>Outputs</h2>
-          <div class="pui-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Output</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Default</th>
-                  <th scope="col">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of outputRows; track row.name) {
-                  <tr>
-                    <th scope="row"><code>{{ row.name }}</code></th>
-                    <td><code>{{ row.type }}</code></td>
-                    <td><code>{{ row.defaultValue }}</code></td>
-                    <td>{{ row.description }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
+          <pui-doc-api-table title="Inputs" [rows]="apiRows" />
+          <pui-doc-api-table title="Outputs" [rows]="outputRows" mode="events" />
         </section>
       }
 
@@ -194,13 +149,10 @@
         <section class="pui-doc-section" id="accessibility" aria-labelledby="a11y-title">
           <p class="pui-eyebrow">Accessibility</p>
           <h2 id="a11y-title">Keyboard and screen reader support</h2>
-          <ul class="pui-check-list">
-            <li>Uses a native button element for keyboard activation with Enter and Space.</li>
-            <li>Applies visible focus styles through <code>:focus-visible</code>.</li>
-            <li>Sets <code>aria-busy</code> while loading and prevents duplicate activation.</li>
-            <li>Supports <code>ariaLabel</code> for icon-only controls.</li>
-            <li>Disabled and loading states stop events before emitting <code>pressed</code>.</li>
-          </ul>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-a11y-list [items]="a11yItems" />
+            <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
+          </div>
         </section>
       }
 
@@ -208,11 +160,13 @@
         <section class="pui-doc-section" id="states" aria-labelledby="theming-title">
           <p class="pui-eyebrow">Theming</p>
           <h2 id="theming-title">CSS variable contract</h2>
-          <p>
-            Button styling is powered by semantic tokens, so consumers can theme globally or override
-            component-level variables in a scoped surface.
-          </p>
-          <pre class="pui-token-code"><code>{{ themeCode }}</code></pre>
+          <div class="pui-doc-flow">
+            <p>
+              Button styling is powered by semantic tokens, so consumers can theme globally or override
+              component-level variables in a scoped surface.
+            </p>
+            <pui-doc-code-block [code]="themeCode" language="scss" filename="button.theme.scss" />
+          </div>
         </section>
       }
 

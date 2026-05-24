@@ -41,6 +41,7 @@ import { isSlidingIndicatorVariant } from './tabs.utils';
     '[class.pui-tabs--md]': "size() === 'md'",
     '[class.pui-tabs--lg]': "size() === 'lg'",
     '[class.pui-tabs--disabled]': 'isDisabled()',
+    '[class.pui-tabs--full-width]': 'fullWidth()',
     '[style.--pui-tabs-indicator-index]': 'indicatorIndex()',
     '[style.--pui-tabs-indicator-count]': 'indicatorCount()',
     '(keydown)': 'handleListKeydown($event)',
@@ -57,6 +58,7 @@ export class PuiTabsComponent implements ControlValueAccessor {
   readonly ariaLabel = input<string>('Tabs');
   readonly defaultValue = input<string>('');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly fullWidth = input(false, { transform: booleanAttribute });
   readonly value = model<string>('');
 
   readonly valueChange = output<string>();

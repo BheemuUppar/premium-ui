@@ -1,6 +1,10 @@
+:host {
+  display: block;
+}
+
 .pui-doc-api-table__title {
   margin: 0 0 var(--pui-space-sm);
-  color: var(--pui-text);
+  color: var(--pui-color-text);
   font-size: var(--pui-font-size-md);
   font-weight: var(--pui-font-weight-semibold);
 }
@@ -25,8 +29,8 @@
   z-index: 1;
   padding: var(--pui-space-sm) var(--pui-space-md);
   border-bottom: 1px solid var(--pui-doc-border);
-  background: var(--pui-doc-code-header-bg);
-  color: var(--pui-muted);
+  background: var(--pui-doc-surface-muted);
+  color: var(--pui-color-text-subtle);
   font-size: var(--pui-font-size-xs);
   font-weight: var(--pui-font-weight-semibold);
   letter-spacing: 0.04em;
@@ -65,7 +69,7 @@
   border-radius: var(--pui-radius-full);
   background: var(--pui-doc-badge-type-bg);
   color: var(--pui-doc-badge-type-text);
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-family: var(--pui-font-family-mono);
   font-size: var(--pui-font-size-xs);
   white-space: nowrap;
 }
@@ -76,7 +80,7 @@
   border-radius: var(--pui-radius-full);
   background: var(--pui-doc-badge-default-bg);
   color: var(--pui-text);
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-family: var(--pui-font-family-mono);
   font-size: var(--pui-font-size-xs);
 }
 

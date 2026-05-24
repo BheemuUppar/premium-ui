@@ -1,34 +1,94 @@
 [data-theme='dark'] {
   color-scheme: dark;
-  --pui-color-primary: #8b8cff;
-  --pui-color-primary-hover: #a5a6ff;
-  --pui-color-secondary: #e5e7eb;
+
+  /* ── Surface system ── */
+  --pui-color-bg: #0b1120;
+  --pui-color-surface: #111827;
+  --pui-color-surface-elevated: #172033;
+  --pui-color-surface-muted: #1e293b;
+  --pui-color-surface-subtle: #243041;
+
+  /* ── Text hierarchy ── */
+  --pui-color-text: #f8fafc;
+  --pui-color-text-muted: #cbd5e1;
+  --pui-color-text-subtle: #94a3b8;
+  --pui-color-text-disabled: #64748b;
+
+  /* ── Borders ── */
+  --pui-color-border: rgba(255, 255, 255, 0.08);
+  --pui-color-border-subtle: rgba(255, 255, 255, 0.04);
+  --pui-color-border-strong: rgba(255, 255, 255, 0.14);
+
+  /* ── Brand & status ── */
+  --pui-color-primary: #8b80ff;
+  --pui-color-primary-hover: #7c72ff;
+  --pui-color-primary-active: #6d63ff;
+  --pui-color-primary-soft: rgba(139, 128, 255, 0.16);
+
+  --pui-color-accent: #22d3ee;
   --pui-color-success: #34d399;
   --pui-color-warning: #fbbf24;
-  --pui-color-danger: #f87171;
-  --pui-color-background: #090b12;
-  --pui-color-surface: #111827;
-  --pui-color-border: #293241;
-  --pui-color-text: #f8fafc;
-  --pui-color-muted: #a7b0bf;
-  --pui-color-focus-ring: #c4b5fd;
-  --pui-background: var(--pui-color-background);
+  --pui-color-danger: #ef4444;
+  --pui-color-danger-hover: #dc2626;
+
+  --pui-color-secondary: #334155;
+  --pui-color-secondary-hover: #475569;
+
+  --pui-color-focus-ring: var(--pui-color-primary);
+
+  /* ── Elevation layers ── */
+  --pui-elevation-0: var(--pui-color-bg);
+  --pui-elevation-1: var(--pui-color-surface);
+  --pui-elevation-2: var(--pui-color-surface-elevated);
+  --pui-elevation-3: var(--pui-color-surface-muted);
+  --pui-elevation-4: var(--pui-color-surface-subtle);
+
+  /* ── Interaction ── */
+  --pui-focus-ring-color: rgba(139, 128, 255, 0.4);
+  --pui-hover-overlay: rgba(255, 255, 255, 0.04);
+  --pui-active-overlay: rgba(255, 255, 255, 0.06);
+
+  /* ── Legacy aliases ── */
+  --pui-color-background: var(--pui-color-bg);
+  --pui-color-muted: var(--pui-color-text-muted);
+  --pui-background: var(--pui-color-bg);
   --pui-surface: var(--pui-color-surface);
-  --pui-surface-raised: #172033;
+  --pui-surface-raised: var(--pui-color-surface-elevated);
   --pui-text: var(--pui-color-text);
-  --pui-muted: var(--pui-color-muted);
+  --pui-muted: var(--pui-color-text-muted);
   --pui-border: var(--pui-color-border);
   --pui-ring: var(--pui-color-focus-ring);
-  --pui-code-background: #151c2c;
-  --pui-docs-page: #080d17;
-  --pui-docs-chrome: var(--pui-surface-raised);
+  --pui-code-background: var(--pui-ide-bg);
+
+  --pui-bg-canvas: var(--pui-elevation-0);
+  --pui-bg-surface: var(--pui-elevation-1);
+  --pui-bg-elevation: var(--pui-elevation-2);
+  --pui-border-low: var(--pui-color-border-subtle);
+  --pui-border-md: var(--pui-color-border);
+  --pui-text-primary: var(--pui-color-text);
+  --pui-text-secondary: var(--pui-color-text-muted);
+
+  /* ── Documentation shell ── */
+  --pui-docs-page: var(--pui-color-bg);
+  --pui-docs-canvas: var(--pui-color-bg);
+  --pui-docs-chrome: color-mix(in srgb, var(--pui-color-surface) 65%, transparent);
   --pui-docs-chrome-text: var(--pui-color-text);
-  --pui-docs-chrome-muted: var(--pui-color-muted);
-  --pui-docs-chrome-border: var(--pui-color-border);
-  --pui-docs-active-soft: #2b2153;
-  --pui-docs-canvas: #0d1421;
-  --pui-shadow-sm: 0 1px 2px rgb(0 0 0 / 28%);
-  --pui-shadow-md: 0 8px 24px rgb(0 0 0 / 32%);
-  --pui-shadow-lg: 0 16px 40px rgb(0 0 0 / 36%);
-  --pui-shadow-xl: 0 28px 70px rgb(0 0 0 / 40%);
+  --pui-docs-chrome-muted: var(--pui-color-text-muted);
+  --pui-docs-chrome-border: var(--pui-color-border-subtle);
+  --pui-docs-active-soft: var(--pui-color-primary-soft);
+
+  /* ── Dark shadows (subtle depth + border contrast) ── */
+  --pui-shadow-xs: 0 1px 2px rgb(0 0 0 / 24%);
+  --pui-shadow-sm:
+    0 1px 2px rgb(0 0 0 / 28%),
+    0 0 0 1px rgb(255 255 255 / 4%) inset;
+  --pui-shadow-md:
+    0 8px 24px rgb(0 0 0 / 32%),
+    0 0 0 1px rgb(255 255 255 / 4%) inset;
+  --pui-shadow-lg:
+    0 16px 40px rgb(0 0 0 / 36%),
+    0 0 0 1px rgb(255 255 255 / 5%) inset;
+  --pui-shadow-xl:
+    0 24px 56px rgb(0 0 0 / 42%),
+    0 0 0 1px rgb(255 255 255 / 6%) inset;
 }

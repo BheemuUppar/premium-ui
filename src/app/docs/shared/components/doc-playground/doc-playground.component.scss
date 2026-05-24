@@ -20,14 +20,14 @@
 
 .pui-doc-playground__title {
   margin: 0;
-  color: var(--pui-text);
+  color: var(--pui-color-text);
   font-size: var(--pui-font-size-md);
   font-weight: var(--pui-font-weight-semibold);
 }
 
 .pui-doc-playground__meta {
   margin: 0;
-  color: var(--pui-muted);
+  color: var(--pui-color-text-muted);
   font-size: var(--pui-font-size-sm);
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 }
@@ -63,7 +63,7 @@
 .pui-doc-playground__controls-label,
 .pui-doc-playground__preview-label {
   margin: 0;
-  color: var(--pui-muted);
+  color: var(--pui-color-text-subtle);
   font-size: var(--pui-font-size-xs);
   font-weight: var(--pui-font-weight-semibold);
   letter-spacing: 0.06em;
@@ -76,7 +76,7 @@
 }
 
 .pui-doc-playground__controls ::ng-deep .pui-doc-playground-field__label {
-  color: var(--pui-text);
+  color: var(--pui-color-text);
   font-size: var(--pui-font-size-sm);
   font-weight: var(--pui-font-weight-medium);
 }
@@ -92,7 +92,7 @@
   padding: var(--pui-space-xl);
   border: 1px dashed color-mix(in srgb, var(--pui-color-primary) 24%, var(--pui-doc-border));
   border-radius: var(--pui-radius-md);
-  background: var(--pui-doc-surface);
+  background: var(--pui-doc-surface-muted);
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--pui-color-text) 4%, transparent);
 }
 

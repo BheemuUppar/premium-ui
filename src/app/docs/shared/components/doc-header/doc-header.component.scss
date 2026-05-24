@@ -29,17 +29,17 @@
 
 .pui-doc-header__title {
   margin: 0;
-  color: var(--pui-text);
-  font-size: var(--pui-font-size-4xl);
-  font-weight: var(--pui-font-weight-bold);
-  line-height: var(--pui-line-height-tight);
-  letter-spacing: -0.02em;
+  color: var(--pui-color-text);
+  font-size: var(--pui-font-size-h1);
+  font-weight: var(--pui-font-weight-semibold);
+  line-height: var(--pui-line-height-h1);
+  letter-spacing: var(--pui-letter-spacing-tight);
 }
 
 .pui-doc-header__description {
   max-width: var(--pui-doc-reading-max);
   margin: var(--pui-space-sm) 0 0;
-  color: var(--pui-muted);
-  font-size: var(--pui-font-size-md);
-  line-height: var(--pui-line-height-relaxed);
+  color: var(--pui-color-text-muted);
+  font-size: var(--pui-font-size-body);
+  line-height: var(--pui-line-height-body);
 }

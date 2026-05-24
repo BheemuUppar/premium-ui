@@ -1,13 +1,27 @@
-<ul class="pui-doc-a11y-list">
-  @for (item of items(); track item.title) {
-    <li class="pui-doc-a11y-list__item">
-      <div class="pui-doc-a11y-list__header">
-        <h4>{{ item.title }}</h4>
-        @if (item.code) {
-          <code>{{ item.code }}</code>
-        }
-      </div>
-      <p>{{ item.description }}</p>
-    </li>
-  }
-</ul>
+@if (title()) {
+  <h3 class="pui-doc-a11y-table__title">{{ title() }}</h3>
+}
+
+<div class="pui-doc-a11y-table__wrap">
+  <table class="pui-doc-a11y-table__table">
+    <thead>
+      <tr>
+        <th scope="col">Requirement</th>
+        <th scope="col">Implementation</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of items(); track item.title) {
+        <tr>
+          <td class="pui-doc-a11y-table__topic">{{ item.title }}</td>
+          <td>
+            @if (item.code) {
+              <code class="pui-doc-a11y-table__code">{{ item.code }}</code>
+            }
+            <span class="pui-doc-a11y-table__detail">{{ item.description }}</span>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

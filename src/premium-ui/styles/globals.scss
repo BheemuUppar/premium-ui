@@ -1,17 +1,47 @@
 body {
-  background: var(--pui-color-background);
+  background: var(--pui-color-bg);
   color: var(--pui-color-text);
   font-family: var(--pui-font-family);
-  font-size: var(--pui-font-size-md);
-  line-height: var(--pui-line-height-normal);
+  font-size: var(--pui-font-size-body);
+  line-height: var(--pui-line-height-body);
   letter-spacing: var(--pui-letter-spacing-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  color: var(--pui-color-text);
+  letter-spacing: var(--pui-letter-spacing-tight);
+}
+
+h1 {
+  font-size: var(--pui-font-size-h1);
+  line-height: var(--pui-line-height-h1);
+  font-weight: var(--pui-font-weight-semibold);
+}
+
+h2 {
+  font-size: var(--pui-font-size-h2);
+  line-height: var(--pui-line-height-h2);
+  font-weight: var(--pui-font-weight-semibold);
+}
+
+h3 {
+  font-size: var(--pui-font-size-h3);
+  line-height: var(--pui-line-height-h3);
+  font-weight: var(--pui-font-weight-semibold);
+}
+
+p {
+  color: var(--pui-color-text-muted);
+}
+
 :focus-visible {
-  outline: 2px solid var(--pui-color-focus-ring);
-  outline-offset: 2px;
+  outline: var(--pui-focus-ring-width) solid var(--pui-focus-ring-color);
+  outline-offset: var(--pui-focus-ring-offset);
 }
 
 .cdk-overlay-pane.pui-select__overlay-pane {

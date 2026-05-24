@@ -2,8 +2,9 @@
   display: flex;
   gap: var(--pui-space-lg);
   margin-top: var(--pui-space-md);
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--pui-color-border-subtle);
   overflow-x: auto;
-  scrollbar-width: thin;
 }
 
 .pui-doc-tabs-nav__tab {

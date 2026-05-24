@@ -14,15 +14,19 @@
 
 :host(.pui-button--outline) {
   --pui-button-bg: transparent;
-  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-primary) 8%, transparent);
+  --pui-button-bg-hover: var(--pui-color-primary-soft);
+  --pui-button-bg-active: color-mix(in srgb, var(--pui-color-primary) 18%, transparent);
   --pui-button-border: var(--pui-color-border);
   --pui-button-color: var(--pui-color-text);
+  --pui-button-shadow-hover: none;
 }
 
 :host(.pui-button--ghost) {
   --pui-button-bg: transparent;
-  --pui-button-bg-hover: color-mix(in srgb, var(--pui-color-primary) 10%, transparent);
+  --pui-button-bg-hover: var(--pui-color-primary-soft);
+  --pui-button-bg-active: color-mix(in srgb, var(--pui-color-primary) 18%, transparent);
   --pui-button-color: var(--pui-color-text);
+  --pui-button-shadow-hover: none;
 }
 
 :host(.pui-button--danger) {
@@ -76,8 +80,8 @@
 }
 
 .pui-button__control:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: var(--pui-shadow-sm);
+  transform: scale(0.98);
+  box-shadow: var(--pui-shadow-xs);
 }
 
 .pui-button__control:focus {

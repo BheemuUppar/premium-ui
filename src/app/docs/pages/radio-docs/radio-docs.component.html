@@ -35,7 +35,7 @@
               <pui-radio value="system">System</pui-radio>
             </pui-radio-group>
           </div>
-          <pre class="pui-code-block"><code>{{ basicExample }}</code></pre>
+          <pui-doc-code-block [code]="basicExample" language="html" />
         </section>
 
         <section class="pui-doc-section">
@@ -117,7 +117,7 @@
               <pui-radio-description>Custom pricing</pui-radio-description>
             </pui-radio>
           </pui-radio-group>
-          <pre class="pui-code-block"><code>{{ cardExample }}</code></pre>
+          <pui-doc-code-block [code]="cardExample" language="html" />
         </section>
 
         <section class="pui-doc-section">
@@ -132,117 +132,81 @@
 
       @case ('api') {
         <section class="pui-doc-section">
-          <h2>pui-radio</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of radioApiRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.defaultValue }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>pui-radio-group</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of groupApiRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.defaultValue }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>Outputs</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Event</th><th>Type</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of outputRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+          <p class="pui-eyebrow">API Guide</p>
+          <pui-doc-api-table title="pui-radio" [rows]="radioApiRows" />
+          <pui-doc-api-table title="pui-radio-group" [rows]="groupApiRows" />
+          <pui-doc-api-table title="Outputs" [rows]="outputRows" mode="events" />
         </section>
       }
 
       @case ('accessibility') {
         <section class="pui-doc-section">
-          <h2>Accessibility</h2>
-          <ul class="pui-feature-list">
-            <li><code>role="radiogroup"</code> on group container</li>
-            <li>Native radio inputs with shared <code>name</code> for correct grouping</li>
-            <li>Roving <code>tabindex</code> — selected option is tabbable</li>
-            <li><code>aria-checked</code>, <code>aria-invalid</code>, <code>aria-required</code></li>
-            <li>Focus-visible ring via shared focus mixin</li>
-          </ul>
+          <p class="pui-eyebrow">Accessibility</p>
+          <h2>Screen reader &amp; keyboard support</h2>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-a11y-list [items]="a11yItems" />
+            <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
+          </div>
         </section>
       }
 
       @case ('theming') {
         <section class="pui-doc-section">
-          <h2>Theming</h2>
-          <p>Customize via CSS custom properties on host or group.</p>
-          <pre class="pui-code-block"><code>{{ themeCode }}</code></pre>
+          <p class="pui-eyebrow">Theming</p>
+          <h2>CSS variables</h2>
+          <div class="pui-doc-flow">
+            <p>Customize via CSS custom properties on host or group.</p>
+            <pui-doc-code-block [code]="themeCode" language="scss" filename="radio.theme.scss" />
+          </div>
         </section>
       }
 
       @case ('forms') {
         <section class="pui-doc-section">
           <h2>Reactive forms</h2>
-          <form [formGroup]="reactiveForm">
-            <pui-radio-group formControlName="plan" ariaLabel="Subscription plan">
-              <pui-radio value="starter">Starter</pui-radio>
-              <pui-radio value="pro">Pro</pui-radio>
-              <pui-radio value="enterprise">Enterprise</pui-radio>
-            </pui-radio-group>
-          </form>
-          <p class="pui-doc-meta">Value: {{ reactiveForm.value | json }}</p>
-          <pre class="pui-code-block"><code>{{ reactiveExample }}</code></pre>
+          <div class="pui-doc-flow">
+            <div class="pui-preview-row pui-radio-preview-stack">
+              <form [formGroup]="reactiveForm">
+                <pui-radio-group formControlName="plan" ariaLabel="Subscription plan">
+                  <pui-radio value="starter">Starter</pui-radio>
+                  <pui-radio value="pro">Pro</pui-radio>
+                  <pui-radio value="enterprise">Enterprise</pui-radio>
+                </pui-radio-group>
+              </form>
+            </div>
+            <p class="pui-doc-meta">Value: {{ reactiveForm.value | json }}</p>
+            <pui-doc-code-block [code]="reactiveExample" language="html" />
+          </div>
         </section>
 
         <section class="pui-doc-section">
           <h2>Signal forms</h2>
-          <pui-radio-group [value]="signalPlan()" (valueChange)="onSignalPlanChange($event)" ariaLabel="Plan">
-            <pui-radio value="starter">Starter</pui-radio>
-            <pui-radio value="pro">Pro</pui-radio>
-          </pui-radio-group>
-          <p class="pui-doc-meta">Signal value: {{ signalPlan() }}</p>
-          <pre class="pui-code-block"><code>{{ signalExample }}</code></pre>
+          <div class="pui-doc-flow">
+            <div class="pui-preview-row pui-radio-preview-stack">
+              <pui-radio-group [value]="signalPlan()" (valueChange)="onSignalPlanChange($event)" ariaLabel="Plan">
+                <pui-radio value="starter">Starter</pui-radio>
+                <pui-radio value="pro">Pro</pui-radio>
+              </pui-radio-group>
+            </div>
+            <p class="pui-doc-meta">Signal value: {{ signalPlan() }}</p>
+            <pui-doc-code-block [code]="signalExample" language="html" />
+          </div>
         </section>
       }
 
       @case ('keyboard') {
         <section class="pui-doc-section">
           <h2>Keyboard navigation</h2>
-          <ul class="pui-feature-list">
-            <li><kbd>Arrow Up</kbd> / <kbd>Arrow Down</kbd> — move selection vertically</li>
-            <li><kbd>Arrow Left</kbd> / <kbd>Arrow Right</kbd> — move selection horizontally</li>
-            <li><kbd>Home</kbd> / <kbd>End</kbd> — first / last enabled option</li>
-            <li><kbd>Space</kbd> — select focused option</li>
-            <li><kbd>Tab</kbd> — move focus into/out of group</li>
-          </ul>
-          <pui-radio-group [(value)]="theme" ariaLabel="Keyboard demo">
-            <pui-radio value="light">Light</pui-radio>
-            <pui-radio value="dark">Dark</pui-radio>
-            <pui-radio value="system">System</pui-radio>
-          </pui-radio-group>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
+            <div class="pui-preview-row pui-radio-preview-stack">
+              <pui-radio-group [(value)]="theme" ariaLabel="Keyboard demo">
+                <pui-radio value="light">Light</pui-radio>
+                <pui-radio value="dark">Dark</pui-radio>
+                <pui-radio value="system">System</pui-radio>
+              </pui-radio-group>
+            </div>
+          </div>
         </section>
       }
 

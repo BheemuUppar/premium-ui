@@ -55,6 +55,12 @@
   max-width: 100%;
 }
 
+:host(.pui-tabs--full-width.pui-tabs--segmented) .pui-tabs__nav,
+:host(.pui-tabs--full-width.pui-tabs--segmented-soft) .pui-tabs__nav,
+:host(.pui-tabs--full-width.pui-tabs--pill) .pui-tabs__nav {
+  width: 100%;
+}
+
 :host(.pui-tabs--segmented) .pui-tabs__list,
 :host(.pui-tabs--segmented-soft) .pui-tabs__list,
 :host(.pui-tabs--pill) .pui-tabs__list {
@@ -66,6 +72,12 @@
   border-radius: var(--pui-tabs-list-radius);
   background: var(--pui-tabs-list-bg);
   box-shadow: var(--pui-tabs-list-shadow);
+}
+
+:host(.pui-tabs--full-width.pui-tabs--segmented) .pui-tabs__list,
+:host(.pui-tabs--full-width.pui-tabs--segmented-soft) .pui-tabs__list,
+:host(.pui-tabs--full-width.pui-tabs--pill) .pui-tabs__list {
+  width: 100%;
 }
 
 :host(.pui-tabs--underline) .pui-tabs__list {

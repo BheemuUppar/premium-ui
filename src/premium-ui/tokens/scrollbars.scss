@@ -1,0 +1,16 @@
+:root,
+[data-theme='light'] {
+  --pui-scrollbar-size: 6px;
+  --pui-scrollbar-radius: 999px;
+  --pui-scrollbar-inset: 2px;
+  --pui-scrollbar-thumb: color-mix(in srgb, var(--pui-color-text) 28%, transparent);
+  --pui-scrollbar-thumb-hover: color-mix(in srgb, var(--pui-color-text) 44%, transparent);
+}
+
+[data-theme='dark'] {
+  --pui-scrollbar-size: 6px;
+  --pui-scrollbar-radius: 999px;
+  --pui-scrollbar-inset: 2px;
+  --pui-scrollbar-thumb: color-mix(in srgb, var(--pui-color-text) 22%, transparent);
+  --pui-scrollbar-thumb-hover: color-mix(in srgb, var(--pui-color-text) 36%, transparent);
+}

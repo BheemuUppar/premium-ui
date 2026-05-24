@@ -25,10 +25,12 @@
         <section class="pui-doc-section">
           <h2>Overview</h2>
           <p>Elegant track-and-thumb switches with spring motion, iOS variant, and full forms support.</p>
-          <div class="pui-preview-row pui-switch-preview-stack">
-            <pui-switch [(checked)]="notifications" label="Push notifications" description="Receive alerts on this device" />
+          <div class="pui-doc-flow">
+            <div class="pui-preview-row pui-switch-preview-stack">
+              <pui-switch [(checked)]="notifications" label="Push notifications" description="Receive alerts on this device" />
+            </div>
+            <pui-doc-code-block [code]="basicExample" language="html" />
           </div>
-          <pre class="pui-code-block"><code>{{ basicExample }}</code></pre>
         </section>
       }
 
@@ -71,83 +73,68 @@
 
       @case ('api') {
         <section class="pui-doc-section">
-          <h2>pui-switch</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of apiRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.defaultValue }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Outputs</h2>
-          <table class="pui-api-table">
-            <thead><tr><th>Event</th><th>Type</th><th>Description</th></tr></thead>
-            <tbody>
-              @for (row of outputRows; track row.name) {
-                <tr>
-                  <td><code>{{ row.name }}</code></td>
-                  <td>{{ row.type }}</td>
-                  <td>{{ row.description }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+          <p class="pui-eyebrow">API Guide</p>
+          <pui-doc-api-table title="pui-switch" [rows]="apiRows" />
+          <pui-doc-api-table title="Outputs" [rows]="outputRows" mode="events" />
         </section>
       }
 
       @case ('accessibility') {
         <section class="pui-doc-section">
-          <h2>Accessibility</h2>
-          <ul class="pui-feature-list">
-            <li><code>role="switch"</code> on the control button</li>
-            <li><code>aria-checked</code>, <code>aria-disabled</code>, <code>aria-invalid</code></li>
-            <li>Focus-visible ring via shared focus mixin</li>
-            <li>Label association and describedby wiring</li>
-          </ul>
+          <p class="pui-eyebrow">Accessibility</p>
+          <h2>Screen reader &amp; keyboard support</h2>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-a11y-list [items]="a11yItems" />
+            <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
+          </div>
         </section>
       }
 
       @case ('theming') {
         <section class="pui-doc-section">
-          <h2>Theming</h2>
-          <pre class="pui-code-block"><code>{{ themeCode }}</code></pre>
+          <p class="pui-eyebrow">Theming</p>
+          <h2>CSS variables</h2>
+          <div class="pui-doc-flow">
+            <pui-doc-code-block [code]="themeCode" language="scss" filename="switch.theme.scss" />
+          </div>
         </section>
       }
 
       @case ('forms') {
         <section class="pui-doc-section">
           <h2>Reactive forms</h2>
-          <form [formGroup]="reactiveForm" class="pui-switch-preview-stack">
-            <pui-switch formControlName="notifications" label="Notifications" />
-            <pui-switch formControlName="autoUpdates" label="Auto updates" />
-          </form>
-          <p class="pui-doc-meta">{{ reactiveForm.value | json }}</p>
-          <pre class="pui-code-block"><code>{{ reactiveExample }}</code></pre>
+          <div class="pui-doc-flow">
+            <div class="pui-preview-row pui-switch-preview-stack">
+              <form [formGroup]="reactiveForm" class="pui-switch-preview-stack">
+                <pui-switch formControlName="notifications" label="Notifications" />
+                <pui-switch formControlName="autoUpdates" label="Auto updates" />
+              </form>
+            </div>
+            <p class="pui-doc-meta">{{ reactiveForm.value | json }}</p>
+            <pui-doc-code-block [code]="reactiveExample" language="html" />
+          </div>
         </section>
         <section class="pui-doc-section">
           <h2>Signal forms</h2>
-          <pui-switch [checked]="signalEnabled()" (checkedChange)="signalEnabled.set($event)" label="Enable feature" />
-          <p class="pui-doc-meta">Signal: {{ signalEnabled() }}</p>
-          <pre class="pui-code-block"><code>{{ signalExample }}</code></pre>
+          <div class="pui-doc-flow">
+            <div class="pui-preview-row pui-switch-preview-stack">
+              <pui-switch [checked]="signalEnabled()" (checkedChange)="signalEnabled.set($event)" label="Enable feature" />
+            </div>
+            <p class="pui-doc-meta">Signal: {{ signalEnabled() }}</p>
+            <pui-doc-code-block [code]="signalExample" language="html" />
+          </div>
         </section>
       }
 
       @case ('keyboard') {
         <section class="pui-doc-section">
           <h2>Keyboard navigation</h2>
-          <ul class="pui-feature-list">
-            <li><kbd>Space</kbd> / <kbd>Enter</kbd> — toggle switch</li>
-            <li><kbd>Tab</kbd> / <kbd>Shift + Tab</kbd> — move focus</li>
-          </ul>
-          <pui-switch [(checked)]="notifications" label="Try keyboard toggle" />
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
+            <div class="pui-preview-row">
+              <pui-switch [(checked)]="notifications" label="Try keyboard toggle" />
+            </div>
+          </div>
         </section>
       }
 

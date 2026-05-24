@@ -8,10 +8,13 @@ import { map } from 'rxjs';
 import { PuiOptionComponent, PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectOption, PuiSelectValue } from '../../../../premium-ui/components/select';
 import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcut, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocKeyboardShortcutsComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -63,13 +66,13 @@ const COUNTRY_OPTIONS: readonly PuiSelectOption[] = [
 function createLargeOptions(count: number): PuiSelectOption[] {
   return Array.from({ length: count }, (_, index) => ({
     label: `Option ${index + 1}`,
-    value: index + 1,
+    value: `Option ${index + 1}`,
   }));
 }
 
 @Component({
   selector: 'app-select-docs',
-  imports: [PuiSelectComponent, PuiOptionComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, ReactiveFormsModule, FormsModule, JsonPipe, RouterLink, RouterLinkActive],
+  imports: [PuiSelectComponent, PuiOptionComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, ReactiveFormsModule, FormsModule, JsonPipe, RouterLink, RouterLinkActive],
   templateUrl: './select-docs.component.html',
   styleUrl: './select-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -316,6 +319,30 @@ export class ExampleComponent {
   --pui-select-option-selected: color-mix(in srgb, var(--pui-color-primary) 12%, transparent);
 }`;
 
+  protected readonly performanceExample = `<pui-select
+  [options]="largeDataset"
+  searchable
+  virtualScroll
+  [useWorker]="true"
+  placeholder="50k options"
+/>`;
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Combobox pattern', code: 'role="combobox"', description: 'Trigger exposes combobox semantics with listbox popup and active descendant.' },
+    { title: 'Active descendant', code: 'aria-activedescendant', description: 'Highlights the keyboard-focused option while the trigger retains focus.' },
+    { title: 'Labelling', code: 'ariaLabel', description: 'Provide ariaLabel when the trigger has no visible label element.' },
+    { title: 'Focus ring', code: '--pui-color-focus-ring', description: 'Focus-visible styles meet WCAG AA contrast in light and dark themes.' },
+  ];
+
+  protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
+    { keys: ['ArrowDown', 'ArrowUp'], description: 'Navigate options in the open listbox.' },
+    { keys: ['Enter', 'Space'], description: 'Open the panel or select the active option.' },
+    { keys: ['Escape'], description: 'Close the panel and return focus to the trigger.' },
+    { keys: ['Tab'], description: 'Close the panel and move focus to the next control.' },
+    { keys: ['Home', 'End'], description: 'Jump to the first or last enabled option.' },
+    { keys: ['Typeahead'], description: 'Jump to a matching option by typing its label.' },
+  ];
+
   protected readonly customThemeCode = `:host {
   --pui-select-height: 3rem;
   --pui-select-option-active: color-mix(in srgb, var(--pui-color-primary) 20%, transparent);
@@ -330,7 +357,7 @@ export class ExampleComponent {
   protected readonly playgroundClearable = signal(true);
   protected readonly playgroundDisabled = signal(false);
 
-  protected readonly playgroundValue = signal<PuiSelectValue>('angular');
+  protected readonly playgroundValue = signal<PuiSelectValue>('');
 
   protected readonly playgroundOptions = computed(() =>
     this.playgroundVirtualScroll() || this.playgroundUseWorker()

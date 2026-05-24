@@ -1,10 +1,23 @@
 :root {
-  --pui-space-xxs: 0.25rem;
-  --pui-space-xs: 0.5rem;
-  --pui-space-sm: 0.75rem;
-  --pui-space-md: 1rem;
-  --pui-space-lg: 1.5rem;
-  --pui-space-xl: 2rem;
-  --pui-space-2xl: 3rem;
-  --pui-space-3xl: 4rem;
+  /* Strict 4px rhythm */
+  --pui-space-1: 0.25rem; /* 4 */
+  --pui-space-2: 0.5rem; /* 8 */
+  --pui-space-3: 0.75rem; /* 12 */
+  --pui-space-4: 1rem; /* 16 */
+  --pui-space-5: 1.25rem; /* 20 */
+  --pui-space-6: 1.5rem; /* 24 */
+  --pui-space-8: 2rem; /* 32 */
+  --pui-space-10: 2.5rem; /* 40 */
+  --pui-space-12: 3rem; /* 48 */
+  --pui-space-16: 4rem; /* 64 */
+
+  /* Legacy aliases */
+  --pui-space-xxs: var(--pui-space-1);
+  --pui-space-xs: var(--pui-space-2);
+  --pui-space-sm: var(--pui-space-3);
+  --pui-space-md: var(--pui-space-4);
+  --pui-space-lg: var(--pui-space-6);
+  --pui-space-xl: var(--pui-space-8);
+  --pui-space-2xl: var(--pui-space-12);
+  --pui-space-3xl: var(--pui-space-16);
 }

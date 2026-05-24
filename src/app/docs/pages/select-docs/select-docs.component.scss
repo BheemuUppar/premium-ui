@@ -34,9 +34,13 @@
   place-items: start;
   min-height: 10rem;
   padding: var(--pui-space-md);
-  border: 1px dashed var(--pui-border);
+  border: 1px dashed var(--pui-doc-border);
   border-radius: var(--pui-radius-md);
-  background: var(--pui-background);
+  background: var(--pui-doc-surface-muted);
+}
+
+.pui-playground__controls label {
+  color: var(--pui-color-text);
 }
 
 .pui-feature-list {

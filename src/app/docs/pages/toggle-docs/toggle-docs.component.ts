@@ -21,9 +21,12 @@ import type { PuiSelectionValue, PuiSize } from '../../../../premium-ui/types/co
 import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
 import { PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectValue } from '../../../../premium-ui/components/select';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcut, PuiDocsTab } from '../../docs.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
@@ -53,7 +56,10 @@ interface PuiApiRow {
     PuiToggleGroupComponent,
     PuiSelectComponent,
     PuiCheckboxComponent,
+    PuiDocApiTableComponent,
+    PuiDocA11yListComponent,
     PuiDocCodeBlockComponent,
+    PuiDocKeyboardShortcutsComponent,
     ReactiveFormsModule,
     JsonPipe,
     RouterLink,
@@ -180,6 +186,32 @@ export class ToggleDocsComponent {
   --pui-toggle-indicator-shadow: var(--pui-shadow-md);
   --pui-toggle-group-bg: color-mix(in srgb, var(--pui-color-text) 4%, var(--pui-color-surface));
 }`;
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Toggle button', code: 'role="button"', description: 'Each toggle exposes aria-pressed for its on/off state.' },
+    { title: 'Group roles', code: 'role="toolbar"', description: 'Toolbar groups use role="toolbar"; other groups use role="group".' },
+    { title: 'Roving tabindex', description: 'One tab stop per group; arrow keys move focus between toggles.' },
+    { title: 'Focus ring', description: 'Visible focus uses the shared premium-ui focus ring mixin (WCAG AA contrast).' },
+    { title: 'Icon-only label', code: 'aria-label', description: 'Required when a toggle has no visible text label.' },
+    { title: 'Orientation', code: 'aria-orientation', description: 'Reflects horizontal or vertical group layout for assistive tech.' },
+    { title: 'Reduced motion', code: 'prefers-reduced-motion', description: 'Indicator and hover motion are disabled when the user prefers reduced motion.' },
+  ];
+
+  protected readonly a11yBestPractices: readonly PuiDocA11yItem[] = [
+    { title: 'Segmented mode', description: 'Use for mutually exclusive options such as view mode or time period.' },
+    { title: 'Toolbar mode', description: 'Use with multiple for independent formatting actions.' },
+    { title: 'Group labelling', code: 'ariaLabel', description: 'Provide an accessible name on every group and icon-only toggle.' },
+    { title: 'Switch vs toggle', description: 'Do not use toggles for persistent settings — use Switch instead.' },
+  ];
+
+  protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
+    { keys: ['Space'], description: 'Toggle pressed state when focused.' },
+    { keys: ['Enter'], description: 'Toggle pressed state when focused.' },
+    { keys: ['Arrow keys'], description: 'Move focus within a group; segmented mode selects on navigate.' },
+    { keys: ['Home', 'End'], description: 'Jump to the first or last enabled toggle.' },
+    { keys: ['Tab'], description: 'Enter or leave the group roving tab stop.' },
+    { keys: ['Shift', 'Tab'], description: 'Move focus to the previous control outside the group.' },
+  ];
 
   protected readonly playgroundVariant = signal<PuiToggleVariant>('default');
   protected readonly playgroundShape = signal<PuiToggleShape>('pill');

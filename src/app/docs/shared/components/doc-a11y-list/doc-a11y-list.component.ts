@@ -8,5 +8,6 @@ import type { PuiDocA11yItem } from '../../../docs.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PuiDocA11yListComponent {
+  readonly title = input<string>('');
   readonly items = input.required<readonly PuiDocA11yItem[]>();
 }

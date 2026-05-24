@@ -1,7 +1,8 @@
 :root {
-  --pui-radius-sm: 0.375rem;
-  --pui-radius-md: 0.5rem;
-  --pui-radius-lg: 0.75rem;
-  --pui-radius-xl: 1rem;
+  --pui-radius-xs: 0.375rem; /* 6px */
+  --pui-radius-sm: 0.625rem; /* 10px */
+  --pui-radius-md: 0.875rem; /* 14px */
+  --pui-radius-lg: 1.125rem; /* 18px */
+  --pui-radius-xl: 1.5rem; /* 24px */
   --pui-radius-full: 999rem;
 }

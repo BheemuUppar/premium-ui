@@ -13,10 +13,13 @@ import {
 import type { PuiCheckboxVariant } from '../../../../premium-ui/components/checkbox';
 import { PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectValue } from '../../../../premium-ui/components/select';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcut, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
@@ -31,12 +34,7 @@ type PuiDocsCheckboxTab =
   | 'theming'
   | 'playground';
 
-interface PuiApiRow {
-  readonly name: string;
-  readonly type: string;
-  readonly defaultValue: string;
-  readonly description: string;
-}
+interface PuiApiRow extends PuiDocApiRow {}
 
 @Component({
   selector: 'app-checkbox-docs',
@@ -46,7 +44,10 @@ interface PuiApiRow {
     PuiCheckboxLabelComponent,
     PuiCheckboxDescriptionComponent,
     PuiSelectComponent,
+    PuiDocApiTableComponent,
+    PuiDocA11yListComponent,
     PuiDocCodeBlockComponent,
+    PuiDocKeyboardShortcutsComponent,
     ReactiveFormsModule,
     JsonPipe,
     RouterLink,
@@ -163,8 +164,21 @@ onChecked(value: boolean) {
   --pui-checkbox-size: 1rem;
   --pui-checkbox-border: var(--pui-color-border);
   --pui-checkbox-bg: var(--pui-color-surface);
-  --pui-checkbox-radius: var(--pui-radius-sm);
+  --pui-checkbox-radius: 0.25rem;
 }`;
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Native control', code: 'input[type=checkbox]', description: 'Visually hidden native checkbox remains screen-reader accessible.' },
+    { title: 'Indeterminate', code: 'aria-checked="mixed"', description: 'Mixed selection state for select-all and tree patterns.' },
+    { title: 'Invalid state', code: 'aria-invalid', description: 'Error text exposed through aria-describedby with role="alert".' },
+    { title: 'Group region', code: 'role="group"', description: 'Checkbox groups expose an optional aria-label for the collection.' },
+    { title: 'Descriptions', code: 'aria-describedby', description: 'Helper and error copy linked to the control for assistive tech.' },
+  ];
+
+  protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
+    { keys: ['Space'], description: 'Toggle checked state when focused.' },
+    { keys: ['Tab'], description: 'Move focus to the next focusable control.' },
+  ];
 
   protected readonly playgroundVariant = signal<PuiCheckboxVariant>('default');
   protected readonly playgroundSize = signal<PuiSize>('md');

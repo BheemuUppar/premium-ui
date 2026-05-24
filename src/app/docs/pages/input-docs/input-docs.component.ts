@@ -7,26 +7,24 @@ import type { PuiInputType } from '../../../../premium-ui/components/input';
 import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
 import { PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectValue } from '../../../../premium-ui/components/select';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcut, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
 
 type PuiDocsInputTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';
 
-interface PuiApiRow {
-  readonly name: string;
-  readonly type: string;
-  readonly defaultValue: string;
-  readonly description: string;
-}
+interface PuiApiRow extends PuiDocApiRow {}
 
 @Component({
   selector: 'app-input-docs',
-  imports: [PuiInputComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, RouterLink, RouterLinkActive],
+  imports: [PuiInputComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, RouterLink, RouterLinkActive],
   templateUrl: './input-docs.component.html',
   styleUrl: './input-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -127,6 +125,23 @@ export class InputDocsComponent {
       this.playgroundSize.set(value as PuiSize);
     }
   }
+
+  protected inputTypeExample(type: string): string {
+    return `<pui-input type="${type}" placeholder="${type}"></pui-input>`;
+  }
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Native input', code: 'input', description: 'Built on a native text input for predictable keyboard and AT behavior.' },
+    { title: 'Labelling', code: 'ariaLabel', description: 'Provide a visible label or ariaLabel when the field has no adjacent label text.' },
+    { title: 'Descriptions', code: 'aria-describedby', description: 'Helper and error copy can be associated with the control for screen readers.' },
+    { title: 'Invalid state', code: 'aria-invalid', description: 'Invalid inputs expose error state to assistive technologies.' },
+    { title: 'Focus ring', code: ':focus-visible', description: 'Visible focus styles use shared premium-ui focus tokens for WCAG contrast.' },
+  ];
+
+  protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
+    { keys: ['Tab'], description: 'Move focus into and out of the input.' },
+    { keys: ['Arrow keys'], description: 'Move caret within the text value.' },
+  ];
 
   private isDocsTab(tab: string): tab is PuiDocsInputTab {
     return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);

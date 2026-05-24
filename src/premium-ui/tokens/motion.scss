@@ -1,8 +1,8 @@
 :root {
-  --pui-duration-fast: 120ms;
-  --pui-duration-normal: 180ms;
-  --pui-duration-slow: 280ms;
-  --pui-easing-standard: cubic-bezier(0.2, 0, 0, 1);
-  --pui-easing-premium: cubic-bezier(0.22, 1, 0.36, 1);
-  --pui-disabled-opacity: 0.6;
+  --pui-duration-fast: 150ms;
+  --pui-duration-normal: 200ms;
+  --pui-duration-slow: 250ms;
+  --pui-easing-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --pui-easing-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --pui-disabled-opacity: 0.55;
 }

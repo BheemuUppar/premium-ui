@@ -9,10 +9,13 @@ import type { PuiSwitchVariant } from '../../../../premium-ui/components/switch'
 import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
 import { PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectValue } from '../../../../premium-ui/components/select';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcut, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
@@ -37,7 +40,7 @@ interface PuiApiRow {
 
 @Component({
   selector: 'app-switch-docs',
-  imports: [PuiSwitchComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocCodeBlockComponent, ReactiveFormsModule, JsonPipe, RouterLink, RouterLinkActive],
+  imports: [PuiSwitchComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, ReactiveFormsModule, JsonPipe, RouterLink, RouterLinkActive],
   templateUrl: './switch-docs.component.html',
   styleUrl: './switch-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -132,6 +135,20 @@ export class SwitchDocsComponent {
   --pui-switch-track-bg-checked: var(--pui-color-primary);
   --pui-switch-focus-glow: color-mix(in srgb, var(--pui-color-primary) 30%, transparent);
 }`;
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Switch role', code: 'role="switch"', description: 'Control button exposes switch semantics for on/off settings.' },
+    { title: 'Checked state', code: 'aria-checked', description: 'Reflects on/off state along with disabled and invalid attributes.' },
+    { title: 'Focus ring', description: 'Visible focus uses the shared premium-ui focus ring mixin.' },
+    { title: 'Labelling', code: 'aria-describedby', description: 'Label, helper, and error text are associated with the control.' },
+  ];
+
+  protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
+    { keys: ['Space'], description: 'Toggle the switch when focused.' },
+    { keys: ['Enter'], description: 'Toggle the switch when focused.' },
+    { keys: ['Tab'], description: 'Move focus to the next control.' },
+    { keys: ['Shift', 'Tab'], description: 'Move focus to the previous control.' },
+  ];
 
   protected readonly playgroundVariant = signal<PuiSwitchVariant>('default');
   protected readonly playgroundSize = signal<PuiSize>('md');

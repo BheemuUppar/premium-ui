@@ -18,8 +18,10 @@ import type { PuiCardSize, PuiCardVariant } from '../../../../premium-ui/compone
 import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
 import { PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectValue } from '../../../../premium-ui/components/select';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocsTab } from '../../docs.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -59,6 +61,8 @@ const PRODUCT_IMAGE =
     PuiButtonComponent,
     PuiSelectComponent,
     PuiCheckboxComponent,
+    PuiDocApiTableComponent,
+    PuiDocA11yListComponent,
     PuiDocCodeBlockComponent,
     RouterLink,
     RouterLinkActive,
@@ -176,6 +180,13 @@ export class CardDocsComponent {
   --pui-card-radius: var(--pui-radius-xl);
   --pui-card-padding: var(--pui-space-lg);
 }`;
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Card title', code: 'pui-card-title', description: 'Renders semantic heading text for the card region.' },
+    { title: 'Interactive cards', code: 'role="button"', description: 'Clickable cards expose button semantics, keyboard activation, and focus-visible styles.' },
+    { title: 'Card images', code: 'alt', description: 'pui-card-image requires meaningful alt text for non-decorative media.' },
+    { title: 'Loading state', code: 'aria-busy', description: 'Loading cards set aria-busy on the host while content is pending.' },
+  ];
 
   protected readonly playgroundVariant = signal<PuiCardVariant>('elevated');
   protected readonly playgroundSize = signal<PuiCardSize>('md');

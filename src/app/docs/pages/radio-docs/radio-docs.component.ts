@@ -14,10 +14,13 @@ import type { PuiRadioOrientation, PuiRadioValue, PuiRadioVariant } from '../../
 import { PuiCheckboxComponent } from '../../../../premium-ui/components/checkbox';
 import { PuiSelectComponent } from '../../../../premium-ui/components/select';
 import type { PuiSelectValue } from '../../../../premium-ui/components/select';
-import type { PuiDocCodeTab, PuiDocsTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcut, PuiDocsTab } from '../../docs.types';
 import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
+  PuiDocApiTableComponent,
+  PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
@@ -33,12 +36,7 @@ type PuiDocsRadioTab =
   | 'keyboard'
   | 'playground';
 
-interface PuiApiRow {
-  readonly name: string;
-  readonly type: string;
-  readonly defaultValue: string;
-  readonly description: string;
-}
+interface PuiApiRow extends PuiDocApiRow {}
 
 @Component({
   selector: 'app-radio-docs',
@@ -49,7 +47,10 @@ interface PuiApiRow {
     PuiRadioDescriptionComponent,
     PuiSelectComponent,
     PuiCheckboxComponent,
+    PuiDocApiTableComponent,
+    PuiDocA11yListComponent,
     PuiDocCodeBlockComponent,
+    PuiDocKeyboardShortcutsComponent,
     ReactiveFormsModule,
     JsonPipe,
     RouterLink,
@@ -169,6 +170,22 @@ export class RadioDocsComponent {
   --pui-radio-border: var(--pui-color-border);
   --pui-radio-glow: color-mix(in srgb, var(--pui-color-primary) 30%, transparent);
 }`;
+
+  protected readonly a11yItems: readonly PuiDocA11yItem[] = [
+    { title: 'Radio group', code: 'role="radiogroup"', description: 'Group container exposes single-select semantics and optional aria-label.' },
+    { title: 'Native radios', code: 'input[type=radio]', description: 'Native inputs share a name for correct grouping and AT behavior.' },
+    { title: 'Roving tabindex', description: 'Only the selected option is in the tab order; arrow keys move selection and focus.' },
+    { title: 'Checked state', code: 'aria-checked', description: 'Each option exposes checked, invalid, and required state to assistive tech.' },
+    { title: 'Focus ring', description: 'Visible focus uses the shared premium-ui focus ring mixin.' },
+  ];
+
+  protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
+    { keys: ['Arrow Up', 'Arrow Down'], description: 'Move selection vertically in a group.' },
+    { keys: ['Arrow Left', 'Arrow Right'], description: 'Move selection horizontally in a group.' },
+    { keys: ['Home', 'End'], description: 'Jump to the first or last enabled option.' },
+    { keys: ['Space'], description: 'Select the focused option.' },
+    { keys: ['Tab'], description: 'Enter or leave the radio group.' },
+  ];
 
   protected readonly playgroundVariant = signal<PuiRadioVariant>('default');
   protected readonly playgroundSize = signal<PuiSize>('md');

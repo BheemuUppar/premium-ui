@@ -1,64 +1,83 @@
-.pui-doc-keyboard__title {
-  margin: 0 0 var(--pui-space-md);
-  color: var(--pui-text);
+.pui-doc-keyboard-table__title {
+  margin: 0 0 var(--pui-space-sm);
+  color: var(--pui-color-text);
   font-size: var(--pui-font-size-md);
   font-weight: var(--pui-font-weight-semibold);
 }
 
-.pui-doc-keyboard__list {
-  display: grid;
-  gap: var(--pui-space-sm);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.pui-doc-keyboard__item {
-  display: grid;
-  grid-template-columns: minmax(8rem, auto) minmax(0, 1fr);
-  gap: var(--pui-space-md);
-  align-items: center;
-  padding: var(--pui-space-sm) var(--pui-space-md);
+.pui-doc-keyboard-table__wrap {
+  overflow-x: auto;
   border: 1px solid var(--pui-doc-border);
-  border-radius: var(--pui-radius-md);
+  border-radius: var(--pui-radius-lg);
   background: var(--pui-doc-surface);
+  box-shadow: var(--pui-shadow-sm);
 }
 
-.pui-doc-keyboard__keys {
+.pui-doc-keyboard-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--pui-font-size-sm);
+}
+
+.pui-doc-keyboard-table__table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--pui-space-sm) var(--pui-space-md);
+  border-bottom: 1px solid var(--pui-doc-border);
+  background: var(--pui-doc-surface-muted);
+  color: var(--pui-color-text-subtle);
+  font-size: var(--pui-font-size-xs);
+  font-weight: var(--pui-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.pui-doc-keyboard-table__table td {
+  padding: var(--pui-space-sm) var(--pui-space-md);
+  border-bottom: 1px solid color-mix(in srgb, var(--pui-doc-border) 70%, transparent);
+  vertical-align: middle;
+  line-height: var(--pui-line-height-relaxed);
+}
+
+.pui-doc-keyboard-table__table tbody tr:nth-child(even) {
+  background: var(--pui-doc-table-stripe);
+}
+
+.pui-doc-keyboard-table__table tbody tr:hover {
+  background: var(--pui-doc-table-row-hover);
+}
+
+.pui-doc-keyboard-table__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.pui-doc-keyboard-table__keys {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--pui-space-xs);
+  gap: var(--pui-space-1);
 }
 
-.pui-doc-keyboard__keys kbd {
+.pui-doc-keyboard-table__keys kbd {
   min-width: 1.75rem;
   padding: 0.125rem 0.5rem;
   border: 1px solid var(--pui-doc-border);
   border-radius: var(--pui-radius-sm);
-  background: var(--pui-doc-code-header-bg);
-  color: var(--pui-text);
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  background: var(--pui-doc-surface-muted);
+  color: var(--pui-color-text);
+  font-family: var(--pui-font-family-mono);
   font-size: var(--pui-font-size-xs);
   text-align: center;
   box-shadow: 0 1px 0 color-mix(in srgb, var(--pui-color-text) 8%, transparent);
 }
 
-.pui-doc-keyboard__keys span {
-  color: var(--pui-muted);
+.pui-doc-keyboard-table__plus {
+  color: var(--pui-color-text-subtle);
   font-size: var(--pui-font-size-xs);
 }
 
-.pui-doc-keyboard__item p {
-  margin: 0;
-  color: var(--pui-muted);
-  font-size: var(--pui-font-size-sm);
-  line-height: var(--pui-line-height-relaxed);
-}
-
-@media (max-width: 640px) {
-  .pui-doc-keyboard__item {
-    grid-template-columns: 1fr;
-    gap: var(--pui-space-xs);
-  }
+.pui-doc-keyboard-table__action {
+  color: var(--pui-color-text-muted);
 }

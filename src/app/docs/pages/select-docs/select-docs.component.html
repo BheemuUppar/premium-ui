@@ -107,7 +107,7 @@
                 <div>
                   <h3>{{ example.title }}</h3>
                   <p>{{ example.description }}</p>
-                  <pre><code>{{ example.code }}</code></pre>
+                  <pui-doc-code-block [code]="example.code" language="html" />
                 </div>
               </article>
             }
@@ -137,7 +137,7 @@
             </div>
             <div>
               <h3>Declarative API</h3>
-              <pre><code>{{ declarativeExample }}</code></pre>
+              <pui-doc-code-block [code]="declarativeExample" language="html" />
             </div>
           </article>
 
@@ -158,7 +158,7 @@
             </div>
             <div>
               <h3>Multiselect</h3>
-              <pre><code>{{ multiExample }}</code></pre>
+              <pui-doc-code-block [code]="multiExample" language="html" />
             </div>
           </article>
 
@@ -174,7 +174,7 @@
             </div>
             <div>
               <h3>ngModel</h3>
-              <pre><code>{{ ngModelExample }}</code></pre>
+              <pui-doc-code-block [code]="ngModelExample" language="html" />
             </div>
           </article>
 
@@ -192,14 +192,14 @@
             </div>
             <div>
               <h3>Reactive forms</h3>
-              <pre><code>{{ reactiveFormExample }}</code></pre>
+              <pui-doc-code-block [code]="reactiveFormExample" language="html" />
             </div>
           </article>
 
           <article class="pui-code-example">
             <div>
               <h3>Signal state</h3>
-              <pre><code>{{ signalExample }}</code></pre>
+              <pui-doc-code-block [code]="signalExample" language="typescript" />
             </div>
           </article>
         </section>
@@ -208,51 +208,8 @@
       @case ('api') {
         <section class="pui-doc-section" id="api" aria-labelledby="api-title">
           <p class="pui-eyebrow">API Guide</p>
-          <h2 id="api-title">Inputs</h2>
-          <div class="pui-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Input</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Default</th>
-                  <th scope="col">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of inputRows; track row.name) {
-                  <tr>
-                    <th scope="row"><code>{{ row.name }}</code></th>
-                    <td><code>{{ row.type }}</code></td>
-                    <td><code>{{ row.defaultValue }}</code></td>
-                    <td>{{ row.description }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-
-          <h2 id="outputs-title">Outputs</h2>
-          <div class="pui-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Output</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (row of outputRows; track row.name) {
-                  <tr>
-                    <th scope="row"><code>{{ row.name }}</code></th>
-                    <td><code>{{ row.type }}</code></td>
-                    <td>{{ row.description }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
+          <pui-doc-api-table title="Inputs" [rows]="inputRows" />
+          <pui-doc-api-table title="Outputs" [rows]="outputRows" mode="events" />
         </section>
       }
 
@@ -260,32 +217,10 @@
         <section class="pui-doc-section" id="accessibility" aria-labelledby="a11y-title">
           <p class="pui-eyebrow">Accessibility</p>
           <h2 id="a11y-title">Keyboard and ARIA</h2>
-          <p>
-            Select implements the ARIA combobox pattern with listbox popup, active descendant
-            management, and full keyboard support.
-          </p>
-          <div class="pui-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Key</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><th scope="row"><code>ArrowDown / ArrowUp</code></th><td>Navigate options</td></tr>
-                <tr><th scope="row"><code>Enter / Space</code></th><td>Open panel or select active option</td></tr>
-                <tr><th scope="row"><code>Escape</code></th><td>Close panel</td></tr>
-                <tr><th scope="row"><code>Tab</code></th><td>Close panel and move focus</td></tr>
-                <tr><th scope="row"><code>Home / End</code></th><td>Jump to first or last enabled option</td></tr>
-                <tr><th scope="row"><code>Typeahead</code></th><td>Jump to matching option by label</td></tr>
-              </tbody>
-            </table>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <pui-doc-a11y-list [items]="a11yItems" />
+            <pui-doc-keyboard-shortcuts title="Keyboard shortcuts" [shortcuts]="keyboardShortcuts" />
           </div>
-          <p>
-            Provide <code>ariaLabel</code> when the trigger has no visible label. Focus-visible
-            styles use <code>--pui-color-focus-ring</code> for WCAG AA contrast in light and dark themes.
-          </p>
         </section>
       }
 
@@ -293,20 +228,25 @@
         <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
           <p class="pui-eyebrow">Theming</p>
           <h2 id="theming-title">CSS variables</h2>
-          <p>Customize appearance without modifying component source using semantic tokens.</p>
-          <pui-doc-code-block [code]="themeCode" language="scss" filename="select.theme.scss" />
-
-          <h3>Component-level override</h3>
-          <pui-doc-code-block [code]="customThemeCode" language="scss" filename="select.override.scss" />
-
-          <div class="pui-preview-row">
-            <pui-select
-              class="pui-select-preview"
-              [options]="frameworkOptions"
-              searchable
-              clearable
-              placeholder="Themed select preview"
-            />
+          <div class="pui-doc-flow pui-doc-flow--xl">
+            <p>Customize appearance without modifying component source using semantic tokens.</p>
+            <div>
+              <h3>Global tokens</h3>
+              <pui-doc-code-block [code]="themeCode" language="scss" filename="select.theme.scss" />
+            </div>
+            <div>
+              <h3>Component override</h3>
+              <pui-doc-code-block [code]="customThemeCode" language="scss" filename="select.override.scss" />
+            </div>
+            <div class="pui-preview-row">
+              <pui-select
+                class="pui-select-preview"
+                [options]="frameworkOptions"
+                searchable
+                clearable
+                placeholder="Themed select preview"
+              />
+            </div>
           </div>
         </section>
       }
@@ -315,57 +255,65 @@
         <section class="pui-doc-section" id="performance" aria-labelledby="performance-title">
           <p class="pui-eyebrow">Performance</p>
           <h2 id="performance-title">Scalable rendering and worker processing</h2>
-          <p>
-            Premium UI separates <strong>computation</strong> from <strong>rendering</strong>.
-            Enable <code>virtualScroll</code> for DOM efficiency and opt into
-            <code>useWorker</code> to delegate heavy search/filter work off the main thread.
-          </p>
+          <div class="pui-doc-flow pui-doc-flow--lg">
+            <p>
+              Premium UI separates <strong>computation</strong> from <strong>rendering</strong>.
+              Enable <code>virtualScroll</code> for DOM efficiency and opt into
+              <code>useWorker</code> to delegate heavy search/filter work off the main thread.
+            </p>
 
-          <h3>What workers handle</h3>
-          <ul class="pui-feature-list">
-            <li>Text search, fuzzy search, keyword search</li>
-            <li>Filtering, sorting, grouping, ranking</li>
-            <li>Large dataset indexing and transformations</li>
-          </ul>
+            <div>
+              <h3>What workers handle</h3>
+              <ul class="pui-feature-list">
+                <li>Text search, fuzzy search, keyword search</li>
+                <li>Filtering, sorting, grouping, ranking</li>
+                <li>Large dataset indexing and transformations</li>
+              </ul>
+            </div>
 
-          <h3>What workers do NOT handle</h3>
-          <ul class="pui-feature-list">
-            <li>DOM rendering or virtual scroll (stays on main thread)</li>
-            <li>Overlays, focus management, keyboard navigation, animations</li>
-          </ul>
+            <div>
+              <h3>What workers do NOT handle</h3>
+              <ul class="pui-feature-list">
+                <li>DOM rendering or virtual scroll (stays on main thread)</li>
+                <li>Overlays, focus management, keyboard navigation, animations</li>
+              </ul>
+            </div>
 
-          <p>
-            Datasets are initialized once inside the worker. Subsequent operations send only
-            query payloads — not the full options array — to minimize serialization cost.
-          </p>
+            <p>
+              Datasets are initialized once inside the worker. Subsequent operations send only
+              query payloads — not the full options array — to minimize serialization cost.
+            </p>
 
-          <pre class="pui-code-block"><code>&lt;pui-select
-  [options]="largeDataset"
-  searchable
-  virtualScroll
-  [useWorker]="true"
-  placeholder="50k options"
-/&gt;</code></pre>
-
-          <ul class="pui-feature-list">
-            <li>Features initialize lazily — search UI renders only when searchable and open</li>
-            <li>OnPush change detection with signal-derived filtered options</li>
-            <li>Debounced worker search with cancellation for stale queries</li>
-            <li>Automatic main-thread fallback when workers are unavailable</li>
-            <li>Fixed itemHeight for predictable virtual scroll measurements</li>
-          </ul>
-          <div class="pui-preview-row">
-            <pui-select
-              class="pui-select-preview"
-              [options]="largeOptions"
-              [value]="selectedFramework()"
-              (valueChange)="selectedFramework.set($event)"
-              searchable
-              virtualScroll
-              useWorker
-              clearable
-              placeholder="10,000 options — worker search"
+            <pui-doc-code-block
+              [code]="performanceExample"
+              language="html"
+              filename="select-performance.component.html"
             />
+
+            <div>
+              <h3>Implementation notes</h3>
+              <ul class="pui-feature-list">
+                <li>Features initialize lazily — search UI renders only when searchable and open</li>
+                <li>OnPush change detection with signal-derived filtered options</li>
+                <li>Debounced worker search with cancellation for stale queries</li>
+                <li>Automatic main-thread fallback when workers are unavailable</li>
+                <li>Fixed itemHeight for predictable virtual scroll measurements</li>
+              </ul>
+            </div>
+
+            <div class="pui-preview-row">
+              <pui-select
+                class="pui-select-preview"
+                [options]="largeOptions"
+                [value]="selectedFramework()"
+                (valueChange)="selectedFramework.set($event)"
+                searchable
+                virtualScroll
+                useWorker
+                clearable
+                placeholder="10,000 options — worker search"
+              />
+            </div>
           </div>
         </section>
       }

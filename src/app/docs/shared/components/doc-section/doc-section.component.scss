@@ -14,18 +14,19 @@
 
 .pui-doc-section__title {
   margin: 0;
-  color: var(--pui-text);
-  font-size: var(--pui-font-size-xl);
+  color: var(--pui-color-text);
+  font-size: var(--pui-font-size-h2);
   font-weight: var(--pui-font-weight-semibold);
-  line-height: var(--pui-line-height-tight);
+  line-height: var(--pui-line-height-h2);
+  letter-spacing: var(--pui-letter-spacing-tight);
 }
 
 .pui-doc-section__description {
   max-width: var(--pui-doc-reading-max);
   margin: var(--pui-space-sm) 0 0;
-  color: var(--pui-muted);
-  font-size: var(--pui-font-size-sm);
-  line-height: var(--pui-line-height-relaxed);
+  color: var(--pui-color-text-muted);
+  font-size: var(--pui-font-size-small);
+  line-height: var(--pui-line-height-body);
 }
 
 .pui-doc-section__content {
