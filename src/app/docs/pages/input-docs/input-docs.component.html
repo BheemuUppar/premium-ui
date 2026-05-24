@@ -34,8 +34,7 @@
               exampleId="input-basic"
               title="Basic input"
               description="Use the Input component wherever users need to type text, numbers, email addresses, or search queries."
-              [htmlCode]="overviewExampleCode"
-              [hideTs]="true"
+              [tabs]="overviewExampleTabs"
             >
               <pui-input placeholder="Type here"></pui-input>
             </pui-doc-example>
@@ -44,8 +43,7 @@
               exampleId="input-states"
               title="States"
               description="Default, disabled, and read-only presentation."
-              [htmlCode]="statesExampleCode"
-              [hideTs]="true"
+              [tabs]="statesExampleTabs"
             >
               <div class="pui-doc-inline-preview">
                 <pui-input placeholder="Default"></pui-input>
@@ -66,8 +64,7 @@
               <pui-doc-example
                 [exampleId]="'input-type-' + type"
                 [title]="type"
-                [htmlCode]="inputTypeExample(type)"
-                [hideTs]="true"
+                [tabs]="inputTypeExampleTabs(type)"
               >
                 <pui-input [type]="type" [placeholder]="type"></pui-input>
               </pui-doc-example>
@@ -102,8 +99,7 @@
             exampleId="input-theming"
             title="Theme tokens"
             description="Override the input colors using the design token variables below."
-            [scssCode]="themeCode"
-            [hideTs]="true"
+            [tabs]="themeTabs"
           >
             <pui-input placeholder="Themed input"></pui-input>
           </pui-doc-example>

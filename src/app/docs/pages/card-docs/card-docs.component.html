@@ -31,8 +31,7 @@
             exampleId="card-overview"
             title="Revenue card"
             description="Compose cards from small primitives for scalable SaaS UI."
-            [htmlCode]="htmlExample"
-            [hideTs]="true"
+            [tabs]="overviewExampleTabs"
           >
             <pui-card hoverable class="pui-card-preview">
               <pui-card-header split>
@@ -93,8 +92,7 @@
               exampleId="card-pricing"
               title="Pricing"
               description="Highlighted gradient card for featured plans."
-              [htmlCode]="pricingExample"
-              [hideTs]="true"
+              [tabs]="pricingExampleTabs"
             >
               <pui-card variant="gradient" highlighted hoverable class="pui-card-preview">
                 <pui-card-header split>
@@ -115,8 +113,7 @@
               exampleId="card-product"
               title="Ecommerce product"
               description="Media card with zoom-on-hover image and footer actions."
-              [htmlCode]="productExample"
-              [hideTs]="true"
+              [tabs]="productExampleTabs"
             >
               <pui-card hoverable imageZoom class="pui-card-preview pui-card-preview--narrow">
                 <pui-card-image [src]="productImage" alt="Premium watch" zoomOnHover aspect="square" />
@@ -191,8 +188,7 @@
             exampleId="card-theming"
             title="Theme tokens"
             description="Override card surface, border, shadow, and radius via CSS custom properties."
-            [scssCode]="themeCode"
-            [hideTs]="true"
+            [tabs]="themeTabs"
           >
             <div class="pui-card-grid">
               @for (variant of variants; track variant) {

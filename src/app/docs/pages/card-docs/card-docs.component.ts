@@ -23,7 +23,9 @@ import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
   PuiDocExampleComponent,
+  buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
@@ -46,6 +48,27 @@ interface PuiApiRow {
 
 const PRODUCT_IMAGE =
   'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=600&fit=crop';
+
+const CARD_IMPORTS = [
+  { name: 'PuiCardComponent', path: '@premium-ui/components/card' },
+  { name: 'PuiCardHeaderComponent', path: '@premium-ui/components/card' },
+  { name: 'PuiCardTitleComponent', path: '@premium-ui/components/card' },
+  { name: 'PuiCardSubtitleComponent', path: '@premium-ui/components/card' },
+  { name: 'PuiCardContentComponent', path: '@premium-ui/components/card' },
+  { name: 'PuiCardFooterComponent', path: '@premium-ui/components/card' },
+  { name: 'PuiCardActionsComponent', path: '@premium-ui/components/card' },
+  { name: 'PuiButtonComponent', path: '@premium-ui/components/button' },
+] as const;
+
+const CARD_MEDIA_IMPORTS = [
+  ...CARD_IMPORTS,
+  { name: 'PuiCardImageComponent', path: '@premium-ui/components/card' },
+] as const;
+
+const CARD_PRICING_IMPORTS = [
+  ...CARD_IMPORTS,
+  { name: 'PuiCardBadgeComponent', path: '@premium-ui/components/card' },
+] as const;
 
 @Component({
   selector: 'app-card-docs',
@@ -154,6 +177,36 @@ export class CardDocsComponent {
   </pui-card-footer>
 </pui-card>`;
 
+  protected readonly overviewExampleTabs = buildHtmlTsTabs(this.htmlExample, {
+    selector: 'app-card-overview',
+    componentClass: 'CardOverviewExampleComponent',
+    imports: CARD_IMPORTS,
+    templateUrl: './card-overview.component.html',
+  });
+
+  protected readonly pricingExampleTabs = buildHtmlTsTabs(this.pricingExample, {
+    selector: 'app-card-pricing',
+    componentClass: 'CardPricingExampleComponent',
+    imports: CARD_PRICING_IMPORTS,
+    templateUrl: './card-pricing.component.html',
+  });
+
+  protected readonly productExampleTabs = buildHtmlTsTabs(this.productExample, {
+    selector: 'app-card-product',
+    componentClass: 'CardProductExampleComponent',
+    imports: CARD_MEDIA_IMPORTS,
+    templateUrl: './card-product.component.html',
+  });
+
+  protected readonly themeTabs = buildThemeTabs(`:host {
+  --pui-card-bg: var(--pui-color-surface);
+  --pui-card-border: var(--pui-color-border);
+  --pui-card-shadow: var(--pui-shadow-lg);
+  --pui-card-hover-shadow: var(--pui-shadow-xl);
+  --pui-card-radius: var(--pui-radius-xl);
+  --pui-card-padding: var(--pui-space-lg);
+}`);
+
   protected readonly cardApiRows: readonly PuiApiRow[] = [
     { name: 'variant', type: 'PuiCardVariant', defaultValue: 'default', description: 'Visual style: default, outlined, elevated, ghost, glass, gradient.' },
     { name: 'size', type: 'PuiCardSize', defaultValue: 'md', description: 'Padding scale: sm, md, lg.' },
@@ -176,15 +229,6 @@ export class CardDocsComponent {
     { name: 'pui-card-image', type: 'component', defaultValue: '-', description: 'Media with aspect ratio, overlay, gradient, and zoom.' },
     { name: 'pui-card-badge', type: 'component', defaultValue: '-', description: 'Status badge with semantic variants.' },
   ];
-
-  protected readonly themeCode = `:host {
-  --pui-card-bg: var(--pui-color-surface);
-  --pui-card-border: var(--pui-color-border);
-  --pui-card-shadow: var(--pui-shadow-lg);
-  --pui-card-hover-shadow: var(--pui-shadow-xl);
-  --pui-card-radius: var(--pui-radius-xl);
-  --pui-card-padding: var(--pui-space-lg);
-}`;
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
     { title: 'Card title', code: 'pui-card-title', description: 'Renders semantic heading text for the card region.' },

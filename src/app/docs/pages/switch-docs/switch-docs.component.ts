@@ -16,7 +16,9 @@ import {
   PuiDocA11yListComponent,
   PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
+  buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
@@ -116,6 +118,43 @@ export class SwitchDocsComponent {
   label="Enable feature"
 />`;
 
+  protected readonly basicExampleTabs = buildHtmlTsTabs(this.basicExample, {
+    selector: 'app-switch-basic',
+    componentClass: 'SwitchBasicExampleComponent',
+    imports: [{ name: 'PuiSwitchComponent', path: '@premium-ui/components/switch' }],
+    templateUrl: './switch-basic.component.html',
+    members: ['protected enabled = false;'],
+  });
+
+  protected readonly reactiveExampleTabs = buildHtmlTsTabs(this.reactiveExample, {
+    selector: 'app-switch-reactive',
+    componentClass: 'SwitchReactiveExampleComponent',
+    imports: [
+      { name: 'PuiSwitchComponent', path: '@premium-ui/components/switch' },
+      { name: 'ReactiveFormsModule', path: '@angular/forms' },
+    ],
+    injects: [{ name: 'FormBuilder', path: '@angular/forms' }],
+    templateUrl: './switch-reactive.component.html',
+    members: [
+      'private readonly fb = inject(FormBuilder);',
+      'protected readonly form = this.fb.group({ notifications: [true] });',
+    ],
+  });
+
+  protected readonly signalExampleTabs = buildHtmlTsTabs(this.signalExample, {
+    selector: 'app-switch-signal',
+    componentClass: 'SwitchSignalExampleComponent',
+    imports: [{ name: 'PuiSwitchComponent', path: '@premium-ui/components/switch' }],
+    templateUrl: './switch-signal.component.html',
+    usesSignal: true,
+    members: ['protected readonly enabled = signal(false);'],
+  });
+
+  protected readonly themeTabs = buildThemeTabs(`:host {
+  --pui-switch-track-bg-checked: var(--pui-color-primary);
+  --pui-switch-focus-glow: color-mix(in srgb, var(--pui-color-primary) 30%, transparent);
+}`);
+
   protected readonly apiRows: readonly PuiApiRow[] = [
     { name: 'variant', type: 'PuiSwitchVariant', defaultValue: 'default', description: 'Visual style including ios, success, and danger.' },
     { name: 'size', type: 'PuiSwitchSize', defaultValue: 'md', description: 'Track and thumb sizing.' },
@@ -135,11 +174,6 @@ export class SwitchDocsComponent {
     { name: 'checkedChange', type: 'boolean', defaultValue: '-', description: 'Emits when checked state changes.' },
     { name: 'valueChange', type: 'boolean', defaultValue: '-', description: 'Emits boolean value on toggle.' },
   ];
-
-  protected readonly themeCode = `:host {
-  --pui-switch-track-bg-checked: var(--pui-color-primary);
-  --pui-switch-focus-glow: color-mix(in srgb, var(--pui-color-primary) 30%, transparent);
-}`;
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
     { title: 'Switch role', code: 'role="switch"', description: 'Control button exposes switch semantics for on/off settings.' },

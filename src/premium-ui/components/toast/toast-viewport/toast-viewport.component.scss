@@ -1,0 +1,93 @@
+:host {
+  display: contents;
+}
+
+.pui-toast-viewport {
+  --pui-toast-gap: var(--pui-space-sm);
+  --pui-toast-max-width: min(24rem, calc(100vw - var(--pui-space-xl) * 2));
+
+  position: fixed;
+  z-index: var(--pui-z-index-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-toast-gap);
+  width: min(100vw, calc(var(--pui-toast-max-width) + var(--pui-space-xl)));
+  max-width: calc(100vw - var(--pui-space-lg) * 2);
+  padding: max(var(--pui-space-md), env(safe-area-inset-top))
+    max(var(--pui-space-md), env(safe-area-inset-right))
+    max(var(--pui-space-md), env(safe-area-inset-bottom))
+    max(var(--pui-space-md), env(safe-area-inset-left));
+  pointer-events: none;
+}
+
+.pui-toast-viewport[data-position='top-left'] {
+  top: 0;
+  left: 0;
+  align-items: flex-start;
+}
+
+.pui-toast-viewport[data-position='top-center'] {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.pui-toast-viewport[data-position='top-right'] {
+  top: 0;
+  right: 0;
+  align-items: flex-end;
+}
+
+.pui-toast-viewport[data-position='bottom-left'] {
+  bottom: 0;
+  left: 0;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+
+.pui-toast-viewport[data-position='bottom-center'] {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+.pui-toast-viewport[data-position='bottom-right'] {
+  bottom: 0;
+  right: 0;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+}
+
+@media (max-width: 640px) {
+  .pui-toast-viewport {
+    width: calc(100vw - var(--pui-space-md) * 2);
+    max-width: none;
+  }
+
+  .pui-toast-viewport[data-position='top-center'],
+  .pui-toast-viewport[data-position='bottom-center'] {
+    left: var(--pui-space-md);
+    right: var(--pui-space-md);
+    transform: none;
+    align-items: stretch;
+  }
+
+  .pui-toast-viewport[data-position='top-left'],
+  .pui-toast-viewport[data-position='top-right'],
+  .pui-toast-viewport[data-position='bottom-left'],
+  .pui-toast-viewport[data-position='bottom-right'] {
+    left: var(--pui-space-md);
+    right: var(--pui-space-md);
+    align-items: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pui-toast-viewport[data-position='top-center'],
+  .pui-toast-viewport[data-position='bottom-center'] {
+    transform: none;
+  }
+}

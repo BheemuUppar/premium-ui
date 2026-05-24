@@ -14,7 +14,9 @@ import {
   PuiDocA11yListComponent,
   PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
+  buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
@@ -76,11 +78,34 @@ export class InputDocsComponent {
 <pui-input placeholder="Disabled" [disabled]="true"></pui-input>
 <pui-input placeholder="Read only" [readOnly]="true" value="Read only"></pui-input>`;
 
-  protected readonly themeCode = `:root {
+  protected readonly overviewExampleTabs = buildHtmlTsTabs(this.overviewExampleCode, {
+    selector: 'app-input-overview',
+    componentClass: 'InputOverviewExampleComponent',
+    imports: [{ name: 'PuiInputComponent', path: '@premium-ui/components/input' }],
+    templateUrl: './input-overview.component.html',
+  });
+
+  protected readonly statesExampleTabs = buildHtmlTsTabs(this.statesExampleCode, {
+    selector: 'app-input-states',
+    componentClass: 'InputStatesExampleComponent',
+    imports: [{ name: 'PuiInputComponent', path: '@premium-ui/components/input' }],
+    templateUrl: './input-states.component.html',
+  });
+
+  protected inputTypeExampleTabs(type: string): readonly PuiDocCodeTab[] {
+    return buildHtmlTsTabs(this.inputTypeExample(type), {
+      selector: `app-input-${type}`,
+      componentClass: `Input${type.charAt(0).toUpperCase()}${type.slice(1)}ExampleComponent`,
+      imports: [{ name: 'PuiInputComponent', path: '@premium-ui/components/input' }],
+      templateUrl: `./input-${type}.component.html`,
+    });
+  }
+
+  protected readonly themeTabs = buildThemeTabs(`:root {
   --pui-input-background: #ffffff;
   --pui-input-border: #d1d5db;
   --pui-input-border-hover: #6366f1;
-}`;
+}`);
 
   protected readonly playgroundType = signal<PuiInputType>('text');
   protected readonly playgroundSize = signal<PuiSize>('md');

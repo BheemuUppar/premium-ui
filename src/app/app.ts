@@ -6,6 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PuiToastViewportComponent } from '../premium-ui/components/toast';
 import { PuiThemeService } from './docs/services/theme.service';
 
 const SCROLLING_CLASS = 'pui-is-scrolling';
@@ -13,7 +14,7 @@ const SCROLL_END_MS = 800;
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, PuiToastViewportComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -17,9 +17,11 @@ import {
   PuiDocKeyboardShortcutsComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
+import type { PuiDocImportSpec } from '../../shared/utils/doc-example.utils';
 
 type PuiDocsSelectTab =
   | 'overview'
@@ -34,6 +36,7 @@ interface PuiSelectExample {
   readonly title: string;
   readonly description: string;
   readonly code: string;
+  readonly tabs: readonly PuiDocCodeTab[];
   readonly searchable?: boolean;
   readonly multiple?: boolean;
   readonly virtualScroll?: boolean;
@@ -64,6 +67,54 @@ const COUNTRY_OPTIONS: readonly PuiSelectOption[] = [
   { label: 'France', value: 'fr' },
 ];
 
+const SELECT_IMPORT: PuiDocImportSpec = { name: 'PuiSelectComponent', path: '@premium-ui/components/select' };
+const OPTION_IMPORT: PuiDocImportSpec = { name: 'PuiOptionComponent', path: '@premium-ui/components/select' };
+
+const FRAMEWORK_MEMBERS: readonly string[] = [
+  'protected readonly frameworks = [',
+  "  { label: 'React', value: 'react' },",
+  "  { label: 'Angular', value: 'angular' },",
+  "  { label: 'Vue', value: 'vue' },",
+  '];',
+];
+
+const COUNTRY_MEMBERS: readonly string[] = [
+  'protected readonly countries = [',
+  "  { label: 'United States', value: 'us' },",
+  "  { label: 'United Kingdom', value: 'uk' },",
+  "  { label: 'Canada', value: 'ca' },",
+  '];',
+];
+
+const LARGE_DATASET_MEMBERS: readonly string[] = [
+  'protected readonly largeDataset = Array.from({ length: 10000 }, (_, index) => ({',
+  '  label: `Option ${index + 1}`,',
+  '  value: `Option ${index + 1}`,',
+  '}));',
+];
+
+function buildSelectExampleTabs(
+  html: string,
+  slug: string,
+  config?: {
+    readonly imports?: readonly PuiDocImportSpec[];
+    readonly usesSignal?: boolean;
+    readonly members?: readonly string[];
+    readonly injects?: readonly PuiDocImportSpec[];
+  }
+): readonly PuiDocCodeTab[] {
+  const pascalSlug = slug.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase()).replace(/^./, (c) => c.toUpperCase());
+
+  return buildHtmlTsTabs(html, {
+    selector: `app-select-${slug}`,
+    componentClass: `Select${pascalSlug}ExampleComponent`,
+    imports: config?.imports ?? [SELECT_IMPORT],
+    templateUrl: `./select-${slug}.component.html`,
+    usesSignal: config?.usesSignal,
+    members: config?.members,
+    injects: config?.injects,
+  });
+}
 function createLargeOptions(count: number): PuiSelectOption[] {
   return Array.from({ length: count }, (_, index) => ({
     label: `Option ${index + 1}`,
@@ -124,36 +175,16 @@ export class SelectDocsComponent {
 <pui-select size="md" [options]="frameworks" placeholder="md select" />
 <pui-select size="lg" [options]="frameworks" placeholder="lg select" />`;
 
+  protected readonly sizesExampleTabs = buildSelectExampleTabs(this.sizesExampleCode, 'sizes', {
+    members: FRAMEWORK_MEMBERS,
+  });
+
   protected readonly htmlExample = `<pui-select
   [value]="selectedFramework()"
   (valueChange)="selectedFramework.set($event)"
   [options]="frameworks"
   placeholder="Select a framework"
 />`;
-
-  protected readonly tsExample = `import { Component, signal } from '@angular/core';
-import { PuiSelectComponent } from '@premium-ui/components';
-
-@Component({
-  selector: 'app-example',
-  imports: [PuiSelectComponent],
-  template: \`
-    <pui-select
-      [value]="selectedFramework()"
-      (valueChange)="selectedFramework.set($event)"
-      [options]="frameworks"
-      placeholder="Select a framework"
-    />
-  \`
-})
-export class ExampleComponent {
-  readonly selectedFramework = signal<string | null>('angular');
-  readonly frameworks = [
-    { label: 'React', value: 'react' },
-    { label: 'Angular', value: 'angular' },
-    { label: 'Vue', value: 'vue' }
-  ];
-}`;
 
   protected readonly basicExampleTabs = buildHtmlTsTabs(this.htmlExample, {
     selector: 'app-select-example',
@@ -180,9 +211,13 @@ export class ExampleComponent {
   <pui-option value="vue">Vue</pui-option>
 </pui-select>`;
 
-  protected readonly signalExample = `selectedFramework = signal('angular');
+  protected readonly declarativeExampleTabs = buildSelectExampleTabs(this.declarativeExample, 'declarative', {
+    imports: [SELECT_IMPORT, OPTION_IMPORT],
+    usesSignal: true,
+    members: ["protected readonly selectedFramework = signal('angular');"],
+  });
 
-<pui-select
+  protected readonly signalExampleHtml = `<pui-select
   [value]="selectedFramework()"
   (valueChange)="selectedFramework.set($event)"
   placeholder="Signal-driven select"
@@ -191,15 +226,25 @@ export class ExampleComponent {
   <pui-option value="react">React</pui-option>
 </pui-select>`;
 
-  protected readonly signalExampleTabs: readonly PuiDocCodeTab[] = [
-    { id: 'ts', label: 'TypeScript', code: this.signalExample, language: 'typescript' },
-  ];
+  protected readonly signalExampleTabs = buildSelectExampleTabs(this.signalExampleHtml, 'signal', {
+    imports: [SELECT_IMPORT, OPTION_IMPORT],
+    usesSignal: true,
+    members: ["protected readonly selectedFramework = signal('angular');"],
+  });
 
   protected readonly ngModelExample = `<pui-select
   [(ngModel)]="framework"
   [options]="frameworks"
   placeholder="ngModel select"
 />`;
+
+  protected readonly ngModelExampleTabs = buildSelectExampleTabs(this.ngModelExample, 'ngmodel', {
+    imports: [
+      SELECT_IMPORT,
+      { name: 'FormsModule', path: '@angular/forms' },
+    ],
+    members: ["protected framework = 'react';", ...FRAMEWORK_MEMBERS],
+  });
 
   protected readonly reactiveFormExample = `<form [formGroup]="form">
   <pui-select
@@ -208,6 +253,19 @@ export class ExampleComponent {
     placeholder="Reactive form select"
   />
 </form>`;
+
+  protected readonly reactiveFormExampleTabs = buildSelectExampleTabs(this.reactiveFormExample, 'reactive-form', {
+    imports: [
+      SELECT_IMPORT,
+      { name: 'ReactiveFormsModule', path: '@angular/forms' },
+    ],
+    injects: [{ name: 'FormBuilder', path: '@angular/forms' }],
+    members: [
+      'private readonly fb = inject(FormBuilder);',
+      "protected readonly form = this.fb.group({ framework: ['angular'] });",
+      ...FRAMEWORK_MEMBERS,
+    ],
+  });
 
   protected readonly multiExample = `<pui-select
   [value]="selectedFrameworks()"
@@ -221,6 +279,12 @@ export class ExampleComponent {
   <pui-option value="vue">Vue</pui-option>
 </pui-select>`;
 
+  protected readonly multiExampleTabs = buildSelectExampleTabs(this.multiExample, 'multiselect', {
+    imports: [SELECT_IMPORT, OPTION_IMPORT],
+    usesSignal: true,
+    members: ["protected readonly selectedFrameworks = signal<string[]>(['angular']);"],
+  });
+
   protected readonly examples: readonly PuiSelectExample[] = [
     {
       title: 'Basic select',
@@ -230,6 +294,18 @@ export class ExampleComponent {
   [options]="frameworks"
   placeholder="Select a framework"
 />`,
+      tabs: buildSelectExampleTabs(
+        `<pui-select
+  [(value)]="selectedFramework"
+  [options]="frameworks"
+  placeholder="Select a framework"
+/>`,
+        'basic',
+        {
+          usesSignal: true,
+          members: ["protected readonly selectedFramework = signal('angular');", ...FRAMEWORK_MEMBERS],
+        }
+      ),
     },
     {
       title: 'Searchable',
@@ -242,6 +318,16 @@ export class ExampleComponent {
   clearable
   placeholder="Search frameworks"
 />`,
+      tabs: buildSelectExampleTabs(
+        `<pui-select
+  [options]="frameworks"
+  searchable
+  clearable
+  placeholder="Search frameworks"
+/>`,
+        'searchable',
+        { members: FRAMEWORK_MEMBERS }
+      ),
     },
     {
       title: 'Multiple selection',
@@ -254,6 +340,16 @@ export class ExampleComponent {
   clearable
   placeholder="Select countries"
 />`,
+      tabs: buildSelectExampleTabs(
+        `<pui-select
+  [options]="countries"
+  multiple
+  clearable
+  placeholder="Select countries"
+/>`,
+        'multiple',
+        { members: COUNTRY_MEMBERS }
+      ),
     },
     {
       title: 'Virtual scroll',
@@ -264,6 +360,15 @@ export class ExampleComponent {
   virtualScroll
   placeholder="Pick from 10k options"
 />`,
+      tabs: buildSelectExampleTabs(
+        `<pui-select
+  [options]="largeDataset"
+  virtualScroll
+  placeholder="Pick from 10k options"
+/>`,
+        'virtual-scroll',
+        { members: LARGE_DATASET_MEMBERS }
+      ),
     },
     {
       title: 'Search + virtual scroll',
@@ -278,6 +383,17 @@ export class ExampleComponent {
   clearable
   placeholder="Search 10k options"
 />`,
+      tabs: buildSelectExampleTabs(
+        `<pui-select
+  [options]="largeDataset"
+  searchable
+  virtualScroll
+  clearable
+  placeholder="Search 10k options"
+/>`,
+        'search-virtual',
+        { members: LARGE_DATASET_MEMBERS }
+      ),
     },
     {
       title: 'Loading state',
@@ -291,6 +407,26 @@ export class ExampleComponent {
   [loading]="isLoading"
   (searchChange)="loadOptions($event)"
 />`,
+      tabs: buildSelectExampleTabs(
+        `<pui-select
+  [options]="options"
+  searchable
+  asyncSearch
+  [loading]="isLoading"
+  (searchChange)="loadOptions($event)"
+/>`,
+        'loading',
+        {
+          members: [
+            'protected options: PuiSelectOption[] = [];',
+            'protected isLoading = false;',
+            'protected loadOptions(query: string): void {',
+            '  this.isLoading = true;',
+            '  // fetch options for query...',
+            '}',
+          ],
+        }
+      ),
     },
   ];
 
@@ -324,13 +460,13 @@ export class ExampleComponent {
     { name: 'searchChange', type: 'string', defaultValue: '-', description: 'Emits search query changes for local or async filtering.' },
   ];
 
-  protected readonly themeCode = `:root {
+  protected readonly themeTabs = buildThemeTabs(`:root {
   --pui-select-bg: var(--pui-color-surface);
   --pui-select-border: var(--pui-color-border);
   --pui-select-radius: var(--pui-radius-md);
   --pui-select-option-hover: color-mix(in srgb, var(--pui-color-primary) 8%, transparent);
   --pui-select-option-selected: color-mix(in srgb, var(--pui-color-primary) 12%, transparent);
-}`;
+}`);
 
   protected readonly performanceExample = `<pui-select
   [options]="largeDataset"
@@ -339,6 +475,10 @@ export class ExampleComponent {
   [useWorker]="true"
   placeholder="50k options"
 />`;
+
+  protected readonly performanceExampleTabs = buildSelectExampleTabs(this.performanceExample, 'performance', {
+    members: LARGE_DATASET_MEMBERS,
+  });
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
     { title: 'Combobox pattern', code: 'role="combobox"', description: 'Trigger exposes combobox semantics with listbox popup and active descendant.' },
@@ -356,10 +496,10 @@ export class ExampleComponent {
     { keys: ['Typeahead'], description: 'Jump to a matching option by typing its label.' },
   ];
 
-  protected readonly customThemeCode = `:host {
+  protected readonly customThemeTabs = buildThemeTabs(`:host {
   --pui-select-height: 3rem;
   --pui-select-option-active: color-mix(in srgb, var(--pui-color-primary) 20%, transparent);
-}`;
+}`);
 
   protected readonly playgroundSize = signal<PuiSize>('md');
   protected readonly playgroundSearchable = signal(false);

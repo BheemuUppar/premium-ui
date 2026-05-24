@@ -54,6 +54,12 @@
 /docs/components/tabs/theming
 /docs/components/tabs/keyboard
 /docs/components/tabs/playground
+/docs/components/toast/overview
+/docs/components/toast/examples
+/docs/components/toast/api
+/docs/components/toast/accessibility
+/docs/components/toast/theming
+/docs/components/toast/playground
 /docs/foundations/colors
 /docs/foundations/typography
 /docs/foundations/spacing

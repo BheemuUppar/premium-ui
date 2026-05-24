@@ -20,7 +20,9 @@ import {
   PuiDocA11yListComponent,
   PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
+  buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
@@ -112,13 +114,7 @@ export class CheckboxDocsComponent {
 <pui-checkbox>Unchecked</pui-checkbox>
 <pui-checkbox [indeterminate]="true">Indeterminate</pui-checkbox>`;
 
-  protected readonly controlledExample = `selected = signal(false);
-
-onChecked(value: boolean) {
-  this.selected.set(value);
-}
-
-<pui-checkbox
+  protected readonly controlledExample = `<pui-checkbox
   [checked]="selected()"
   (checkedChange)="onChecked($event)"
 >
@@ -140,6 +136,79 @@ onChecked(value: boolean) {
   <pui-checkbox-label>Pro plan</pui-checkbox-label>
   <pui-checkbox-description>Advanced features</pui-checkbox-description>
 </pui-checkbox>`;
+
+  protected readonly basicExampleTabs = buildHtmlTsTabs(this.basicExample, {
+    selector: 'app-checkbox-basic',
+    componentClass: 'CheckboxBasicExampleComponent',
+    imports: [{ name: 'PuiCheckboxComponent', path: '@premium-ui/components/checkbox' }],
+    templateUrl: './checkbox-basic.component.html',
+  });
+
+  protected readonly statesExampleTabs = buildHtmlTsTabs(this.statesExampleCode, {
+    selector: 'app-checkbox-states',
+    componentClass: 'CheckboxStatesExampleComponent',
+    imports: [{ name: 'PuiCheckboxComponent', path: '@premium-ui/components/checkbox' }],
+    templateUrl: './checkbox-states.component.html',
+  });
+
+  protected readonly groupExampleTabs = buildHtmlTsTabs(this.groupExample, {
+    selector: 'app-checkbox-group-example',
+    componentClass: 'CheckboxGroupExampleComponent',
+    imports: [
+      { name: 'PuiCheckboxComponent', path: '@premium-ui/components/checkbox' },
+      { name: 'PuiCheckboxGroupComponent', path: '@premium-ui/components/checkbox' },
+    ],
+    templateUrl: './checkbox-group.component.html',
+    usesSignal: true,
+    members: ["protected readonly selected = signal<string[]>(['angular']);"],
+  });
+
+  protected readonly cardExampleTabs = buildHtmlTsTabs(this.cardExample, {
+    selector: 'app-checkbox-card',
+    componentClass: 'CheckboxCardExampleComponent',
+    imports: [
+      { name: 'PuiCheckboxComponent', path: '@premium-ui/components/checkbox' },
+      { name: 'PuiCheckboxLabelComponent', path: '@premium-ui/components/checkbox' },
+      { name: 'PuiCheckboxDescriptionComponent', path: '@premium-ui/components/checkbox' },
+    ],
+    templateUrl: './checkbox-card.component.html',
+  });
+
+  protected readonly reactiveExampleTabs = buildHtmlTsTabs(this.reactiveExample, {
+    selector: 'app-checkbox-reactive',
+    componentClass: 'CheckboxReactiveExampleComponent',
+    imports: [
+      { name: 'PuiCheckboxComponent', path: '@premium-ui/components/checkbox' },
+      { name: 'ReactiveFormsModule', path: '@angular/forms' },
+    ],
+    injects: [{ name: 'FormBuilder', path: '@angular/forms' }],
+    templateUrl: './checkbox-reactive.component.html',
+    members: [
+      'private readonly fb = inject(FormBuilder);',
+      'protected readonly form = this.fb.group({ terms: [false] });',
+    ],
+  });
+
+  protected readonly controlledExampleTabs = buildHtmlTsTabs(this.controlledExample, {
+    selector: 'app-checkbox-controlled',
+    componentClass: 'CheckboxControlledExampleComponent',
+    imports: [{ name: 'PuiCheckboxComponent', path: '@premium-ui/components/checkbox' }],
+    templateUrl: './checkbox-controlled.component.html',
+    usesSignal: true,
+    members: [
+      'protected readonly selected = signal(false);',
+      'protected onChecked(value: boolean): void {',
+      '  this.selected.set(value);',
+      '}',
+    ],
+  });
+
+  protected readonly themeTabs = buildThemeTabs(`:host {
+  --pui-checkbox-size: 1rem;
+  --pui-checkbox-border: var(--pui-color-border);
+  --pui-checkbox-bg: var(--pui-color-surface);
+  --pui-checkbox-radius: 0.25rem;
+}`);
 
   protected readonly checkboxApiRows: readonly PuiApiRow[] = [
     { name: 'checked', type: 'boolean', defaultValue: 'false', description: 'Checked state. Supports two-way binding via [(checked)].' },
@@ -168,13 +237,6 @@ onChecked(value: boolean) {
     { name: 'checkedChange', type: 'boolean', defaultValue: '-', description: 'Emits when checked state changes (standalone checkbox).' },
     { name: 'valueChange', type: 'unknown[]', defaultValue: '-', description: 'Emits when group selection changes.' },
   ];
-
-  protected readonly themeCode = `:host {
-  --pui-checkbox-size: 1rem;
-  --pui-checkbox-border: var(--pui-color-border);
-  --pui-checkbox-bg: var(--pui-color-surface);
-  --pui-checkbox-radius: 0.25rem;
-}`;
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
     { title: 'Native control', code: 'input[type=checkbox]', description: 'Visually hidden native checkbox remains screen-reader accessible.' },

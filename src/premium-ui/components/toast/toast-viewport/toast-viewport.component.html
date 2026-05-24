@@ -1,0 +1,13 @@
+@for (position of positions; track position) {
+  @if (grouped()[position].length > 0) {
+    <section
+      class="pui-toast-viewport"
+      [attr.data-position]="position"
+      [attr.aria-label]="'Notifications ' + position"
+    >
+      @for (toast of grouped()[position]; track toast.id) {
+        <pui-toast [toast]="toast" />
+      }
+    </section>
+  }
+}

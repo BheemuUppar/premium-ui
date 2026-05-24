@@ -33,8 +33,7 @@
               exampleId="checkbox-basic"
               title="Basic usage"
               description="Standalone checkbox with label content projection."
-              [htmlCode]="basicExample"
-              [hideTs]="true"
+              [tabs]="basicExampleTabs"
             >
               <div class="pui-doc-inline-preview pui-checkbox-preview-stack">
                 <pui-checkbox [checked]="true">Email notifications</pui-checkbox>
@@ -62,8 +61,7 @@
               exampleId="checkbox-states"
               title="States"
               description="Checked, unchecked, and indeterminate presentation."
-              [htmlCode]="statesExampleCode"
-              [hideTs]="true"
+              [tabs]="statesExampleTabs"
             >
               <div class="pui-doc-inline-preview pui-checkbox-preview-stack">
                 <pui-checkbox [checked]="true">Checked</pui-checkbox>
@@ -76,8 +74,7 @@
               exampleId="checkbox-group"
               title="Checkbox group"
               description="Manage multiple selected values with pui-checkbox-group."
-              [htmlCode]="groupExample"
-              [hideTs]="true"
+              [tabs]="groupExampleTabs"
             >
               <pui-checkbox-group [(value)]="selectedFrameworks" ariaLabel="Frameworks">
                 <pui-checkbox value="angular">Angular</pui-checkbox>
@@ -91,8 +88,7 @@
               exampleId="checkbox-card"
               title="Card checkbox"
               description="Rich card variant with label and description slots."
-              [htmlCode]="cardExample"
-              [hideTs]="true"
+              [tabs]="cardExampleTabs"
             >
               <pui-checkbox variant="card" value="pro">
                 <pui-checkbox-label>Pro plan</pui-checkbox-label>
@@ -132,8 +128,7 @@
             exampleId="checkbox-reactive"
             title="Reactive forms"
             description="Bind checkboxes to FormControl with formControlName."
-            [htmlCode]="reactiveExample"
-            [hideTs]="true"
+            [tabs]="reactiveExampleTabs"
           >
             <form [formGroup]="reactiveForm" class="pui-checkbox-preview-stack">
               <pui-checkbox formControlName="terms">Accept terms and conditions</pui-checkbox>
@@ -151,8 +146,7 @@
             exampleId="checkbox-signal"
             title="Signal-driven state"
             description="Control checked state from a signal without CVA."
-            [htmlCode]="controlledExample"
-            [hideTs]="true"
+            [tabs]="controlledExampleTabs"
           >
             <pui-checkbox [checked]="signalChecked()" (checkedChange)="onSignalChecked($event)">
               Accept terms
@@ -169,8 +163,7 @@
             exampleId="checkbox-theming"
             title="Theme tokens"
             description="Override checkbox sizing and colors via CSS custom properties."
-            [scssCode]="themeCode"
-            [hideTs]="true"
+            [tabs]="themeTabs"
           >
             <div class="pui-doc-inline-preview pui-checkbox-preview-stack">
               <pui-checkbox [checked]="true">Checked</pui-checkbox>

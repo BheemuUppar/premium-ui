@@ -43,6 +43,7 @@ import {
   PuiDocTabsNavComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
 } from '../../shared';
 
 type PuiDocsTabsTab =
@@ -267,13 +268,13 @@ export class TabsDocsComponent {
     { name: 'tabId', type: 'string', defaultValue: '-', description: 'Matches the id of the associated pui-tab-item (required).' },
   ];
 
-  protected readonly themeCode = `:host {
+  protected readonly themeTabs = buildThemeTabs(`:host {
   --pui-tabs-list-bg: color-mix(in srgb, var(--pui-color-primary) 8%, var(--pui-color-surface));
   --pui-tabs-indicator-bg: var(--pui-color-surface);
   --pui-tabs-indicator-shadow: var(--pui-shadow-md);
   --pui-tabs-underline-active: var(--pui-color-primary);
   --pui-tabs-tab-color: color-mix(in srgb, var(--pui-color-text) 70%, transparent);
-}`;
+}`);
 
   protected readonly keyboardShortcuts: readonly PuiDocKeyboardShortcut[] = [
     { keys: ['Arrow Right', 'Arrow Left'], description: 'Move between tabs when orientation is horizontal.' },

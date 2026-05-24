@@ -43,8 +43,7 @@
             exampleId="toggle-overview"
             title="Segmented &amp; toolbar modes"
             description="Combine view switchers and formatting toolbars in one surface."
-            [htmlCode]="segmentedExample"
-            [hideTs]="true"
+            [tabs]="segmentedExampleTabs"
           >
             <div class="pui-toggle-preview-stack">
               <pui-toggle-group mode="segmented" shape="pill" variant="elevated" [(value)]="view" ariaLabel="View mode">
@@ -132,8 +131,7 @@
               exampleId="toggle-toolbar"
               title="Text editor toolbar"
               description="Multi-select toolbar for independent formatting actions."
-              [htmlCode]="toolbarExample"
-              [hideTs]="true"
+              [tabs]="toolbarExampleTabs"
             >
               <div class="pui-toggle-editor-panel">
                 <pui-toggle-group mode="toolbar" multiple [(value)]="filters" ariaLabel="Formatting">
@@ -148,8 +146,7 @@
               exampleId="toggle-view-switcher"
               title="View switcher"
               description="Segmented single-select for layout modes."
-              [htmlCode]="segmentedExample"
-              [hideTs]="true"
+              [tabs]="segmentedExampleTabs"
             >
               <pui-toggle-group mode="segmented" variant="outline" shape="rounded" [(value)]="view" ariaLabel="View">
                 <pui-toggle value="grid">Grid</pui-toggle>
@@ -209,8 +206,7 @@
             exampleId="toggle-theming"
             title="Theme tokens"
             description="Override semantic tokens on pui-toggle or pui-toggle-group hosts. Never hardcode colors or radii."
-            [scssCode]="themeCode"
-            [hideTs]="true"
+            [tabs]="themeTabs"
           >
             <pui-toggle-group mode="segmented" shape="pill" value="grid" ariaLabel="Themed preview">
               <pui-toggle value="grid">Grid</pui-toggle>
@@ -229,8 +225,7 @@
               exampleId="toggle-reactive"
               title="Reactive forms"
               description="Bind toggles and groups to FormControl."
-              [htmlCode]="reactiveExample"
-              [hideTs]="true"
+              [tabs]="reactiveExampleTabs"
             >
               <form [formGroup]="reactiveForm" class="pui-toggle-preview-stack">
                 <pui-toggle formControlName="bold">Bold</pui-toggle>
@@ -250,8 +245,7 @@
               exampleId="toggle-signal"
               title="Signal forms"
               description="Control pressed state from a signal."
-              [htmlCode]="signalExample"
-              [hideTs]="true"
+              [tabs]="signalExampleTabs"
             >
               <pui-toggle [pressed]="signalBold()" (pressedChange)="signalBold.set($event)">Bold</pui-toggle>
               <p class="pui-doc-meta">Signal: {{ signalBold() }}</p>

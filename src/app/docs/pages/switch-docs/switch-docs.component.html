@@ -29,8 +29,7 @@
             exampleId="switch-basic"
             title="Basic usage"
             description="Two-way bind checked state with optional label and description."
-            [htmlCode]="basicExample"
-            [hideTs]="true"
+            [tabs]="basicExampleTabs"
           >
             <pui-switch [(checked)]="notifications" label="Push notifications" description="Receive alerts on this device" />
           </pui-doc-example>
@@ -125,8 +124,7 @@
             exampleId="switch-theming"
             title="Theme tokens"
             description="Override track, thumb, and focus glow via CSS custom properties."
-            [scssCode]="themeCode"
-            [hideTs]="true"
+            [tabs]="themeTabs"
           >
             <pui-switch [checked]="true" label="Themed switch" />
           </pui-doc-example>
@@ -141,8 +139,7 @@
               exampleId="switch-reactive"
               title="Reactive forms"
               description="Bind switches to FormControl with formControlName."
-              [htmlCode]="reactiveExample"
-              [hideTs]="true"
+              [tabs]="reactiveExampleTabs"
             >
               <form [formGroup]="reactiveForm" class="pui-switch-preview-stack">
                 <pui-switch formControlName="notifications" label="Notifications" />
@@ -155,8 +152,7 @@
               exampleId="switch-signal"
               title="Signal forms"
               description="Control checked state from a signal."
-              [htmlCode]="signalExample"
-              [hideTs]="true"
+              [tabs]="signalExampleTabs"
             >
               <pui-switch [checked]="signalEnabled()" (checkedChange)="signalEnabled.set($event)" label="Enable feature" />
               <p class="pui-doc-meta">Signal: {{ signalEnabled() }}</p>

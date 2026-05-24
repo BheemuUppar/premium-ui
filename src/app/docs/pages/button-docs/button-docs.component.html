@@ -58,8 +58,7 @@
               exampleId="button-variants"
               title="Variants"
               description="Buttons come in different styles to communicate the hierarchy of actions."
-              [htmlCode]="variantExampleCode"
-              [hideTs]="true"
+              [tabs]="variantExampleTabs"
             >
               <div class="pui-doc-inline-preview">
                 @for (variant of variants; track variant) {
@@ -72,8 +71,7 @@
               exampleId="button-sizes"
               title="Sizes"
               description="Choose the button size that fits your context."
-              [htmlCode]="sizeExampleCode"
-              [hideTs]="true"
+              [tabs]="sizeExampleTabs"
             >
               <div class="pui-doc-inline-preview">
                 @for (size of sizes; track size) {
@@ -86,8 +84,7 @@
               exampleId="button-states"
               title="States"
               description="Buttons support default, active, disabled, and loading states."
-              [htmlCode]="stateExampleCode"
-              [hideTs]="true"
+              [tabs]="stateExampleTabs"
             >
               <div class="pui-doc-inline-preview">
                 <pui-button>Default</pui-button>
@@ -101,7 +98,6 @@
               exampleId="button-basic"
               title="Basic usage"
               description="Import the component and render a primary action."
-              [htmlCode]="htmlExample"
               [tabs]="basicExampleTabs"
             >
               <pui-button>Save changes</pui-button>
@@ -138,7 +134,6 @@
                 [exampleId]="example.id"
                 [title]="example.title"
                 [description]="example.description"
-                [htmlCode]="example.code"
                 [tabs]="exampleTabs(example)"
               >
                 @if (example.icon) {
@@ -189,8 +184,7 @@
             exampleId="button-theming"
             title="Theme tokens"
             description="Button styling is powered by semantic tokens for global or scoped overrides."
-            [scssCode]="themeCode"
-            [hideTs]="true"
+            [tabs]="themeTabs"
           >
             <pui-button>Preview themed button</pui-button>
           </pui-doc-example>

@@ -1,0 +1,75 @@
+:host {
+  --pui-toast-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --pui-toast-duration-enter: 320ms;
+  --pui-toast-duration-exit: 280ms;
+  --pui-toast-duration-stack: 240ms;
+
+  --pui-toast-gap: var(--pui-space-sm);
+  --pui-toast-padding-y: var(--pui-space-md);
+  --pui-toast-padding-x: calc(var(--pui-space-md) + var(--pui-space-xxs));
+  --pui-toast-radius: calc(var(--pui-radius-lg) + var(--pui-space-xxs));
+  --pui-toast-max-width: min(24rem, calc(100vw - var(--pui-space-xl) * 2));
+  --pui-toast-snackbar-max-width: min(28rem, calc(100vw - var(--pui-space-lg) * 2));
+  --pui-toast-compact-max-width: min(16rem, calc(100vw - var(--pui-space-xl) * 2));
+
+  --pui-toast-bg: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--pui-color-surface) 94%, var(--pui-surface-raised) 6%) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 88%, var(--pui-color-text) 2%) 100%
+  );
+  --pui-toast-border: color-mix(in srgb, var(--pui-color-border) 52%, transparent);
+  --pui-toast-shadow: 0 0 0 1px color-mix(in srgb, var(--pui-color-border) 24%, transparent),
+    0 8px 24px color-mix(in srgb, var(--pui-color-text) 10%, transparent),
+    0 24px 48px color-mix(in srgb, var(--pui-color-text) 8%, transparent);
+  --pui-toast-title-color: var(--pui-color-text);
+  --pui-toast-description-color: color-mix(in srgb, var(--pui-muted) 82%, var(--pui-color-text));
+  --pui-toast-icon-size: 1.125rem;
+  --pui-toast-close-size: 1.75rem;
+
+  --pui-toast-success-accent: var(--pui-color-success, #16a34a);
+  --pui-toast-error-accent: var(--pui-color-danger, #ef4444);
+  --pui-toast-warning-accent: var(--pui-color-warning, #f59e0b);
+  --pui-toast-info-accent: var(--pui-color-primary);
+  --pui-toast-loading-accent: var(--pui-color-primary);
+
+  --pui-toast-success-bg: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--pui-toast-success-accent) 8%, var(--pui-color-surface)) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 92%, var(--pui-color-text) 2%) 100%
+  );
+  --pui-toast-error-bg: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--pui-toast-error-accent) 8%, var(--pui-color-surface)) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 92%, var(--pui-color-text) 2%) 100%
+  );
+  --pui-toast-warning-bg: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--pui-toast-warning-accent) 10%, var(--pui-color-surface)) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 92%, var(--pui-color-text) 2%) 100%
+  );
+  --pui-toast-info-bg: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--pui-toast-info-accent) 8%, var(--pui-color-surface)) 0%,
+    color-mix(in srgb, var(--pui-color-surface) 92%, var(--pui-color-text) 2%) 100%
+  );
+}
+
+:host(.pui-toast--compact) {
+  --pui-toast-padding-y: var(--pui-space-xs);
+  --pui-toast-padding-x: var(--pui-space-sm);
+  --pui-toast-radius: var(--pui-radius-md);
+  --pui-toast-max-width: var(--pui-toast-compact-max-width);
+}
+
+:host(.pui-toast--snackbar) {
+  --pui-toast-padding-y: var(--pui-space-sm);
+  --pui-toast-padding-x: var(--pui-space-md);
+  --pui-toast-radius: var(--pui-radius-md);
+  --pui-toast-max-width: var(--pui-toast-snackbar-max-width);
+  --pui-toast-bg: color-mix(in srgb, var(--pui-color-surface) 92%, var(--pui-color-text) 4%);
+}
+
+:host(.pui-toast--rich) {
+  --pui-toast-padding-y: calc(var(--pui-space-md) + var(--pui-space-xxs));
+  --pui-toast-padding-x: calc(var(--pui-space-lg) - var(--pui-space-xxs));
+}

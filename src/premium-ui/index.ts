@@ -7,4 +7,5 @@ export * from './components/radio';
 export * from './components/switch';
 export * from './components/toggle';
 export * from './components/tabs';
+export * from './components/toast';
 export * from './types/common.types';

@@ -1,0 +1,11 @@
+.pui-toast-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pui-space-sm);
+}
+
+.pui-toast-position-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--pui-space-sm);
+}

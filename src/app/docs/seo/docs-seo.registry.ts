@@ -218,6 +218,25 @@ export const DOCS_COMPONENT_SEO: Readonly<Record<string, PuiDocsComponentSeo>> =
       { label: 'Button', route: ['/docs/components/button/overview'] },
     ],
   },
+  toast: {
+    slug: 'toast',
+    name: 'Toast',
+    titlePrefix: 'Angular Toast System',
+    keywords: 'angular toast, sonner angular, snackbar angular, toast service angular, premium ui toast',
+    tabs: tabs(
+      'Enterprise Angular toast infrastructure — stacked viewports, semantic variants, snackbar mode, and promise helpers.',
+      'Toast examples — success, error, snackbar, rich content, promise transitions, and viewport positions.',
+      'PuiToastService API — show, dismiss, update, promise, and configuration options.',
+      'Toast accessibility — live regions, keyboard dismiss, pause on hover, and reduced motion.',
+      'Toast theming — surfaces, shadows, semantic accents, and CSS variables.',
+      'Interactive toast playground — variant, position, snackbar, rich mode, and loading transitions.',
+      'Angular Toast System'
+    ),
+    relatedLinks: [
+      { label: 'Button', route: ['/docs/components/button/overview'] },
+      { label: 'Tabs', route: ['/docs/components/tabs/overview'] },
+    ],
+  },
 };
 
 export const DOCS_FOUNDATION_SEO: Readonly<Record<string, PuiDocsSeoTabMeta>> = {

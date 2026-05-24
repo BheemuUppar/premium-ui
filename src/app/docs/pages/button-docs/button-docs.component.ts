@@ -17,6 +17,7 @@ import {
   PuiDocRelatedLinksComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { getRelatedLinks } from '../../seo/docs-seo.service';
@@ -115,6 +116,32 @@ export class ButtonDocsComponent {
 <pui-button [disabled]="true">Disabled</pui-button>
 <pui-button [loading]="true">Loading</pui-button>`;
 
+  protected readonly variantExampleTabs = buildHtmlTsTabs(this.variantExampleCode, {
+    selector: 'app-button-variants',
+    componentClass: 'ButtonVariantsExampleComponent',
+    imports: [{ name: 'PuiButtonComponent', path: '@premium-ui/components/button' }],
+    templateUrl: './button-variants.component.html',
+  });
+
+  protected readonly sizeExampleTabs = buildHtmlTsTabs(this.sizeExampleCode, {
+    selector: 'app-button-sizes',
+    componentClass: 'ButtonSizesExampleComponent',
+    imports: [{ name: 'PuiButtonComponent', path: '@premium-ui/components/button' }],
+    templateUrl: './button-sizes.component.html',
+  });
+
+  protected readonly stateExampleTabs = buildHtmlTsTabs(this.stateExampleCode, {
+    selector: 'app-button-states',
+    componentClass: 'ButtonStatesExampleComponent',
+    imports: [{ name: 'PuiButtonComponent', path: '@premium-ui/components/button' }],
+    templateUrl: './button-states.component.html',
+    usesSignal: true,
+    members: [
+      'protected readonly disabled = signal(true);',
+      'protected readonly loading = signal(true);',
+    ],
+  });
+
   protected readonly examples: readonly PuiButtonExample[] = [
     {
       id: 'basic-usage',
@@ -194,11 +221,11 @@ export class ButtonDocsComponent {
     { keys: ['Space'], description: 'Activate the button when focused.' },
   ];
 
-  protected readonly themeCode = `:root {
+  protected readonly themeTabs = buildThemeTabs(`:root {
   --pui-color-primary: #4f46e5;
   --pui-color-primary-hover: #4338ca;
   --pui-radius-md: 0.5rem;
-}`;
+}`);
 
   protected readonly playgroundVariant = signal<PuiButtonVariant>('primary');
   protected readonly playgroundSize = signal<PuiButtonSize>('md');

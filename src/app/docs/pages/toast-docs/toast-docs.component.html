@@ -1,0 +1,304 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero" id="overview">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/toast/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/toast/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Toast</span>
+    </nav>
+    <h1>Angular Toast System</h1>
+    <p>
+      Non-blocking feedback for save confirmations, async uploads, undo actions, and system alerts.
+      Toasts are orchestrated through <code>PuiToastService</code>, rendered in stacked viewports,
+      and styled with semantic Lucide icons and subtle tinting — built for production SaaS apps.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Toast documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a
+        class="pui-tab"
+        [routerLink]="tab.route"
+        routerLinkActive="pui-tab--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section" id="basic-usage" aria-labelledby="overview-title">
+          <h2 id="overview-title">Overview</h2>
+          <p>
+            Inject <code>PuiToastService</code> anywhere in your app and call a semantic method.
+            Mount <code>pui-toast-viewport</code> once at the root — the service handles stacking,
+            timers, and accessibility for you.
+          </p>
+          <p>
+            Use string messages for quick feedback, or pass a <code>PuiToastInput</code> object when
+            you need titles, descriptions, custom icons, or action buttons in one call.
+          </p>
+
+          <pui-doc-example
+            exampleId="toast-basic"
+            title="Basic usage"
+            description="Trigger semantic feedback from a button click. The HTML tab is template-only; TypeScript shows imports and service injection."
+            [tabs]="basicExampleTabs"
+          >
+            <pui-button (pressed)="showSuccess()">Show success toast</pui-button>
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="toast-object-api"
+            title="Object payload"
+            description="Pass a structured object when you need title, description, action, duration, and position together."
+            [tabs]="objectApiExampleTabs"
+          >
+            <pui-button (pressed)="toast.success({
+              title: 'Saved',
+              description: 'Your changes were saved.',
+              actionLabel: 'Undo',
+              duration: 5000,
+              position: 'top-right'
+            })">Show object toast</pui-button>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" id="installation" aria-labelledby="installation-title">
+          <h2 id="installation-title">Installation</h2>
+          <p>
+            Add the viewport beside your router outlet. The service is provided in root — no module
+            imports required beyond the viewport component itself.
+          </p>
+          <pui-doc-example
+            exampleId="toast-viewport"
+            title="App shell"
+            description="Mount once at the application root. HTML is markup only; TypeScript shows the standalone imports."
+            [tabs]="viewportExampleTabs"
+          />
+        </section>
+
+        <section class="pui-doc-section" id="features" aria-labelledby="features-title">
+          <h2 id="features-title">When to use toasts</h2>
+          <ul class="pui-feature-list">
+            <li><strong>Confirmations</strong> — save, copy, delete with optional undo</li>
+            <li><strong>Async workflows</strong> — loading → success/error via stable ids or <code>promise()</code></li>
+            <li><strong>Low-attention feedback</strong> — compact and snackbar modes for transient messages</li>
+            <li><strong>Rich announcements</strong> — title + description + CTA for deployments and billing events</li>
+          </ul>
+        </section>
+
+        <pui-doc-related-links [links]="relatedLinks" />
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section" id="variants" aria-labelledby="variants-title">
+          <h2 id="variants-title">Variants &amp; icons</h2>
+          <p>
+            Each semantic variant maps to a Lucide-aligned outline icon: success → circle-check,
+            error → circle-alert, warning → triangle-alert, info → info, loading → loader-circle.
+            Override with <code>iconName</code> or hide icons with <code>icon: false</code>.
+          </p>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="toast-semantic"
+              title="Semantic feedback"
+              description="Success, error, warning, and info — each with default semantic icons and tinted surfaces."
+              [tabs]="semanticExampleTabs"
+            >
+              <div class="pui-toast-demo-row">
+                <pui-button (pressed)="showSuccess()">Success</pui-button>
+                <pui-button variant="danger" (pressed)="showError()">Error</pui-button>
+                <pui-button variant="outline" (pressed)="toast.warning('Check your input')">Warning</pui-button>
+                <pui-button variant="ghost" (pressed)="toast.info('New version available')">Info</pui-button>
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="toast-icons"
+              title="Icon customization"
+              description="Use semantic defaults, override with iconName, or disable icons entirely."
+              [tabs]="iconExampleTabs"
+            >
+              <div class="pui-toast-demo-row">
+                <pui-button variant="outline" (pressed)="showSuccess()">Default icon</pui-button>
+                <pui-button variant="outline" (pressed)="toast.info('Reminder set', { iconName: 'bell' })">Custom icon</pui-button>
+                <pui-button variant="ghost" (pressed)="toast.success('Copied', { icon: false })">Iconless</pui-button>
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="toast-snackbar"
+              title="Snackbar variant"
+              description="Compact horizontal layout with action — ideal for undo after delete. Defaults to bottom-center."
+              [tabs]="snackbarExampleTabs"
+            >
+              <pui-button variant="secondary" (pressed)="showSnackbar()">Show snackbar</pui-button>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="toast-rich"
+              title="Rich toast"
+              description="Title, description, icon, and primary action for multi-line SaaS workflows."
+              [tabs]="richExampleTabs"
+            >
+              <pui-button (pressed)="showRich()">Show rich toast</pui-button>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="toast-loading"
+              title="Loading → success"
+              description="Create a loading toast, then update it by id when the operation completes."
+              [tabs]="loadingExampleTabs"
+            >
+              <pui-button variant="outline" (pressed)="runLoadingDemo()">Run loading demo</pui-button>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="toast-promise"
+              title="Promise helper"
+              description="Wrap async work — the service shows loading, then transitions to success or error."
+              [tabs]="promiseExampleTabs"
+            >
+              <pui-button variant="outline" (pressed)="runPromiseDemo()">Run upload demo</pui-button>
+            </pui-doc-example>
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="positions" aria-labelledby="positions-title">
+          <h2 id="positions-title">Positions</h2>
+          <p>
+            Each toast targets one of six viewport anchors. Snackbars default to bottom-center;
+            all other variants default to bottom-right unless you pass <code>position</code>.
+          </p>
+          <div class="pui-toast-position-grid">
+            @for (position of positions; track position) {
+              <pui-button variant="outline" size="sm" (pressed)="showPosition(position)">
+                {{ position }}
+              </pui-button>
+            }
+          </div>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section" id="api" aria-labelledby="api-title">
+          <h2 id="api-title">Service API</h2>
+          <p>
+            All methods accept <code>PuiToastMessage</code> — either a string or a
+            <code>PuiToastInput</code> object. Options merge with variant defaults.
+          </p>
+          <pui-doc-api-table title="Message types" [rows]="inputRows" />
+          <pui-doc-api-table title="Methods" [rows]="methodRows" />
+          <pui-doc-api-table title="Options" [rows]="optionRows" />
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section" id="accessibility" aria-labelledby="a11y-title">
+          <h2 id="a11y-title">Accessibility</h2>
+          <p>
+            Toasts use live regions so screen readers announce feedback without stealing focus.
+            Action buttons remain keyboard reachable; dismiss controls expose an accessible label.
+          </p>
+          <pui-doc-a11y-list [items]="a11yItems" />
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
+          <h2 id="theming-title">Theming</h2>
+          <p>
+            Toast surfaces use semantic CSS variables for accent, background tint, and border color.
+            Override tokens globally or per theme — avoid hard-coded colors in component SCSS.
+          </p>
+          <pui-doc-example
+            exampleId="toast-theme"
+            title="CSS variables"
+            description="Token-driven surfaces for light and dark themes with subtle semantic tinting."
+            [tabs]="themeTabs"
+          />
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section" id="playground" aria-labelledby="playground-title">
+          <h2 id="playground-title">Playground</h2>
+          <p>
+            Adjust variant, position, duration, icons, and actions — then copy the generated HTML
+            and TypeScript snippets into your project.
+          </p>
+          <div class="pui-playground">
+            <div class="pui-playground__controls">
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Variant</span>
+                <pui-select
+                  [options]="variantOptions"
+                  [value]="playgroundVariant()"
+                  (valueChange)="setPlaygroundVariant($event)"
+                  ariaLabel="Playground variant"
+                />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Position</span>
+                <pui-select
+                  [options]="positionOptions"
+                  [value]="playgroundPosition()"
+                  (valueChange)="setPlaygroundPosition($event)"
+                  ariaLabel="Playground position"
+                />
+              </div>
+              <div class="pui-playground-field">
+                <span class="pui-playground-field__label">Duration (ms)</span>
+                <pui-select
+                  [options]="durationOptions"
+                  [value]="playgroundDuration()"
+                  (valueChange)="setPlaygroundDuration($event)"
+                  ariaLabel="Playground duration"
+                />
+              </div>
+              <pui-checkbox [checked]="playgroundSnackbar()" (checkedChange)="playgroundSnackbar.set($event)">
+                Snackbar mode
+              </pui-checkbox>
+              <pui-checkbox [checked]="playgroundRich()" (checkedChange)="playgroundRich.set($event)">
+                Rich mode
+              </pui-checkbox>
+              <pui-checkbox [checked]="playgroundAction()" (checkedChange)="playgroundAction.set($event)">
+                Action button
+              </pui-checkbox>
+              <pui-checkbox [checked]="playgroundShowIcon()" (checkedChange)="playgroundShowIcon.set($event)">
+                Show icon
+              </pui-checkbox>
+              <pui-checkbox
+                [checked]="playgroundCustomIcon()"
+                [disabled]="!playgroundShowIcon()"
+                (checkedChange)="playgroundCustomIcon.set($event)"
+              >
+                Custom bell icon
+              </pui-checkbox>
+              <pui-checkbox [checked]="playgroundLoading()" (checkedChange)="playgroundLoading.set($event)">
+                Loading transition
+              </pui-checkbox>
+            </div>
+            <div class="pui-playground__preview">
+              <p class="pui-playground__preview-label">Trigger</p>
+              <pui-button (pressed)="triggerPlaygroundToast()">Show toast</pui-button>
+            </div>
+          </div>
+
+          <pui-doc-example
+            exampleId="toast-playground-code"
+            title="Generated snippet"
+            description="Copy-paste-ready HTML template and TypeScript component with correct imports."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          />
+        </section>
+      }
+    }
+  </div>
+</article>

@@ -60,8 +60,7 @@
               exampleId="select-sizes"
               title="Sizes"
               description="Choose sm, md, or lg to match surrounding form controls."
-              [htmlCode]="sizesExampleCode"
-              [hideTs]="true"
+              [tabs]="sizesExampleTabs"
             >
               <div class="pui-doc-inline-preview" style="flex-direction: column; align-items: stretch; gap: var(--pui-space-md);">
                 @for (size of sizes; track size) {
@@ -100,8 +99,7 @@
                 [exampleId]="'select-example-' + i"
                 [title]="example.title"
                 [description]="example.description"
-                [htmlCode]="example.code"
-                [hideTs]="true"
+                [tabs]="example.tabs"
               >
                 <pui-select
                   class="pui-select-preview"
@@ -132,8 +130,7 @@
               exampleId="select-declarative"
               title="Declarative API"
               description="Project options as pui-option children instead of an options array."
-              [htmlCode]="declarativeExample"
-              [hideTs]="true"
+              [tabs]="declarativeExampleTabs"
             >
               <pui-select
                 class="pui-select-preview"
@@ -152,8 +149,7 @@
               exampleId="select-multiselect"
               title="Multiselect"
               description="Select multiple values with chip display."
-              [htmlCode]="multiExample"
-              [hideTs]="true"
+              [tabs]="multiExampleTabs"
             >
               <pui-select
                 class="pui-select-preview"
@@ -173,8 +169,7 @@
               exampleId="select-ngmodel"
               title="ngModel"
               description="Two-way bind with template-driven forms."
-              [htmlCode]="ngModelExample"
-              [hideTs]="true"
+              [tabs]="ngModelExampleTabs"
             >
               <pui-select
                 class="pui-select-preview"
@@ -189,8 +184,7 @@
               exampleId="select-reactive-form"
               title="Reactive forms"
               description="Integrate with FormControl via formControlName."
-              [htmlCode]="reactiveFormExample"
-              [hideTs]="true"
+              [tabs]="reactiveFormExampleTabs"
             >
               <form [formGroup]="reactiveForm">
                 <pui-select
@@ -242,8 +236,7 @@
               exampleId="select-theming-global"
               title="Global tokens"
               description="Override semantic select tokens at the theme layer."
-              [scssCode]="themeCode"
-              [hideTs]="true"
+              [tabs]="themeTabs"
             >
               <pui-select
                 class="pui-select-preview"
@@ -258,8 +251,7 @@
               exampleId="select-theming-override"
               title="Component override"
               description="Scope token overrides to a single select instance."
-              [scssCode]="customThemeCode"
-              [hideTs]="true"
+              [tabs]="customThemeTabs"
             />
           </div>
         </section>
@@ -303,8 +295,7 @@
                 exampleId="select-performance-code"
                 title="Worker search setup"
                 description="Combine virtualScroll and useWorker for large datasets."
-                [htmlCode]="performanceExample"
-                [hideTs]="true"
+                [tabs]="performanceExampleTabs"
               />
 
               <pui-doc-example

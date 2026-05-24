@@ -21,7 +21,9 @@ import {
   PuiDocA11yListComponent,
   PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
+  buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
@@ -142,6 +144,65 @@ export class RadioDocsComponent {
   <pui-radio value="pro">Pro</pui-radio>
 </pui-radio-group>`;
 
+  protected readonly basicExampleTabs = buildHtmlTsTabs(this.basicExample, {
+    selector: 'app-radio-basic',
+    componentClass: 'RadioBasicExampleComponent',
+    imports: [
+      { name: 'PuiRadioGroupComponent', path: '@premium-ui/components/radio' },
+      { name: 'PuiRadioComponent', path: '@premium-ui/components/radio' },
+    ],
+    templateUrl: './radio-basic.component.html',
+    usesSignal: true,
+    members: ["protected readonly theme = signal('system');"],
+  });
+
+  protected readonly cardExampleTabs = buildHtmlTsTabs(this.cardExample, {
+    selector: 'app-radio-card',
+    componentClass: 'RadioCardExampleComponent',
+    imports: [
+      { name: 'PuiRadioGroupComponent', path: '@premium-ui/components/radio' },
+      { name: 'PuiRadioComponent', path: '@premium-ui/components/radio' },
+      { name: 'PuiRadioLabelComponent', path: '@premium-ui/components/radio' },
+      { name: 'PuiRadioDescriptionComponent', path: '@premium-ui/components/radio' },
+    ],
+    templateUrl: './radio-card.component.html',
+    usesSignal: true,
+    members: ["protected readonly plan = signal('pro');"],
+  });
+
+  protected readonly reactiveExampleTabs = buildHtmlTsTabs(this.reactiveExample, {
+    selector: 'app-radio-reactive',
+    componentClass: 'RadioReactiveExampleComponent',
+    imports: [
+      { name: 'PuiRadioGroupComponent', path: '@premium-ui/components/radio' },
+      { name: 'PuiRadioComponent', path: '@premium-ui/components/radio' },
+      { name: 'ReactiveFormsModule', path: '@angular/forms' },
+    ],
+    injects: [{ name: 'FormBuilder', path: '@angular/forms' }],
+    templateUrl: './radio-reactive.component.html',
+    members: [
+      'private readonly fb = inject(FormBuilder);',
+      "protected readonly form = this.fb.group({ plan: ['pro'] });",
+    ],
+  });
+
+  protected readonly signalExampleTabs = buildHtmlTsTabs(this.signalExample, {
+    selector: 'app-radio-signal',
+    componentClass: 'RadioSignalExampleComponent',
+    imports: [
+      { name: 'PuiRadioGroupComponent', path: '@premium-ui/components/radio' },
+      { name: 'PuiRadioComponent', path: '@premium-ui/components/radio' },
+    ],
+    templateUrl: './radio-signal.component.html',
+    usesSignal: true,
+    members: ["protected readonly plan = signal('pro');"],
+  });
+
+  protected readonly themeTabs = buildThemeTabs(`:host {
+  --pui-radio-border: var(--pui-color-border);
+  --pui-radio-glow: color-mix(in srgb, var(--pui-color-primary) 30%, transparent);
+}`);
+
   protected readonly radioApiRows: readonly PuiApiRow[] = [
     { name: 'variant', type: 'PuiRadioVariant', defaultValue: 'default', description: 'Visual style variant.' },
     { name: 'size', type: 'PuiRadioSize', defaultValue: 'md', description: 'Control size.' },
@@ -170,11 +231,6 @@ export class RadioDocsComponent {
     { name: 'checkedChange', type: 'boolean', defaultValue: '-', description: 'Emits when standalone radio checked state changes.' },
     { name: 'valueChange', type: 'PuiRadioValue', defaultValue: '-', description: 'Emits selected value from radio or group.' },
   ];
-
-  protected readonly themeCode = `:host {
-  --pui-radio-border: var(--pui-color-border);
-  --pui-radio-glow: color-mix(in srgb, var(--pui-color-primary) 30%, transparent);
-}`;
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
     { title: 'Radio group', code: 'role="radiogroup"', description: 'Group container exposes single-select semantics and optional aria-label.' },

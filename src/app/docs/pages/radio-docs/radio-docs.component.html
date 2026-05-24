@@ -32,8 +32,7 @@
             exampleId="radio-basic"
             title="Basic usage"
             description="Single-select group with two-way value binding."
-            [htmlCode]="basicExample"
-            [hideTs]="true"
+            [tabs]="basicExampleTabs"
           >
             <pui-radio-group [(value)]="theme" ariaLabel="Theme preference">
               <pui-radio value="light">Light</pui-radio>
@@ -130,8 +129,7 @@
               exampleId="radio-pricing"
               title="Pricing plan"
               description="Card layout for plan comparison with descriptions."
-              [htmlCode]="cardExample"
-              [hideTs]="true"
+              [tabs]="cardExampleTabs"
             >
               <pui-radio-group [(value)]="plan" class="pui-radio-card-grid" ariaLabel="Pricing plan">
                 <pui-radio variant="card" value="free">
@@ -192,8 +190,7 @@
             exampleId="radio-theming"
             title="Theme tokens"
             description="Customize via CSS custom properties on host or group."
-            [scssCode]="themeCode"
-            [hideTs]="true"
+            [tabs]="themeTabs"
           >
             <pui-radio-group value="light" ariaLabel="Themed preview">
               <pui-radio value="light">Light</pui-radio>
@@ -211,8 +208,7 @@
               exampleId="radio-reactive"
               title="Reactive forms"
               description="Bind a radio group to FormControl with formControlName."
-              [htmlCode]="reactiveExample"
-              [hideTs]="true"
+              [tabs]="reactiveExampleTabs"
             >
               <form [formGroup]="reactiveForm">
                 <pui-radio-group formControlName="plan" ariaLabel="Subscription plan">
@@ -228,8 +224,7 @@
               exampleId="radio-signal"
               title="Signal forms"
               description="Drive selection from a signal with valueChange."
-              [htmlCode]="signalExample"
-              [hideTs]="true"
+              [tabs]="signalExampleTabs"
             >
               <pui-radio-group [value]="signalPlan()" (valueChange)="onSignalPlanChange($event)" ariaLabel="Plan">
                 <pui-radio value="starter">Starter</pui-radio>

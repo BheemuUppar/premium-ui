@@ -1,0 +1,39 @@
+<div class="pui-toast__surface">
+  @if (toast().showIcon && toast().iconName) {
+    <pui-toast-icon
+      class="pui-toast__icon"
+      [name]="toast().iconName!"
+      [spinning]="variant() === 'loading'"
+    />
+  }
+
+  <div class="pui-toast__content">
+    <p class="pui-toast__title">{{ toast().title }}</p>
+    @if (toast().description) {
+      <p class="pui-toast__description">{{ toast().description }}</p>
+    }
+  </div>
+
+  @if (toast().action) {
+    <button
+      type="button"
+      class="pui-toast__action"
+      [attr.aria-label]="toast().action!.ariaLabel ?? toast().action!.label"
+      (click)="handleAction($event)"
+      (keydown)="handleActionKeydown($event)"
+    >
+      {{ toast().action!.label }}
+    </button>
+  }
+
+  @if (toast().dismissible) {
+    <button
+      type="button"
+      class="pui-toast__close"
+      aria-label="Dismiss notification"
+      (click)="handleDismiss($event)"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+  }
+</div>

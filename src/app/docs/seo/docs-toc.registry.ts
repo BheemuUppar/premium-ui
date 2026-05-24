@@ -46,6 +46,23 @@ export const DOC_PAGE_TOC: Readonly<Record<string, TocMap>> = {
     { id: 'overview', label: 'Overview' },
     { id: 'basic-usage', label: 'Basic usage' },
   ]),
+  tabs: {
+    overview: [
+      { id: 'overview', label: 'Overview' },
+      { id: 'basic-usage', label: 'Basic usage' },
+    ],
+    variants: [{ id: 'variants', label: 'Variants' }],
+    examples: [{ id: 'examples', label: 'Examples' }],
+    api: [{ id: 'api', label: 'API reference' }],
+    accessibility: [{ id: 'accessibility', label: 'Accessibility' }],
+    theming: [{ id: 'theming', label: 'Theming' }],
+    keyboard: [{ id: 'keyboard', label: 'Keyboard' }],
+    playground: [{ id: 'playground', label: 'Playground' }],
+  },
+  toast: standardTabs([
+    { id: 'overview', label: 'Overview' },
+    { id: 'variants', label: 'Examples' },
+  ]),
 };
 
 export function getDocPageToc(slug: string, tab: string): readonly PuiDocsTocItem[] {

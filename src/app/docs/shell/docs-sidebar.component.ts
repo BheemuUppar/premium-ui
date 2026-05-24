@@ -51,7 +51,7 @@ export class DocsSidebarComponent {
       label: 'Feedback',
       items: [
         { label: 'Alert', route: ['/docs/components/alert'] },
-        { label: 'Toast', route: ['/docs/components/toast'] },
+        { label: 'Toast', route: ['/docs/components/toast/overview'], badge: 'Ready' },
         { label: 'Progress', route: ['/docs/components/progress'] }
       ]
     },

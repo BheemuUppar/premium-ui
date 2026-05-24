@@ -27,7 +27,9 @@ import {
   PuiDocA11yListComponent,
   PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
+  buildHtmlTsTabs,
   buildPlaygroundTsExample,
+  buildThemeTabs,
   toSelectOptions,
 } from '../../shared';
 import { useDocsPageSeo } from '../../seo/use-docs-page-seo';
@@ -150,6 +152,65 @@ export class ToggleDocsComponent {
   (pressedChange)="bold.set($event)"
 >Bold</pui-toggle>`;
 
+  protected readonly segmentedExampleTabs = buildHtmlTsTabs(this.segmentedExample, {
+    selector: 'app-toggle-segmented',
+    componentClass: 'ToggleSegmentedExampleComponent',
+    imports: [
+      { name: 'PuiToggleGroupComponent', path: '@premium-ui/components/toggle' },
+      { name: 'PuiToggleComponent', path: '@premium-ui/components/toggle' },
+    ],
+    templateUrl: './toggle-segmented.component.html',
+    usesSignal: true,
+    members: ["protected readonly view = signal('grid');"],
+  });
+
+  protected readonly toolbarExampleTabs = buildHtmlTsTabs(this.toolbarExample, {
+    selector: 'app-toggle-toolbar',
+    componentClass: 'ToggleToolbarExampleComponent',
+    imports: [
+      { name: 'PuiToggleGroupComponent', path: '@premium-ui/components/toggle' },
+      { name: 'PuiToggleComponent', path: '@premium-ui/components/toggle' },
+    ],
+    templateUrl: './toggle-toolbar.component.html',
+    usesSignal: true,
+    members: ["protected readonly formatting = signal<string[]>([]);"],
+  });
+
+  protected readonly reactiveExampleTabs = buildHtmlTsTabs(this.reactiveExample, {
+    selector: 'app-toggle-reactive',
+    componentClass: 'ToggleReactiveExampleComponent',
+    imports: [
+      { name: 'PuiToggleComponent', path: '@premium-ui/components/toggle' },
+      { name: 'PuiToggleGroupComponent', path: '@premium-ui/components/toggle' },
+      { name: 'ReactiveFormsModule', path: '@angular/forms' },
+    ],
+    injects: [{ name: 'FormBuilder', path: '@angular/forms' }],
+    templateUrl: './toggle-reactive.component.html',
+    members: [
+      'private readonly fb = inject(FormBuilder);',
+      'protected readonly form = this.fb.group({',
+      '  bold: [false],',
+      "  view: ['grid'],",
+      "  filters: [['design']],",
+      '});',
+    ],
+  });
+
+  protected readonly signalExampleTabs = buildHtmlTsTabs(this.signalExample, {
+    selector: 'app-toggle-signal',
+    componentClass: 'ToggleSignalExampleComponent',
+    imports: [{ name: 'PuiToggleComponent', path: '@premium-ui/components/toggle' }],
+    templateUrl: './toggle-signal.component.html',
+    usesSignal: true,
+    members: ['protected readonly bold = signal(false);'],
+  });
+
+  protected readonly themeTabs = buildThemeTabs(`:host {
+  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-primary) 14%, var(--pui-color-surface));
+  --pui-toggle-indicator-shadow: var(--pui-shadow-md);
+  --pui-toggle-group-bg: color-mix(in srgb, var(--pui-color-text) 4%, var(--pui-color-surface));
+}`);
+
   protected readonly toggleApiRows: readonly PuiApiRow[] = [
     { name: 'variant', type: 'PuiToggleVariant', defaultValue: 'default', description: 'Visual surface: default, subtle, soft, outline, ghost, elevated, glass.' },
     { name: 'shape', type: 'PuiToggleShape', defaultValue: 'rounded', description: 'Corner shape: square, rounded, pill.' },
@@ -185,12 +246,6 @@ export class ToggleDocsComponent {
     { name: 'valueChange', type: 'PuiToggleGroupSelection', defaultValue: '-', description: 'Emits when selection changes.' },
     { name: 'selectionChange', type: 'PuiToggleGroupSelection', defaultValue: '-', description: 'Emits current selection after each change.' },
   ];
-
-  protected readonly themeCode = `:host {
-  --pui-toggle-bg-pressed: color-mix(in srgb, var(--pui-color-primary) 14%, var(--pui-color-surface));
-  --pui-toggle-indicator-shadow: var(--pui-shadow-md);
-  --pui-toggle-group-bg: color-mix(in srgb, var(--pui-color-text) 4%, var(--pui-color-surface));
-}`;
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
     { title: 'Toggle button', code: 'role="button"', description: 'Each toggle exposes aria-pressed for its on/off state.' },
