@@ -5,6 +5,8 @@ body {
   font-size: var(--pui-font-size-body);
   line-height: var(--pui-line-height-body);
   letter-spacing: var(--pui-letter-spacing-normal);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

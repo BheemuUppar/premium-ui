@@ -7,7 +7,7 @@
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
-  --pui-font-family-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, 'Cascadia Code', Consolas, monospace;
+  --pui-font-family-mono: 'JetBrains Mono', 'Geist Mono', 'Fira Code', ui-monospace, 'Cascadia Code', Consolas, monospace;
 
   /* Semantic scale */
   --pui-font-size-display: 3.5rem;
@@ -35,12 +35,14 @@
 
   --pui-font-weight-regular: 400;
   --pui-font-weight-medium: 500;
+  --pui-font-weight-ui: 550;
   --pui-font-weight-semibold: 600;
   --pui-font-weight-bold: 700;
 
   --pui-line-height-tight: 1.15;
   --pui-line-height-normal: var(--pui-line-height-body);
   --pui-line-height-relaxed: 1.75;
+  --pui-line-height-code: 1.65;
   --pui-letter-spacing-normal: 0;
   --pui-letter-spacing-tight: -0.02em;
   --pui-letter-spacing-wide: 0.04em;

@@ -36,20 +36,24 @@
 }
 
 :host(.pui-button--sm) {
-  --pui-button-height: 2rem;
-  --pui-button-padding: 0 var(--pui-space-sm);
+  --pui-button-min-height: 2rem;
+  --pui-button-padding-y: var(--pui-space-1);
+  --pui-button-padding-x: var(--pui-space-3);
+  --pui-button-padding: var(--pui-button-padding-y) var(--pui-button-padding-x);
   --pui-button-font-size: var(--pui-font-size-xs);
 }
 
 :host(.pui-button--lg) {
-  --pui-button-height: 3rem;
-  --pui-button-padding: 0 var(--pui-space-lg);
+  --pui-button-min-height: 3rem;
+  --pui-button-padding-y: 0.625rem;
+  --pui-button-padding-x: var(--pui-space-5);
+  --pui-button-padding: var(--pui-button-padding-y) var(--pui-button-padding-x);
   --pui-button-font-size: var(--pui-font-size-md);
 }
 
 .pui-button__control {
-  min-width: var(--pui-button-height);
-  min-height: var(--pui-button-height);
+  min-width: var(--pui-button-min-height);
+  min-height: var(--pui-button-min-height);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -63,8 +67,8 @@
   cursor: pointer;
   font-family: var(--pui-font-family);
   font-size: var(--pui-button-font-size);
-  font-weight: var(--pui-font-weight-semibold);
-  line-height: 1;
+  font-weight: var(--pui-font-weight-medium);
+  line-height: 1.2;
   letter-spacing: var(--pui-letter-spacing-normal);
   transition:
     background-color var(--pui-duration-normal) var(--pui-easing-standard),

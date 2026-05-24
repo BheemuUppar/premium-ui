@@ -27,25 +27,33 @@
       @case ('overview') {
         <section class="pui-doc-section">
           <h2>Composable architecture</h2>
-          <pui-card hoverable class="pui-card-preview">
-            <pui-card-header split>
-              <div>
-                <pui-card-title>Monthly revenue</pui-card-title>
-                <pui-card-subtitle>Updated just now</pui-card-subtitle>
-              </div>
-              <pui-card-badge variant="success" pill>+18%</pui-card-badge>
-            </pui-card-header>
-            <pui-card-content>
-              <p class="pui-card-metric">$128,430</p>
-              Premium cards compose from small primitives for scalable SaaS UI.
-            </pui-card-content>
-            <pui-card-footer>
-              <span class="pui-card-meta">Analytics</span>
-              <pui-card-actions>
-                <pui-button size="sm" variant="ghost">Open</pui-button>
-              </pui-card-actions>
-            </pui-card-footer>
-          </pui-card>
+          <pui-doc-example
+            exampleId="card-overview"
+            title="Revenue card"
+            description="Compose cards from small primitives for scalable SaaS UI."
+            [htmlCode]="htmlExample"
+            [hideTs]="true"
+          >
+            <pui-card hoverable class="pui-card-preview">
+              <pui-card-header split>
+                <div>
+                  <pui-card-title>Monthly revenue</pui-card-title>
+                  <pui-card-subtitle>Updated just now</pui-card-subtitle>
+                </div>
+                <pui-card-badge variant="success" pill>+18%</pui-card-badge>
+              </pui-card-header>
+              <pui-card-content>
+                <p class="pui-card-metric">$128,430</p>
+                Premium cards compose from small primitives for scalable SaaS UI.
+              </pui-card-content>
+              <pui-card-footer>
+                <span class="pui-card-meta">Analytics</span>
+                <pui-card-actions>
+                  <pui-button size="sm" variant="ghost">Open</pui-button>
+                </pui-card-actions>
+              </pui-card-footer>
+            </pui-card>
+          </pui-doc-example>
         </section>
 
         <section class="pui-doc-section">
@@ -56,91 +64,102 @@
             <li><code>pui-card-image</code>, <code>pui-card-badge</code></li>
           </ul>
         </section>
-
-        <section class="pui-doc-section">
-          <h2>Code example</h2>
-          <pui-doc-code-block [code]="htmlExample" language="html" />
-        </section>
       }
 
       @case ('examples') {
         <section class="pui-doc-section">
-          <h2>SaaS dashboard</h2>
-          <div class="pui-card-grid">
-            <pui-card variant="elevated" hoverable>
-              <pui-card-subtitle>MRR</pui-card-subtitle>
-              <p class="pui-card-metric">$84,320</p>
-              <pui-card-badge variant="success" pill>+12%</pui-card-badge>
-            </pui-card>
-            <pui-card variant="elevated" hoverable>
-              <pui-card-subtitle>Active users</pui-card-subtitle>
-              <p class="pui-card-metric">12,480</p>
-              <pui-card-badge variant="primary" pill>Live</pui-card-badge>
-            </pui-card>
-          </div>
-        </section>
+          <h2>Examples</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="card-dashboard"
+              title="SaaS dashboard"
+              description="Metric cards with badges for KPI summaries."
+            >
+              <div class="pui-card-grid">
+                <pui-card variant="elevated" hoverable>
+                  <pui-card-subtitle>MRR</pui-card-subtitle>
+                  <p class="pui-card-metric">$84,320</p>
+                  <pui-card-badge variant="success" pill>+12%</pui-card-badge>
+                </pui-card>
+                <pui-card variant="elevated" hoverable>
+                  <pui-card-subtitle>Active users</pui-card-subtitle>
+                  <p class="pui-card-metric">12,480</p>
+                  <pui-card-badge variant="primary" pill>Live</pui-card-badge>
+                </pui-card>
+              </div>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Pricing</h2>
-          <div class="pui-card-grid">
-            <pui-card variant="gradient" highlighted hoverable class="pui-card-preview">
-              <pui-card-header split>
-                <pui-card-title>Pro</pui-card-title>
-                <pui-card-badge variant="primary" pill>Popular</pui-card-badge>
-              </pui-card-header>
-              <pui-card-content>
-                <p class="pui-card-metric">$49</p>
-                <p class="pui-card-meta">per month</p>
-              </pui-card-content>
-              <pui-card-footer>
-                <pui-button size="sm">Choose plan</pui-button>
-              </pui-card-footer>
-            </pui-card>
-          </div>
-          <pui-doc-code-block [code]="pricingExample" language="html" />
-        </section>
+            <pui-doc-example
+              exampleId="card-pricing"
+              title="Pricing"
+              description="Highlighted gradient card for featured plans."
+              [htmlCode]="pricingExample"
+              [hideTs]="true"
+            >
+              <pui-card variant="gradient" highlighted hoverable class="pui-card-preview">
+                <pui-card-header split>
+                  <pui-card-title>Pro</pui-card-title>
+                  <pui-card-badge variant="primary" pill>Popular</pui-card-badge>
+                </pui-card-header>
+                <pui-card-content>
+                  <p class="pui-card-metric">$49</p>
+                  <p class="pui-card-meta">per month</p>
+                </pui-card-content>
+                <pui-card-footer>
+                  <pui-button size="sm">Choose plan</pui-button>
+                </pui-card-footer>
+              </pui-card>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Ecommerce product</h2>
-          <pui-card hoverable imageZoom class="pui-card-preview pui-card-preview--narrow">
-            <pui-card-image [src]="productImage" alt="Premium watch" zoomOnHover aspect="square" />
-            <pui-card-header split>
-              <pui-card-title>Minimal Watch</pui-card-title>
-              <pui-card-badge variant="primary" pill>Sale</pui-card-badge>
-            </pui-card-header>
-            <pui-card-footer>
-              <pui-button size="sm">Add to cart</pui-button>
-            </pui-card-footer>
-          </pui-card>
-          <pui-doc-code-block [code]="productExample" language="html" />
+            <pui-doc-example
+              exampleId="card-product"
+              title="Ecommerce product"
+              description="Media card with zoom-on-hover image and footer actions."
+              [htmlCode]="productExample"
+              [hideTs]="true"
+            >
+              <pui-card hoverable imageZoom class="pui-card-preview pui-card-preview--narrow">
+                <pui-card-image [src]="productImage" alt="Premium watch" zoomOnHover aspect="square" />
+                <pui-card-header split>
+                  <pui-card-title>Minimal Watch</pui-card-title>
+                  <pui-card-badge variant="primary" pill>Sale</pui-card-badge>
+                </pui-card-header>
+                <pui-card-footer>
+                  <pui-button size="sm">Add to cart</pui-button>
+                </pui-card-footer>
+              </pui-card>
+            </pui-doc-example>
+          </div>
         </section>
       }
 
       @case ('layouts') {
         <section class="pui-doc-section">
-          <h2>Horizontal layout</h2>
-          <pui-card layout="horizontal" hoverable class="pui-card-preview pui-card-preview--wide">
-            <pui-card-image [src]="productImage" alt="Workspace" aspect="square" position="left" />
-            <div>
-              <pui-card-title>Horizontal card</pui-card-title>
-              <pui-card-content>Media beside content for list rows and editorial layouts.</pui-card-content>
-            </div>
-          </pui-card>
-        </section>
+          <h2>Layouts</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example exampleId="card-horizontal" title="Horizontal layout" description="Media beside content for list rows and editorial layouts.">
+              <pui-card layout="horizontal" hoverable class="pui-card-preview pui-card-preview--wide">
+                <pui-card-image [src]="productImage" alt="Workspace" aspect="square" position="left" />
+                <div>
+                  <pui-card-title>Horizontal card</pui-card-title>
+                  <pui-card-content>Media beside content for list rows and editorial layouts.</pui-card-content>
+                </div>
+              </pui-card>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Glass premium</h2>
-          <div class="pui-card-glass-demo">
-            <pui-card variant="glass" hoverable class="pui-card-preview">
-              <pui-card-title>Glass surface</pui-card-title>
-              <pui-card-content>Subtle blur and layered depth for hero sections.</pui-card-content>
-            </pui-card>
+            <pui-doc-example exampleId="card-glass" title="Glass premium" description="Subtle blur and layered depth for hero sections.">
+              <div class="pui-card-glass-demo">
+                <pui-card variant="glass" hoverable class="pui-card-preview">
+                  <pui-card-title>Glass surface</pui-card-title>
+                  <pui-card-content>Subtle blur and layered depth for hero sections.</pui-card-content>
+                </pui-card>
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example exampleId="card-loading" title="Loading skeleton" description="Placeholder state while async content resolves.">
+              <pui-card loading class="pui-card-preview"></pui-card>
+            </pui-doc-example>
           </div>
-        </section>
-
-        <section class="pui-doc-section">
-          <h2>Loading skeleton</h2>
-          <pui-card loading class="pui-card-preview"></pui-card>
         </section>
       }
 
@@ -168,8 +187,13 @@
         <section class="pui-doc-section">
           <p class="pui-eyebrow">Theming</p>
           <h2>CSS variables</h2>
-          <div class="pui-doc-flow pui-doc-flow--lg">
-            <pui-doc-code-block [code]="themeCode" language="scss" filename="card.theme.scss" />
+          <pui-doc-example
+            exampleId="card-theming"
+            title="Theme tokens"
+            description="Override card surface, border, shadow, and radius via CSS custom properties."
+            [scssCode]="themeCode"
+            [hideTs]="true"
+          >
             <div class="pui-card-grid">
               @for (variant of variants; track variant) {
                 <pui-card [variant]="variant" hoverable>
@@ -178,7 +202,7 @@
                 </pui-card>
               }
             </div>
-          </div>
+          </pui-doc-example>
         </section>
       }
 
@@ -212,8 +236,27 @@
                 <pui-card-content>Adjust controls to explore variants.</pui-card-content>
               </pui-card>
             </div>
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="card-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-card
+              class="pui-card-preview"
+              [variant]="playgroundVariant()"
+              [size]="playgroundSize()"
+              [hoverable]="playgroundHoverable()"
+              [highlighted]="playgroundHighlighted()"
+              [loading]="playgroundLoading()"
+            >
+              <pui-card-title>Preview card</pui-card-title>
+              <pui-card-content>Adjust controls to explore variants.</pui-card-content>
+            </pui-card>
+          </pui-doc-example>
         </section>
       }
     }

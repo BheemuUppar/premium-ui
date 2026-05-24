@@ -13,7 +13,7 @@ import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
-  PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
@@ -72,7 +72,7 @@ function createLargeOptions(count: number): PuiSelectOption[] {
 
 @Component({
   selector: 'app-select-docs',
-  imports: [PuiSelectComponent, PuiOptionComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, ReactiveFormsModule, FormsModule, JsonPipe, RouterLink, RouterLinkActive],
+  imports: [PuiSelectComponent, PuiOptionComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocExampleComponent, PuiDocKeyboardShortcutsComponent, ReactiveFormsModule, FormsModule, JsonPipe, RouterLink, RouterLinkActive],
   templateUrl: './select-docs.component.html',
   styleUrl: './select-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -114,6 +114,10 @@ export class SelectDocsComponent {
   protected readonly reactiveForm = this.fb.group({
     framework: this.fb.control<PuiSelectValue>('angular', Validators.required),
   });
+
+  protected readonly sizesExampleCode = `<pui-select size="sm" [options]="frameworks" placeholder="sm select" />
+<pui-select size="md" [options]="frameworks" placeholder="md select" />
+<pui-select size="lg" [options]="frameworks" placeholder="lg select" />`;
 
   protected readonly htmlExample = `<pui-select
   [value]="selectedFramework()"
@@ -181,6 +185,10 @@ export class ExampleComponent {
   <pui-option value="angular">Angular</pui-option>
   <pui-option value="react">React</pui-option>
 </pui-select>`;
+
+  protected readonly signalExampleTabs: readonly PuiDocCodeTab[] = [
+    { id: 'ts', label: 'TypeScript', code: this.signalExample, language: 'typescript' },
+  ];
 
   protected readonly ngModelExample = `<pui-select
   [(ngModel)]="framework"

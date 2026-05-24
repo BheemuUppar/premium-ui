@@ -19,7 +19,7 @@ import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
-  PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -49,7 +49,7 @@ interface PuiApiRow extends PuiDocApiRow {}
     PuiCheckboxComponent,
     PuiDocApiTableComponent,
     PuiDocA11yListComponent,
-    PuiDocCodeBlockComponent,
+    PuiDocExampleComponent,
     PuiDocKeyboardShortcutsComponent,
     ReactiveFormsModule,
     JsonPipe,

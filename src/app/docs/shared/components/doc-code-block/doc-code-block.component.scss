@@ -9,7 +9,7 @@
   border: 1px solid var(--pui-doc-code-border);
   border-radius: var(--pui-radius-lg);
   background: var(--pui-doc-code-bg);
-  box-shadow: var(--pui-shadow-sm);
+  box-shadow: var(--pui-shadow-md);
 }
 
 .pui-doc-code-block__toolbar {
@@ -130,6 +130,8 @@
   color: var(--pui-doc-code-text);
   font-family: var(--pui-font-family-mono);
   font-size: 0.875rem;
+  font-weight: var(--pui-font-weight-medium);
+  line-height: var(--pui-doc-code-line-height, var(--pui-line-height-code));
   white-space: pre;
   tab-size: 2;
 }

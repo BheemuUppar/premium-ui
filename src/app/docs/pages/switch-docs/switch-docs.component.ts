@@ -14,7 +14,7 @@ import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
-  PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -40,7 +40,7 @@ interface PuiApiRow {
 
 @Component({
   selector: 'app-switch-docs',
-  imports: [PuiSwitchComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, ReactiveFormsModule, JsonPipe, RouterLink, RouterLinkActive],
+  imports: [PuiSwitchComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocExampleComponent, PuiDocKeyboardShortcutsComponent, ReactiveFormsModule, JsonPipe, RouterLink, RouterLinkActive],
   templateUrl: './switch-docs.component.html',
   styleUrl: './switch-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

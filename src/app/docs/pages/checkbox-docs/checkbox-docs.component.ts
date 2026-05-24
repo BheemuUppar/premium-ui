@@ -18,7 +18,7 @@ import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
-  PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -46,7 +46,7 @@ interface PuiApiRow extends PuiDocApiRow {}
     PuiSelectComponent,
     PuiDocApiTableComponent,
     PuiDocA11yListComponent,
-    PuiDocCodeBlockComponent,
+    PuiDocExampleComponent,
     PuiDocKeyboardShortcutsComponent,
     ReactiveFormsModule,
     JsonPipe,
@@ -102,6 +102,10 @@ export class CheckboxDocsComponent {
   });
 
   protected readonly basicExample = `<pui-checkbox>Accept terms and conditions</pui-checkbox>`;
+
+  protected readonly statesExampleCode = `<pui-checkbox [checked]="true">Checked</pui-checkbox>
+<pui-checkbox>Unchecked</pui-checkbox>
+<pui-checkbox [indeterminate]="true">Indeterminate</pui-checkbox>`;
 
   protected readonly controlledExample = `selected = signal(false);
 

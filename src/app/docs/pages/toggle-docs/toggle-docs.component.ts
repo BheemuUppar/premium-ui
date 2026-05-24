@@ -25,7 +25,7 @@ import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocKeyboardShortcu
 import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
-  PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -58,7 +58,7 @@ interface PuiApiRow {
     PuiCheckboxComponent,
     PuiDocApiTableComponent,
     PuiDocA11yListComponent,
-    PuiDocCodeBlockComponent,
+    PuiDocExampleComponent,
     PuiDocKeyboardShortcutsComponent,
     ReactiveFormsModule,
     JsonPipe,

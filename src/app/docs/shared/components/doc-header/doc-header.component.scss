@@ -1,5 +1,5 @@
 .pui-doc-header {
-  padding-bottom: var(--pui-space-md);
+  padding-bottom: var(--pui-doc-hero-gap);
   border-bottom: 1px solid var(--pui-doc-border);
 }
 
@@ -31,15 +31,15 @@
   margin: 0;
   color: var(--pui-color-text);
   font-size: var(--pui-font-size-h1);
-  font-weight: var(--pui-font-weight-semibold);
-  line-height: var(--pui-line-height-h1);
+  font-weight: var(--pui-font-weight-bold);
+  line-height: 1.08;
   letter-spacing: var(--pui-letter-spacing-tight);
 }
 
 .pui-doc-header__description {
   max-width: var(--pui-doc-reading-max);
-  margin: var(--pui-space-sm) 0 0;
+  margin: var(--pui-space-md) 0 0;
   color: var(--pui-color-text-muted);
   font-size: var(--pui-font-size-body);
-  line-height: var(--pui-line-height-body);
+  line-height: var(--pui-doc-prose-line-height);
 }

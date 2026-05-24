@@ -7,7 +7,7 @@
 .pui-doc-layout__body {
   display: grid;
   gap: var(--pui-doc-section-gap);
-  padding-top: var(--pui-space-lg);
+  padding-top: var(--pui-doc-tab-gap);
 }
 
 @keyframes pui-doc-enter {

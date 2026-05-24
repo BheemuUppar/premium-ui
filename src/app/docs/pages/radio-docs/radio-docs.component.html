@@ -28,14 +28,19 @@
         <section class="pui-doc-section">
           <h2>Overview</h2>
           <p>Elegant radio controls with premium surfaces, smooth dot animations, and full group support.</p>
-          <div class="pui-preview-row pui-radio-preview-stack">
+          <pui-doc-example
+            exampleId="radio-basic"
+            title="Basic usage"
+            description="Single-select group with two-way value binding."
+            [htmlCode]="basicExample"
+            [hideTs]="true"
+          >
             <pui-radio-group [(value)]="theme" ariaLabel="Theme preference">
               <pui-radio value="light">Light</pui-radio>
               <pui-radio value="dark">Dark</pui-radio>
               <pui-radio value="system">System</pui-radio>
             </pui-radio-group>
-          </div>
-          <pui-doc-code-block [code]="basicExample" language="html" />
+          </pui-doc-example>
         </section>
 
         <section class="pui-doc-section">
@@ -51,82 +56,111 @@
       @case ('variants') {
         <section class="pui-doc-section">
           <h2>Variants</h2>
-          <div class="pui-radio-preview-stack">
-            @for (variant of variants; track variant) {
-              <pui-radio-group value="a" [attr.aria-label]="'Variant ' + variant">
-                <pui-radio [variant]="variant" value="a">{{ variant }}</pui-radio>
-              </pui-radio-group>
-            }
-          </div>
-        </section>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="radio-variants"
+              title="Visual variants"
+              description="Each variant adjusts surface, border, and selection emphasis."
+            >
+              <div class="pui-radio-preview-stack">
+                @for (variant of variants; track variant) {
+                  <pui-radio-group value="a" [attr.aria-label]="'Variant ' + variant">
+                    <pui-radio [variant]="variant" value="a">{{ variant }}</pui-radio>
+                  </pui-radio-group>
+                }
+              </div>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Sizes</h2>
-          <div class="pui-radio-preview-stack">
-            @for (size of sizes; track size) {
-              <pui-radio-group value="a" ariaLabel="Size preview">
-                <pui-radio [size]="size" value="a">Size {{ size }}</pui-radio>
-              </pui-radio-group>
-            }
+            <pui-doc-example
+              exampleId="radio-sizes"
+              title="Sizes"
+              description="Scale control and label typography with sm, md, and lg."
+            >
+              <div class="pui-radio-preview-stack">
+                @for (size of sizes; track size) {
+                  <pui-radio-group value="a" ariaLabel="Size preview">
+                    <pui-radio [size]="size" value="a">Size {{ size }}</pui-radio>
+                  </pui-radio-group>
+                }
+              </div>
+            </pui-doc-example>
           </div>
         </section>
       }
 
       @case ('examples') {
         <section class="pui-doc-section">
-          <h2>Settings — theme selection</h2>
-          <pui-radio-group [(value)]="theme" ariaLabel="Application theme">
-            <pui-radio value="light">Light</pui-radio>
-            <pui-radio value="dark">Dark</pui-radio>
-            <pui-radio value="system">System</pui-radio>
-          </pui-radio-group>
-        </section>
+          <h2>Examples</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="radio-theme"
+              title="Settings — theme selection"
+              description="Vertical group for mutually exclusive preferences."
+            >
+              <pui-radio-group [(value)]="theme" ariaLabel="Application theme">
+                <pui-radio value="light">Light</pui-radio>
+                <pui-radio value="dark">Dark</pui-radio>
+                <pui-radio value="system">System</pui-radio>
+              </pui-radio-group>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Payment method</h2>
-          <pui-radio-group [(value)]="payment" class="pui-radio-payment-grid" ariaLabel="Payment method">
-            <pui-radio variant="card" value="card">
-              <pui-radio-label>Visa</pui-radio-label>
-              <pui-radio-description>Credit card</pui-radio-description>
-            </pui-radio>
-            <pui-radio variant="card" value="paypal">
-              <pui-radio-label>PayPal</pui-radio-label>
-            </pui-radio>
-            <pui-radio variant="card" value="upi">
-              <pui-radio-label>UPI</pui-radio-label>
-            </pui-radio>
-            <pui-radio variant="card" value="apple">
-              <pui-radio-label>Apple Pay</pui-radio-label>
-            </pui-radio>
-          </pui-radio-group>
-        </section>
+            <pui-doc-example
+              exampleId="radio-payment"
+              title="Payment method"
+              description="Card variant for rich option content."
+            >
+              <pui-radio-group [(value)]="payment" class="pui-radio-payment-grid" ariaLabel="Payment method">
+                <pui-radio variant="card" value="card">
+                  <pui-radio-label>Visa</pui-radio-label>
+                  <pui-radio-description>Credit card</pui-radio-description>
+                </pui-radio>
+                <pui-radio variant="card" value="paypal">
+                  <pui-radio-label>PayPal</pui-radio-label>
+                </pui-radio>
+                <pui-radio variant="card" value="upi">
+                  <pui-radio-label>UPI</pui-radio-label>
+                </pui-radio>
+                <pui-radio variant="card" value="apple">
+                  <pui-radio-label>Apple Pay</pui-radio-label>
+                </pui-radio>
+              </pui-radio-group>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Pricing plan</h2>
-          <pui-radio-group [(value)]="plan" class="pui-radio-card-grid" ariaLabel="Pricing plan">
-            <pui-radio variant="card" value="free">
-              <pui-radio-label>Free</pui-radio-label>
-              <pui-radio-description>$0 / month</pui-radio-description>
-            </pui-radio>
-            <pui-radio variant="card" value="pro">
-              <pui-radio-label>Pro</pui-radio-label>
-              <pui-radio-description>$29 / month</pui-radio-description>
-            </pui-radio>
-            <pui-radio variant="card" value="enterprise">
-              <pui-radio-label>Enterprise</pui-radio-label>
-              <pui-radio-description>Custom pricing</pui-radio-description>
-            </pui-radio>
-          </pui-radio-group>
-          <pui-doc-code-block [code]="cardExample" language="html" />
-        </section>
+            <pui-doc-example
+              exampleId="radio-pricing"
+              title="Pricing plan"
+              description="Card layout for plan comparison with descriptions."
+              [htmlCode]="cardExample"
+              [hideTs]="true"
+            >
+              <pui-radio-group [(value)]="plan" class="pui-radio-card-grid" ariaLabel="Pricing plan">
+                <pui-radio variant="card" value="free">
+                  <pui-radio-label>Free</pui-radio-label>
+                  <pui-radio-description>$0 / month</pui-radio-description>
+                </pui-radio>
+                <pui-radio variant="card" value="pro">
+                  <pui-radio-label>Pro</pui-radio-label>
+                  <pui-radio-description>$29 / month</pui-radio-description>
+                </pui-radio>
+                <pui-radio variant="card" value="enterprise">
+                  <pui-radio-label>Enterprise</pui-radio-label>
+                  <pui-radio-description>Custom pricing</pui-radio-description>
+                </pui-radio>
+              </pui-radio-group>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Dashboard filters</h2>
-          <pui-radio-group [(value)]="filter" orientation="horizontal" class="pui-radio-filter-row" ariaLabel="Time range">
-            <pui-radio value="daily">Daily</pui-radio>
-            <pui-radio value="weekly">Weekly</pui-radio>
-            <pui-radio value="monthly">Monthly</pui-radio>
-          </pui-radio-group>
+            <pui-doc-example
+              exampleId="radio-filters"
+              title="Dashboard filters"
+              description="Horizontal orientation for compact filter rows."
+            >
+              <pui-radio-group [(value)]="filter" orientation="horizontal" class="pui-radio-filter-row" ariaLabel="Time range">
+                <pui-radio value="daily">Daily</pui-radio>
+                <pui-radio value="weekly">Weekly</pui-radio>
+                <pui-radio value="monthly">Monthly</pui-radio>
+              </pui-radio-group>
+            </pui-doc-example>
+          </div>
         </section>
       }
 
@@ -154,18 +188,32 @@
         <section class="pui-doc-section">
           <p class="pui-eyebrow">Theming</p>
           <h2>CSS variables</h2>
-          <div class="pui-doc-flow">
-            <p>Customize via CSS custom properties on host or group.</p>
-            <pui-doc-code-block [code]="themeCode" language="scss" filename="radio.theme.scss" />
-          </div>
+          <pui-doc-example
+            exampleId="radio-theming"
+            title="Theme tokens"
+            description="Customize via CSS custom properties on host or group."
+            [scssCode]="themeCode"
+            [hideTs]="true"
+          >
+            <pui-radio-group value="light" ariaLabel="Themed preview">
+              <pui-radio value="light">Light</pui-radio>
+              <pui-radio value="dark">Dark</pui-radio>
+            </pui-radio-group>
+          </pui-doc-example>
         </section>
       }
 
       @case ('forms') {
         <section class="pui-doc-section">
-          <h2>Reactive forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-radio-preview-stack">
+          <h2>Forms integration</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="radio-reactive"
+              title="Reactive forms"
+              description="Bind a radio group to FormControl with formControlName."
+              [htmlCode]="reactiveExample"
+              [hideTs]="true"
+            >
               <form [formGroup]="reactiveForm">
                 <pui-radio-group formControlName="plan" ariaLabel="Subscription plan">
                   <pui-radio value="starter">Starter</pui-radio>
@@ -173,23 +221,22 @@
                   <pui-radio value="enterprise">Enterprise</pui-radio>
                 </pui-radio-group>
               </form>
-            </div>
-            <p class="pui-doc-meta">Value: {{ reactiveForm.value | json }}</p>
-            <pui-doc-code-block [code]="reactiveExample" language="html" />
-          </div>
-        </section>
+              <p class="pui-doc-meta">Value: {{ reactiveForm.value | json }}</p>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Signal forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-radio-preview-stack">
+            <pui-doc-example
+              exampleId="radio-signal"
+              title="Signal forms"
+              description="Drive selection from a signal with valueChange."
+              [htmlCode]="signalExample"
+              [hideTs]="true"
+            >
               <pui-radio-group [value]="signalPlan()" (valueChange)="onSignalPlanChange($event)" ariaLabel="Plan">
                 <pui-radio value="starter">Starter</pui-radio>
                 <pui-radio value="pro">Pro</pui-radio>
               </pui-radio-group>
-            </div>
-            <p class="pui-doc-meta">Signal value: {{ signalPlan() }}</p>
-            <pui-doc-code-block [code]="signalExample" language="html" />
+              <p class="pui-doc-meta">Signal value: {{ signalPlan() }}</p>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -199,13 +246,17 @@
           <h2>Keyboard navigation</h2>
           <div class="pui-doc-flow pui-doc-flow--lg">
             <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
-            <div class="pui-preview-row pui-radio-preview-stack">
+            <pui-doc-example
+              exampleId="radio-keyboard"
+              title="Interactive demo"
+              description="Use arrow keys, Home, and End to move selection."
+            >
               <pui-radio-group [(value)]="theme" ariaLabel="Keyboard demo">
                 <pui-radio value="light">Light</pui-radio>
                 <pui-radio value="dark">Dark</pui-radio>
                 <pui-radio value="system">System</pui-radio>
               </pui-radio-group>
-            </div>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -244,8 +295,27 @@
               </pui-radio-group>
             </div>
             <p class="pui-doc-meta">Value: {{ playgroundValue() | json }}</p>
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="radio-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-radio-group
+              [(value)]="playgroundValue"
+              [orientation]="playgroundOrientation()"
+              [disabled]="playgroundDisabled()"
+              [invalid]="playgroundInvalid()"
+              ariaLabel="Playground"
+            >
+              <pui-radio [variant]="playgroundVariant()" [size]="playgroundSize()" value="a">Option A</pui-radio>
+              <pui-radio [variant]="playgroundVariant()" [size]="playgroundSize()" value="b">Option B</pui-radio>
+              <pui-radio [variant]="playgroundVariant()" [size]="playgroundSize()" value="c">Option C</pui-radio>
+            </pui-radio-group>
+          </pui-doc-example>
         </section>
       }
     }

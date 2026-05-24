@@ -13,11 +13,11 @@
 
 .pui-doc-preview__surface {
   width: 100%;
-  padding: var(--pui-space-6);
-  border: 1px solid var(--pui-doc-border);
+  padding: var(--pui-space-lg);
+  border: 1px solid var(--pui-color-border);
   border-radius: var(--pui-doc-showcase-radius);
   background: var(--pui-doc-surface);
-  box-shadow: var(--pui-shadow-xs);
+  box-shadow: var(--pui-shadow-sm);
 }
 
 :host(.pui-doc-preview--compact) .pui-doc-preview__surface {

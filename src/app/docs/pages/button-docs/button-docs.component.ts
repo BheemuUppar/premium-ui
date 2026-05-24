@@ -12,6 +12,7 @@ import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
   PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
   buildHtmlTsTabs,
   buildPlaygroundTsExample,
@@ -21,6 +22,7 @@ import {
 type PuiDocsButtonTab = 'overview' | 'examples' | 'api' | 'accessibility' | 'theming' | 'playground';
 
 interface PuiButtonExample {
+  readonly id: string;
   readonly title: string;
   readonly description: string;
   readonly code: string;
@@ -33,10 +35,21 @@ interface PuiButtonExample {
 
 @Component({
   selector: 'app-button-docs',
-  imports: [PuiButtonComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, RouterLink, RouterLinkActive],
+  imports: [
+    PuiButtonComponent,
+    PuiSelectComponent,
+    PuiCheckboxComponent,
+    PuiDocApiTableComponent,
+    PuiDocA11yListComponent,
+    PuiDocCodeBlockComponent,
+    PuiDocExampleComponent,
+    PuiDocKeyboardShortcutsComponent,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: './button-docs.component.html',
   styleUrl: './button-docs.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonDocsComponent {
   private readonly route = inject(ActivatedRoute);
@@ -57,13 +70,17 @@ export class ButtonDocsComponent {
     { label: 'API Guide', route: ['/docs/components/button/api'] },
     { label: 'Accessibility', route: ['/docs/components/button/accessibility'] },
     { label: 'Theming', route: ['/docs/components/button/theming'] },
-    { label: 'Playground', route: ['/docs/components/button/playground'] }
+    { label: 'Playground', route: ['/docs/components/button/playground'] },
   ];
 
   protected readonly variants: readonly PuiButtonVariant[] = ['primary', 'secondary', 'outline', 'ghost', 'danger'];
   protected readonly sizes: readonly PuiButtonSize[] = ['sm', 'md', 'lg'];
   protected readonly variantOptions = toSelectOptions(this.variants);
   protected readonly sizeOptions = toSelectOptions(this.sizes);
+
+  protected formatLabel(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
 
   protected readonly htmlExample = '<pui-button>Save changes</pui-button>';
 
@@ -74,23 +91,30 @@ export class ButtonDocsComponent {
     templateUrl: './button-example.component.html',
   });
 
-  protected readonly tsExample = `import { Component } from '@angular/core';
-import { PuiButtonComponent } from '@premium-ui/components';
+  protected readonly variantExampleCode = `<pui-button variant="primary">Primary</pui-button>
+<pui-button variant="secondary">Secondary</pui-button>
+<pui-button variant="outline">Outline</pui-button>
+<pui-button variant="ghost">Ghost</pui-button>
+<pui-button variant="danger">Danger</pui-button>`;
 
-@Component({
-  selector: 'app-example',
-  imports: [PuiButtonComponent],
-  template: '<pui-button>Save changes</pui-button>'
-})
-export class ExampleComponent {}`;
+  protected readonly sizeExampleCode = `<pui-button size="sm">Small</pui-button>
+<pui-button size="md">Medium</pui-button>
+<pui-button size="lg">Large</pui-button>`;
+
+  protected readonly stateExampleCode = `<pui-button>Default</pui-button>
+<pui-button variant="secondary">Active</pui-button>
+<pui-button [disabled]="true">Disabled</pui-button>
+<pui-button [loading]="true">Loading</pui-button>`;
 
   protected readonly examples: readonly PuiButtonExample[] = [
     {
+      id: 'basic-usage',
       title: 'Basic usage',
       description: 'Use the default primary button for the most important action on a surface.',
-      code: '<pui-button>Save changes</pui-button>'
+      code: '<pui-button>Save changes</pui-button>',
     },
     {
+      id: 'outline-icon',
       title: 'Outline with icon',
       description: 'Project an icon into the icon slot while keeping the label accessible.',
       variant: 'outline',
@@ -98,21 +122,42 @@ export class ExampleComponent {}`;
       code: `<pui-button variant="outline">
   <span puiButtonIcon aria-hidden="true">+</span>
   New item
-</pui-button>`
+</pui-button>`,
     },
     {
+      id: 'loading-state',
       title: 'Loading state',
       description: 'Loading disables pointer actions and exposes aria-busy.',
       loading: true,
-      code: '<pui-button [loading]="true">Saving</pui-button>'
+      code: '<pui-button [loading]="true">Saving</pui-button>',
     },
     {
+      id: 'disabled-state',
       title: 'Disabled state',
       description: 'Disabled buttons remain visible but do not emit pressed events.',
       disabled: true,
-      code: '<pui-button [disabled]="true">Unavailable</pui-button>'
-    }
+      code: '<pui-button [disabled]="true">Unavailable</pui-button>',
+    },
   ];
+
+  protected exampleTabs(example: PuiButtonExample): readonly PuiDocCodeTab[] {
+    return buildHtmlTsTabs(example.code, {
+      selector: `app-${example.id}`,
+      componentClass: `${this.toPascalCase(example.id)}ExampleComponent`,
+      imports: [{ name: 'PuiButtonComponent', path: '@premium-ui/components/button' }],
+      templateUrl: `./${example.id}.component.html`,
+    });
+  }
+
+  protected variantTabs(variant: PuiButtonVariant): readonly PuiDocCodeTab[] {
+    const code = `<pui-button variant="${variant}">${this.formatLabel(variant)}</pui-button>`;
+    return buildHtmlTsTabs(code, {
+      selector: `app-button-${variant}`,
+      componentClass: `Button${this.formatLabel(variant)}ExampleComponent`,
+      imports: [{ name: 'PuiButtonComponent', path: '@premium-ui/components/button' }],
+      templateUrl: `./button-${variant}.component.html`,
+    });
+  }
 
   protected readonly apiRows: readonly PuiDocApiRow[] = [
     { name: 'variant', type: 'PuiButtonVariant', defaultValue: 'primary', description: 'Controls the visual treatment and semantic intent.' },
@@ -120,11 +165,11 @@ export class ExampleComponent {}`;
     { name: 'type', type: 'button | submit | reset', defaultValue: 'button', description: 'Passes the native button type to the internal control.' },
     { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables interaction and applies disabled styling.' },
     { name: 'loading', type: 'boolean', defaultValue: 'false', description: 'Shows a spinner, sets aria-busy, and disables interaction.' },
-    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' }
+    { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Supplies an accessible label for icon-only buttons.' },
   ];
 
   protected readonly outputRows: readonly PuiDocApiRow[] = [
-    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' }
+    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' },
   ];
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
@@ -150,23 +195,22 @@ export class ExampleComponent {}`;
   protected readonly playgroundSize = signal<PuiButtonSize>('md');
   protected readonly playgroundDisabled = signal(false);
   protected readonly playgroundLoading = signal(false);
+  protected readonly playgroundCodeExpanded = signal(false);
 
   protected readonly playgroundCode = computed(() => {
     const disabled = this.playgroundDisabled() ? ' [disabled]="true"' : '';
     const loading = this.playgroundLoading() ? ' [loading]="true"' : '';
-    return `<pui-button variant="${this.playgroundVariant()}" size="${this.playgroundSize()}"${disabled}${loading}>
+    const variant =
+      this.playgroundVariant() !== 'primary' ? ` variant="${this.playgroundVariant()}"` : '';
+    const size = this.playgroundSize() !== 'md' ? ` size="${this.playgroundSize()}"` : '';
+
+    return `<pui-button${variant}${size}${disabled}${loading}>
   Preview action
 </pui-button>`;
   });
 
   protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] => [
-    {
-      id: 'html',
-      label: 'HTML',
-      code: this.playgroundCode(),
-      language: 'html',
-      filename: 'playground.component.html',
-    },
+    { id: 'html', label: 'HTML', code: this.playgroundCode(), language: 'html', filename: 'playground.component.html' },
     {
       id: 'ts',
       label: 'TypeScript',
@@ -190,14 +234,14 @@ export class ExampleComponent {}`;
   );
 
   protected setPlaygroundVariant(value: PuiSelectValue | null): void {
-    if (typeof value === 'string' && this.isButtonVariant(value)) {
-      this.playgroundVariant.set(value);
+    if (typeof value === 'string') {
+      this.playgroundVariant.set(value as PuiButtonVariant);
     }
   }
 
   protected setPlaygroundSize(value: PuiSelectValue | null): void {
-    if (typeof value === 'string' && this.isButtonSize(value)) {
-      this.playgroundSize.set(value);
+    if (typeof value === 'string') {
+      this.playgroundSize.set(value as PuiButtonSize);
     }
   }
 
@@ -205,11 +249,10 @@ export class ExampleComponent {}`;
     return ['overview', 'examples', 'api', 'accessibility', 'theming', 'playground'].includes(tab);
   }
 
-  private isButtonVariant(value: string): value is PuiButtonVariant {
-    return this.variants.includes(value as PuiButtonVariant);
-  }
-
-  private isButtonSize(value: string): value is PuiButtonSize {
-    return this.sizes.includes(value as PuiButtonSize);
+  private toPascalCase(value: string): string {
+    return value
+      .split('-')
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('');
   }
 }

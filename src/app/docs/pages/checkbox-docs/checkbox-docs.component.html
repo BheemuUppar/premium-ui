@@ -28,9 +28,19 @@
         <section class="pui-doc-section">
           <h2>Overview</h2>
           <p>Lightweight checkboxes matching the multiselect control — same visual language across forms and dropdowns.</p>
-          <div class="pui-preview-row pui-checkbox-preview-stack">
-            <pui-checkbox [checked]="true">Email notifications</pui-checkbox>
-            <pui-checkbox>Product updates</pui-checkbox>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="checkbox-basic"
+              title="Basic usage"
+              description="Standalone checkbox with label content projection."
+              [htmlCode]="basicExample"
+              [hideTs]="true"
+            >
+              <div class="pui-doc-inline-preview pui-checkbox-preview-stack">
+                <pui-checkbox [checked]="true">Email notifications</pui-checkbox>
+                <pui-checkbox>Product updates</pui-checkbox>
+              </div>
+            </pui-doc-example>
           </div>
         </section>
 
@@ -42,50 +52,53 @@
             <li><code>pui-checkbox-label</code> / <code>pui-checkbox-description</code> — structured content</li>
           </ul>
         </section>
-
-        <section class="pui-doc-section">
-          <h2>Basic usage</h2>
-          <pui-doc-code-block [code]="basicExample" language="html" />
-        </section>
       }
 
       @case ('examples') {
         <section class="pui-doc-section">
-          <h2>States</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-checkbox-preview-stack">
-              <pui-checkbox [checked]="true">Checked</pui-checkbox>
-              <pui-checkbox>Unchecked</pui-checkbox>
-              <pui-checkbox [indeterminate]="true">Indeterminate</pui-checkbox>
-            </div>
-          </div>
-        </section>
+          <h2>Examples</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="checkbox-states"
+              title="States"
+              description="Checked, unchecked, and indeterminate presentation."
+              [htmlCode]="statesExampleCode"
+              [hideTs]="true"
+            >
+              <div class="pui-doc-inline-preview pui-checkbox-preview-stack">
+                <pui-checkbox [checked]="true">Checked</pui-checkbox>
+                <pui-checkbox>Unchecked</pui-checkbox>
+                <pui-checkbox [indeterminate]="true">Indeterminate</pui-checkbox>
+              </div>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Checkbox group</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-checkbox-preview-stack">
+            <pui-doc-example
+              exampleId="checkbox-group"
+              title="Checkbox group"
+              description="Manage multiple selected values with pui-checkbox-group."
+              [htmlCode]="groupExample"
+              [hideTs]="true"
+            >
               <pui-checkbox-group [(value)]="selectedFrameworks" ariaLabel="Frameworks">
                 <pui-checkbox value="angular">Angular</pui-checkbox>
                 <pui-checkbox value="react">React</pui-checkbox>
                 <pui-checkbox value="vue">Vue</pui-checkbox>
               </pui-checkbox-group>
-            </div>
-            <p class="pui-doc-meta">Selected: {{ selectedFrameworks() | json }}</p>
-            <pui-doc-code-block [code]="groupExample" language="html" />
-          </div>
-        </section>
+              <p class="pui-doc-meta">Selected: {{ selectedFrameworks() | json }}</p>
+            </pui-doc-example>
 
-        <section class="pui-doc-section">
-          <h2>Card checkbox</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-checkbox-card-grid">
+            <pui-doc-example
+              exampleId="checkbox-card"
+              title="Card checkbox"
+              description="Rich card variant with label and description slots."
+              [htmlCode]="cardExample"
+              [hideTs]="true"
+            >
               <pui-checkbox variant="card" value="pro">
                 <pui-checkbox-label>Pro plan</pui-checkbox-label>
                 <pui-checkbox-description>Advanced features for growing teams</pui-checkbox-description>
               </pui-checkbox>
-            </div>
-            <pui-doc-code-block [code]="cardExample" language="html" />
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -115,44 +128,55 @@
       @case ('forms') {
         <section class="pui-doc-section">
           <h2>Reactive forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-checkbox-preview-stack">
-              <form [formGroup]="reactiveForm" class="pui-checkbox-preview-stack">
-                <pui-checkbox formControlName="terms">Accept terms and conditions</pui-checkbox>
-                <pui-checkbox formControlName="marketing">Send marketing emails</pui-checkbox>
-              </form>
-            </div>
+          <pui-doc-example
+            exampleId="checkbox-reactive"
+            title="Reactive forms"
+            description="Bind checkboxes to FormControl with formControlName."
+            [htmlCode]="reactiveExample"
+            [hideTs]="true"
+          >
+            <form [formGroup]="reactiveForm" class="pui-checkbox-preview-stack">
+              <pui-checkbox formControlName="terms">Accept terms and conditions</pui-checkbox>
+              <pui-checkbox formControlName="marketing">Send marketing emails</pui-checkbox>
+            </form>
             <p class="pui-doc-meta">Value: {{ reactiveForm.value | json }}</p>
-            <pui-doc-code-block [code]="reactiveExample" language="html" />
-          </div>
+          </pui-doc-example>
         </section>
       }
 
       @case ('signal-forms') {
         <section class="pui-doc-section">
           <h2>Signal forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-checkbox-preview-stack">
-              <pui-checkbox [checked]="signalChecked()" (checkedChange)="onSignalChecked($event)">
-                Accept terms
-              </pui-checkbox>
-            </div>
+          <pui-doc-example
+            exampleId="checkbox-signal"
+            title="Signal-driven state"
+            description="Control checked state from a signal without CVA."
+            [htmlCode]="controlledExample"
+            [hideTs]="true"
+          >
+            <pui-checkbox [checked]="signalChecked()" (checkedChange)="onSignalChecked($event)">
+              Accept terms
+            </pui-checkbox>
             <p class="pui-doc-meta">Signal value: {{ signalChecked() }}</p>
-            <pui-doc-code-block [code]="controlledExample" language="html" />
-          </div>
+          </pui-doc-example>
         </section>
       }
 
       @case ('theming') {
         <section class="pui-doc-section">
           <h2>Theming tokens</h2>
-          <div class="pui-doc-flow">
-            <pui-doc-code-block [code]="themeCode" language="scss" filename="checkbox.theme.scss" />
-            <div class="pui-preview-row pui-checkbox-preview-stack">
+          <pui-doc-example
+            exampleId="checkbox-theming"
+            title="Theme tokens"
+            description="Override checkbox sizing and colors via CSS custom properties."
+            [scssCode]="themeCode"
+            [hideTs]="true"
+          >
+            <div class="pui-doc-inline-preview pui-checkbox-preview-stack">
               <pui-checkbox [checked]="true">Checked</pui-checkbox>
               <pui-checkbox>Unchecked</pui-checkbox>
             </div>
-          </div>
+          </pui-doc-example>
         </section>
       }
 
@@ -184,8 +208,25 @@
                 Playground checkbox
               </pui-checkbox>
             </div>
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="checkbox-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-checkbox
+              [variant]="playgroundVariant()"
+              [size]="playgroundSize()"
+              [checked]="playgroundChecked()"
+              [disabled]="playgroundDisabled()"
+              [indeterminate]="playgroundIndeterminate()"
+            >
+              Playground checkbox
+            </pui-checkbox>
+          </pui-doc-example>
         </section>
       }
     }

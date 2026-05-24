@@ -39,8 +39,14 @@
             <li><strong>Segmented</strong> (<code>mode="segmented"</code>) — single selection with sliding active pill. Grid/List, Week/Month/Year.</li>
             <li><strong>Toolbar</strong> (<code>mode="toolbar"</code>) — multi-select compact icon controls. Bold/Italic/Underline.</li>
           </ul>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-toggle-preview-stack">
+          <pui-doc-example
+            exampleId="toggle-overview"
+            title="Segmented &amp; toolbar modes"
+            description="Combine view switchers and formatting toolbars in one surface."
+            [htmlCode]="segmentedExample"
+            [hideTs]="true"
+          >
+            <div class="pui-toggle-preview-stack">
               <pui-toggle-group mode="segmented" shape="pill" variant="elevated" [(value)]="view" ariaLabel="View mode">
                 <pui-toggle value="grid">Grid</pui-toggle>
                 <pui-toggle value="list">List</pui-toggle>
@@ -52,8 +58,7 @@
                 <pui-toggle iconOnly value="underline" ariaLabel="Underline">U</pui-toggle>
               </pui-toggle-group>
             </div>
-            <pui-doc-code-block [code]="segmentedExample" language="html" />
-          </div>
+          </pui-doc-example>
         </section>
       }
 
@@ -61,96 +66,114 @@
         <section class="pui-doc-section">
           <h2>Visual variants</h2>
           <p>Premium surface styles using semantic tokens. All support light and dark themes.</p>
-          <div class="pui-toggle-preview-grid">
-            @for (variant of variants; track variant) {
-              <div class="pui-toggle-preview-card">
-                <span class="pui-toggle-preview-label">{{ variant }}</span>
-                <pui-toggle [variant]="variant" [pressed]="true">{{ variant }}</pui-toggle>
+          <div class="pui-doc-examples">
+            <pui-doc-example exampleId="toggle-variants" title="Variants">
+              <div class="pui-toggle-preview-grid">
+                @for (variant of variants; track variant) {
+                  <div class="pui-toggle-preview-card">
+                    <span class="pui-toggle-preview-label">{{ variant }}</span>
+                    <pui-toggle [variant]="variant" [pressed]="true">{{ variant }}</pui-toggle>
+                  </div>
+                }
               </div>
-            }
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Shapes</h2>
-          <div class="pui-toggle-preview-row">
-            @for (shape of shapes; track shape) {
-              <pui-toggle [shape]="shape" [pressed]="true">{{ shape }}</pui-toggle>
-            }
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Density</h2>
-          <div class="pui-toggle-preview-stack">
-            @for (density of densities; track density) {
-              <pui-toggle [density]="density" [pressed]="true">{{ density }}</pui-toggle>
-            }
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Segmented &amp; toolbar modes</h2>
-          <div class="pui-toggle-preview-stack">
-            <pui-toggle-group mode="segmented" variant="soft" shape="pill" value="month" ariaLabel="Period">
-              <pui-toggle value="week">Week</pui-toggle>
-              <pui-toggle value="month">Month</pui-toggle>
-              <pui-toggle value="year">Year</pui-toggle>
-            </pui-toggle-group>
-            <pui-toggle-group mode="segmented" variant="glass" shape="pill" value="grid" ariaLabel="Glass">
-              <pui-toggle value="grid">Grid</pui-toggle>
-              <pui-toggle value="list">List</pui-toggle>
-            </pui-toggle-group>
-            <pui-toggle-group mode="toolbar" multiple [value]="['bold']" ariaLabel="Formatting">
-              <pui-toggle iconOnly value="bold" ariaLabel="Bold">B</pui-toggle>
-              <pui-toggle iconOnly value="italic" ariaLabel="Italic">I</pui-toggle>
-              <pui-toggle iconOnly value="underline" ariaLabel="Underline">U</pui-toggle>
-            </pui-toggle-group>
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Sizes</h2>
-          <div class="pui-toggle-preview-row">
-            @for (size of sizes; track size) {
-              <pui-toggle [size]="size" [pressed]="true">{{ size }}</pui-toggle>
-            }
+            </pui-doc-example>
+
+            <pui-doc-example exampleId="toggle-shapes" title="Shapes">
+              <div class="pui-doc-inline-preview pui-toggle-preview-row">
+                @for (shape of shapes; track shape) {
+                  <pui-toggle [shape]="shape" [pressed]="true">{{ shape }}</pui-toggle>
+                }
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example exampleId="toggle-density" title="Density">
+              <div class="pui-toggle-preview-stack">
+                @for (density of densities; track density) {
+                  <pui-toggle [density]="density" [pressed]="true">{{ density }}</pui-toggle>
+                }
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example exampleId="toggle-modes" title="Segmented &amp; toolbar modes">
+              <div class="pui-toggle-preview-stack">
+                <pui-toggle-group mode="segmented" variant="soft" shape="pill" value="month" ariaLabel="Period">
+                  <pui-toggle value="week">Week</pui-toggle>
+                  <pui-toggle value="month">Month</pui-toggle>
+                  <pui-toggle value="year">Year</pui-toggle>
+                </pui-toggle-group>
+                <pui-toggle-group mode="segmented" variant="glass" shape="pill" value="grid" ariaLabel="Glass">
+                  <pui-toggle value="grid">Grid</pui-toggle>
+                  <pui-toggle value="list">List</pui-toggle>
+                </pui-toggle-group>
+                <pui-toggle-group mode="toolbar" multiple [value]="['bold']" ariaLabel="Formatting">
+                  <pui-toggle iconOnly value="bold" ariaLabel="Bold">B</pui-toggle>
+                  <pui-toggle iconOnly value="italic" ariaLabel="Italic">I</pui-toggle>
+                  <pui-toggle iconOnly value="underline" ariaLabel="Underline">U</pui-toggle>
+                </pui-toggle-group>
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example exampleId="toggle-sizes" title="Sizes">
+              <div class="pui-doc-inline-preview pui-toggle-preview-row">
+                @for (size of sizes; track size) {
+                  <pui-toggle [size]="size" [pressed]="true">{{ size }}</pui-toggle>
+                }
+              </div>
+            </pui-doc-example>
           </div>
         </section>
       }
 
       @case ('examples') {
         <section class="pui-doc-section">
-          <h2>Text editor toolbar</h2>
-          <div class="pui-toggle-editor-panel">
-            <pui-toggle-group mode="toolbar" multiple [(value)]="filters" ariaLabel="Formatting">
-              <pui-toggle iconOnly value="bold" ariaLabel="Bold">B</pui-toggle>
-              <pui-toggle iconOnly value="italic" ariaLabel="Italic">I</pui-toggle>
-              <pui-toggle iconOnly value="underline" ariaLabel="Underline">U</pui-toggle>
-            </pui-toggle-group>
+          <h2>Examples</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="toggle-toolbar"
+              title="Text editor toolbar"
+              description="Multi-select toolbar for independent formatting actions."
+              [htmlCode]="toolbarExample"
+              [hideTs]="true"
+            >
+              <div class="pui-toggle-editor-panel">
+                <pui-toggle-group mode="toolbar" multiple [(value)]="filters" ariaLabel="Formatting">
+                  <pui-toggle iconOnly value="bold" ariaLabel="Bold">B</pui-toggle>
+                  <pui-toggle iconOnly value="italic" ariaLabel="Italic">I</pui-toggle>
+                  <pui-toggle iconOnly value="underline" ariaLabel="Underline">U</pui-toggle>
+                </pui-toggle-group>
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="toggle-view-switcher"
+              title="View switcher"
+              description="Segmented single-select for layout modes."
+              [htmlCode]="segmentedExample"
+              [hideTs]="true"
+            >
+              <pui-toggle-group mode="segmented" variant="outline" shape="rounded" [(value)]="view" ariaLabel="View">
+                <pui-toggle value="grid">Grid</pui-toggle>
+                <pui-toggle value="list">List</pui-toggle>
+                <pui-toggle value="compact">Compact</pui-toggle>
+              </pui-toggle-group>
+            </pui-doc-example>
+
+            <pui-doc-example exampleId="toggle-filters" title="Filter toggles" description="Multi-select chips for team or category filters.">
+              <pui-toggle-group multiple density="compact" [(value)]="teamFilters" ariaLabel="Team filters">
+                <pui-toggle variant="subtle" value="design">Design</pui-toggle>
+                <pui-toggle variant="subtle" value="product">Product</pui-toggle>
+                <pui-toggle variant="subtle" value="engineering">Engineering</pui-toggle>
+              </pui-toggle-group>
+            </pui-doc-example>
+
+            <pui-doc-example exampleId="toggle-theme" title="Theme switcher" description="Segmented control for light, dark, and system themes.">
+              <pui-toggle-group mode="segmented" shape="pill" density="comfortable" value="system" ariaLabel="Theme">
+                <pui-toggle value="light">Light</pui-toggle>
+                <pui-toggle value="dark">Dark</pui-toggle>
+                <pui-toggle value="system">System</pui-toggle>
+              </pui-toggle-group>
+            </pui-doc-example>
           </div>
-          <pui-doc-code-block [code]="toolbarExample" language="html" />
-        </section>
-        <section class="pui-doc-section">
-          <h2>View switcher</h2>
-          <pui-toggle-group mode="segmented" variant="outline" shape="rounded" [(value)]="view" ariaLabel="View">
-            <pui-toggle value="grid">Grid</pui-toggle>
-            <pui-toggle value="list">List</pui-toggle>
-            <pui-toggle value="compact">Compact</pui-toggle>
-          </pui-toggle-group>
-          <pui-doc-code-block [code]="segmentedExample" language="html" />
-        </section>
-        <section class="pui-doc-section">
-          <h2>Filter toggles</h2>
-          <pui-toggle-group multiple density="compact" [(value)]="teamFilters" ariaLabel="Team filters">
-            <pui-toggle variant="subtle" value="design">Design</pui-toggle>
-            <pui-toggle variant="subtle" value="product">Product</pui-toggle>
-            <pui-toggle variant="subtle" value="engineering">Engineering</pui-toggle>
-          </pui-toggle-group>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Theme switcher</h2>
-          <pui-toggle-group mode="segmented" shape="pill" density="comfortable" value="system" ariaLabel="Theme">
-            <pui-toggle value="light">Light</pui-toggle>
-            <pui-toggle value="dark">Dark</pui-toggle>
-            <pui-toggle value="system">System</pui-toggle>
-          </pui-toggle-group>
         </section>
       }
 
@@ -182,22 +205,33 @@
         <section class="pui-doc-section">
           <p class="pui-eyebrow">Theming</p>
           <h2>CSS variables</h2>
-          <div class="pui-doc-flow pui-doc-flow--xl">
-            <p>Override semantic tokens on <code>pui-toggle</code> or <code>pui-toggle-group</code> hosts. Never hardcode colors or radii.</p>
-            <pui-doc-code-block [code]="themeCode" language="scss" filename="toggle.theme.scss" />
-            <div>
-              <h3>Motion tokens</h3>
-              <p>Transitions use <code>--pui-duration-slow</code>, <code>--pui-easing-premium</code>, and GPU-accelerated <code>transform</code> for the sliding indicator.</p>
-            </div>
-          </div>
+          <pui-doc-example
+            exampleId="toggle-theming"
+            title="Theme tokens"
+            description="Override semantic tokens on pui-toggle or pui-toggle-group hosts. Never hardcode colors or radii."
+            [scssCode]="themeCode"
+            [hideTs]="true"
+          >
+            <pui-toggle-group mode="segmented" shape="pill" value="grid" ariaLabel="Themed preview">
+              <pui-toggle value="grid">Grid</pui-toggle>
+              <pui-toggle value="list">List</pui-toggle>
+            </pui-toggle-group>
+          </pui-doc-example>
+          <p class="pui-doc-meta">Transitions use <code>--pui-duration-slow</code>, <code>--pui-easing-premium</code>, and GPU-accelerated <code>transform</code> for the sliding indicator.</p>
         </section>
       }
 
       @case ('forms') {
         <section class="pui-doc-section">
-          <h2>Reactive forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-toggle-preview-stack">
+          <h2>Forms integration</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="toggle-reactive"
+              title="Reactive forms"
+              description="Bind toggles and groups to FormControl."
+              [htmlCode]="reactiveExample"
+              [hideTs]="true"
+            >
               <form [formGroup]="reactiveForm" class="pui-toggle-preview-stack">
                 <pui-toggle formControlName="bold">Bold</pui-toggle>
                 <pui-toggle-group mode="segmented" formControlName="view" ariaLabel="View">
@@ -209,19 +243,19 @@
                   <pui-toggle value="product">Product</pui-toggle>
                 </pui-toggle-group>
               </form>
-            </div>
-            <p class="pui-doc-meta">{{ reactiveForm.value | json }}</p>
-            <pui-doc-code-block [code]="reactiveExample" language="html" />
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Signal forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-toggle-preview-stack">
+              <p class="pui-doc-meta">{{ reactiveForm.value | json }}</p>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="toggle-signal"
+              title="Signal forms"
+              description="Control pressed state from a signal."
+              [htmlCode]="signalExample"
+              [hideTs]="true"
+            >
               <pui-toggle [pressed]="signalBold()" (pressedChange)="signalBold.set($event)">Bold</pui-toggle>
-            </div>
-            <p class="pui-doc-meta">Signal: {{ signalBold() }}</p>
-            <pui-doc-code-block [code]="signalExample" language="html" />
+              <p class="pui-doc-meta">Signal: {{ signalBold() }}</p>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -231,13 +265,17 @@
           <h2>Keyboard navigation</h2>
           <div class="pui-doc-flow pui-doc-flow--lg">
             <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
-            <div class="pui-preview-row">
+            <pui-doc-example
+              exampleId="toggle-keyboard"
+              title="Interactive demo"
+              description="Use arrow keys to move focus within the group."
+            >
               <pui-toggle-group mode="segmented" shape="pill" [(value)]="view" ariaLabel="Try keyboard navigation">
                 <pui-toggle value="grid">Grid</pui-toggle>
                 <pui-toggle value="list">List</pui-toggle>
                 <pui-toggle value="compact">Compact</pui-toggle>
               </pui-toggle-group>
-            </div>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -287,8 +325,31 @@
                 <pui-toggle value="compact">Compact</pui-toggle>
               </pui-toggle-group>
             </div>
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="toggle-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-toggle-group
+              [mode]="playgroundMode()"
+              [variant]="playgroundVariant()"
+              [shape]="playgroundShape()"
+              [density]="playgroundDensity()"
+              [multiple]="playgroundMultiple()"
+              [orientation]="playgroundOrientation()"
+              [disabled]="playgroundDisabled()"
+              [(value)]="playgroundView"
+              ariaLabel="Playground"
+            >
+              <pui-toggle value="grid">Grid</pui-toggle>
+              <pui-toggle value="list">List</pui-toggle>
+              <pui-toggle value="compact">Compact</pui-toggle>
+            </pui-toggle-group>
+          </pui-doc-example>
         </section>
       }
     }

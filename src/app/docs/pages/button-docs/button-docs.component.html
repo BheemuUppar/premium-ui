@@ -39,40 +39,60 @@
 
         <section class="pui-doc-section" id="variants" aria-labelledby="overview-variants-title">
           <h2 id="overview-variants-title">Examples</h2>
-          <h3>Variants</h3>
-          <p>Buttons come in different styles to communicate the hierarchy of actions.</p>
-          <div class="pui-preview-row">
-            @for (variant of variants; track variant) {
-              <pui-button [variant]="variant">{{ variant }}</pui-button>
-            }
-          </div>
-        </section>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="button-variants"
+              title="Variants"
+              description="Buttons come in different styles to communicate the hierarchy of actions."
+              [htmlCode]="variantExampleCode"
+              [hideTs]="true"
+            >
+              <div class="pui-doc-inline-preview">
+                @for (variant of variants; track variant) {
+                  <pui-button [variant]="variant">{{ formatLabel(variant) }}</pui-button>
+                }
+              </div>
+            </pui-doc-example>
 
-        <section class="pui-doc-section" id="sizes" aria-labelledby="overview-sizes-title">
-          <h3 id="overview-sizes-title">Sizes</h3>
-          <p>Choose the button size that fits your context.</p>
-          <div class="pui-preview-row">
-            @for (size of sizes; track size) {
-              <pui-button [size]="size">{{ size }}</pui-button>
-            }
-          </div>
-        </section>
+            <pui-doc-example
+              exampleId="button-sizes"
+              title="Sizes"
+              description="Choose the button size that fits your context."
+              [htmlCode]="sizeExampleCode"
+              [hideTs]="true"
+            >
+              <div class="pui-doc-inline-preview">
+                @for (size of sizes; track size) {
+                  <pui-button [size]="size">{{ formatLabel(size) }}</pui-button>
+                }
+              </div>
+            </pui-doc-example>
 
-        <section class="pui-doc-section" id="states" aria-labelledby="overview-states-title">
-          <h3 id="overview-states-title">States</h3>
-          <p>Buttons support various states.</p>
-          <div class="pui-preview-row">
-            <pui-button>Default</pui-button>
-            <pui-button>Hover</pui-button>
-            <pui-button variant="secondary">Active</pui-button>
-            <pui-button [disabled]="true">Disabled</pui-button>
-            <pui-button [loading]="true">Loading</pui-button>
-          </div>
-        </section>
+            <pui-doc-example
+              exampleId="button-states"
+              title="States"
+              description="Buttons support default, active, disabled, and loading states."
+              [htmlCode]="stateExampleCode"
+              [hideTs]="true"
+            >
+              <div class="pui-doc-inline-preview">
+                <pui-button>Default</pui-button>
+                <pui-button variant="secondary">Active</pui-button>
+                <pui-button [disabled]="true">Disabled</pui-button>
+                <pui-button [loading]="true">Loading</pui-button>
+              </div>
+            </pui-doc-example>
 
-        <section class="pui-doc-section" id="api" aria-labelledby="overview-code-title">
-          <h3 id="overview-code-title">Code Example</h3>
-          <pui-doc-code-block [tabs]="basicExampleTabs" />
+            <pui-doc-example
+              exampleId="button-basic"
+              title="Basic usage"
+              description="Import the component and render a primary action."
+              [htmlCode]="htmlExample"
+              [tabs]="basicExampleTabs"
+            >
+              <pui-button>Save changes</pui-button>
+            </pui-doc-example>
+          </div>
         </section>
       }
 
@@ -80,58 +100,47 @@
         <section class="pui-doc-section" id="variants" aria-labelledby="variants-title">
           <p class="pui-eyebrow">Examples</p>
           <h2 id="variants-title">Variants</h2>
-          <div class="pui-showcase-grid">
+          <div class="pui-doc-examples">
             @for (variant of variants; track variant) {
-              <div class="pui-example-card">
-                <div class="pui-example-card__preview">
-                  <pui-button [variant]="variant">{{ variant }}</pui-button>
-                </div>
-                <div class="pui-example-card__meta">
-                  <strong>{{ variant }}</strong>
-                  <code>&lt;pui-button variant="{{ variant }}"&gt;</code>
-                </div>
-              </div>
-            }
-          </div>
-        </section>
-
-        <section class="pui-doc-section" id="sizes" aria-labelledby="sizes-title">
-          <h2 id="sizes-title">Sizes</h2>
-          <div class="pui-preview-row">
-            @for (size of sizes; track size) {
-              <pui-button [size]="size">{{ size }}</pui-button>
+              <pui-doc-example
+                [exampleId]="'button-variant-' + variant"
+                [title]="formatLabel(variant)"
+                [description]="'The ' + variant + ' variant for action hierarchy.'"
+                [tabs]="variantTabs(variant)"
+              >
+                <pui-button [variant]="variant">{{ formatLabel(variant) }}</pui-button>
+              </pui-doc-example>
             }
           </div>
         </section>
 
         <section class="pui-doc-section" id="states" aria-labelledby="states-title">
           <h2 id="states-title">States and snippets</h2>
-          <div class="pui-example-list">
-            @for (example of examples; track example.title) {
-              <article class="pui-code-example">
-                <div class="pui-code-example__preview">
-                  @if (example.icon) {
-                    <pui-button [variant]="example.variant || 'primary'" [size]="example.size || 'md'">
-                      <span puiButtonIcon aria-hidden="true">+</span>
-                      New item
-                    </pui-button>
-                  } @else {
-                    <pui-button
-                      [variant]="example.variant || 'primary'"
-                      [size]="example.size || 'md'"
-                      [loading]="example.loading || false"
-                      [disabled]="example.disabled || false"
-                    >
-                      {{ example.loading ? 'Saving' : example.disabled ? 'Unavailable' : 'Save changes' }}
-                    </pui-button>
-                  }
-                </div>
-                <div>
-                  <h3>{{ example.title }}</h3>
-                  <p>{{ example.description }}</p>
-                  <pui-doc-code-block [code]="example.code" language="html" />
-                </div>
-              </article>
+          <div class="pui-doc-examples">
+            @for (example of examples; track example.id) {
+              <pui-doc-example
+                [exampleId]="example.id"
+                [title]="example.title"
+                [description]="example.description"
+                [htmlCode]="example.code"
+                [tabs]="exampleTabs(example)"
+              >
+                @if (example.icon) {
+                  <pui-button [variant]="example.variant || 'primary'" [size]="example.size || 'md'">
+                    <span puiButtonIcon aria-hidden="true">+</span>
+                    New item
+                  </pui-button>
+                } @else {
+                  <pui-button
+                    [variant]="example.variant || 'primary'"
+                    [size]="example.size || 'md'"
+                    [loading]="example.loading || false"
+                    [disabled]="example.disabled || false"
+                  >
+                    {{ example.loading ? 'Saving' : example.disabled ? 'Unavailable' : 'Save changes' }}
+                  </pui-button>
+                }
+              </pui-doc-example>
             }
           </div>
         </section>
@@ -160,13 +169,15 @@
         <section class="pui-doc-section" id="states" aria-labelledby="theming-title">
           <p class="pui-eyebrow">Theming</p>
           <h2 id="theming-title">CSS variable contract</h2>
-          <div class="pui-doc-flow">
-            <p>
-              Button styling is powered by semantic tokens, so consumers can theme globally or override
-              component-level variables in a scoped surface.
-            </p>
-            <pui-doc-code-block [code]="themeCode" language="scss" filename="button.theme.scss" />
-          </div>
+          <pui-doc-example
+            exampleId="button-theming"
+            title="Theme tokens"
+            description="Button styling is powered by semantic tokens for global or scoped overrides."
+            [scssCode]="themeCode"
+            [hideTs]="true"
+          >
+            <pui-button>Preview themed button</pui-button>
+          </pui-doc-example>
         </section>
       }
 
@@ -221,9 +232,24 @@
                 Preview action
               </pui-button>
             </div>
-
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="button-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-button
+              [variant]="playgroundVariant()"
+              [size]="playgroundSize()"
+              [disabled]="playgroundDisabled()"
+              [loading]="playgroundLoading()"
+            >
+              Preview action
+            </pui-button>
+          </pui-doc-example>
         </section>
       }
     }

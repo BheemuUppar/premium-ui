@@ -22,7 +22,7 @@ import type { PuiDocCodeTab, PuiDocApiRow, PuiDocA11yItem, PuiDocsTab } from '..
 import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
-  PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
 } from '../../shared';
@@ -63,7 +63,7 @@ const PRODUCT_IMAGE =
     PuiCheckboxComponent,
     PuiDocApiTableComponent,
     PuiDocA11yListComponent,
-    PuiDocCodeBlockComponent,
+    PuiDocExampleComponent,
     RouterLink,
     RouterLinkActive,
   ],

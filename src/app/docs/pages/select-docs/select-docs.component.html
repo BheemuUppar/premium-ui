@@ -36,18 +36,44 @@
             Enable features declaratively through inputs. Combine searchable, multiple, and
             virtualScroll as needed without separate component variants.
           </p>
-          <div class="pui-preview-row">
-            <pui-select
-              class="pui-select-preview"
-              [value]="selectedFramework()"
-              (valueChange)="selectedFramework.set($event)"
-              [options]="frameworkOptions"
-              clearable
-              placeholder="Select a framework"
-            />
-            <p style="margin-top: var(--pui-space-sm); color: var(--pui-muted); font-size: var(--pui-font-size-sm);">
-              Selected: {{ selectedFramework() }}
-            </p>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="select-basic"
+              title="Basic usage"
+              description="Bind value from the parent and pass a declarative options array."
+              [tabs]="basicExampleTabs"
+            >
+              <pui-select
+                class="pui-select-preview"
+                [value]="selectedFramework()"
+                (valueChange)="selectedFramework.set($event)"
+                [options]="frameworkOptions"
+                clearable
+                placeholder="Select a framework"
+              />
+              <p style="margin-top: var(--pui-space-sm); color: var(--pui-muted); font-size: var(--pui-font-size-sm);">
+                Selected: {{ selectedFramework() }}
+              </p>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="select-sizes"
+              title="Sizes"
+              description="Choose sm, md, or lg to match surrounding form controls."
+              [htmlCode]="sizesExampleCode"
+              [hideTs]="true"
+            >
+              <div class="pui-doc-inline-preview" style="flex-direction: column; align-items: stretch; gap: var(--pui-space-md);">
+                @for (size of sizes; track size) {
+                  <pui-select
+                    class="pui-select-preview"
+                    [size]="size"
+                    [options]="frameworkOptions"
+                    [placeholder]="size + ' select'"
+                  />
+                }
+              </div>
+            </pui-doc-example>
           </div>
         </section>
 
@@ -62,54 +88,34 @@
             <li>ARIA combobox with active descendant keyboard navigation</li>
           </ul>
         </section>
-
-        <section class="pui-doc-section" id="sizes" aria-labelledby="sizes-title">
-          <h2 id="sizes-title">Sizes</h2>
-          <div class="pui-preview-row" style="display: flex; flex-direction: column; gap: var(--pui-space-md);">
-            @for (size of sizes; track size) {
-              <pui-select
-                class="pui-select-preview"
-                [size]="size"
-                [options]="frameworkOptions"
-                [placeholder]="size + ' select'"
-              />
-            }
-          </div>
-        </section>
-
-        <section class="pui-doc-section" id="code-example" aria-labelledby="code-title">
-          <h2 id="code-title">Code Example</h2>
-          <pui-doc-code-block [tabs]="basicExampleTabs" />
-        </section>
       }
 
       @case ('examples') {
         <section class="pui-doc-section" id="examples" aria-labelledby="examples-title">
           <p class="pui-eyebrow">Examples</p>
           <h2 id="examples-title">Common patterns</h2>
-          <div class="pui-example-list">
-            @for (example of examples; track example.title) {
-              <article class="pui-code-example">
-                <div class="pui-code-example__preview">
-                  <pui-select
-                    class="pui-select-preview"
-                    [value]="selectedFramework()"
-              (valueChange)="selectedFramework.set($event)"
-                    [options]="example.virtualScroll ? largeOptions : example.multiple ? countryOptions : frameworkOptions"
-                    [searchable]="example.searchable ?? false"
-                    [multiple]="example.multiple ?? false"
-                    [virtualScroll]="example.virtualScroll ?? false"
-                    [clearable]="example.clearable ?? false"
-                    [loading]="example.loading ?? false"
-                    [placeholder]="example.title"
-                  />
-                </div>
-                <div>
-                  <h3>{{ example.title }}</h3>
-                  <p>{{ example.description }}</p>
-                  <pui-doc-code-block [code]="example.code" language="html" />
-                </div>
-              </article>
+          <div class="pui-doc-examples">
+            @for (example of examples; track example.title; let i = $index) {
+              <pui-doc-example
+                [exampleId]="'select-example-' + i"
+                [title]="example.title"
+                [description]="example.description"
+                [htmlCode]="example.code"
+                [hideTs]="true"
+              >
+                <pui-select
+                  class="pui-select-preview"
+                  [value]="selectedFramework()"
+                  (valueChange)="selectedFramework.set($event)"
+                  [options]="example.virtualScroll ? largeOptions : example.multiple ? countryOptions : frameworkOptions"
+                  [searchable]="example.searchable ?? false"
+                  [multiple]="example.multiple ?? false"
+                  [virtualScroll]="example.virtualScroll ?? false"
+                  [clearable]="example.clearable ?? false"
+                  [loading]="example.loading ?? false"
+                  [placeholder]="example.title"
+                />
+              </pui-doc-example>
             }
           </div>
         </section>
@@ -121,8 +127,14 @@
             The trigger label is always derived from the current value — never duplicated internally.
           </p>
 
-          <article class="pui-code-example">
-            <div class="pui-code-example__preview">
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="select-declarative"
+              title="Declarative API"
+              description="Project options as pui-option children instead of an options array."
+              [htmlCode]="declarativeExample"
+              [hideTs]="true"
+            >
               <pui-select
                 class="pui-select-preview"
                 [value]="selectedFramework()"
@@ -134,15 +146,15 @@
                 <pui-option value="react">React</pui-option>
                 <pui-option value="vue">Vue</pui-option>
               </pui-select>
-            </div>
-            <div>
-              <h3>Declarative API</h3>
-              <pui-doc-code-block [code]="declarativeExample" language="html" />
-            </div>
-          </article>
+            </pui-doc-example>
 
-          <article class="pui-code-example">
-            <div class="pui-code-example__preview">
+            <pui-doc-example
+              exampleId="select-multiselect"
+              title="Multiselect"
+              description="Select multiple values with chip display."
+              [htmlCode]="multiExample"
+              [hideTs]="true"
+            >
               <pui-select
                 class="pui-select-preview"
                 [value]="selectedFrameworks()"
@@ -155,15 +167,15 @@
                 <pui-option value="react">React</pui-option>
                 <pui-option value="vue">Vue</pui-option>
               </pui-select>
-            </div>
-            <div>
-              <h3>Multiselect</h3>
-              <pui-doc-code-block [code]="multiExample" language="html" />
-            </div>
-          </article>
+            </pui-doc-example>
 
-          <article class="pui-code-example">
-            <div class="pui-code-example__preview">
+            <pui-doc-example
+              exampleId="select-ngmodel"
+              title="ngModel"
+              description="Two-way bind with template-driven forms."
+              [htmlCode]="ngModelExample"
+              [hideTs]="true"
+            >
               <pui-select
                 class="pui-select-preview"
                 [(ngModel)]="ngModelFramework"
@@ -171,15 +183,15 @@
                 clearable
                 placeholder="ngModel"
               />
-            </div>
-            <div>
-              <h3>ngModel</h3>
-              <pui-doc-code-block [code]="ngModelExample" language="html" />
-            </div>
-          </article>
+            </pui-doc-example>
 
-          <article class="pui-code-example">
-            <div class="pui-code-example__preview">
+            <pui-doc-example
+              exampleId="select-reactive-form"
+              title="Reactive forms"
+              description="Integrate with FormControl via formControlName."
+              [htmlCode]="reactiveFormExample"
+              [hideTs]="true"
+            >
               <form [formGroup]="reactiveForm">
                 <pui-select
                   class="pui-select-preview"
@@ -189,19 +201,15 @@
                   placeholder="Reactive form"
                 />
               </form>
-            </div>
-            <div>
-              <h3>Reactive forms</h3>
-              <pui-doc-code-block [code]="reactiveFormExample" language="html" />
-            </div>
-          </article>
+            </pui-doc-example>
 
-          <article class="pui-code-example">
-            <div>
-              <h3>Signal state</h3>
-              <pui-doc-code-block [code]="signalExample" language="typescript" />
-            </div>
-          </article>
+            <pui-doc-example
+              exampleId="select-signal"
+              title="Signal state"
+              description="Drive selection from a signal without duplicating internal state."
+              [tabs]="signalExampleTabs"
+            />
+          </div>
         </section>
       }
 
@@ -228,17 +236,15 @@
         <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
           <p class="pui-eyebrow">Theming</p>
           <h2 id="theming-title">CSS variables</h2>
-          <div class="pui-doc-flow pui-doc-flow--xl">
-            <p>Customize appearance without modifying component source using semantic tokens.</p>
-            <div>
-              <h3>Global tokens</h3>
-              <pui-doc-code-block [code]="themeCode" language="scss" filename="select.theme.scss" />
-            </div>
-            <div>
-              <h3>Component override</h3>
-              <pui-doc-code-block [code]="customThemeCode" language="scss" filename="select.override.scss" />
-            </div>
-            <div class="pui-preview-row">
+          <p>Customize appearance without modifying component source using semantic tokens.</p>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="select-theming-global"
+              title="Global tokens"
+              description="Override semantic select tokens at the theme layer."
+              [scssCode]="themeCode"
+              [hideTs]="true"
+            >
               <pui-select
                 class="pui-select-preview"
                 [options]="frameworkOptions"
@@ -246,7 +252,15 @@
                 clearable
                 placeholder="Themed select preview"
               />
-            </div>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="select-theming-override"
+              title="Component override"
+              description="Scope token overrides to a single select instance."
+              [scssCode]="customThemeCode"
+              [hideTs]="true"
+            />
           </div>
         </section>
       }
@@ -284,11 +298,33 @@
               query payloads — not the full options array — to minimize serialization cost.
             </p>
 
-            <pui-doc-code-block
-              [code]="performanceExample"
-              language="html"
-              filename="select-performance.component.html"
-            />
+            <div class="pui-doc-examples">
+              <pui-doc-example
+                exampleId="select-performance-code"
+                title="Worker search setup"
+                description="Combine virtualScroll and useWorker for large datasets."
+                [htmlCode]="performanceExample"
+                [hideTs]="true"
+              />
+
+              <pui-doc-example
+                exampleId="select-performance-preview"
+                title="Live preview"
+                description="10,000 options with worker-backed search."
+              >
+                <pui-select
+                  class="pui-select-preview"
+                  [options]="largeOptions"
+                  [value]="selectedFramework()"
+                  (valueChange)="selectedFramework.set($event)"
+                  searchable
+                  virtualScroll
+                  useWorker
+                  clearable
+                  placeholder="10,000 options — worker search"
+                />
+              </pui-doc-example>
+            </div>
 
             <div>
               <h3>Implementation notes</h3>
@@ -299,20 +335,6 @@
                 <li>Automatic main-thread fallback when workers are unavailable</li>
                 <li>Fixed itemHeight for predictable virtual scroll measurements</li>
               </ul>
-            </div>
-
-            <div class="pui-preview-row">
-              <pui-select
-                class="pui-select-preview"
-                [options]="largeOptions"
-                [value]="selectedFramework()"
-                (valueChange)="selectedFramework.set($event)"
-                searchable
-                virtualScroll
-                useWorker
-                clearable
-                placeholder="10,000 options — worker search"
-              />
             </div>
           </div>
         </section>
@@ -366,8 +388,30 @@
             <p style="margin-top: var(--pui-space-sm); color: var(--pui-muted); font-size: var(--pui-font-size-sm);">
               Value: {{ playgroundValue() | json }}
             </p>
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="select-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-select
+              class="pui-select-preview"
+              [options]="playgroundOptions()"
+              [(value)]="playgroundValue"
+              [size]="playgroundSize()"
+              [searchable]="playgroundSearchable()"
+              [multiple]="playgroundMultiple()"
+              [virtualScroll]="playgroundVirtualScroll()"
+              [useWorker]="playgroundUseWorker()"
+              [fuzzySearch]="playgroundFuzzySearch()"
+              [clearable]="playgroundClearable()"
+              [disabled]="playgroundDisabled()"
+              placeholder="Playground select"
+            />
+          </pui-doc-example>
         </section>
       }
     }

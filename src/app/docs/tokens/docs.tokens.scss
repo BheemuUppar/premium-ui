@@ -4,15 +4,26 @@
 
 @mixin pui-doc-tokens {
   --pui-doc-content-max: 72rem;
-  --pui-doc-reading-max: 42rem;
-  --pui-doc-section-gap: var(--pui-space-8);
+  --pui-doc-reading-max: 70ch;
+  --pui-doc-prose-line-height: 1.7;
+
+  /* Vertical rhythm */
+  --pui-doc-section-gap: 3rem;
+  --pui-doc-subsection-gap: 1.75rem;
+  --pui-doc-subsection-gap-lg: 2rem;
+  --pui-doc-hero-gap: 2.5rem;
+  --pui-doc-tab-gap: 2.5rem;
+  --pui-doc-examples-gap: 1.75rem;
+  --pui-doc-examples-top: 2rem;
+  --pui-doc-example-padding: var(--pui-space-xl);
+  --pui-doc-example-inner-gap: var(--pui-space-lg);
   --pui-doc-showcase-radius: var(--pui-radius-lg);
 
   /* Surface layering */
   --pui-doc-surface: var(--pui-elevation-1);
   --pui-doc-surface-raised: var(--pui-elevation-2);
   --pui-doc-surface-muted: var(--pui-elevation-3);
-  --pui-doc-border: var(--pui-color-border-subtle);
+  --pui-doc-border: var(--pui-color-border);
   --pui-doc-border-strong: var(--pui-color-border-strong);
 
   /* IDE code surfaces — always dark */
@@ -20,21 +31,22 @@
   --pui-doc-code-header-bg: var(--pui-ide-surface);
   --pui-doc-code-border: var(--pui-ide-border);
   --pui-doc-code-text: var(--pui-ide-text);
-  --pui-doc-code-muted: #94a3b8;
-  --pui-doc-code-tag: #7ee787;
-  --pui-doc-code-attr: #d2a8ff;
-  --pui-doc-code-string: #a5d6ff;
-  --pui-doc-code-binding: #79c0ff;
-  --pui-doc-code-event: #ff7b72;
-  --pui-doc-code-twoway: #d2a8ff;
-  --pui-doc-code-directive: #ff7b72;
-  --pui-doc-code-comment: #8b949e;
-  --pui-doc-code-keyword: #ff7b72;
-  --pui-doc-code-decorator: #d2a8ff;
-  --pui-doc-code-type: #79c0ff;
-  --pui-doc-code-function: #d2a8ff;
-  --pui-doc-code-import: #c9d1d9;
-  --pui-doc-code-variable: #ffa657;
+  --pui-doc-code-line-height: var(--pui-line-height-code);
+  --pui-doc-code-muted: #a3b2c7;
+  --pui-doc-code-tag: #86efac;
+  --pui-doc-code-attr: #d8b4fe;
+  --pui-doc-code-string: #b9e0ff;
+  --pui-doc-code-binding: #93c5fd;
+  --pui-doc-code-event: #fca5a5;
+  --pui-doc-code-twoway: #d8b4fe;
+  --pui-doc-code-directive: #fca5a5;
+  --pui-doc-code-comment: #9aa7b8;
+  --pui-doc-code-keyword: #fca5a5;
+  --pui-doc-code-decorator: #d8b4fe;
+  --pui-doc-code-type: #93c5fd;
+  --pui-doc-code-function: #d8b4fe;
+  --pui-doc-code-import: #d5dee8;
+  --pui-doc-code-variable: #fdba74;
 
   /* Semantic doc accents */
   --pui-doc-callout-info-bg: var(--pui-color-primary-soft);
@@ -44,9 +56,9 @@
   --pui-doc-callout-success-bg: color-mix(in srgb, var(--pui-color-success) 12%, var(--pui-elevation-1));
   --pui-doc-callout-success-border: color-mix(in srgb, var(--pui-color-success) 30%, transparent);
 
-  --pui-doc-table-row-hover: var(--pui-color-primary-soft);
+  --pui-doc-table-row-hover: color-mix(in srgb, var(--pui-color-primary) 16%, var(--pui-elevation-1));
   --pui-doc-table-stripe: var(--pui-elevation-3);
-  --pui-doc-badge-type-bg: var(--pui-color-primary-soft);
+  --pui-doc-badge-type-bg: color-mix(in srgb, var(--pui-color-primary) 14%, var(--pui-elevation-1));
   --pui-doc-badge-type-text: var(--pui-color-primary);
   --pui-doc-badge-default-bg: var(--pui-elevation-3);
   --pui-doc-badge-bool-bg: color-mix(in srgb, var(--pui-color-success) 14%, var(--pui-elevation-1));

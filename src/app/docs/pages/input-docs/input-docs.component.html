@@ -29,27 +29,30 @@
       @case ('overview') {
         <section class="pui-doc-section" id="overview" aria-labelledby="overview-title">
           <h2 id="overview-title">Overview</h2>
-          <p>Use the Input component wherever users need to type text, numbers, email addresses, or search queries.</p>
-          <div class="pui-preview-row">
-            <pui-input placeholder="Type here"></pui-input>
-          </div>
-        </section>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="input-basic"
+              title="Basic input"
+              description="Use the Input component wherever users need to type text, numbers, email addresses, or search queries."
+              [htmlCode]="overviewExampleCode"
+              [hideTs]="true"
+            >
+              <pui-input placeholder="Type here"></pui-input>
+            </pui-doc-example>
 
-        <section class="pui-doc-section" id="states" aria-labelledby="states-title">
-          <h3 id="states-title">States</h3>
-          <div class="pui-showcase-grid">
-            <div class="pui-example-card">
-              <div class="pui-example-card__preview"><pui-input placeholder="Default"></pui-input></div>
-              <div class="pui-example-card__meta"><strong>Default</strong></div>
-            </div>
-            <div class="pui-example-card">
-              <div class="pui-example-card__preview"><pui-input placeholder="Disabled" [disabled]="true"></pui-input></div>
-              <div class="pui-example-card__meta"><strong>Disabled</strong></div>
-            </div>
-            <div class="pui-example-card">
-              <div class="pui-example-card__preview"><pui-input placeholder="Read only" [readOnly]="true" value="Read only"></pui-input></div>
-              <div class="pui-example-card__meta"><strong>Read only</strong></div>
-            </div>
+            <pui-doc-example
+              exampleId="input-states"
+              title="States"
+              description="Default, disabled, and read-only presentation."
+              [htmlCode]="statesExampleCode"
+              [hideTs]="true"
+            >
+              <div class="pui-doc-inline-preview">
+                <pui-input placeholder="Default"></pui-input>
+                <pui-input placeholder="Disabled" [disabled]="true"></pui-input>
+                <pui-input placeholder="Read only" [readOnly]="true" value="Read only"></pui-input>
+              </div>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -58,17 +61,16 @@
         <section class="pui-doc-section" id="examples" aria-labelledby="examples-title">
           <p class="pui-eyebrow">Examples</p>
           <h2 id="examples-title">Common input types</h2>
-          <div class="pui-example-list">
+          <div class="pui-doc-examples">
             @for (type of inputTypes; track type) {
-              <article class="pui-code-example">
-                <div class="pui-code-example__preview">
-                  <pui-input [type]="type" placeholder="{{ type }}"></pui-input>
-                </div>
-                <div>
-                  <h3>{{ type }}</h3>
-                  <pui-doc-code-block [code]="inputTypeExample(type)" language="html" />
-                </div>
-              </article>
+              <pui-doc-example
+                [exampleId]="'input-type-' + type"
+                [title]="type"
+                [htmlCode]="inputTypeExample(type)"
+                [hideTs]="true"
+              >
+                <pui-input [type]="type" [placeholder]="type"></pui-input>
+              </pui-doc-example>
             }
           </div>
         </section>
@@ -96,10 +98,15 @@
         <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
           <p class="pui-eyebrow">Theming</p>
           <h2 id="theming-title">Theme tokens</h2>
-          <div class="pui-doc-flow">
-            <p>Override the input colors using the design token variables below.</p>
-            <pui-doc-code-block [code]="themeCode" language="scss" filename="input.theme.scss" />
-          </div>
+          <pui-doc-example
+            exampleId="input-theming"
+            title="Theme tokens"
+            description="Override the input colors using the design token variables below."
+            [scssCode]="themeCode"
+            [hideTs]="true"
+          >
+            <pui-input placeholder="Themed input"></pui-input>
+          </pui-doc-example>
         </section>
       }
 
@@ -158,8 +165,23 @@
                 [readOnly]="playgroundReadOnly()"
               ></pui-input>
             </div>
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="input-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-input
+              [type]="playgroundType()"
+              [size]="playgroundSize()"
+              [placeholder]="playgroundPlaceholder()"
+              [disabled]="playgroundDisabled()"
+              [readOnly]="playgroundReadOnly()"
+            ></pui-input>
+          </pui-doc-example>
         </section>
       }
     }

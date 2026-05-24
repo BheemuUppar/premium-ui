@@ -4,7 +4,7 @@
 }
 
 .pui-doc-section__eyebrow {
-  margin: 0 0 var(--pui-space-xs);
+  margin: 0 0 var(--pui-space-sm);
   color: var(--pui-color-primary);
   font-size: var(--pui-font-size-xs);
   font-weight: var(--pui-font-weight-semibold);
@@ -23,14 +23,14 @@
 
 .pui-doc-section__description {
   max-width: var(--pui-doc-reading-max);
-  margin: var(--pui-space-sm) 0 0;
+  margin: var(--pui-space-3) 0 0;
   color: var(--pui-color-text-muted);
-  font-size: var(--pui-font-size-small);
-  line-height: var(--pui-line-height-body);
+  font-size: var(--pui-font-size-body);
+  line-height: var(--pui-doc-prose-line-height);
 }
 
 .pui-doc-section__content {
   display: grid;
-  gap: var(--pui-space-md);
-  margin-top: var(--pui-space-md);
+  gap: var(--pui-doc-subsection-gap);
+  margin-top: var(--pui-doc-subsection-gap-lg);
 }

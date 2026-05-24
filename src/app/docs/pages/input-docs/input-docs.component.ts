@@ -12,7 +12,7 @@ import type { PuiSize } from '../../../../premium-ui/types/common.types';
 import {
   PuiDocApiTableComponent,
   PuiDocA11yListComponent,
-  PuiDocCodeBlockComponent,
+  PuiDocExampleComponent,
   PuiDocKeyboardShortcutsComponent,
   buildPlaygroundTsExample,
   toSelectOptions,
@@ -24,7 +24,7 @@ interface PuiApiRow extends PuiDocApiRow {}
 
 @Component({
   selector: 'app-input-docs',
-  imports: [PuiInputComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocCodeBlockComponent, PuiDocKeyboardShortcutsComponent, RouterLink, RouterLinkActive],
+  imports: [PuiInputComponent, PuiSelectComponent, PuiCheckboxComponent, PuiDocApiTableComponent, PuiDocA11yListComponent, PuiDocExampleComponent, PuiDocKeyboardShortcutsComponent, RouterLink, RouterLinkActive],
   templateUrl: './input-docs.component.html',
   styleUrl: './input-docs.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -64,6 +64,12 @@ export class InputDocsComponent {
     { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables user interaction.' },
     { name: 'readOnly', type: 'boolean', defaultValue: 'false', description: 'Makes the input read-only.' }
   ];
+
+  protected readonly overviewExampleCode = '<pui-input placeholder="Type here"></pui-input>';
+
+  protected readonly statesExampleCode = `<pui-input placeholder="Default"></pui-input>
+<pui-input placeholder="Disabled" [disabled]="true"></pui-input>
+<pui-input placeholder="Read only" [readOnly]="true" value="Read only"></pui-input>`;
 
   protected readonly themeCode = `:root {
   --pui-input-background: #ffffff;

@@ -25,48 +25,75 @@
         <section class="pui-doc-section">
           <h2>Overview</h2>
           <p>Elegant track-and-thumb switches with spring motion, iOS variant, and full forms support.</p>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-switch-preview-stack">
-              <pui-switch [(checked)]="notifications" label="Push notifications" description="Receive alerts on this device" />
-            </div>
-            <pui-doc-code-block [code]="basicExample" language="html" />
-          </div>
+          <pui-doc-example
+            exampleId="switch-basic"
+            title="Basic usage"
+            description="Two-way bind checked state with optional label and description."
+            [htmlCode]="basicExample"
+            [hideTs]="true"
+          >
+            <pui-switch [(checked)]="notifications" label="Push notifications" description="Receive alerts on this device" />
+          </pui-doc-example>
         </section>
       }
 
       @case ('variants') {
         <section class="pui-doc-section">
-          <h2>Variants</h2>
-          <div class="pui-switch-preview-stack">
-            @for (variant of variants; track variant) {
-              <pui-switch [variant]="variant" [checked]="true" [label]="variant" />
-            }
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Sizes</h2>
-          <div class="pui-switch-preview-stack">
-            @for (size of sizes; track size) {
-              <pui-switch [size]="size" [checked]="true" [label]="'Size ' + size" />
-            }
+          <h2>Variants &amp; sizes</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="switch-variants"
+              title="Variants"
+              description="Visual styles including iOS, success, and danger."
+            >
+              <div class="pui-switch-preview-stack">
+                @for (variant of variants; track variant) {
+                  <pui-switch [variant]="variant" [checked]="true" [label]="variant" />
+                }
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="switch-sizes"
+              title="Sizes"
+              description="Scale track and thumb with sm, md, and lg."
+            >
+              <div class="pui-switch-preview-stack">
+                @for (size of sizes; track size) {
+                  <pui-switch [size]="size" [checked]="true" [label]="'Size ' + size" />
+                }
+              </div>
+            </pui-doc-example>
           </div>
         </section>
       }
 
       @case ('examples') {
         <section class="pui-doc-section">
-          <h2>Settings panel</h2>
-          <div class="pui-switch-settings-panel">
-            <pui-switch [(checked)]="notifications" label="Notifications" description="Product and security alerts" />
-            <pui-switch [(checked)]="darkMode" variant="ios" label="Dark mode" description="Use dark theme" />
-            <pui-switch [(checked)]="analytics" variant="soft" label="Analytics" description="Help improve the product" />
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Privacy settings</h2>
-          <div class="pui-switch-preview-stack">
-            <pui-switch [checked]="true" label="Usage analytics" description="Anonymous product analytics" />
-            <pui-switch label="Marketing cookies" description="Personalized recommendations" />
+          <h2>Examples</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="switch-settings"
+              title="Settings panel"
+              description="Stack switches for notification and preference panels."
+            >
+              <div class="pui-switch-settings-panel">
+                <pui-switch [(checked)]="notifications" label="Notifications" description="Product and security alerts" />
+                <pui-switch [(checked)]="darkMode" variant="ios" label="Dark mode" description="Use dark theme" />
+                <pui-switch [(checked)]="analytics" variant="soft" label="Analytics" description="Help improve the product" />
+              </div>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="switch-privacy"
+              title="Privacy settings"
+              description="On/off controls for consent and privacy preferences."
+            >
+              <div class="pui-switch-preview-stack">
+                <pui-switch [checked]="true" label="Usage analytics" description="Anonymous product analytics" />
+                <pui-switch label="Marketing cookies" description="Personalized recommendations" />
+              </div>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -94,34 +121,46 @@
         <section class="pui-doc-section">
           <p class="pui-eyebrow">Theming</p>
           <h2>CSS variables</h2>
-          <div class="pui-doc-flow">
-            <pui-doc-code-block [code]="themeCode" language="scss" filename="switch.theme.scss" />
-          </div>
+          <pui-doc-example
+            exampleId="switch-theming"
+            title="Theme tokens"
+            description="Override track, thumb, and focus glow via CSS custom properties."
+            [scssCode]="themeCode"
+            [hideTs]="true"
+          >
+            <pui-switch [checked]="true" label="Themed switch" />
+          </pui-doc-example>
         </section>
       }
 
       @case ('forms') {
         <section class="pui-doc-section">
-          <h2>Reactive forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-switch-preview-stack">
+          <h2>Forms integration</h2>
+          <div class="pui-doc-examples">
+            <pui-doc-example
+              exampleId="switch-reactive"
+              title="Reactive forms"
+              description="Bind switches to FormControl with formControlName."
+              [htmlCode]="reactiveExample"
+              [hideTs]="true"
+            >
               <form [formGroup]="reactiveForm" class="pui-switch-preview-stack">
                 <pui-switch formControlName="notifications" label="Notifications" />
                 <pui-switch formControlName="autoUpdates" label="Auto updates" />
               </form>
-            </div>
-            <p class="pui-doc-meta">{{ reactiveForm.value | json }}</p>
-            <pui-doc-code-block [code]="reactiveExample" language="html" />
-          </div>
-        </section>
-        <section class="pui-doc-section">
-          <h2>Signal forms</h2>
-          <div class="pui-doc-flow">
-            <div class="pui-preview-row pui-switch-preview-stack">
+              <p class="pui-doc-meta">{{ reactiveForm.value | json }}</p>
+            </pui-doc-example>
+
+            <pui-doc-example
+              exampleId="switch-signal"
+              title="Signal forms"
+              description="Control checked state from a signal."
+              [htmlCode]="signalExample"
+              [hideTs]="true"
+            >
               <pui-switch [checked]="signalEnabled()" (checkedChange)="signalEnabled.set($event)" label="Enable feature" />
-            </div>
-            <p class="pui-doc-meta">Signal: {{ signalEnabled() }}</p>
-            <pui-doc-code-block [code]="signalExample" language="html" />
+              <p class="pui-doc-meta">Signal: {{ signalEnabled() }}</p>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -131,9 +170,13 @@
           <h2>Keyboard navigation</h2>
           <div class="pui-doc-flow pui-doc-flow--lg">
             <pui-doc-keyboard-shortcuts [shortcuts]="keyboardShortcuts" />
-            <div class="pui-preview-row">
+            <pui-doc-example
+              exampleId="switch-keyboard"
+              title="Interactive demo"
+              description="Press Space or Enter to toggle when focused."
+            >
               <pui-switch [(checked)]="notifications" label="Try keyboard toggle" />
-            </div>
+            </pui-doc-example>
           </div>
         </section>
       }
@@ -179,8 +222,27 @@
                 description="Interactive playground preview"
               />
             </div>
-            <pui-doc-code-block [tabs]="playgroundExampleTabs()" />
           </div>
+
+          <pui-doc-example
+            exampleId="switch-playground-code"
+            title="Generated snippet"
+            description="Copy or expand the live playground output."
+            class="pui-doc-playground-code"
+            [tabs]="playgroundExampleTabs()"
+          >
+            <pui-switch
+              [checked]="playgroundChecked()"
+              (checkedChange)="playgroundChecked.set($event)"
+              [variant]="playgroundVariant()"
+              [size]="playgroundSize()"
+              [disabled]="playgroundDisabled()"
+              [loading]="playgroundLoading()"
+              [invalid]="playgroundInvalid()"
+              label="Enable notifications"
+              description="Interactive playground preview"
+            />
+          </pui-doc-example>
         </section>
       }
     }

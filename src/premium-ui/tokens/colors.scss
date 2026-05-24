@@ -3,7 +3,7 @@
   color-scheme: light;
 
   /* ── Surface system ── */
-  --pui-color-bg: #f8fafc;
+  --pui-color-bg: #f7f8fb;
   --pui-color-surface: #ffffff;
   --pui-color-surface-elevated: #fcfcfd;
   --pui-color-surface-muted: #f1f5f9;
@@ -11,20 +11,20 @@
 
   /* ── Text hierarchy ── */
   --pui-color-text: #0f172a;
-  --pui-color-text-muted: #475569;
+  --pui-color-text-muted: #526277;
   --pui-color-text-subtle: #64748b;
   --pui-color-text-disabled: #94a3b8;
 
   /* ── Borders ── */
-  --pui-color-border: #e2e8f0;
-  --pui-color-border-subtle: #edf2f7;
-  --pui-color-border-strong: #cbd5e1;
+  --pui-color-border: #dbe3ee;
+  --pui-color-border-subtle: #e7edf5;
+  --pui-color-border-strong: #c5d0df;
 
   /* ── Brand & status ── */
   --pui-color-primary: #635bff;
   --pui-color-primary-hover: #554cf0;
   --pui-color-primary-active: #4338ca;
-  --pui-color-primary-soft: rgba(99, 91, 255, 0.12);
+  --pui-color-primary-soft: rgba(99, 91, 255, 0.14);
 
   --pui-color-accent: #06b6d4;
   --pui-color-success: #16a34a;
@@ -47,17 +47,17 @@
   --pui-elevation-4: var(--pui-color-surface-subtle);
 
   /* ── Interaction ── */
-  --pui-focus-ring-color: rgba(99, 91, 255, 0.35);
+  --pui-focus-ring-color: rgba(99, 91, 255, 0.42);
   --pui-focus-ring-width: 2px;
   --pui-focus-ring-offset: 2px;
-  --pui-hover-overlay: rgba(15, 23, 42, 0.04);
-  --pui-active-overlay: rgba(15, 23, 42, 0.06);
+  --pui-hover-overlay: rgba(15, 23, 42, 0.05);
+  --pui-active-overlay: rgba(15, 23, 42, 0.07);
 
   /* ── IDE surfaces (theme-independent) ── */
-  --pui-ide-bg: #111827;
-  --pui-ide-surface: #172033;
-  --pui-ide-border: #334155;
-  --pui-ide-text: #e2e8f0;
+  --pui-ide-bg: #0f1419;
+  --pui-ide-surface: #151b27;
+  --pui-ide-border: #2d3748;
+  --pui-ide-text: #e8edf5;
 
   /* ── Legacy aliases ── */
   --pui-color-background: var(--pui-color-bg);
@@ -86,5 +86,5 @@
   --pui-docs-chrome-text: var(--pui-color-text);
   --pui-docs-chrome-muted: var(--pui-color-text-muted);
   --pui-docs-chrome-border: var(--pui-color-border-subtle);
-  --pui-docs-active-soft: var(--pui-color-primary-soft);
+  --pui-docs-active-soft: color-mix(in srgb, var(--pui-color-primary) 14%, var(--pui-elevation-1));
 }
