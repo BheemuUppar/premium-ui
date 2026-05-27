@@ -147,10 +147,13 @@ function highlightHtml(source: string): string {
   code = protect(code, store, /\[\([^)]+\)\]/g, (match) => wrap('tok-binding tok-binding--twoway', match));
   code = protect(code, store, /\([^)]+\)/g, (match) => wrap('tok-binding tok-binding--event', match));
   code = protect(code, store, /\[[^\]]+\]/g, (match) => wrap('tok-binding tok-binding--property', match));
+  code = protect(code, store, /(@(?:if|for|switch|defer|else|let|empty|placeholder|loading|error|host)\b)/g, (match) =>
+    wrap('tok-directive', match)
+  );
   code = protect(
     code,
     store,
-    /(\*ng[A-Za-z]+|@(?:if|for|switch|defer|else|let|empty|placeholder|loading|error|host)\b|#\w+)/g,
+    /(\*ng[A-Za-z]+|#\w+)/g,
     (match) => wrap('tok-directive', match)
   );
   code = protect(code, store, /&lt;\/?[\w-]+/g, (match) => wrap('tok-tag', match));
@@ -184,6 +187,22 @@ function highlightScss(source: string): string {
   return restore(code, store);
 }
 
+function highlightBash(source: string): string {
+  const store: string[] = [];
+  let code = source;
+
+  code = protect(code, store, /(#.*)$/gm, (match) => wrap('tok-comment', match));
+  code = protect(code, store, /\b(npm|yarn|pnpm|npx|install|run)\b/g, (match) => wrap('tok-keyword', match));
+  code = protect(
+    code,
+    store,
+    /(@[\w-/]+)/g,
+    (match) => wrap('tok-string', match)
+  );
+
+  return restore(code, store);
+}
+
 function highlightByLanguage(escaped: string, language: DocSyntaxLanguage): string {
   const lang = language.toLowerCase();
 
@@ -197,6 +216,10 @@ function highlightByLanguage(escaped: string, language: DocSyntaxLanguage): stri
     case 'scss':
     case 'css':
       return highlightScss(escaped);
+    case 'bash':
+    case 'shell':
+    case 'sh':
+      return highlightBash(escaped);
     default:
       return escaped;
   }

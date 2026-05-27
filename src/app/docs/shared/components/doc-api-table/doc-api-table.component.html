@@ -34,7 +34,12 @@
               }
             </td>
           }
-          <td>{{ row.description }}</td>
+          <td>
+            <span class="pui-doc-api-table__description">{{ row.description }}</span>
+            @if (row.example) {
+              <code class="pui-doc-api-table__example">{{ row.example }}</code>
+            }
+          </td>
         </tr>
       }
     </tbody>

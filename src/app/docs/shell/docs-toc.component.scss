@@ -1,8 +1,9 @@
 .pui-toc {
   position: sticky;
-  top: 5.5rem;
+  top: 4.25rem;
   align-self: start;
-  max-height: calc(100dvh - 6rem);
+  max-height: calc(100dvh - 4.25rem);
+  padding-top: var(--pui-space-xl);
 }
 
 .pui-toc__mobile-toggle {

@@ -88,3 +88,19 @@
   background: var(--pui-doc-badge-bool-bg);
   color: var(--pui-doc-badge-bool-text);
 }
+
+.pui-doc-api-table__description {
+  display: block;
+}
+
+.pui-doc-api-table__example {
+  display: block;
+  margin-top: var(--pui-space-xs);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--pui-radius-sm);
+  background: var(--pui-doc-badge-type-bg);
+  color: var(--pui-doc-badge-type-text);
+  font-family: var(--pui-font-family-mono);
+  font-size: var(--pui-font-size-xs);
+  white-space: nowrap;
+}

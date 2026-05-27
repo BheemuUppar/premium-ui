@@ -237,6 +237,26 @@ export const DOCS_COMPONENT_SEO: Readonly<Record<string, PuiDocsComponentSeo>> =
       { label: 'Tabs', route: ['/docs/components/tabs/overview'] },
     ],
   },
+  table: {
+    slug: 'table',
+    name: 'Table',
+    titlePrefix: 'Angular Data Grid',
+    keywords: 'angular data grid, angular table, virtual scroll table, tanstack table alternative, premium ui table',
+    tabs: tabs(
+      'Enterprise Angular data grid with simple string columns, advanced column config, virtualization, worker search, export, and selection.',
+      'Table examples — simple columns, badges, currency, custom action templates, worker mode, and virtual scroll.',
+      'pui-table API — data, columns, sorting, filtering, pagination, selection, export, and worker inputs.',
+      'Data grid accessibility — grid semantics, aria-sort, keyboard sorting, and accessible selection.',
+      'Table theming — row height, header, borders, and sticky column shadows via CSS variables.',
+      'Interactive data grid playground — virtualization, worker mode, selection, and export controls.',
+      'Angular Data Grid'
+    ),
+    relatedLinks: [
+      { label: 'Select', route: ['/docs/components/select/overview'] },
+      { label: 'Checkbox', route: ['/docs/components/checkbox/overview'] },
+      { label: 'Card', route: ['/docs/components/card/overview'] },
+    ],
+  },
 };
 
 export const DOCS_FOUNDATION_SEO: Readonly<Record<string, PuiDocsSeoTabMeta>> = {

@@ -1,0 +1,18 @@
+<div class="pui-doc-theme-tokens">
+  <div class="pui-doc-theme-tokens__grid">
+    @for (token of tokens(); track token.name) {
+      <article class="pui-doc-theme-token">
+        <div class="pui-doc-theme-token__preview" [style.background]="'var(' + token.name + ', ' + token.defaultValue + ')'"></div>
+        <div class="pui-doc-theme-token__body">
+          <code class="pui-doc-theme-token__name">{{ token.name }}</code>
+          <p class="pui-doc-theme-token__default">Default: <code>{{ token.defaultValue }}</code></p>
+          <p class="pui-doc-theme-token__description">{{ token.description }}</p>
+        </div>
+      </article>
+    }
+  </div>
+
+  @if (scssExample()) {
+    <pui-doc-code-block language="scss" filename="table.component.scss" [code]="scssExample()" />
+  }
+</div>

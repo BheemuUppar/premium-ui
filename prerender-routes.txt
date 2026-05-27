@@ -60,6 +60,12 @@
 /docs/components/toast/accessibility
 /docs/components/toast/theming
 /docs/components/toast/playground
+/docs/components/table/overview
+/docs/components/table/examples
+/docs/components/table/api
+/docs/components/table/accessibility
+/docs/components/table/theming
+/docs/components/table/playground
 /docs/foundations/colors
 /docs/foundations/typography
 /docs/foundations/spacing

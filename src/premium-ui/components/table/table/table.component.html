@@ -1,0 +1,193 @@
+<div
+  class="pui-table"
+  [class.pui-table--compact]="density() === 'compact'"
+  [class.pui-table--spacious]="density() === 'spacious'"
+  [style.height.px]="shellHeightPx()"
+  role="region"
+  [attr.aria-busy]="loading()"
+  [attr.aria-label]="ariaLabel()"
+>
+  @if (showToolbarSection()) {
+    <pui-table-toolbar
+      [searchQuery]="searchQuery()"
+      [showSearch]="toolbarConfig().search && searchable()"
+      [exportable]="toolbarConfig().export ? exportable() : false"
+      [showExport]="toolbarConfig().export"
+      (searchChange)="onSearchChange($event)"
+      (exportClick)="onExport($event)"
+    />
+  }
+
+  <div class="pui-table-shell">
+    <div
+      #scrollContainer
+      class="pui-table-scroll"
+      (wheel)="onScrollWheel($event)"
+    >
+      <div
+        class="pui-table-grid"
+        role="presentation"
+        [style.--pui-table-grid-columns]="gridTemplateColumns()"
+      >
+        <div
+          class="pui-table-head"
+          role="rowgroup"
+          [class.pui-table-head--sticky]="stickyHeader()"
+        >
+          <div class="pui-table-row pui-table-row--head" role="row">
+            @for (column of visibleColumns(); track column.key) {
+              <div
+                class="pui-table-cell pui-table-cell--head"
+                role="columnheader"
+                [class.pui-table-cell--sortable]="column.sortable"
+                [class.pui-table-cell--center]="column.align === 'center'"
+                [class.pui-table-cell--end]="column.align === 'end'"
+                [class.pui-table-cell--sticky-left]="column.sticky === 'left'"
+                [class.pui-table-cell--sticky-right]="column.sticky === 'right'"
+                [attr.aria-sort]="column.sortable ? ariaSort(column.key) : null"
+                [tabindex]="column.sortable ? 0 : -1"
+                (click)="column.sortable ? toggleSort(column.key) : null"
+                (keydown)="onHeaderKeydown($event, column.key)"
+              >
+                @if (headerTemplateFor(column.key); as headerTpl) {
+                  <ng-container *ngTemplateOutlet="headerTpl; context: { column }" />
+                } @else if (isSelectionColumn(column)) {
+                  <pui-checkbox
+                    [checked]="allPageSelected()"
+                    [indeterminate]="partialPageSelected()"
+                    ariaLabel="Select all rows on page"
+                    (checkedChange)="toggleSelectAll($event)"
+                  />
+                } @else {
+                  <span class="pui-table-cell__label">{{ column.label }}</span>
+                }
+
+                @if (column.sortable && sortDirection(column.key); as direction) {
+                  <span class="pui-table-cell__sort" aria-hidden="true">{{ direction === 'asc' ? '↑' : '↓' }}</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="pui-table-body" role="rowgroup">
+          @if (loading()) {
+            <div class="pui-table-state pui-table-state--loading" role="status">
+              @for (skeleton of skeletonRows; track skeleton) {
+                <div class="pui-table-row pui-table-row--skeleton">
+                  @for (column of visibleColumns(); track column.key) {
+                    <div class="pui-table-cell pui-table-cell--skeleton"></div>
+                  }
+                </div>
+              }
+              <span>Loading data…</span>
+            </div>
+          } @else if (!processedIndices().length) {
+            <div class="pui-table-state pui-table-state--empty" role="status">
+              <strong>{{ emptyTitle() }}</strong>
+              <span>{{ emptyDescription() }}</span>
+            </div>
+          } @else if (virtualScroll()) {
+            <cdk-virtual-scroll-viewport
+              class="pui-table-virtual"
+              [itemSize]="rowHeight()"
+              [style.height.px]="bodyScrollHeightPx()"
+            >
+              <div
+                *cdkVirtualFor="let rowIndex of pagedIndices(); trackBy: trackRowIndex"
+                class="pui-table-row"
+                role="row"
+                [class.pui-table-row--selected]="isRowSelected(rowIndex)"
+                [style.min-height.px]="rowHeight()"
+                (click)="onRowClick(rowIndex)"
+              >
+                @for (column of visibleColumns(); track column.key) {
+                  <div
+                    class="pui-table-cell"
+                    role="gridcell"
+                    [class.pui-table-cell--center]="column.align === 'center'"
+                    [class.pui-table-cell--end]="column.align === 'end'"
+                    [class.pui-table-cell--numeric]="column.type === 'number' || column.type === 'currency'"
+                    [class.pui-table-cell--sticky-left]="column.sticky === 'left'"
+                    [class.pui-table-cell--sticky-right]="column.sticky === 'right'"
+                  >
+                    <ng-container *ngTemplateOutlet="renderCell; context: { rowIndex, column }" />
+                  </div>
+                }
+              </div>
+            </cdk-virtual-scroll-viewport>
+          } @else {
+            @for (rowIndex of pagedIndices(); track trackRowIndex($index, rowIndex)) {
+              <div
+                class="pui-table-row"
+                role="row"
+                [class.pui-table-row--selected]="isRowSelected(rowIndex)"
+                [style.min-height.px]="rowHeight()"
+                (click)="onRowClick(rowIndex)"
+              >
+                @for (column of visibleColumns(); track column.key) {
+                  <div
+                    class="pui-table-cell"
+                    role="gridcell"
+                    [class.pui-table-cell--center]="column.align === 'center'"
+                    [class.pui-table-cell--end]="column.align === 'end'"
+                    [class.pui-table-cell--numeric]="column.type === 'number' || column.type === 'currency'"
+                    [class.pui-table-cell--sticky-left]="column.sticky === 'left'"
+                    [class.pui-table-cell--sticky-right]="column.sticky === 'right'"
+                  >
+                    <ng-container *ngTemplateOutlet="renderCell; context: { rowIndex, column }" />
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (paginated()) {
+    <pui-table-pagination
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [totalRows]="paginationTotalRows()"
+      (pageChange)="onPageChange($event)"
+    />
+  }
+</div>
+
+<ng-template #renderCell let-rowIndex="rowIndex" let-column="column">
+  @if (cellTemplateFor(column.key); as cellTpl) {
+    <ng-container
+      *ngTemplateOutlet="
+        cellTpl;
+        context: {
+          $implicit: getRow(rowIndex),
+          row: getRow(rowIndex),
+          value: getCellValue(rowIndex, column),
+          index: rowIndex,
+          columnKey: column.key
+        }
+      "
+    />
+  } @else {
+    @switch (column.type) {
+      @case ('selection') {
+        <pui-checkbox
+          [checked]="isRowSelected(rowIndex)"
+          [ariaLabel]="'Select row ' + (rowIndex + 1)"
+          (checkedChange)="toggleRowSelection(rowIndex, $event)"
+          (click)="$event.stopPropagation()"
+        />
+      }
+      @case ('badge') {
+        <span class="pui-table-badge pui-table-badge--{{ badgeVariant(column, getCellValue(rowIndex, column)) }}">
+          {{ formatValue(rowIndex, column) }}
+        </span>
+      }
+      @default {
+        {{ formatValue(rowIndex, column) }}
+      }
+    }
+  }
+</ng-template>

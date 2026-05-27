@@ -63,6 +63,10 @@ export const DOC_PAGE_TOC: Readonly<Record<string, TocMap>> = {
     { id: 'overview', label: 'Overview' },
     { id: 'variants', label: 'Examples' },
   ]),
+  table: standardTabs([
+    { id: 'overview', label: 'Overview' },
+    { id: 'examples', label: 'Examples' },
+  ]),
 };
 
 export function getDocPageToc(slug: string, tab: string): readonly PuiDocsTocItem[] {

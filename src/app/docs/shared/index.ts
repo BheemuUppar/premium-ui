@@ -1,3 +1,5 @@
+export * from './components/doc-theme-tokens/doc-theme-tokens.component';
+export * from './components/doc-installation/doc-installation.component';
 export * from './components/doc-related-links/doc-related-links.component';
 export * from './components/doc-example/doc-example.component';
 export * from './components/doc-layout/doc-layout.component';

@@ -1,0 +1,19 @@
+
+:host {
+  display: block;
+}
+
+.pui-doc-import {
+  display: grid;
+  gap: var(--pui-space-sm);
+  margin-bottom: var(--pui-doc-subsection-gap-lg);
+}
+
+.pui-doc-import__title {
+  margin: 0;
+  color: var(--pui-color-text-subtle);
+  font-size: var(--pui-font-size-xs);
+  font-weight: var(--pui-font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}

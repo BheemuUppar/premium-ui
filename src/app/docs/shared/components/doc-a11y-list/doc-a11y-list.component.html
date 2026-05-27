@@ -1,27 +1,48 @@
 @if (title()) {
-  <h3 class="pui-doc-a11y-table__title">{{ title() }}</h3>
+  <h3 class="pui-doc-a11y__title">{{ title() }}</h3>
 }
 
-<div class="pui-doc-a11y-table__wrap">
-  <table class="pui-doc-a11y-table__table">
-    <thead>
-      <tr>
-        <th scope="col">Requirement</th>
-        <th scope="col">Implementation</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of items(); track item.title) {
+@if (layout() === 'cards') {
+  <div class="pui-doc-a11y__groups">
+    @for (group of groupedItems(); track group.label) {
+      <section class="pui-doc-a11y__group">
+        <h4 class="pui-doc-a11y__group-title">{{ group.label }}</h4>
+        <div class="pui-doc-a11y__cards">
+          @for (item of group.entries; track item.title) {
+            <article class="pui-doc-a11y-card">
+              <h5 class="pui-doc-a11y-card__title">{{ item.title }}</h5>
+              @if (item.code) {
+                <code class="pui-doc-a11y-card__code">{{ item.code }}</code>
+              }
+              <p class="pui-doc-a11y-card__detail">{{ item.description }}</p>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  </div>
+} @else {
+  <div class="pui-doc-a11y-table__wrap">
+    <table class="pui-doc-a11y-table__table">
+      <thead>
         <tr>
-          <td class="pui-doc-a11y-table__topic">{{ item.title }}</td>
-          <td>
-            @if (item.code) {
-              <code class="pui-doc-a11y-table__code">{{ item.code }}</code>
-            }
-            <span class="pui-doc-a11y-table__detail">{{ item.description }}</span>
-          </td>
+          <th scope="col">Requirement</th>
+          <th scope="col">Implementation</th>
         </tr>
-      }
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        @for (item of items(); track item.title) {
+          <tr>
+            <td class="pui-doc-a11y-table__topic">{{ item.title }}</td>
+            <td>
+              @if (item.code) {
+                <code class="pui-doc-a11y-table__code">{{ item.code }}</code>
+              }
+              <span class="pui-doc-a11y-table__detail">{{ item.description }}</span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

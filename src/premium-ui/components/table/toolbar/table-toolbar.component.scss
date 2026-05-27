@@ -1,0 +1,123 @@
+@use '../../../internal/styles/focus' as pui-focus;
+@use '../../../internal/styles/motion' as pui-motion;
+
+:host {
+  display: block;
+}
+
+.pui-table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pui-space-sm);
+  min-height: 3.25rem;
+  padding: var(--pui-space-sm) var(--pui-space-md);
+  border-bottom: 1px solid var(--pui-table-border);
+  background: var(--pui-table-toolbar-bg);
+}
+
+.pui-table-toolbar__start,
+.pui-table-toolbar__end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pui-space-sm);
+}
+
+.pui-table-toolbar__search {
+  position: relative;
+  min-width: min(100%, 14rem);
+}
+
+.pui-table-toolbar__search-input {
+  width: 100%;
+  min-height: 2.125rem;
+  padding: 0 calc(var(--pui-space-md) + var(--pui-space-xs)) 0 var(--pui-space-md);
+  border: 1px solid var(--pui-table-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-table-surface);
+  color: var(--pui-color-text);
+  font: inherit;
+  font-size: var(--pui-font-size-sm);
+  @include pui-motion.pui-transition-interaction(border-color, box-shadow);
+}
+
+.pui-table-toolbar__search-input:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--pui-color-primary) 36%, var(--pui-table-border));
+  @include pui-focus.pui-focus-ring;
+}
+
+.pui-table-toolbar__export-menu {
+  position: relative;
+}
+
+.pui-table-toolbar__export-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pui-space-xxs);
+  min-height: 2.125rem;
+  padding: 0 var(--pui-space-sm);
+  border: 1px solid var(--pui-table-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-table-surface);
+  color: var(--pui-color-text);
+  font: inherit;
+  font-size: var(--pui-font-size-sm);
+  font-weight: var(--pui-font-weight-medium);
+  cursor: pointer;
+  @include pui-motion.pui-transition-interaction(background-color, border-color, box-shadow);
+}
+
+.pui-table-toolbar__export-trigger:hover {
+  background: color-mix(in srgb, var(--pui-color-primary) 5%, var(--pui-table-surface));
+  border-color: color-mix(in srgb, var(--pui-color-primary) 20%, var(--pui-table-border));
+}
+
+.pui-table-toolbar__export-trigger:focus-visible {
+  @include pui-focus.pui-focus-ring;
+}
+
+.pui-table-toolbar__chevron {
+  font-size: 0.75rem;
+  opacity: 0.72;
+}
+
+.pui-table-toolbar__export-dropdown {
+  position: absolute;
+  top: calc(100% + var(--pui-space-xxs));
+  right: 0;
+  z-index: 12;
+  min-width: 9rem;
+  padding: var(--pui-space-xxs);
+  border: 1px solid var(--pui-table-border);
+  border-radius: var(--pui-radius-md);
+  background: var(--pui-table-surface);
+  box-shadow: var(--pui-shadow-lg);
+}
+
+.pui-table-toolbar__export-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 var(--pui-space-sm);
+  border: 0;
+  border-radius: var(--pui-radius-sm);
+  background: transparent;
+  color: var(--pui-color-text);
+  font: inherit;
+  font-size: var(--pui-font-size-sm);
+  text-align: start;
+  cursor: pointer;
+  @include pui-motion.pui-transition-interaction(background-color, color);
+}
+
+.pui-table-toolbar__export-item:hover {
+  background: color-mix(in srgb, var(--pui-color-primary) 7%, transparent);
+}
+
+.pui-table-toolbar__export-item:focus-visible {
+  @include pui-focus.pui-focus-ring;
+}

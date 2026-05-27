@@ -106,6 +106,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/toast-docs/toast-docs.component').then((component) => component.ToastDocsComponent)
       },
       {
+        path: 'components/table',
+        redirectTo: 'components/table/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/table/:tab',
+        loadComponent: () => import('./docs/pages/table-docs/table-docs.component').then((component) => component.TableDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

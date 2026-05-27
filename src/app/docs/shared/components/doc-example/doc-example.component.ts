@@ -5,9 +5,9 @@ import {
   input,
   linkedSignal,
   output,
-  signal,
 } from '@angular/core';
 import type { PuiDocCodeTab } from '../../../docs.types';
+import { combineExampleCode } from '../../utils/doc-example.utils';
 import { PuiDocCodeBlockComponent } from '../doc-code-block/doc-code-block.component';
 
 @Component({
@@ -26,7 +26,7 @@ export class PuiDocExampleComponent {
   readonly tabs = input<readonly PuiDocCodeTab[] | null>(null);
   readonly expandedByDefault = input(false);
   readonly compact = input(false);
-  readonly frameworkLabel = input<string | null>(null);
+  readonly allowFullCopy = input(false);
   readonly hideTs = input(false);
   readonly hideScss = input(false);
   readonly exampleId = input('');
@@ -49,9 +49,6 @@ export class PuiDocExampleComponent {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')}`;
   });
-
-  protected readonly copied = signal(false);
-  protected readonly copyTarget = signal<'html' | 'active'>('html');
 
   protected readonly hasCode = computed(() => this.codeTabs().length > 0);
 
@@ -85,34 +82,11 @@ export class PuiDocExampleComponent {
     return tabs;
   });
 
-  protected readonly primaryCopyCode = computed(() => {
-    const tabs = this.codeTabs();
-    return tabs.find((tab) => tab.id === 'html')?.code ?? tabs[0]?.code ?? '';
-  });
+  protected readonly fullExampleCode = computed(() => combineExampleCode(this.codeTabs()));
 
   protected toggleCode(): void {
     const next = !this.expanded();
     this.expanded.set(next);
     this.codeExpandedChange.emit(next);
-  }
-
-  protected async copyPrimaryCode(): Promise<void> {
-    const code = this.primaryCopyCode();
-    if (!code) {
-      return;
-    }
-
-    await this.copyText(code, 'html');
-  }
-
-  private async copyText(code: string, target: 'html' | 'active'): Promise<void> {
-    try {
-      await navigator.clipboard.writeText(code);
-      this.copyTarget.set(target);
-      this.copied.set(true);
-      window.setTimeout(() => this.copied.set(false), 1600);
-    } catch {
-      this.copied.set(false);
-    }
   }
 }

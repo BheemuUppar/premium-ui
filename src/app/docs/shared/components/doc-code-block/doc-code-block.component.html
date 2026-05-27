@@ -23,14 +23,26 @@
         <span class="pui-doc-code-block__language">{{ panel.language }}</span>
       }
     </div>
-    <button
-      type="button"
-      class="pui-doc-code-block__copy"
-      [class.pui-doc-code-block__copy--copied]="copied()"
-      (click)="copyCode()"
-    >
-      {{ copied() ? 'Copied' : 'Copy' }}
-    </button>
+    <div class="pui-doc-code-block__actions">
+      @if (fullCopyCode()) {
+        <button
+          type="button"
+          class="pui-doc-code-block__copy-secondary"
+          [class.pui-doc-code-block__copy-secondary--copied]="copiedFull()"
+          (click)="copyFullExample()"
+        >
+          {{ copiedFull() ? 'Copied' : 'Full example' }}
+        </button>
+      }
+      <button
+        type="button"
+        class="pui-doc-code-block__copy"
+        [class.pui-doc-code-block__copy--copied]="copied()"
+        (click)="copyCode()"
+      >
+        {{ copied() ? 'Copied' : 'Copy' }}
+      </button>
+    </div>
   </div>
 
   <div

@@ -31,6 +31,7 @@ export interface PuiDocApiRow {
   readonly type: string;
   readonly defaultValue: string;
   readonly description: string;
+  readonly example?: string;
 }
 
 export interface PuiDocCodeTab {
@@ -41,10 +42,19 @@ export interface PuiDocCodeTab {
   readonly filename?: string;
 }
 
-export type PuiDocCalloutVariant = 'info' | 'warning' | 'success';
+export interface PuiDocSelfContainedExample {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly notes?: readonly string[];
+  readonly html: string;
+  readonly typescript: string;
+  readonly scss?: string;
+}
 
-export interface PuiDocKeyboardShortcut {
-  readonly keys: readonly string[];
+export interface PuiDocThemeToken {
+  readonly name: string;
+  readonly defaultValue: string;
   readonly description: string;
 }
 
@@ -52,4 +62,12 @@ export interface PuiDocA11yItem {
   readonly title: string;
   readonly description: string;
   readonly code?: string;
+  readonly category?: 'keyboard' | 'aria' | 'screen-reader' | 'focus' | 'general';
+}
+
+export type PuiDocCalloutVariant = 'info' | 'warning' | 'success';
+
+export interface PuiDocKeyboardShortcut {
+  readonly keys: readonly string[];
+  readonly description: string;
 }

@@ -3,48 +3,27 @@
   [class.pui-doc-example--compact]="compact()"
 >
   <header class="pui-doc-example__header">
-    <div class="pui-doc-example__heading">
-      <h3 class="pui-doc-example__title">{{ title() }}</h3>
-      @if (frameworkLabel()) {
-        <span class="pui-doc-example__badge">{{ frameworkLabel() }}</span>
-      }
-    </div>
+    <h3 class="pui-doc-example__title">{{ title() }}</h3>
     @if (description()) {
       <p class="pui-doc-example__description">{{ description() }}</p>
     }
   </header>
 
   <div class="pui-doc-example__preview">
-    <div class="pui-doc-example__preview-surface">
-      <ng-content />
-    </div>
+    <ng-content />
   </div>
 
   @if (hasCode()) {
-    <div class="pui-doc-example__actions">
+    <div class="pui-doc-example__footer">
       <button
         type="button"
-        class="pui-doc-example__action pui-doc-example__action--primary"
+        class="pui-doc-example__toggle"
         [attr.aria-expanded]="expanded()"
         [attr.aria-controls]="codePanelId()"
         (click)="toggleCode()"
       >
         {{ expanded() ? 'Hide code' : 'Show code' }}
       </button>
-
-      @if (primaryCopyCode()) {
-        <button
-          type="button"
-          class="pui-doc-example__action"
-          (click)="copyPrimaryCode()"
-        >
-          @if (copied() && copyTarget() === 'html') {
-            Copied
-          } @else {
-            Copy HTML
-          }
-        </button>
-      }
     </div>
 
     <div
@@ -54,9 +33,10 @@
       [attr.aria-hidden]="!expanded()"
     >
       <div class="pui-doc-example__code-inner">
-        @if (expanded()) {
-          <pui-doc-code-block [tabs]="codeTabs()" />
-        }
+        <pui-doc-code-block
+          [tabs]="codeTabs()"
+          [fullCopyCode]="allowFullCopy() ? fullExampleCode() : null"
+        />
       </div>
     </div>
   }

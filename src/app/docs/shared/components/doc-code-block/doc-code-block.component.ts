@@ -31,9 +31,11 @@ export class PuiDocCodeBlockComponent {
   readonly language = input('html');
   readonly filename = input<string | null>(null);
   readonly tabs = input<readonly PuiDocCodeTab[]>([]);
+  readonly fullCopyCode = input<string | null>(null);
 
   protected readonly activeTabId = signal<string | null>(null);
   protected readonly copied = signal(false);
+  protected readonly copiedFull = signal(false);
 
   protected readonly hasTabs = computed(() => this.tabs().length > 0);
 
@@ -106,12 +108,32 @@ export class PuiDocCodeBlockComponent {
       return;
     }
 
+    await this.copyText(code, 'tab');
+  }
+
+  protected async copyFullExample(): Promise<void> {
+    const code = this.fullCopyCode()?.trim();
+    if (!code) {
+      return;
+    }
+
+    await this.copyText(code, 'full');
+  }
+
+  private async copyText(code: string, target: 'tab' | 'full'): Promise<void> {
     try {
       await navigator.clipboard.writeText(code);
+      if (target === 'full') {
+        this.copiedFull.set(true);
+        window.setTimeout(() => this.copiedFull.set(false), 1600);
+        return;
+      }
+
       this.copied.set(true);
       window.setTimeout(() => this.copied.set(false), 1600);
     } catch {
       this.copied.set(false);
+      this.copiedFull.set(false);
     }
   }
 

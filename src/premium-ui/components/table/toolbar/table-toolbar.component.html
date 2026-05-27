@@ -1,0 +1,49 @@
+<div class="pui-table-toolbar">
+  <div class="pui-table-toolbar__start">
+    @if (showSearch()) {
+      <label class="pui-table-toolbar__search">
+        <span class="pui-sr-only">Search table</span>
+        <input
+          class="pui-table-toolbar__search-input"
+          type="search"
+          [value]="searchQuery()"
+          [placeholder]="searchPlaceholder()"
+          aria-label="Search table"
+          (input)="onSearchInput($event)"
+        />
+      </label>
+    }
+  </div>
+
+  <div class="pui-table-toolbar__end">
+    @if (showExportMenu()) {
+      <div class="pui-table-toolbar__export-menu">
+        <button
+          type="button"
+          class="pui-table-toolbar__export-trigger"
+          aria-haspopup="menu"
+          [attr.aria-expanded]="exportMenuOpen()"
+          (click)="toggleExportMenu($event)"
+        >
+          Export
+          <span class="pui-table-toolbar__chevron" aria-hidden="true">▾</span>
+        </button>
+
+        @if (exportMenuOpen()) {
+          <div class="pui-table-toolbar__export-dropdown" role="menu" aria-label="Export formats">
+            @for (format of exportFormats(); track format) {
+              <button
+                type="button"
+                class="pui-table-toolbar__export-item"
+                role="menuitem"
+                (click)="selectExport(format, $event)"
+              >
+                {{ exportLabel(format) }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

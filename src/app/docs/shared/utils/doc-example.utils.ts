@@ -1,4 +1,4 @@
-import type { PuiDocCodeTab } from '../../docs.types';
+import type { PuiDocCodeTab, PuiDocSelfContainedExample } from '../../docs.types';
 import type { PuiSelectOption } from '../../../../premium-ui/components/select';
 
 export interface PuiDocImportSpec {
@@ -65,6 +65,54 @@ export class ${config.componentClass} {${memberBlock}}`;
 
 function toFieldName(typeName: string): string {
   return typeName.replace(/^Pui/, '').replace(/Component$|Service$/, '').toLowerCase() || 'service';
+}
+
+export function buildSelfContainedExampleTabs(
+  example: Pick<PuiDocSelfContainedExample, 'id' | 'html' | 'typescript' | 'scss'>
+): readonly PuiDocCodeTab[] {
+  const tabs: PuiDocCodeTab[] = [
+    {
+      id: 'html',
+      label: 'HTML',
+      code: example.html.trim(),
+      language: 'html',
+      filename: `${example.id}.component.html`,
+    },
+    {
+      id: 'ts',
+      label: 'TypeScript',
+      code: example.typescript.trim(),
+      language: 'typescript',
+      filename: `${example.id}.component.ts`,
+    },
+  ];
+
+  if (example.scss?.trim()) {
+    tabs.push({
+      id: 'scss',
+      label: 'SCSS',
+      code: example.scss.trim(),
+      language: 'scss',
+      filename: `${example.id}.component.scss`,
+    });
+  }
+
+  return tabs;
+}
+
+/** Combines HTML + TypeScript (+ SCSS) for one-click copy-paste. */
+export function combineExampleCode(tabs: readonly PuiDocCodeTab[]): string {
+  const html = tabs.find((tab) => tab.id === 'html')?.code ?? '';
+  const ts = tabs.find((tab) => tab.id === 'ts')?.code ?? '';
+  const scss = tabs.find((tab) => tab.id === 'scss')?.code ?? '';
+
+  const sections = [
+    ts ? `// ── ${tabs.find((tab) => tab.id === 'ts')?.filename ?? 'component.ts'} ──\n${ts}` : '',
+    html ? `\n// ── ${tabs.find((tab) => tab.id === 'html')?.filename ?? 'component.html'} ──\n${html}` : '',
+    scss ? `\n// ── ${tabs.find((tab) => tab.id === 'scss')?.filename ?? 'component.scss'} ──\n${scss}` : '',
+  ].filter(Boolean);
+
+  return sections.join('\n').trim();
 }
 
 /** HTML + TypeScript tabs with strict separation — HTML is template markup only. */

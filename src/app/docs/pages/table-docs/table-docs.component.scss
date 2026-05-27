@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.pui-table-docs-preview {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  contain: layout inline-size style;
+  overflow: hidden;
+}
+
+.pui-table-docs-preview pui-table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.pui-doc-examples {
+  display: grid;
+  gap: var(--pui-doc-examples-gap);
+}

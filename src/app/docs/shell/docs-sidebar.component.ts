@@ -76,8 +76,8 @@ export class DocsSidebarComponent {
       label: 'Data Display',
       items: [
         { label: 'Card', route: ['/docs/components/card/overview'], badge: 'Ready' },
+        { label: 'Table', route: ['/docs/components/table/overview'], badge: 'Ready' },
         { label: 'Badge', route: ['/docs/components/badge'] },
-        { label: 'Table', route: ['/docs/components/table'] }
       ]
     },
     {

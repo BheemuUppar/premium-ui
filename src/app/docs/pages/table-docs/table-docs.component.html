@@ -1,0 +1,223 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/table/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/table/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Table</span>
+    </nav>
+    <h1>Angular Data Grid</h1>
+    <p>
+      Enterprise data grid with progressive column APIs, internal scroll containers, worker search,
+      export menus, and selection — designed for admin dashboards at Stripe/Linear quality.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Table documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a class="pui-tab" [routerLink]="tab.route" routerLinkActive="pui-tab--active" [routerLinkActiveOptions]="{ exact: true }">
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section">
+          <h2>Overview</h2>
+          <p>
+            A production data grid for admin dashboards. Pass row data and column definitions — string columns
+            for quick setup, full config objects when you need sorting, badges, templates, or sticky columns.
+          </p>
+          <p>
+            Tables fill their container width by default, scroll internally via <code>[height]</code>, and stay
+            opt-in for advanced behavior like selection, export, virtualization, and sticky regions.
+          </p>
+
+          <pui-doc-example
+            exampleId="table-basic"
+            title="Users directory"
+            description="A typical team admin view — no toolbar, full-width columns, internal scroll when needed."
+          >
+            <div class="pui-table-docs-preview">
+              <pui-table [data]="users" [columns]="basicColumns" [toolbar]="false" [paginated]="false" [height]="320" />
+            </div>
+          </pui-doc-example>
+        </section>
+
+        <pui-doc-related-links [links]="relatedLinks" />
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section">
+          <h2>Examples</h2>
+          <p>
+            Production-style admin scenarios — team directories, billing, support queues, permissions,
+            and server-driven pagination. Each example includes copy-ready HTML and TypeScript.
+          </p>
+
+          <div class="pui-doc-examples">
+            @for (example of examples; track example.id) {
+              <pui-doc-example
+                [exampleId]="'table-' + example.id"
+                [title]="example.title"
+                [description]="example.description"
+                [tabs]="exampleTabs(example)"
+                [allowFullCopy]="true"
+              >
+                <div class="pui-table-docs-preview">
+                  @switch (example.id) {
+                    @case ('basic-table') {
+                      <pui-table [data]="users" [columns]="basicColumns" [toolbar]="false" [paginated]="false" [height]="320" />
+                    }
+                    @case ('searchable-table') {
+                      <pui-table [data]="users" [columns]="basicColumns" [searchable]="true" [exportable]="false" [height]="360" />
+                    }
+                    @case ('sortable-table') {
+                      <pui-table [data]="invoices" [columns]="invoiceColumns" [toolbar]="{ search: false, export: false }" [height]="340" />
+                    }
+                    @case ('paginated-table') {
+                      <pui-table [data]="manyInvoices" [columns]="invoiceColumns" [pageSize]="25" [height]="420" [exportable]="false" />
+                    }
+                    @case ('selectable-table') {
+                      <pui-table [data]="users" [columns]="basicColumns" [selectable]="true" [exportable]="false" [height]="360" />
+                    }
+                    @case ('exportable-table') {
+                      <pui-table [data]="invoices" [columns]="invoiceColumns" [exportable]="{ csv: true, excel: true, json: true }" [height]="360" />
+                    }
+                    @case ('virtualized-table') {
+                      <pui-table [data]="largeUsers" [columns]="basicColumns" [virtualScroll]="true" [paginated]="false" [toolbar]="{ search: true, export: false }" [height]="420" />
+                    }
+                    @case ('worker-table') {
+                      <pui-table [data]="largeUsers" [columns]="basicColumns" [useWorker]="true" [searchable]="true" [exportable]="false" [height]="400" tableId="docs-worker" />
+                    }
+                    @case ('action-column-table') {
+                      <pui-table [data]="users" [columns]="actionColumns" [toolbar]="false" [paginated]="false" [height]="340">
+                        <ng-template puiTableCellDef="actions" let-row>
+                          <pui-button size="sm" variant="ghost">Edit</pui-button>
+                        </ng-template>
+                      </pui-table>
+                    }
+                    @case ('custom-switch-column') {
+                      <pui-table [data]="users.slice(0, 8)" [columns]="customActiveColumns" [toolbar]="{ search: true, export: false }" [height]="340">
+                        <ng-template puiTableCellDef="active" let-row>
+                          <pui-switch [checked]="row.active" size="sm" ariaLabel="Toggle active" />
+                        </ng-template>
+                      </pui-table>
+                    }
+                    @case ('filterable-table') {
+                      <pui-table [data]="users" [columns]="basicColumns" [(columnFilters)]="statusColumnFilters" [toolbar]="{ search: true, export: false }" [height]="340" />
+                    }
+                    @case ('sticky-header-table') {
+                      <pui-table [data]="tickets" [columns]="ticketColumns" [stickyHeader]="true" [stickyFirstColumn]="true" [stickyLastColumn]="true" [toolbar]="false" [paginated]="false" [height]="300">
+                        <ng-template puiTableCellDef="actions" let-row>
+                          <pui-button size="sm" variant="ghost">Open</pui-button>
+                        </ng-template>
+                      </pui-table>
+                    }
+                    @case ('large-dataset-table') {
+                      <pui-table [data]="manyInvoices" [columns]="invoiceColumns" [pageSize]="50" [height]="460" [exportable]="false" />
+                    }
+                    @case ('responsive-table') {
+                      <pui-table [data]="users" [columns]="wideColumns" [toolbar]="false" [paginated]="false" [height]="320" />
+                    }
+                    @case ('server-side-table') {
+                      <pui-table
+                        [data]="serverRows()"
+                        [columns]="basicColumns"
+                        [loading]="serverLoading()"
+                        [totalRows]="serverTotal"
+                        [(pageIndex)]="serverPageIndex"
+                        [(pageSize)]="serverPageSize"
+                        [exportable]="false"
+                        [height]="400"
+                      />
+                    }
+                  }
+                </div>
+              </pui-doc-example>
+            }
+          </div>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section">
+          <h2>Usage</h2>
+          <pui-doc-installation
+            importPath="@premium-ui/components/table"
+            importSymbols="PuiTableComponent, PuiTableCellDefDirective"
+          />
+
+          <h2>Inputs</h2>
+          <pui-doc-api-table title="Properties" [rows]="inputRows" />
+
+          <h2>Outputs</h2>
+          <pui-doc-api-table title="Events" mode="events" [rows]="outputRows" />
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section">
+          <h2>Accessibility</h2>
+          <p>Built for WCAG AA — keyboard operable headers, descriptive selection labels, and contained scroll regions.</p>
+          <pui-doc-a11y-list layout="cards" [items]="a11yItems" />
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section">
+          <h2>Theming</h2>
+          <p>Override CSS variables on the host or table component to match your admin shell.</p>
+          <pui-doc-theme-tokens [tokens]="themeTokens" [scssExample]="themeScss" />
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section">
+          <h2>Playground</h2>
+          <div class="pui-playground">
+            <div class="pui-playground__controls">
+              <label class="pui-playground-field">
+                <span class="pui-playground-field__label">Table height</span>
+                <pui-select
+                  [options]="heightOptions"
+                  [value]="playgroundHeight().toString()"
+                  (valueChange)="setPlaygroundHeight($event)"
+                  ariaLabel="Table height"
+                />
+              </label>
+              <pui-checkbox [checked]="playgroundVirtual()" (checkedChange)="playgroundVirtual.set($event)">Virtual scroll</pui-checkbox>
+              <pui-checkbox [checked]="playgroundWorker()" (checkedChange)="playgroundWorker.set($event)">Worker search</pui-checkbox>
+              <pui-checkbox [checked]="playgroundSelectable()" (checkedChange)="playgroundSelectable.set($event)">Selectable</pui-checkbox>
+              <pui-checkbox [checked]="playgroundExport()" (checkedChange)="playgroundExport.set($event)">Export menu</pui-checkbox>
+            </div>
+            <div class="pui-table-docs-preview pui-playground__preview">
+              <pui-table
+                [data]="playgroundData()"
+                [columns]="actionColumns"
+                [height]="playgroundHeight()"
+                [virtualScroll]="playgroundVirtual()"
+                [useWorker]="playgroundWorker()"
+                [selectable]="playgroundSelectable()"
+                [exportable]="playgroundExport() ? { csv: true, excel: true, json: true } : false"
+              >
+                <ng-template puiTableCellDef="actions" let-row>
+                  <pui-button size="sm" variant="outline">View</pui-button>
+                </ng-template>
+              </pui-table>
+            </div>
+          </div>
+          <pui-doc-example
+            exampleId="table-playground-code"
+            title="Playground source"
+            [tabs]="playgroundTabs()"
+            [allowFullCopy]="true"
+          />
+        </section>
+      }
+    }
+  </div>
+</article>
