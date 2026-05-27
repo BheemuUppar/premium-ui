@@ -97,6 +97,21 @@ export function getEnabledExportFormats(
   return formats;
 }
 
+/** Applies optional exportFormats filter on top of exportable config. */
+export function resolveExportFormats(
+  config: PuiTableExportableConfig & { enabled: boolean },
+  requested: readonly PuiTableExportFormat[] | null | undefined
+): readonly PuiTableExportFormat[] {
+  const enabled = getEnabledExportFormats(config);
+
+  if (!requested?.length) {
+    return enabled;
+  }
+
+  const allowed = new Set(requested);
+  return enabled.filter((format) => allowed.has(format));
+}
+
 export function parseTableHeight(value: string | number | undefined, fallback = 420): number {
   if (typeof value === 'number' && value > 0) {
     return value;

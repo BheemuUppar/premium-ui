@@ -13,7 +13,15 @@
         />
       </label>
     }
+
+    <ng-content select="[puiTableToolbarFilters]" />
   </div>
+
+  @if (centerTemplate()) {
+    <div class="pui-table-toolbar__center">
+      <ng-container *ngTemplateOutlet="centerTemplate()!" />
+    </div>
+  }
 
   <div class="pui-table-toolbar__end">
     @if (showExportMenu()) {
@@ -24,26 +32,32 @@
           aria-haspopup="menu"
           [attr.aria-expanded]="exportMenuOpen()"
           (click)="toggleExportMenu($event)"
+          (keydown)="onExportTriggerKeydown($event)"
         >
           Export
           <span class="pui-table-toolbar__chevron" aria-hidden="true">▾</span>
         </button>
 
-        @if (exportMenuOpen()) {
-          <div class="pui-table-toolbar__export-dropdown" role="menu" aria-label="Export formats">
-            @for (format of exportFormats(); track format) {
-              <button
-                type="button"
-                class="pui-table-toolbar__export-item"
-                role="menuitem"
-                (click)="selectExport(format, $event)"
-              >
-                {{ exportLabel(format) }}
-              </button>
-            }
-          </div>
-        }
+        <div
+          class="pui-table-toolbar__export-dropdown"
+          role="menu"
+          aria-label="Export formats"
+          [class.pui-table-toolbar__export-dropdown--open]="exportMenuOpen()"
+        >
+          @for (format of exportFormats(); track format) {
+            <button
+              type="button"
+              class="pui-table-toolbar__export-item"
+              role="menuitem"
+              (click)="selectExport(format, $event)"
+            >
+              {{ exportLabel(format) }}
+            </button>
+          }
+        </div>
       </div>
     }
+
+    <ng-content select="[puiTableToolbarActions]" />
   </div>
 </div>

@@ -595,4 +595,123 @@ ${BTN_IMPORT}`,
   }`,
     }),
   },
+  {
+    id: 'export-formats-table',
+    title: 'Limited export formats',
+    description: 'Keep [exportable]="true" for the default menu, but restrict visible formats with exportFormats.',
+    html: `<pui-table
+  [data]="invoices"
+  [columns]="columns"
+  [exportable]="true"
+  [exportFormats]="['csv', 'excel']"
+  [height]="380"
+/>`,
+    typescript: tsExample({
+      selector: 'app-export-formats-table-example',
+      className: 'ExportFormatsTableExampleComponent',
+      imports: TABLE_IMPORT,
+      types: INVOICE_INTERFACE,
+      body: `${INVOICE_ROWS}
+
+  readonly columns: PuiTableColumnInput<InvoiceRow>[] = [
+    'id',
+    'customer',
+    { key: 'amount', type: 'currency', align: 'end' },
+    { key: 'status', type: 'badge' },
+    'plan',
+  ];`,
+    }),
+  },
+  {
+    id: 'custom-toolbar-table',
+    title: 'Custom toolbar',
+    description: 'Replace the default toolbar with puiTableToolbar and call table.export() from your own UI.',
+    html: `<pui-table
+  [data]="users"
+  [columns]="columns"
+  [exportable]="{ csv: true, excel: true, json: true, pdf: true }"
+  [height]="380"
+>
+  <ng-template puiTableToolbar let-table>
+    <div class="billing-toolbar">
+      <pui-button size="sm" variant="outline" (click)="table.export('csv')">
+        Export CSV
+      </pui-button>
+      <pui-button size="sm" variant="outline" (click)="table.export('excel')">
+        Export Excel
+      </pui-button>
+      <pui-button size="sm" variant="ghost" (click)="table.clearSelection()">
+        Clear selection
+      </pui-button>
+    </div>
+  </ng-template>
+</pui-table>`,
+    typescript: tsExample({
+      selector: 'app-custom-toolbar-table-example',
+      className: 'CustomToolbarTableExampleComponent',
+      imports: `${TABLE_IMPORT}
+${BTN_IMPORT}`,
+      types: USER_INTERFACE,
+      body: `${USER_ROWS}
+
+  readonly columns: PuiTableColumnInput<UserRow>[] = ['name', 'email', 'department', 'status', 'revenue'];`,
+    }),
+  },
+  {
+    id: 'row-actions-table',
+    title: 'Row actions slot',
+    description: 'Use puiTableRowActions to inject a sticky actions column without manual column config.',
+    html: `<pui-table
+  [data]="users"
+  [columns]="columns"
+  [toolbar]="false"
+  [paginated]="false"
+  [height]="360"
+>
+  <ng-template puiTableRowActions let-row let-index="index">
+    <pui-button size="sm" variant="ghost" (click)="viewUser(row)">View</pui-button>
+  </ng-template>
+</pui-table>`,
+    typescript: tsExample({
+      selector: 'app-row-actions-table-example',
+      className: 'RowActionsTableExampleComponent',
+      imports: `${TABLE_IMPORT}
+${BTN_IMPORT}`,
+      types: USER_INTERFACE,
+      body: `${USER_ROWS}
+
+  readonly columns: PuiTableColumnInput<UserRow>[] = ['name', 'email', 'status', 'revenue'];
+
+  viewUser(row: UserRow): void {
+    console.log('View user', row.id);
+  }`,
+    }),
+  },
+  {
+    id: 'table-api-ref',
+    title: 'Template ref API',
+    description: 'Access the same controller from the parent template using #usersTable="puiTable".',
+    html: `<pui-table
+  #usersTable="puiTable"
+  [data]="users"
+  [columns]="columns"
+  [selectable]="true"
+  [exportable]="true"
+  [height]="380"
+/>
+
+<pui-button size="sm" variant="outline" (click)="usersTable.export('csv')">
+  Export from parent
+</pui-button>`,
+    typescript: tsExample({
+      selector: 'app-table-api-ref-example',
+      className: 'TableApiRefExampleComponent',
+      imports: `${TABLE_IMPORT}
+${BTN_IMPORT}`,
+      types: USER_INTERFACE,
+      body: `${USER_ROWS}
+
+  readonly columns: PuiTableColumnInput<UserRow>[] = ['name', 'email', 'department', 'status', 'revenue'];`,
+    }),
+  },
 ];

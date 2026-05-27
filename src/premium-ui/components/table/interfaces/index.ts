@@ -1,3 +1,4 @@
+export * from './table-api.types';
 export * from './table-column.types';
 export * from './table-filter.types';
 export * from './table-sort.types';

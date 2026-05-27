@@ -1,8 +1,10 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
+  TemplateRef,
   booleanAttribute,
   computed,
   inject,
@@ -11,8 +13,6 @@ import {
   signal,
 } from '@angular/core';
 import type { PuiTableExportFormat } from '../interfaces';
-import { getEnabledExportFormats, resolveExportableConfig } from '../interfaces/table-toolbar.types';
-import type { PuiTableExportableConfig } from '../interfaces/table-toolbar.types';
 
 const EXPORT_LABELS: Readonly<Record<PuiTableExportFormat, string>> = {
   csv: 'CSV',
@@ -23,6 +23,7 @@ const EXPORT_LABELS: Readonly<Record<PuiTableExportFormat, string>> = {
 
 @Component({
   selector: 'pui-table-toolbar',
+  imports: [NgTemplateOutlet],
   templateUrl: './table-toolbar.component.html',
   styleUrl: './table-toolbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,24 +34,18 @@ export class PuiTableToolbarComponent {
   readonly searchQuery = input('');
   readonly searchPlaceholder = input('Search rows…');
   readonly showSearch = input(true, { transform: booleanAttribute });
-  readonly exportable = input<boolean | PuiTableExportableConfig>(false);
   readonly showExport = input(true, { transform: booleanAttribute });
+  readonly exportFormats = input<readonly PuiTableExportFormat[]>([]);
+  readonly centerTemplate = input<TemplateRef<unknown> | null>(null);
 
   readonly searchChange = output<string>();
   readonly exportClick = output<PuiTableExportFormat>();
 
   protected readonly exportMenuOpen = signal(false);
 
-  protected readonly exportConfig = computed(() => resolveExportableConfig(this.exportable()));
-
-  protected readonly exportFormats = computed(() => {
-    if (!this.showExport()) {
-      return [] as readonly PuiTableExportFormat[];
-    }
-    return getEnabledExportFormats(this.exportConfig());
-  });
-
-  protected readonly showExportMenu = computed(() => this.exportFormats().length > 0);
+  protected readonly showExportMenu = computed(
+    () => this.showExport() && this.exportFormats().length > 0
+  );
 
   protected exportLabel(format: PuiTableExportFormat): string {
     return EXPORT_LABELS[format];
@@ -63,6 +58,13 @@ export class PuiTableToolbarComponent {
   protected toggleExportMenu(event: Event): void {
     event.stopPropagation();
     this.exportMenuOpen.update((open) => !open);
+  }
+
+  protected onExportTriggerKeydown(event: KeyboardEvent): void {
+    if (event.key === 'ArrowDown' && !this.exportMenuOpen()) {
+      event.preventDefault();
+      this.exportMenuOpen.set(true);
+    }
   }
 
   protected selectExport(format: PuiTableExportFormat, event: Event): void {

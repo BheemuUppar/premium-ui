@@ -16,6 +16,14 @@
   max-width: 100%;
 }
 
+.pui-table-docs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pui-space-sm);
+  width: 100%;
+}
+
 .pui-doc-examples {
   display: grid;
   gap: var(--pui-doc-examples-gap);

@@ -135,6 +135,41 @@
                         [height]="400"
                       />
                     }
+                    @case ('export-formats-table') {
+                      <pui-table
+                        [data]="invoices"
+                        [columns]="invoiceColumns"
+                        [exportable]="true"
+                        [exportFormats]="limitedExportFormats"
+                        [height]="360"
+                      />
+                    }
+                    @case ('custom-toolbar-table') {
+                      <pui-table [data]="users" [columns]="basicColumns" [exportable]="true" [height]="360">
+                        <ng-template puiTableToolbar let-table>
+                          <div class="pui-table-docs-toolbar">
+                            <pui-button size="sm" variant="outline" (click)="table.export('csv')">Export CSV</pui-button>
+                            <pui-button size="sm" variant="outline" (click)="table.export('excel')">Export Excel</pui-button>
+                          </div>
+                        </ng-template>
+                      </pui-table>
+                    }
+                    @case ('row-actions-table') {
+                      <pui-table [data]="users" [columns]="rowActionsColumns" [toolbar]="false" [paginated]="false" [height]="340">
+                        <ng-template puiTableRowActions let-row>
+                          <pui-button size="sm" variant="ghost">View</pui-button>
+                        </ng-template>
+                      </pui-table>
+                    }
+                    @case ('table-api-ref') {
+                      <pui-table
+                        #docsTableApi="puiTable"
+                        [data]="users.slice(0, 6)"
+                        [columns]="basicColumns"
+                        [exportable]="true"
+                        [height]="320"
+                      />
+                    }
                   }
                 </div>
               </pui-doc-example>
@@ -148,7 +183,7 @@
           <h2>Usage</h2>
           <pui-doc-installation
             importPath="@premium-ui/components/table"
-            importSymbols="PuiTableComponent, PuiTableCellDefDirective"
+            importSymbols="PuiTableComponent, PuiTableCellDefDirective, PuiTableToolbarTemplateDirective, PuiTableRowActionsTemplateDirective, type PuiTableApi"
           />
 
           <h2>Inputs</h2>
@@ -156,6 +191,17 @@
 
           <h2>Outputs</h2>
           <pui-doc-api-table title="Events" mode="events" [rows]="outputRows" />
+
+          <h2>Template slots</h2>
+          <p>Override UI with templates. The table provides logic through <code>PuiTableApi</code> — you provide the markup.</p>
+          <pui-doc-api-table title="Slots" [rows]="templateSlotRows" />
+
+          <h2>Table API</h2>
+          <p>
+            Access the controller from toolbar templates via <code>let-table</code>, or from the parent with
+            <code>#myTable="puiTable"</code>.
+          </p>
+          <pui-doc-api-table title="PuiTableApi methods" [rows]="tableApiRows" />
         </section>
       }
 

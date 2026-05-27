@@ -9,6 +9,7 @@ export const PUI_TABLE_SEARCH_DEBOUNCE_MS = 200;
 export const PUI_TABLE_MIN_COLUMN_WIDTH = 80;
 export const PUI_TABLE_DEFAULT_COLUMN_WIDTH = '160px';
 export const PUI_TABLE_SELECTION_COLUMN_KEY = '__selection';
+export const PUI_TABLE_ROW_ACTIONS_COLUMN_KEY = '__rowActions';
 export const PUI_TABLE_DATASET_PREFIX = 'pui-table';
 
 export const PUI_TABLE_DEFAULT_HEIGHT = 420;

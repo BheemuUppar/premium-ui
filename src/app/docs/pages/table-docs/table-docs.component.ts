@@ -9,6 +9,8 @@ import {
   PUI_TABLE_DEMO_USERS,
   PuiTableCellDefDirective,
   PuiTableComponent,
+  PuiTableRowActionsTemplateDirective,
+  PuiTableToolbarTemplateDirective,
   generateInvoiceDataset,
   generateLargeUserDataset,
   type PuiTableUserRow,
@@ -46,6 +48,8 @@ type PuiDocsTableTab =
   imports: [
     PuiTableComponent,
     PuiTableCellDefDirective,
+    PuiTableToolbarTemplateDirective,
+    PuiTableRowActionsTemplateDirective,
     PuiButtonComponent,
     PuiSwitchComponent,
     PuiCheckboxComponent,
@@ -106,6 +110,8 @@ export class TableDocsComponent {
   protected readonly manyInvoices = generateInvoiceDataset(120);
 
   protected readonly basicColumns = ['name', 'email', 'department', 'status', 'revenue'] as const;
+  protected readonly rowActionsColumns = ['name', 'email', 'status', 'revenue'] as const;
+  protected readonly limitedExportFormats = ['csv', 'excel'] as const;
   protected readonly invoiceColumns = ['id', 'customer', { key: 'amount', type: 'currency' as const, sortable: true, align: 'end' as const }, { key: 'status', type: 'badge' as const, sortable: true }, 'plan'] as const;
   protected readonly actionColumns = [
     'name',
@@ -250,8 +256,15 @@ export class TablePlaygroundComponent {
       name: 'exportable',
       type: 'boolean | PuiTableExportableConfig',
       defaultValue: 'false',
-      description: 'Enables a single Export dropdown. Configure csv, excel, json, pdf, filename, and visibleColumnsOnly.',
-      example: "[exportable]=\"{ csv: true, excel: true, json: true, pdf: false }\"",
+      description: 'Enables the default Export dropdown. Combine with exportFormats to limit visible formats.',
+      example: "[exportable]=\"true\" [exportFormats]=\"['csv', 'excel']\"",
+    },
+    {
+      name: 'exportFormats',
+      type: 'readonly PuiTableExportFormat[] | null',
+      defaultValue: 'null',
+      description: 'Optional filter for the default export menu. All enabled formats in exportable config are shown when omitted.',
+      example: "[exportFormats]=\"['csv', 'excel', 'pdf']\"",
     },
     {
       name: 'selectable',
@@ -416,6 +429,124 @@ export class TablePlaygroundComponent {
       defaultValue: '-',
       description: 'Emits before the built-in export download runs. Hook analytics or custom export flows.',
       example: '(exportClick)="trackExport($event)"',
+    },
+    {
+      name: 'refreshed',
+      type: 'void',
+      defaultValue: '-',
+      description: 'Emits when table.refresh() is called from the template API or parent ref.',
+      example: '(refreshed)="reloadData()"',
+    },
+  ];
+
+  protected readonly templateSlotRows: readonly PuiDocApiRow[] = [
+    {
+      name: 'puiTableToolbar',
+      type: 'TemplateRef<PuiTableToolbarTemplateContext<T>>',
+      defaultValue: '-',
+      description: 'Replaces the default toolbar. Receives let-table with the PuiTableApi controller.',
+      example: '<ng-template puiTableToolbar let-table>...</ng-template>',
+    },
+    {
+      name: 'puiTableToolbarCenter',
+      type: 'TemplateRef<unknown>',
+      defaultValue: '-',
+      description: 'Optional center slot in the default toolbar layout.',
+      example: '<ng-template puiTableToolbarCenter>...</ng-template>',
+    },
+    {
+      name: 'puiTableCellDef',
+      type: 'TemplateRef<PuiTableCellContext<T>>',
+      defaultValue: '-',
+      description: 'Custom cell renderer for a column key. Receives let-row and let-value.',
+      example: '<ng-template puiTableCellDef="status" let-row>...</ng-template>',
+    },
+    {
+      name: 'puiTableRowActions',
+      type: 'TemplateRef<PuiTableRowActionsTemplateContext<T>>',
+      defaultValue: '-',
+      description: 'Injects a sticky row actions column. Receives let-row and let-index.',
+      example: '<ng-template puiTableRowActions let-row>...</ng-template>',
+    },
+    {
+      name: 'puiTableEmptyState',
+      type: 'TemplateRef<PuiTableEmptyStateTemplateContext>',
+      defaultValue: '-',
+      description: 'Overrides the default empty state. Receives title and description context.',
+      example: '<ng-template puiTableEmptyState let-title="title">...</ng-template>',
+    },
+    {
+      name: 'puiTableLoading',
+      type: 'TemplateRef<PuiTableLoadingTemplateContext>',
+      defaultValue: '-',
+      description: 'Overrides the default loading skeleton.',
+      example: '<ng-template puiTableLoading let-loading="loading">...</ng-template>',
+    },
+  ];
+
+  protected readonly tableApiRows: readonly PuiDocApiRow[] = [
+    {
+      name: 'export(format)',
+      type: 'PuiTableExportFormat',
+      defaultValue: '-',
+      description: 'Runs the export engine for csv, excel, json, or pdf.',
+      example: "table.export('csv')",
+    },
+    {
+      name: 'search(query)',
+      type: 'string',
+      defaultValue: '-',
+      description: 'Updates the global search query and emits searchChange.',
+      example: "table.search('acme')",
+    },
+    {
+      name: 'clearSelection()',
+      type: 'void',
+      defaultValue: '-',
+      description: 'Clears all selected row keys and rows.',
+      example: 'table.clearSelection()',
+    },
+    {
+      name: 'selectAll()',
+      type: 'void',
+      defaultValue: '-',
+      description: 'Selects all rows on the current page.',
+      example: 'table.selectAll()',
+    },
+    {
+      name: 'clearFilters()',
+      type: 'void',
+      defaultValue: '-',
+      description: 'Resets columnFilters to an empty array.',
+      example: 'table.clearFilters()',
+    },
+    {
+      name: 'refresh()',
+      type: 'void',
+      defaultValue: '-',
+      description: 'Re-runs worker search and emits refresh.',
+      example: 'table.refresh()',
+    },
+    {
+      name: 'getSelectedRows()',
+      type: 'readonly T[]',
+      defaultValue: '-',
+      description: 'Returns currently selected row objects.',
+      example: 'table.getSelectedRows()',
+    },
+    {
+      name: 'getFilteredRows()',
+      type: 'readonly T[]',
+      defaultValue: '-',
+      description: 'Returns rows after search, filters, and sort.',
+      example: 'table.getFilteredRows()',
+    },
+    {
+      name: 'getCurrentPageRows()',
+      type: 'readonly T[]',
+      defaultValue: '-',
+      description: 'Returns rows visible on the active page.',
+      example: 'table.getCurrentPageRows()',
     },
   ];
 

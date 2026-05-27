@@ -298,6 +298,17 @@
   flex-shrink: 0;
 }
 
+.pui-table-toolbar--custom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pui-space-sm);
+  min-height: 3.25rem;
+  padding: var(--pui-space-sm) var(--pui-space-md);
+  border-bottom: 1px solid var(--pui-table-border);
+  background: var(--pui-table-toolbar-bg);
+}
+
 @media (max-width: 768px) {
   .pui-table-cell {
     padding: 0 var(--pui-space-sm);

@@ -5,6 +5,7 @@ import {
   PLATFORM_ID,
   booleanAttribute,
   computed,
+  contentChild,
   contentChildren,
   effect,
   inject,
@@ -18,6 +19,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { PuiDataProcessorService } from '../../../internal/workers';
 import { PuiCheckboxComponent } from '../../checkbox';
 import type {
+  PuiTableApi,
   PuiTableColumn,
   PuiTableColumnFilter,
   PuiTableColumnInput,
@@ -31,9 +33,11 @@ import type {
   PuiTableSortDirection,
   PuiTableSortState,
   PuiTableToolbarConfig,
+  PuiTableToolbarTemplateContext,
 } from '../interfaces';
 import {
   parseTableHeight,
+  resolveExportFormats,
   resolveExportableConfig,
   resolveToolbarConfig,
 } from '../interfaces/table-toolbar.types';
@@ -42,6 +46,7 @@ import {
   PUI_TABLE_DENSITY_ROW_HEIGHT,
   PUI_TABLE_HEADER_HEIGHT,
   PUI_TABLE_PAGINATION_HEIGHT,
+  PUI_TABLE_ROW_ACTIONS_COLUMN_KEY,
   PUI_TABLE_SEARCH_DEBOUNCE_MS,
   PUI_TABLE_TOOLBAR_HEIGHT,
   type PuiTableDensity,
@@ -50,7 +55,12 @@ import { PuiTablePaginationComponent } from '../pagination';
 import { PuiTableToolbarComponent } from '../toolbar';
 import {
   PuiTableCellDefDirective,
+  PuiTableEmptyStateTemplateDirective,
   PuiTableHeaderDefDirective,
+  PuiTableLoadingTemplateDirective,
+  PuiTableRowActionsTemplateDirective,
+  PuiTableToolbarCenterTemplateDirective,
+  PuiTableToolbarTemplateDirective,
 } from '../templates';
 import {
   applyColumnFilters,
@@ -59,6 +69,7 @@ import {
   buildGridTemplateColumns,
   findColumnByKey,
   formatCellValue,
+  normalizeTableColumn,
   normalizeTableColumns,
   paginateIndices,
   resolveCellValue,
@@ -67,7 +78,7 @@ import {
   stableSortIndices,
 } from '../utils';
 import { buildTableWorkerDataset, createTableDatasetId } from '../worker';
-import { downloadExportResult, exportTableData } from '../export';
+import { runTableExport } from '../export';
 import {
   isAllSelected,
   isPartiallySelected,
@@ -77,6 +88,7 @@ import {
 
 @Component({
   selector: 'pui-table',
+  exportAs: 'puiTable',
   imports: [
     NgTemplateOutlet,
     ScrollingModule,
@@ -100,6 +112,11 @@ export class PuiTableComponent<T = unknown> {
   private readonly dataProcessor = inject(PuiDataProcessorService);
   private readonly cellTemplates = contentChildren(PuiTableCellDefDirective);
   private readonly headerTemplates = contentChildren(PuiTableHeaderDefDirective);
+  protected readonly toolbarTemplate = contentChild(PuiTableToolbarTemplateDirective);
+  protected readonly toolbarCenterTemplate = contentChild(PuiTableToolbarCenterTemplateDirective);
+  protected readonly emptyStateTemplate = contentChild(PuiTableEmptyStateTemplateDirective);
+  protected readonly loadingTemplate = contentChild(PuiTableLoadingTemplateDirective);
+  protected readonly rowActionsTemplate = contentChild(PuiTableRowActionsTemplateDirective);
 
   readonly data = input<readonly T[]>([]);
   readonly columns = input<readonly PuiTableColumnInput<T>[]>([]);
@@ -107,6 +124,8 @@ export class PuiTableComponent<T = unknown> {
   readonly loading = input(false, { transform: booleanAttribute });
   readonly searchable = input(true, { transform: booleanAttribute });
   readonly exportable = input<boolean | PuiTableExportableConfig>(false);
+  /** When set, limits which export formats appear in the default export menu. */
+  readonly exportFormats = input<readonly PuiTableExportFormat[] | null>(null);
   readonly toolbar = input<boolean | PuiTableToolbarConfig>(true);
   readonly paginated = input(true, { transform: booleanAttribute });
   readonly virtualScroll = input(false, { transform: booleanAttribute });
@@ -138,14 +157,23 @@ export class PuiTableComponent<T = unknown> {
   readonly pageChange = output<PuiTablePageChangeEvent>();
   readonly searchChange = output<PuiTableSearchChange>();
   readonly exportClick = output<PuiTableExportClick>();
+  readonly refreshed = output<void>();
 
   protected readonly headerHeight = PUI_TABLE_HEADER_HEIGHT;
   protected readonly skeletonRows = [0, 1, 2, 3, 4];
+  protected readonly rowActionsColumnKey = PUI_TABLE_ROW_ACTIONS_COLUMN_KEY;
 
   private readonly workerIndices = signal<readonly number[] | null>(null);
+  private readonly refreshTick = signal(0);
 
   protected readonly toolbarConfig = computed(() => resolveToolbarConfig(this.toolbar()));
   protected readonly exportConfig = computed(() => resolveExportableConfig(this.exportable()));
+
+  protected readonly resolvedExportFormats = computed(() =>
+    resolveExportFormats(this.exportConfig(), this.exportFormats())
+  );
+
+  protected readonly hasCustomToolbar = computed(() => !!this.toolbarTemplate());
 
   protected readonly showToolbarSection = computed(() => {
     const cfg = this.toolbarConfig();
@@ -153,9 +181,31 @@ export class PuiTableComponent<T = unknown> {
       return false;
     }
 
+    if (this.hasCustomToolbar()) {
+      return true;
+    }
+
     const hasSearch = cfg.search && this.searchable();
-    const hasExport = cfg.export && this.exportConfig().enabled;
-    return hasSearch || hasExport;
+    const hasExport = cfg.export && this.resolvedExportFormats().length > 0;
+    const hasCenter = !!this.toolbarCenterTemplate();
+    return hasSearch || hasExport || hasCenter;
+  });
+
+  protected readonly tableApi = computed((): PuiTableApi<T> => ({
+    export: (format) => this.export(format),
+    clearSelection: () => this.clearSelection(),
+    selectAll: () => this.selectAll(),
+    clearFilters: () => this.clearFilters(),
+    search: (query) => this.search(query),
+    refresh: () => this.refresh(),
+    getSelectedRows: () => this.getSelectedRows(),
+    getFilteredRows: () => this.getFilteredRows(),
+    getCurrentPageRows: () => this.getCurrentPageRows(),
+  }));
+
+  protected readonly toolbarTemplateContext = computed((): PuiTableToolbarTemplateContext<T> => {
+    const api = this.tableApi();
+    return { $implicit: api, table: api };
   });
 
   protected readonly normalizedColumns = computed(() => {
@@ -164,11 +214,31 @@ export class PuiTableComponent<T = unknown> {
   });
 
   protected readonly visibleColumns = computed(() => {
-    const columns = resolveDisplayColumns(this.normalizedColumns(), { selectable: this.selectable() });
-    return applyTableStickyOptions(columns, {
+    let columns = resolveDisplayColumns(this.normalizedColumns(), { selectable: this.selectable() });
+    columns = applyTableStickyOptions(columns, {
       stickyFirstColumn: this.stickyFirstColumn(),
       stickyLastColumn: this.stickyLastColumn(),
     });
+
+    if (
+      this.rowActionsTemplate() &&
+      !columns.some((column) => column.key === PUI_TABLE_ROW_ACTIONS_COLUMN_KEY)
+    ) {
+      columns = [
+        ...columns,
+        normalizeTableColumn({
+          key: PUI_TABLE_ROW_ACTIONS_COLUMN_KEY,
+          label: '',
+          type: 'custom',
+          width: '96px',
+          sticky: 'right',
+          exportable: false,
+          sortable: false,
+        }),
+      ];
+    }
+
+    return columns;
   });
 
   protected readonly rowHeight = computed(() => PUI_TABLE_DENSITY_ROW_HEIGHT[this.density()]);
@@ -186,6 +256,8 @@ export class PuiTableComponent<T = unknown> {
   );
 
   protected readonly syncIndices = computed(() => {
+    this.refreshTick();
+
     const rows = this.data();
     let indices = rows.map((_, index) => index);
     const columns = this.normalizedColumns();
@@ -244,6 +316,7 @@ export class PuiTableComponent<T = unknown> {
       const columns = this.normalizedColumns();
       const query = this.searchQuery();
       const useWorker = this.useWorker() && this.isBrowser();
+      this.refreshTick();
 
       if (!useWorker || !this.searchable()) {
         this.workerIndices.set(null);
@@ -303,6 +376,10 @@ export class PuiTableComponent<T = unknown> {
 
   protected isRowSelected(rowIndex: number): boolean {
     return this.selectable() && this.selectedSet().has(this.rowKeyAt(rowIndex));
+  }
+
+  protected isRowActionsColumn(column: PuiTableColumn<T>): boolean {
+    return column.key === PUI_TABLE_ROW_ACTIONS_COLUMN_KEY;
   }
 
   protected toggleRowSelection(rowIndex: number, checked: boolean): void {
@@ -413,22 +490,47 @@ export class PuiTableComponent<T = unknown> {
     this.rowClick.emit({ row: this.data()[rowIndex]!, index: rowIndex });
   }
 
-  protected onExport(format: PuiTableExportFormat): void {
-    this.exportClick.emit({ format });
-
+  protected exportData(format: PuiTableExportFormat): void {
     const config = this.exportConfig();
     const rows = this.dataProcessor.mapIndices(
       this.data(),
-      config.visibleColumnsOnly ? this.processedIndices() : this.data().map((_, i) => i)
+      config.visibleColumnsOnly ? this.processedIndices() : this.data().map((_, index) => index)
     );
 
-    const result = exportTableData(rows, this.visibleColumns(), {
+    runTableExport({
+      rows,
+      columns: this.visibleColumns(),
+      config,
       format,
-      filename: config.filename,
-      includeFilteredOnly: config.visibleColumnsOnly,
-      ...config.pdfConfig,
+      onExport: (exportFormat) => this.exportClick.emit({ format: exportFormat }),
     });
-    downloadExportResult(result);
+  }
+
+  protected clearSelectionState(): void {
+    if (!this.selectable()) {
+      return;
+    }
+
+    this.commitSelection(new Set());
+  }
+
+  protected selectAllRows(): void {
+    if (!this.selectable()) {
+      return;
+    }
+
+    this.commitSelection(
+      toggleAllSelection(this.selectedSet(), this.pageRowKeys(), true, this.maxSelection())
+    );
+  }
+
+  protected clearFiltersState(): void {
+    this.columnFilters.set([]);
+  }
+
+  protected refreshData(): void {
+    this.refreshTick.update((value) => value + 1);
+    this.refreshed.emit();
   }
 
   protected getRow(rowIndex: number): T {
@@ -458,6 +560,43 @@ export class PuiTableComponent<T = unknown> {
 
   protected isSelectionColumn(column: PuiTableColumn<T>): boolean {
     return column.type === 'selection';
+  }
+
+  /** Imperative API — also available via exportAs="puiTable" template refs. */
+  export(format: PuiTableExportFormat): void {
+    this.exportData(format);
+  }
+
+  clearSelection(): void {
+    this.clearSelectionState();
+  }
+
+  selectAll(): void {
+    this.selectAllRows();
+  }
+
+  clearFilters(): void {
+    this.clearFiltersState();
+  }
+
+  search(query: string): void {
+    this.onSearchChange(query);
+  }
+
+  refresh(): void {
+    this.refreshData();
+  }
+
+  getSelectedRows(): readonly T[] {
+    return this.selectedRows();
+  }
+
+  getFilteredRows(): readonly T[] {
+    return this.processedIndices().map((index) => this.data()[index]!);
+  }
+
+  getCurrentPageRows(): readonly T[] {
+    return this.pagedIndices().map((index) => this.data()[index]!);
   }
 
   private commitSelection(next: Set<PuiTableRowKey>): void {

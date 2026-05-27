@@ -8,14 +8,23 @@
   [attr.aria-label]="ariaLabel()"
 >
   @if (showToolbarSection()) {
-    <pui-table-toolbar
-      [searchQuery]="searchQuery()"
-      [showSearch]="toolbarConfig().search && searchable()"
-      [exportable]="toolbarConfig().export ? exportable() : false"
-      [showExport]="toolbarConfig().export"
-      (searchChange)="onSearchChange($event)"
-      (exportClick)="onExport($event)"
-    />
+    @if (hasCustomToolbar()) {
+      <div class="pui-table-toolbar pui-table-toolbar--custom">
+        <ng-container
+          *ngTemplateOutlet="toolbarTemplate()!.template; context: toolbarTemplateContext()"
+        />
+      </div>
+    } @else {
+      <pui-table-toolbar
+        [searchQuery]="searchQuery()"
+        [showSearch]="toolbarConfig().search && searchable()"
+        [showExport]="toolbarConfig().export"
+        [exportFormats]="resolvedExportFormats()"
+        [centerTemplate]="toolbarCenterTemplate()?.template ?? null"
+        (searchChange)="onSearchChange($event)"
+        (exportClick)="exportData($event)"
+      />
+    }
   }
 
   <div class="pui-table-shell">
@@ -58,7 +67,7 @@
                     ariaLabel="Select all rows on page"
                     (checkedChange)="toggleSelectAll($event)"
                   />
-                } @else {
+                } @else if (!isRowActionsColumn(column)) {
                   <span class="pui-table-cell__label">{{ column.label }}</span>
                 }
 
@@ -72,21 +81,36 @@
 
         <div class="pui-table-body" role="rowgroup">
           @if (loading()) {
-            <div class="pui-table-state pui-table-state--loading" role="status">
-              @for (skeleton of skeletonRows; track skeleton) {
-                <div class="pui-table-row pui-table-row--skeleton">
-                  @for (column of visibleColumns(); track column.key) {
-                    <div class="pui-table-cell pui-table-cell--skeleton"></div>
-                  }
-                </div>
-              }
-              <span>Loading data…</span>
-            </div>
+            @if (loadingTemplate(); as loadingTpl) {
+              <ng-container
+                *ngTemplateOutlet="loadingTpl.template; context: { loading: true }"
+              />
+            } @else {
+              <div class="pui-table-state pui-table-state--loading" role="status">
+                @for (skeleton of skeletonRows; track skeleton) {
+                  <div class="pui-table-row pui-table-row--skeleton">
+                    @for (column of visibleColumns(); track column.key) {
+                      <div class="pui-table-cell pui-table-cell--skeleton"></div>
+                    }
+                  </div>
+                }
+                <span>Loading data…</span>
+              </div>
+            }
           } @else if (!processedIndices().length) {
-            <div class="pui-table-state pui-table-state--empty" role="status">
-              <strong>{{ emptyTitle() }}</strong>
-              <span>{{ emptyDescription() }}</span>
-            </div>
+            @if (emptyStateTemplate(); as emptyTpl) {
+              <ng-container
+                *ngTemplateOutlet="
+                  emptyTpl.template;
+                  context: { title: emptyTitle(), description: emptyDescription() }
+                "
+              />
+            } @else {
+              <div class="pui-table-state pui-table-state--empty" role="status">
+                <strong>{{ emptyTitle() }}</strong>
+                <span>{{ emptyDescription() }}</span>
+              </div>
+            }
           } @else if (virtualScroll()) {
             <cdk-virtual-scroll-viewport
               class="pui-table-virtual"
@@ -157,7 +181,18 @@
 </div>
 
 <ng-template #renderCell let-rowIndex="rowIndex" let-column="column">
-  @if (cellTemplateFor(column.key); as cellTpl) {
+  @if (isRowActionsColumn(column) && rowActionsTemplate(); as actionsTpl) {
+    <ng-container
+      *ngTemplateOutlet="
+        actionsTpl.template;
+        context: {
+          $implicit: getRow(rowIndex),
+          row: getRow(rowIndex),
+          index: rowIndex
+        }
+      "
+    />
+  } @else if (cellTemplateFor(column.key); as cellTpl) {
     <ng-container
       *ngTemplateOutlet="
         cellTpl;
