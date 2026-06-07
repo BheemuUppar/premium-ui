@@ -21,7 +21,7 @@
         [showExport]="toolbarConfig().export"
         [exportFormats]="resolvedExportFormats()"
         [centerTemplate]="toolbarCenterTemplate()?.template ?? null"
-        (searchChange)="onSearchChange($event)"
+        (input)="onSearchChange($event)"
         (exportClick)="exportData($event)"
       />
     }

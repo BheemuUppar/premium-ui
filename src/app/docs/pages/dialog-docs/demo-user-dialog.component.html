@@ -1,0 +1,18 @@
+<pui-dialog ariaLabelledBy="demo-user-title">
+  <pui-dialog-header>
+    <pui-dialog-title id="demo-user-title">{{ user.name }}</pui-dialog-title>
+  </pui-dialog-header>
+
+  <pui-dialog-body>
+    <p>{{ user.email }}</p>
+    <p>{{ user.role }}</p>
+  </pui-dialog-body>
+
+  <pui-dialog-footer>
+    @if (user.stackChildVariant) {
+      <pui-button variant="outline" (click)="openChild()">Open second dialog</pui-button>
+    }
+    <pui-button variant="ghost" (click)="cancel()">Cancel</pui-button>
+    <pui-button (click)="save()">Save</pui-button>
+  </pui-dialog-footer>
+</pui-dialog>

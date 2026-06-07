@@ -56,8 +56,7 @@ export class PuiSwitchComponent implements ControlValueAccessor {
   readonly error = input<string | null>(null);
   readonly ariaLabel = input<string | null>(null);
 
-  readonly checkedChange = output<boolean>();
-  readonly valueChange = output<boolean>();
+  readonly change = output<boolean>();
 
   private readonly switchId = createPuiId('pui-switch');
   private readonly helperId = `${this.switchId}-helper`;
@@ -125,8 +124,7 @@ export class PuiSwitchComponent implements ControlValueAccessor {
 
   private commit(next: boolean): void {
     this.checked.set(next);
-    this.checkedChange.emit(next);
-    this.valueChange.emit(next);
+    this.change.emit(next);
     this.cva.commit(next);
   }
 

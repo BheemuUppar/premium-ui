@@ -38,7 +38,7 @@ export class PuiTableToolbarComponent {
   readonly exportFormats = input<readonly PuiTableExportFormat[]>([]);
   readonly centerTemplate = input<TemplateRef<unknown> | null>(null);
 
-  readonly searchChange = output<string>();
+  readonly input = output<string>();
   readonly exportClick = output<PuiTableExportFormat>();
 
   protected readonly exportMenuOpen = signal(false);
@@ -52,7 +52,7 @@ export class PuiTableToolbarComponent {
   }
 
   protected onSearchInput(event: Event): void {
-    this.searchChange.emit((event.target as HTMLInputElement).value);
+    this.input.emit((event.target as HTMLInputElement).value);
   }
 
   protected toggleExportMenu(event: Event): void {

@@ -138,7 +138,7 @@ export class RadioDocsComponent {
 
   protected readonly signalExample = `<pui-radio-group
   [value]="plan()"
-  (valueChange)="plan.set($event)"
+  (selectionChange)="plan.set($event)"
 >
   <pui-radio value="starter">Starter</pui-radio>
   <pui-radio value="pro">Pro</pui-radio>
@@ -228,8 +228,8 @@ export class RadioDocsComponent {
   ];
 
   protected readonly outputRows: readonly PuiApiRow[] = [
-    { name: 'checkedChange', type: 'boolean', defaultValue: '-', description: 'Emits when standalone radio checked state changes.' },
-    { name: 'valueChange', type: 'PuiRadioValue', defaultValue: '-', description: 'Emits selected value from radio or group.' },
+    { name: 'change', type: 'boolean', defaultValue: '-', description: 'Emits when standalone radio checked state changes.' },
+    { name: 'selectionChange', type: 'PuiRadioValue | null', defaultValue: '-', description: 'Emits selected value from pui-radio-group.' },
   ];
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [

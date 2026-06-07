@@ -69,7 +69,15 @@ export class InputDocsComponent {
     { name: 'placeholder', type: 'string | null', defaultValue: 'null', description: 'Text shown when the field is empty.' },
     { name: 'ariaLabel', type: 'string | null', defaultValue: 'null', description: 'Accessible label for the input when needed.' },
     { name: 'disabled', type: 'boolean', defaultValue: 'false', description: 'Disables user interaction.' },
-    { name: 'readOnly', type: 'boolean', defaultValue: 'false', description: 'Makes the input read-only.' }
+    { name: 'readOnly', type: 'boolean', defaultValue: 'false', description: 'Makes the input read-only.' },
+    { name: 'value', type: 'string', defaultValue: "''", description: 'Current input value (one-way bind).' },
+  ];
+
+  protected readonly outputRows: readonly PuiApiRow[] = [
+    { name: 'input', type: 'Event', defaultValue: '-', description: 'Emits on native input events.' },
+    { name: 'change', type: 'Event', defaultValue: '-', description: 'Emits on native change events.' },
+    { name: 'focus', type: 'FocusEvent', defaultValue: '-', description: 'Emits when the control receives focus.' },
+    { name: 'blur', type: 'FocusEvent', defaultValue: '-', description: 'Emits when the control loses focus.' },
   ];
 
   protected readonly overviewExampleCode = '<pui-input placeholder="Type here"></pui-input>';
@@ -160,6 +168,10 @@ export class InputDocsComponent {
     if (typeof value === 'string') {
       this.playgroundSize.set(value as PuiSize);
     }
+  }
+
+  protected setPlaygroundPlaceholder(event: Event): void {
+    this.playgroundPlaceholder.set((event.target as HTMLInputElement).value);
   }
 
   protected inputTypeExample(type: string): string {

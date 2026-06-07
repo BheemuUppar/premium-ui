@@ -294,7 +294,7 @@ export const NgModelExample: Story = {
       asyncSearch
       clearable
       placeholder="Search countries (async)"
-      (searchChange)="onSearch($event)"
+      (input)="onSearch($event)"
     />
     <p style="margin-top: var(--pui-space-sm); color: var(--pui-muted); font-size: var(--pui-font-size-sm);">
       Selected: {{ selected | json }}

@@ -86,7 +86,6 @@ export class PuiToggleGroupComponent implements ControlValueAccessor {
   readonly size = input<PuiToggleSize>('md');
   readonly ariaLabel = input<string | null>(null);
 
-  readonly valueChange = output<PuiToggleGroupSelection>();
   readonly selectionChange = output<PuiToggleGroupSelection>();
 
   layoutMode(): PuiToggleGroupMode {
@@ -294,7 +293,6 @@ export class PuiToggleGroupComponent implements ControlValueAccessor {
   private commit(next: PuiToggleGroupSelection): void {
     this.value.set(next);
     this.cva.commit(next);
-    this.valueChange.emit(next);
     this.selectionChange.emit(next);
   }
 

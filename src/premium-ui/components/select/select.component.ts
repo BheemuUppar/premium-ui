@@ -123,7 +123,7 @@ export class PuiSelectComponent implements ControlValueAccessor {
 
   readonly selectionChange = output<PuiSelectSelectionChange>();
   readonly openChange = output<boolean>();
-  readonly searchChange = output<string>();
+  readonly input = output<string>();
 
   private readonly projectedOptions = contentChildren(PuiOptionComponent);
   private readonly optionTemplateRef = contentChild('optionTemplate', { read: TemplateRef });
@@ -422,12 +422,12 @@ export class PuiSelectComponent implements ControlValueAccessor {
 
     if (this.asyncSearch()) {
       this.searchDebounceTimer = setTimeout(() => {
-        this.searchChange.emit(query);
+        this.input.emit(query);
       }, PUI_SELECT_SEARCH_DEBOUNCE_MS);
       return;
     }
 
-    this.searchChange.emit(query);
+    this.input.emit(query);
   }
 
   protected handleOptionClick(option: PuiSelectOption, index: number): void {

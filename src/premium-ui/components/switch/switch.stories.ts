@@ -186,7 +186,7 @@ export const ReactiveForms: Story = {
   template: `
     <pui-switch
       [checked]="enabled()"
-      (checkedChange)="enabled.set($event)"
+      (change)="enabled.set($event)"
       label="Enable feature"
     />
     <p class="pui-switch-showcase-meta">Signal value: {{ enabled() }}</p>

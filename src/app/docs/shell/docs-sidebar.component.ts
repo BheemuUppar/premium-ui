@@ -67,7 +67,7 @@ export class DocsSidebarComponent {
       id: 'overlays',
       label: 'Overlays',
       items: [
-        { label: 'Modal', route: ['/docs/components/modal'] },
+        { label: 'Dialog', route: ['/docs/components/dialog/overview'], badge: 'Ready' },
         { label: 'Tooltip', route: ['/docs/components/tooltip'] }
       ]
     },

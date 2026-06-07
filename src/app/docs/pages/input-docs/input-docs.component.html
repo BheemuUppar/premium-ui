@@ -77,6 +77,7 @@
         <section class="pui-doc-section" id="api" aria-labelledby="api-title">
           <p class="pui-eyebrow">API Guide</p>
           <pui-doc-api-table title="Parameters" [rows]="apiRows" />
+          <pui-doc-api-table title="Outputs" [rows]="outputRows" mode="events" />
         </section>
       }
 
@@ -134,7 +135,7 @@
                 <span class="pui-playground-field__label">Placeholder</span>
                 <pui-input
                   [value]="playgroundPlaceholder()"
-                  (valueChange)="playgroundPlaceholder.set($event)"
+                  (input)="setPlaygroundPlaceholder($event)"
                   placeholder="Enter placeholder"
                   ariaLabel="Playground placeholder"
                 />

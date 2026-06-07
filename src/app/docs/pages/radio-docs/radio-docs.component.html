@@ -223,10 +223,10 @@
             <pui-doc-example
               exampleId="radio-signal"
               title="Signal forms"
-              description="Drive selection from a signal with valueChange."
+              description="Drive selection from a signal with change."
               [tabs]="signalExampleTabs"
             >
-              <pui-radio-group [value]="signalPlan()" (valueChange)="onSignalPlanChange($event)" ariaLabel="Plan">
+              <pui-radio-group [value]="signalPlan()" (selectionChange)="onSignalPlanChange($event)" ariaLabel="Plan">
                 <pui-radio value="starter">Starter</pui-radio>
                 <pui-radio value="pro">Pro</pui-radio>
               </pui-radio-group>

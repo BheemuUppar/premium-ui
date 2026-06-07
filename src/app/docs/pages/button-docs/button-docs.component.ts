@@ -170,7 +170,7 @@ export class ButtonDocsComponent {
     {
       id: 'disabled-state',
       title: 'Disabled state',
-      description: 'Disabled buttons remain visible but do not emit pressed events.',
+      description: 'Disabled buttons remain visible but do not emit click events.',
       disabled: true,
       code: '<pui-button [disabled]="true">Unavailable</pui-button>',
     },
@@ -205,7 +205,7 @@ export class ButtonDocsComponent {
   ];
 
   protected readonly outputRows: readonly PuiDocApiRow[] = [
-    { name: 'pressed', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' },
+    { name: 'click', type: 'MouseEvent', defaultValue: '-', description: 'Emits when the button is clicked while enabled.' },
   ];
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [

@@ -114,7 +114,7 @@ export class SwitchDocsComponent {
 
   protected readonly signalExample = `<pui-switch
   [checked]="enabled()"
-  (checkedChange)="enabled.set($event)"
+  (change)="enabled.set($event)"
   label="Enable feature"
 />`;
 
@@ -171,8 +171,7 @@ export class SwitchDocsComponent {
   ];
 
   protected readonly outputRows: readonly PuiApiRow[] = [
-    { name: 'checkedChange', type: 'boolean', defaultValue: '-', description: 'Emits when checked state changes.' },
-    { name: 'valueChange', type: 'boolean', defaultValue: '-', description: 'Emits boolean value on toggle.' },
+    { name: 'change', type: 'boolean', defaultValue: '-', description: 'Emits when checked state changes.' },
   ];
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [

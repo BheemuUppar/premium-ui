@@ -24,7 +24,7 @@ export class PuiButtonComponent {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly ariaLabel = input<string | null>(null);
-  readonly pressed = output<MouseEvent>();
+  readonly click = output<MouseEvent>();
 
   protected readonly isDisabled = computed(() => this.disabled() || this.loading());
 
@@ -35,6 +35,9 @@ export class PuiButtonComponent {
       return;
     }
 
-    this.pressed.emit(event);
+    // Prevent the native click from bubbling to the host — (click) on pui-button
+    // subscribes to both the output and the host DOM event when they share the name.
+    event.stopPropagation();
+    this.click.emit(event);
   }
 }

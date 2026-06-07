@@ -253,7 +253,7 @@ export class TabsDocsComponent {
   ];
 
   protected readonly tabsOutputRows: readonly PuiDocApiRow[] = [
-    { name: 'valueChange', type: 'string', defaultValue: '-', description: 'Emits the selected tab id when selection changes.' },
+    { name: 'selectionChange', type: 'string', defaultValue: '-', description: 'Emits the selected tab id when selection changes.' },
   ];
 
   protected readonly tabItemApiRows: readonly PuiDocApiRow[] = [

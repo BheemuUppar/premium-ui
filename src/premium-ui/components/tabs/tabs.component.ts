@@ -61,7 +61,7 @@ export class PuiTabsComponent implements ControlValueAccessor {
   readonly fullWidth = input(false, { transform: booleanAttribute });
   readonly value = model<string>('');
 
-  readonly valueChange = output<string>();
+  readonly selectionChange = output<string>();
 
   protected readonly showIndicator = computed(() => isSlidingIndicatorVariant(this.variant()));
 
@@ -236,7 +236,7 @@ export class PuiTabsComponent implements ControlValueAccessor {
 
     if (emit) {
       this.cva.commit(tabId);
-      this.valueChange.emit(tabId);
+      this.selectionChange.emit(tabId);
       this.markTouched();
     }
   }

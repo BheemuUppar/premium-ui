@@ -58,8 +58,7 @@ export class PuiRadioComponent implements ControlValueAccessor {
   readonly helperText = input<string | null>(null);
   readonly ariaLabel = input<string | null>(null);
 
-  readonly checkedChange = output<boolean>();
-  readonly valueChange = output<PuiRadioValue>();
+  readonly change = output<boolean>();
 
   private readonly radioId = createPuiId('pui-radio');
   private readonly helperId = `${this.radioId}-helper`;
@@ -153,12 +152,8 @@ export class PuiRadioComponent implements ControlValueAccessor {
     }
 
     this.checked.set(true);
-    this.checkedChange.emit(true);
+    this.change.emit(true);
     this.cva.commit(true);
-
-    if (itemValue !== undefined) {
-      this.valueChange.emit(itemValue);
-    }
   }
 
   protected handleBlur(): void {

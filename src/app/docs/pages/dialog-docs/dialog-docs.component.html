@@ -1,0 +1,340 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero" id="overview">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/dialog/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/dialog/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Dialog</span>
+    </nav>
+    <h1>Angular Dialog System</h1>
+    <p>
+      Enterprise overlay infrastructure with dialog as the first consumer. Open template or
+      component dialogs through <code>PuiDialogService</code>, compose layouts with
+      <code>pui-dialog-*</code> primitives, and rely on focus trapping, scroll lock, and stacking
+      for production workflows.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Dialog documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a
+        class="pui-tab"
+        [routerLink]="tab.route"
+        routerLinkActive="pui-tab--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section" aria-labelledby="dialog-overview-title">
+          <h2 id="dialog-overview-title">Overview</h2>
+          <p>
+            Dialog builds on the reusable <code>PuiOverlayService</code> foundation.
+            <code>dialog.open()</code> returns a <code>PuiDialogRef</code>. Pass
+            <code>data</code> in the config — the dialog component reads it via
+            <code>injectPuiDialogData()</code> and closes with <code>injectPuiDialogRef().close(result)</code>.
+            Subscribe to <code>afterClosed()</code> on the opener to receive the result.
+          </p>
+
+          <pui-doc-example
+            exampleId="dialog-component-overview"
+            title="Component dialog"
+            description="Opener component, dialog component, injected data, and returned result."
+            [tabs]="componentExampleTabs"
+          >
+            <pui-button (click)="openComponent()">View user</pui-button>
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="dialog-confirm-overview"
+            title="Confirm helper"
+            description="Promise-based confirm API for destructive actions."
+            [tabs]="confirmExampleTabs"
+          >
+            <pui-button variant="danger" (click)="openConfirm()">Remove workspace</pui-button>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-types-title">
+          <h2 id="dialog-types-title">Dialog types</h2>
+          <div class="dialog-type-grid">
+            @for (variant of variants; track variant) {
+              <article class="dialog-type-card">
+                <h3>{{ variantMeta[variant].title }}</h3>
+                <p>{{ variantMeta[variant].description }}</p>
+                <pui-button size="sm" variant="outline" (click)="openVariant(variant)">
+                  Open {{ variant }}
+                </pui-button>
+              </article>
+            }
+          </div>
+        </section>
+
+        <pui-doc-related-links [links]="relatedLinks" />
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section" aria-labelledby="dialog-ex-component">
+          <h2 id="dialog-ex-component">Component dialog (service)</h2>
+          <p>
+            Material-style flow: an <strong>opener</strong> calls
+            <code>dialog.open(Component, &#123; data &#125;)</code> and keeps the returned
+            <code>PuiDialogRef</code>. The <strong>dialog component</strong> injects
+            <code>injectPuiDialogData()</code> and <code>injectPuiDialogRef()</code>, then calls
+            <code>dialogRef.close(result)</code>. The opener receives <code>result</code> from
+            <code>ref.afterClosed()</code>.
+          </p>
+          <pui-doc-example
+            exampleId="dialog-ex-component"
+            title="Component dialog"
+            [tabs]="componentExampleTabs"
+          >
+            <pui-button (click)="openComponent()">View user</pui-button>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-ex-template">
+          <h2 id="dialog-ex-template">Template dialog</h2>
+          <p>
+            Define content in <code>ng-template</code> and pass the template plus a
+            <code>ViewContainerRef</code> to <code>dialog.open()</code>.
+          </p>
+          <pui-doc-example
+            exampleId="dialog-ex-template"
+            title="Template dialog"
+            [tabs]="templateExampleTabs"
+          >
+            <pui-button variant="danger" (click)="openTemplate()">Delete user</pui-button>
+          </pui-doc-example>
+
+          <ng-template #deleteDialog let-dialogRef="dialogRef">
+            <pui-dialog variant="danger">
+              <pui-dialog-header>
+                <pui-dialog-title>Delete user?</pui-dialog-title>
+              </pui-dialog-header>
+              <pui-dialog-body>
+                <p>This action cannot be undone.</p>
+              </pui-dialog-body>
+              <pui-dialog-footer>
+                <pui-button variant="ghost" (click)="dialogRef.close()">Cancel</pui-button>
+                <pui-button variant="danger" (click)="dialogRef.close(true)">Delete</pui-button>
+              </pui-dialog-footer>
+            </pui-dialog>
+          </ng-template>
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-ex-sizing">
+          <h2 id="dialog-ex-sizing">Width &amp; height</h2>
+          <p>Control panel dimensions through the <code>size</code> config object.</p>
+          <pui-doc-example
+            exampleId="dialog-ex-sizing"
+            title="Custom size"
+            [tabs]="sizingExampleTabs"
+          >
+            <pui-button (click)="openSized()">Open sized dialog (40rem × 20rem)</pui-button>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-ex-backdrop">
+          <h2 id="dialog-ex-backdrop">Backdrop options</h2>
+          <p>
+            Toggle <code>backdrop</code> to show or hide the dimmed layer. Set
+            <code>backdropClosable: false</code> to require an explicit close action.
+          </p>
+          <pui-doc-example
+            exampleId="dialog-ex-backdrop"
+            title="Backdrop variants"
+            [tabs]="backdropExampleTabs"
+          >
+            <div class="dialog-demo-row">
+              <pui-button variant="outline" (click)="openWithBackdrop()">With backdrop</pui-button>
+              <pui-button variant="ghost" (click)="openWithoutBackdrop()">No backdrop</pui-button>
+              <pui-button variant="outline" (click)="openLockedBackdrop()">Locked backdrop</pui-button>
+            </div>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-ex-confirm">
+          <h2 id="dialog-ex-confirm">Confirm dialog</h2>
+          <pui-doc-example
+            exampleId="dialog-ex-confirm"
+            title="dialog.confirm()"
+            [tabs]="confirmExampleTabs"
+          >
+            <pui-button variant="danger" (click)="openConfirm()">Remove workspace</pui-button>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-ex-variants">
+          <h2 id="dialog-ex-variants">Variant presets</h2>
+          <p>Each variant applies sizing, position, and panel class defaults.</p>
+          <div class="dialog-type-grid">
+            @for (variant of variants; track variant) {
+              <article class="dialog-type-card">
+                <h3>{{ variantMeta[variant].title }}</h3>
+                <p>{{ variantMeta[variant].description }}</p>
+                <pui-button size="sm" variant="outline" (click)="openVariant(variant)">
+                  Open {{ variant }}
+                </pui-button>
+              </article>
+            }
+          </div>
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-ex-stacked">
+          <h2 id="dialog-ex-stacked">Stacked dialogs</h2>
+          <p>
+            Open a dialog from inside another — each layer gets a higher z-index and can use a
+            different variant. Escape and backdrop close only affect the topmost dialog.
+          </p>
+          <pui-doc-example
+            exampleId="dialog-ex-stacked"
+            title="Nested stacking"
+            [tabs]="stackedExampleTabs"
+          >
+            <div class="dialog-demo-row">
+              <pui-button (click)="openStackedFirst()">Open first layer</pui-button>
+              <pui-button variant="outline" (click)="openStackedSecond()">Second on top</pui-button>
+              <pui-button variant="ghost" (click)="closeAllDialogs()">Close all</pui-button>
+            </div>
+          </pui-doc-example>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section" aria-labelledby="dialog-api-service">
+          <h2 id="dialog-api-service">PuiDialogService</h2>
+          <pui-doc-api-table [rows]="serviceApiRows" />
+          <pui-doc-example
+            exampleId="dialog-api-service-code"
+            title="Service usage"
+            description="Complete service API with component, template, confirm, and ref patterns."
+            [tabs]="serviceApiExampleTabs"
+          />
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-api-config">
+          <h2 id="dialog-api-config">PuiDialogConfig</h2>
+          <pui-doc-api-table [rows]="configApiRows" />
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-api-injection">
+          <h2 id="dialog-api-injection">Injection tokens</h2>
+          <p>
+            <code>PuiDialogService</code> provides <code>PUI_DIALOG_DATA</code> and
+            <code>PUI_DIALOG_REF</code> to every component dialog. Use the typed helpers in dialog
+            components — same pattern as Angular Material <code>MAT_DIALOG_DATA</code> /
+            <code>MatDialogRef</code>.
+          </p>
+          <pui-doc-api-table [rows]="injectionApiRows" />
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-api-ref">
+          <h2 id="dialog-api-ref">PuiDialogRef</h2>
+          <p>
+            Returned by <code>dialog.open()</code>. Call <code>close(result)</code> from the opener
+            or from inside the dialog via <code>injectPuiDialogRef()</code>.
+            <code>afterClosed()</code> emits the result after the exit animation.
+          </p>
+          <pui-doc-api-table [rows]="refApiRows" />
+          <pui-doc-example
+            exampleId="dialog-api-ref-code"
+            title="Inside a component dialog"
+            description="injectPuiDialogData and injectPuiDialogRef with a typed close result."
+            [tabs]="refApiExampleTabs"
+          />
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-api-primitives">
+          <h2 id="dialog-api-primitives">Composition primitives</h2>
+          <pui-doc-api-table [rows]="primitiveApiRows" />
+        </section>
+
+        <section class="pui-doc-section" aria-labelledby="dialog-api-template-vs-component">
+          <h2 id="dialog-api-template-vs-component">Template vs component</h2>
+          <pui-doc-example
+            exampleId="dialog-api-template"
+            title="Template dialog"
+            [tabs]="templateExampleTabs"
+          />
+          <pui-doc-example
+            exampleId="dialog-api-component"
+            title="Component dialog"
+            [tabs]="componentExampleTabs"
+          />
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section" aria-labelledby="dialog-a11y-title">
+          <h2 id="dialog-a11y-title">Accessibility</h2>
+          <pui-doc-a11y-list [items]="a11yItems" />
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section" aria-labelledby="dialog-theme-title">
+          <h2 id="dialog-theme-title">Theming</h2>
+          <pui-doc-example
+            exampleId="dialog-theme"
+            title="CSS variables"
+            [tabs]="themeTabs"
+          />
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section" aria-labelledby="dialog-playground-title">
+          <h2 id="dialog-playground-title">Playground</h2>
+          <div class="dialog-playground">
+            <label class="dialog-playground__field">
+              <span>Width</span>
+              <input type="text" [value]="pgWidth()" (input)="onWidthInput($event)" />
+            </label>
+            <label class="dialog-playground__field">
+              <span>Height</span>
+              <input type="text" [value]="pgHeight()" (input)="onHeightInput($event)" placeholder="auto" />
+            </label>
+            <pui-select
+              [options]="variantOptions"
+              [value]="pgVariant()"
+              (valueChange)="onVariantChange($event)"
+              ariaLabel="Playground variant"
+            />
+            <pui-select
+              [options]="positionOptions"
+              [value]="pgPosition()"
+              (valueChange)="onPositionChange($event)"
+              ariaLabel="Playground position"
+            />
+            <pui-select
+              [options]="scrollOptions"
+              [value]="pgScroll()"
+              (valueChange)="onScrollChange($event)"
+              ariaLabel="Playground scroll strategy"
+            />
+            <pui-checkbox [checked]="pgBackdrop()" (checkedChange)="pgBackdrop.set($event)">
+              Backdrop
+            </pui-checkbox>
+            <pui-checkbox [checked]="pgBackdropClosable()" (checkedChange)="pgBackdropClosable.set($event)">
+              Backdrop close
+            </pui-checkbox>
+            <pui-button (click)="openPlayground()">Open dialog</pui-button>
+          </div>
+
+          <pui-doc-example
+            exampleId="dialog-playground-code"
+            title="Generated example"
+            [tabs]="playgroundExampleTabs"
+          />
+        </section>
+      }
+    }
+  </div>
+</article>

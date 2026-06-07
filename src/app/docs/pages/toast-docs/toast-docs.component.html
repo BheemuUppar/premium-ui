@@ -49,7 +49,7 @@
             description="Trigger semantic feedback from a button click. The HTML tab is template-only; TypeScript shows imports and service injection."
             [tabs]="basicExampleTabs"
           >
-            <pui-button (pressed)="showSuccess()">Show success toast</pui-button>
+            <pui-button (click)="showSuccess()">Show success toast</pui-button>
           </pui-doc-example>
 
           <pui-doc-example
@@ -58,7 +58,7 @@
             description="Pass a structured object when you need title, description, action, duration, and position together."
             [tabs]="objectApiExampleTabs"
           >
-            <pui-button (pressed)="toast.success({
+            <pui-button (click)="toast.success({
               title: 'Saved',
               description: 'Your changes were saved.',
               actionLabel: 'Undo',
@@ -111,10 +111,10 @@
               [tabs]="semanticExampleTabs"
             >
               <div class="pui-toast-demo-row">
-                <pui-button (pressed)="showSuccess()">Success</pui-button>
-                <pui-button variant="danger" (pressed)="showError()">Error</pui-button>
-                <pui-button variant="outline" (pressed)="toast.warning('Check your input')">Warning</pui-button>
-                <pui-button variant="ghost" (pressed)="toast.info('New version available')">Info</pui-button>
+                <pui-button (click)="showSuccess()">Success</pui-button>
+                <pui-button variant="danger" (click)="showError()">Error</pui-button>
+                <pui-button variant="outline" (click)="toast.warning('Check your input')">Warning</pui-button>
+                <pui-button variant="ghost" (click)="toast.info('New version available')">Info</pui-button>
               </div>
             </pui-doc-example>
 
@@ -125,9 +125,9 @@
               [tabs]="iconExampleTabs"
             >
               <div class="pui-toast-demo-row">
-                <pui-button variant="outline" (pressed)="showSuccess()">Default icon</pui-button>
-                <pui-button variant="outline" (pressed)="toast.info('Reminder set', { iconName: 'bell' })">Custom icon</pui-button>
-                <pui-button variant="ghost" (pressed)="toast.success('Copied', { icon: false })">Iconless</pui-button>
+                <pui-button variant="outline" (click)="showSuccess()">Default icon</pui-button>
+                <pui-button variant="outline" (click)="toast.info('Reminder set', { iconName: 'bell' })">Custom icon</pui-button>
+                <pui-button variant="ghost" (click)="toast.success('Copied', { icon: false })">Iconless</pui-button>
               </div>
             </pui-doc-example>
 
@@ -137,7 +137,7 @@
               description="Compact horizontal layout with action — ideal for undo after delete. Defaults to bottom-center."
               [tabs]="snackbarExampleTabs"
             >
-              <pui-button variant="secondary" (pressed)="showSnackbar()">Show snackbar</pui-button>
+              <pui-button variant="secondary" (click)="showSnackbar()">Show snackbar</pui-button>
             </pui-doc-example>
 
             <pui-doc-example
@@ -146,7 +146,7 @@
               description="Title, description, icon, and primary action for multi-line SaaS workflows."
               [tabs]="richExampleTabs"
             >
-              <pui-button (pressed)="showRich()">Show rich toast</pui-button>
+              <pui-button (click)="showRich()">Show rich toast</pui-button>
             </pui-doc-example>
 
             <pui-doc-example
@@ -155,7 +155,7 @@
               description="Create a loading toast, then update it by id when the operation completes."
               [tabs]="loadingExampleTabs"
             >
-              <pui-button variant="outline" (pressed)="runLoadingDemo()">Run loading demo</pui-button>
+              <pui-button variant="outline" (click)="runLoadingDemo()">Run loading demo</pui-button>
             </pui-doc-example>
 
             <pui-doc-example
@@ -164,7 +164,7 @@
               description="Wrap async work — the service shows loading, then transitions to success or error."
               [tabs]="promiseExampleTabs"
             >
-              <pui-button variant="outline" (pressed)="runPromiseDemo()">Run upload demo</pui-button>
+              <pui-button variant="outline" (click)="runPromiseDemo()">Run upload demo</pui-button>
             </pui-doc-example>
           </div>
         </section>
@@ -177,7 +177,7 @@
           </p>
           <div class="pui-toast-position-grid">
             @for (position of positions; track position) {
-              <pui-button variant="outline" size="sm" (pressed)="showPosition(position)">
+              <pui-button variant="outline" size="sm" (click)="showPosition(position)">
                 {{ position }}
               </pui-button>
             }
@@ -286,7 +286,7 @@
             </div>
             <div class="pui-playground__preview">
               <p class="pui-playground__preview-label">Trigger</p>
-              <pui-button (pressed)="triggerPlaygroundToast()">Show toast</pui-button>
+              <pui-button (click)="triggerPlaygroundToast()">Show toast</pui-button>
             </div>
           </div>
 

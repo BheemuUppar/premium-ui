@@ -143,7 +143,7 @@ export const DOCS_COMPONENT_SEO: Readonly<Record<string, PuiDocsComponentSeo>> =
     tabs: tabs(
       'Angular switch with track/thumb animation, iOS variant, loading state, and forms support.',
       'Switch examples — default, success, danger, iOS style, and loading patterns.',
-      'Switch API — checkedChange, variants, sizes, and CVA integration.',
+      'Switch API — change event, variants, sizes, and CVA integration.',
       'Switch a11y — switch role, aria-checked, and keyboard activation.',
       'Switch theming — track, thumb, and focus ring tokens.',
       'Switch playground for variant, size, loading, and disabled states.',
@@ -235,6 +235,26 @@ export const DOCS_COMPONENT_SEO: Readonly<Record<string, PuiDocsComponentSeo>> =
     relatedLinks: [
       { label: 'Button', route: ['/docs/components/button/overview'] },
       { label: 'Tabs', route: ['/docs/components/tabs/overview'] },
+    ],
+  },
+  dialog: {
+    slug: 'dialog',
+    name: 'Dialog',
+    titlePrefix: 'Angular Dialog System',
+    keywords: 'angular dialog, modal angular, overlay angular, dialog service, premium ui dialog',
+    tabs: tabs(
+      'Enterprise Angular dialog infrastructure — overlay foundation, template and component dialogs, stacking, and focus management.',
+      'Dialog examples — template dialogs, component dialogs, confirm helper, variants, fullscreen, sheet, and stacking.',
+      'PuiDialogService API — open, close, confirm, sizing, positioning, and PuiDialogRef lifecycle.',
+      'Dialog accessibility — focus trap, escape key, aria-modal, and focus restoration.',
+      'Dialog theming — surface, border, radius, and shadow tokens.',
+      'Interactive dialog playground — width, backdrop, position, variant, and scroll strategy.',
+      'Angular Dialog System'
+    ),
+    relatedLinks: [
+      { label: 'Toast', route: ['/docs/components/toast/overview'] },
+      { label: 'Button', route: ['/docs/components/button/overview'] },
+      { label: 'Table', route: ['/docs/components/table/overview'] },
     ],
   },
   table: {

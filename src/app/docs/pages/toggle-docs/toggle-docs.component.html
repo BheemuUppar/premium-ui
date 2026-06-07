@@ -247,7 +247,7 @@
               description="Control pressed state from a signal."
               [tabs]="signalExampleTabs"
             >
-              <pui-toggle [pressed]="signalBold()" (pressedChange)="signalBold.set($event)">Bold</pui-toggle>
+              <pui-toggle [pressed]="signalBold()" (change)="setSignalBold($event)">Bold</pui-toggle>
               <p class="pui-doc-meta">Signal: {{ signalBold() }}</p>
             </pui-doc-example>
           </div>

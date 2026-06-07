@@ -1,0 +1,22 @@
+<pui-dialog
+  [variant]="data.variant === 'danger' ? 'danger' : 'confirm'"
+  [ariaLabelledBy]="'pui-confirm-dialog-title'"
+  [ariaDescribedBy]="'pui-confirm-dialog-message'"
+>
+  <pui-dialog-header>
+    <pui-dialog-title id="pui-confirm-dialog-title">{{ data.title }}</pui-dialog-title>
+  </pui-dialog-header>
+
+  <pui-dialog-body>
+    <p id="pui-confirm-dialog-message">{{ data.message }}</p>
+  </pui-dialog-body>
+
+  <pui-dialog-footer>
+    <pui-button variant="ghost" (click)="cancel()">
+      {{ data.cancelLabel ?? 'Cancel' }}
+    </pui-button>
+    <pui-button [variant]="data.variant === 'danger' ? 'danger' : 'primary'" (click)="confirm()">
+      {{ data.confirmLabel ?? 'Confirm' }}
+    </pui-button>
+  </pui-dialog-footer>
+</pui-dialog>

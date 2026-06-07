@@ -66,6 +66,12 @@
 /docs/components/table/accessibility
 /docs/components/table/theming
 /docs/components/table/playground
+/docs/components/dialog/overview
+/docs/components/dialog/examples
+/docs/components/dialog/api
+/docs/components/dialog/accessibility
+/docs/components/dialog/theming
+/docs/components/dialog/playground
 /docs/foundations/colors
 /docs/foundations/typography
 /docs/foundations/spacing

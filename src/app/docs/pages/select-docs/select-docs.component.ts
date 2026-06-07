@@ -405,7 +405,7 @@ export class SelectDocsComponent {
   searchable
   asyncSearch
   [loading]="isLoading"
-  (searchChange)="loadOptions($event)"
+  (input)="loadOptions($event)"
 />`,
       tabs: buildSelectExampleTabs(
         `<pui-select
@@ -413,7 +413,7 @@ export class SelectDocsComponent {
   searchable
   asyncSearch
   [loading]="isLoading"
-  (searchChange)="loadOptions($event)"
+  (input)="loadOptions($event)"
 />`,
         'loading',
         {
@@ -445,7 +445,7 @@ export class SelectDocsComponent {
     { name: 'itemHeight', type: 'number', defaultValue: '36', description: 'Fixed row height used by virtual scroll.' },
     { name: 'maxPanelHeight', type: 'number', defaultValue: '280', description: 'Maximum dropdown panel height in pixels.' },
     { name: 'size', type: 'PuiSize', defaultValue: 'md', description: 'Controls trigger height and typography.' },
-    { name: 'asyncSearch', type: 'boolean', defaultValue: 'false', description: 'Defers filtering to the parent via searchChange events.' },
+    { name: 'asyncSearch', type: 'boolean', defaultValue: 'false', description: 'Defers filtering to the parent via input events.' },
     { name: 'useWorker', type: 'boolean', defaultValue: 'false', description: 'Opt-in worker delegation for search/filter on large datasets. Falls back to main thread when unavailable.' },
     { name: 'fuzzySearch', type: 'boolean', defaultValue: 'false', description: 'Enables fuzzy ranking when useWorker and searchable are active.' },
     { name: 'filterFn', type: 'PuiSelectFilterFn | null', defaultValue: 'null', description: 'Custom local filter function for searchable mode (main thread only).' },
@@ -457,7 +457,7 @@ export class SelectDocsComponent {
     { name: 'valueChange', type: 'PuiSelectValue', defaultValue: '-', description: 'Emits when the selected value changes.' },
     { name: 'selectionChange', type: 'PuiSelectSelectionChange', defaultValue: '-', description: 'Emits value and the selected option metadata.' },
     { name: 'openChange', type: 'boolean', defaultValue: '-', description: 'Emits when the panel opens or closes.' },
-    { name: 'searchChange', type: 'string', defaultValue: '-', description: 'Emits search query changes for local or async filtering.' },
+    { name: 'input', type: 'string', defaultValue: '-', description: 'Emits search query changes for local or async filtering.' },
   ];
 
   protected readonly themeTabs = buildThemeTabs(`:root {

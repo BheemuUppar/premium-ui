@@ -154,7 +154,7 @@
               description="Control checked state from a signal."
               [tabs]="signalExampleTabs"
             >
-              <pui-switch [checked]="signalEnabled()" (checkedChange)="signalEnabled.set($event)" label="Enable feature" />
+              <pui-switch [checked]="signalEnabled()" (change)="signalEnabled.set($event)" label="Enable feature" />
               <p class="pui-doc-meta">Signal: {{ signalEnabled() }}</p>
             </pui-doc-example>
           </div>
@@ -208,7 +208,7 @@
             <div class="pui-playground__preview">
               <pui-switch
                 [checked]="playgroundChecked()"
-                (checkedChange)="playgroundChecked.set($event)"
+                (change)="playgroundChecked.set($event)"
                 [variant]="playgroundVariant()"
                 [size]="playgroundSize()"
                 [disabled]="playgroundDisabled()"
@@ -229,7 +229,7 @@
           >
             <pui-switch
               [checked]="playgroundChecked()"
-              (checkedChange)="playgroundChecked.set($event)"
+              (change)="playgroundChecked.set($event)"
               [variant]="playgroundVariant()"
               [size]="playgroundSize()"
               [disabled]="playgroundDisabled()"

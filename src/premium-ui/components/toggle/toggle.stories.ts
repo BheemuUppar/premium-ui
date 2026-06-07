@@ -284,8 +284,8 @@ export const SignalForms: Story = {
     },
     template: `
       <div class="pui-toggle-showcase-stack">
-        <pui-toggle [pressed]="bold()" (pressedChange)="bold.set($event)">Bold</pui-toggle>
-        <pui-toggle-group mode="segmented" [value]="view()" (valueChange)="view.set($any($event))" ariaLabel="View">
+        <pui-toggle [pressed]="bold()" (change)="bold.set($event)">Bold</pui-toggle>
+        <pui-toggle-group mode="segmented" [value]="view()" (selectionChange)="view.set($any($event))" ariaLabel="View">
           <pui-toggle value="grid">Grid</pui-toggle>
           <pui-toggle value="list">List</pui-toggle>
         </pui-toggle-group>

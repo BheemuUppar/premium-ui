@@ -17,9 +17,9 @@ const SHELL = [PuiButtonComponent, PuiToastViewportComponent];
   template: `
     <div class="story-toast-shell">
       <div class="story-toast-row">
-        <pui-button variant="outline" (pressed)="showDefault()">Semantic icon</pui-button>
-        <pui-button variant="outline" (pressed)="showCustom()">Custom bell</pui-button>
-        <pui-button variant="ghost" (pressed)="showIconless()">Iconless</pui-button>
+        <pui-button variant="outline" (click)="showDefault()">Semantic icon</pui-button>
+        <pui-button variant="outline" (click)="showCustom()">Custom bell</pui-button>
+        <pui-button variant="ghost" (click)="showIconless()">Iconless</pui-button>
       </div>
       <pui-toast-viewport />
     </div>
@@ -50,7 +50,7 @@ class StoryToastIconsComponent {
   imports: SHELL,
   template: `
     <div class="story-toast-shell">
-      <pui-button (pressed)="showObjectToast()">Object payload</pui-button>
+      <pui-button (click)="showObjectToast()">Object payload</pui-button>
       <pui-toast-viewport />
     </div>
   `,
@@ -75,7 +75,7 @@ class StoryToastObjectApiComponent {
   imports: SHELL,
   template: `
     <div class="story-toast-shell">
-      <pui-button (pressed)="toast.show('Settings saved')">Show toast</pui-button>
+      <pui-button (click)="toast.show('Settings saved')">Show toast</pui-button>
       <pui-toast-viewport />
     </div>
   `,
@@ -92,7 +92,7 @@ class StoryToastDefaultComponent {
     <div class="story-toast-shell">
       <div class="story-toast-row">
         @for (variant of variants; track variant) {
-          <pui-button variant="outline" (pressed)="showVariant(variant)">{{ variant }}</pui-button>
+          <pui-button variant="outline" (click)="showVariant(variant)">{{ variant }}</pui-button>
         }
       </div>
       <pui-toast-viewport />
@@ -126,7 +126,7 @@ class StoryToastVariantsComponent {
   imports: SHELL,
   template: `
     <div class="story-toast-shell">
-      <pui-button (pressed)="showSnackbar()">Show snackbar</pui-button>
+      <pui-button (click)="showSnackbar()">Show snackbar</pui-button>
       <pui-toast-viewport />
     </div>
   `,
@@ -147,7 +147,7 @@ class StoryToastSnackbarComponent {
   imports: SHELL,
   template: `
     <div class="story-toast-shell">
-      <pui-button (pressed)="toast.compact('Copied to clipboard')">Compact toast</pui-button>
+      <pui-button (click)="toast.compact('Copied to clipboard')">Compact toast</pui-button>
       <pui-toast-viewport />
     </div>
   `,
@@ -162,7 +162,7 @@ class StoryToastCompactComponent {
   imports: SHELL,
   template: `
     <div class="story-toast-shell">
-      <pui-button (pressed)="showRich()">Rich toast</pui-button>
+      <pui-button (click)="showRich()">Rich toast</pui-button>
       <pui-toast-viewport />
     </div>
   `,
@@ -184,7 +184,7 @@ class StoryToastRichComponent {
   imports: SHELL,
   template: `
     <div class="story-toast-shell">
-      <pui-button (pressed)="runPromise()">Run promise toast</pui-button>
+      <pui-button (click)="runPromise()">Run promise toast</pui-button>
       <pui-toast-viewport />
     </div>
   `,
@@ -212,7 +212,7 @@ class StoryToastPromiseComponent {
     <div class="story-toast-shell">
       <div class="story-toast-grid">
         @for (position of positions; track position) {
-          <pui-button variant="outline" size="sm" (pressed)="showPosition(position)">
+          <pui-button variant="outline" size="sm" (click)="showPosition(position)">
             {{ position }}
           </pui-button>
         }
@@ -239,7 +239,7 @@ class StoryToastPositionsComponent {
   imports: SHELL,
   template: `
     <div class="story-toast-shell">
-      <pui-button (pressed)="stackToasts()">Stack toasts</pui-button>
+      <pui-button (click)="stackToasts()">Stack toasts</pui-button>
       <pui-toast-viewport />
     </div>
   `,

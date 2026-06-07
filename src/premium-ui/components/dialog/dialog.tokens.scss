@@ -1,0 +1,43 @@
+:host.pui-dialog,
+.pui-dialog-panel {
+  --pui-dialog-surface: var(--pui-color-surface);
+  --pui-dialog-border: color-mix(in srgb, var(--pui-color-border) 72%, transparent);
+  --pui-dialog-radius: var(--pui-radius-xl);
+  --pui-dialog-radius-sheet: var(--pui-radius-xl) var(--pui-radius-xl) 0 0;
+  --pui-dialog-shadow: var(--pui-shadow-xl);
+  --pui-dialog-header-padding: var(--pui-space-lg) var(--pui-space-xl);
+  --pui-dialog-body-padding: var(--pui-space-lg) var(--pui-space-xl);
+  --pui-dialog-footer-padding: var(--pui-space-md) var(--pui-space-xl);
+  --pui-dialog-fullscreen-width: 96vw;
+  --pui-dialog-fullscreen-height: 96vh;
+}
+
+.pui-dialog-panel--sheet {
+  --pui-dialog-radius: var(--pui-dialog-radius-sheet);
+}
+
+.pui-dialog-panel--sheet.pui-overlay-panel:not(.pui-overlay-panel--open) {
+  transform: translateY(100%);
+}
+
+.pui-dialog-panel--sheet.pui-overlay-panel--open {
+  transform: translateY(0);
+}
+
+.pui-dialog-panel--danger .pui-dialog__title {
+  color: var(--pui-color-danger);
+}
+
+.pui-dialog-panel--fullscreen {
+  width: var(--pui-dialog-fullscreen-width);
+  height: var(--pui-dialog-fullscreen-height);
+  max-width: var(--pui-dialog-fullscreen-width);
+  max-height: var(--pui-dialog-fullscreen-height);
+}
+
+.pui-dialog-panel--fullscreen pui-dialog.pui-dialog {
+  width: var(--pui-dialog-fullscreen-width);
+  height: var(--pui-dialog-fullscreen-height);
+  max-width: var(--pui-dialog-fullscreen-width);
+  max-height: var(--pui-dialog-fullscreen-height);
+}

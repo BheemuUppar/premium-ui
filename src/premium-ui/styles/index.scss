@@ -4,3 +4,5 @@
 @use './scrollbar';
 @use './globals';
 @use './utilities';
+@use '../overlay/overlay.tokens';
+@use '../components/dialog/dialog.tokens';

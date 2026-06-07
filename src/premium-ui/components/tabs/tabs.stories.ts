@@ -352,7 +352,7 @@ export const Playground: Story = {
           [ariaLabel]="ariaLabel"
           [disabled]="disabled"
           [value]="selected"
-          (valueChange)="selected = $event"
+          (selectionChange)="selected = $event"
         >
           <pui-tab-item id="play-overview" label="Overview" panelId="play-panel-overview"></pui-tab-item>
           <pui-tab-item id="play-analytics" label="Analytics" [badge]="3" panelId="play-panel-analytics"></pui-tab-item>

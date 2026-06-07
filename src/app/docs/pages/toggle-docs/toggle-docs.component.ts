@@ -149,7 +149,7 @@ export class ToggleDocsComponent {
 
   protected readonly signalExample = `<pui-toggle
   [pressed]="bold()"
-  (pressedChange)="bold.set($event)"
+  (change)="bold.set($event)"
 >Bold</pui-toggle>`;
 
   protected readonly segmentedExampleTabs = buildHtmlTsTabs(this.segmentedExample, {
@@ -225,8 +225,7 @@ export class ToggleDocsComponent {
   ];
 
   protected readonly toggleOutputRows: readonly PuiApiRow[] = [
-    { name: 'pressedChange', type: 'boolean', defaultValue: '-', description: 'Emits when standalone pressed state changes.' },
-    { name: 'valueChange', type: 'PuiToggleValue | boolean', defaultValue: '-', description: 'Emits value or boolean on toggle.' },
+    { name: 'change', type: 'PuiToggleValue | boolean', defaultValue: '-', description: 'Emits when standalone pressed state changes.' },
   ];
 
   protected readonly groupApiRows: readonly PuiApiRow[] = [
@@ -243,8 +242,7 @@ export class ToggleDocsComponent {
   ];
 
   protected readonly groupOutputRows: readonly PuiApiRow[] = [
-    { name: 'valueChange', type: 'PuiToggleGroupSelection', defaultValue: '-', description: 'Emits when selection changes.' },
-    { name: 'selectionChange', type: 'PuiToggleGroupSelection', defaultValue: '-', description: 'Emits current selection after each change.' },
+    { name: 'selectionChange', type: 'PuiToggleGroupSelection', defaultValue: '-', description: 'Emits when selection changes.' },
   ];
 
   protected readonly a11yItems: readonly PuiDocA11yItem[] = [
@@ -360,6 +358,10 @@ export class ToggleDocsComponent {
     if (typeof value === 'string') {
       this.playgroundOrientation.set(value as 'horizontal' | 'vertical');
     }
+  }
+
+  protected setSignalBold(value: PuiSelectionValue | boolean): void {
+    this.signalBold.set(typeof value === 'boolean' ? value : Boolean(value));
   }
 
   private isDocsTab(tab: string): tab is PuiDocsToggleTab {

@@ -1,0 +1,48 @@
+@use './dialog.tokens';
+
+:host.pui-dialog {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 0;
+  max-height: inherit;
+  outline: none;
+}
+
+:host.pui-dialog .pui-dialog__surface {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  max-height: inherit;
+  border: 1px solid var(--pui-dialog-border);
+  border-radius: var(--pui-dialog-radius);
+  background: var(--pui-dialog-surface);
+  box-shadow: var(--pui-dialog-shadow);
+  overflow: hidden;
+}
+
+:host.pui-dialog.pui-dialog--fullscreen {
+  width: var(--pui-dialog-fullscreen-width);
+  height: var(--pui-dialog-fullscreen-height);
+  max-width: var(--pui-dialog-fullscreen-width);
+  max-height: var(--pui-dialog-fullscreen-height);
+}
+
+:host.pui-dialog.pui-dialog--fullscreen .pui-dialog__surface {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+}
+
+:host.pui-dialog.pui-dialog--sheet .pui-dialog__surface {
+  border-radius: var(--pui-dialog-radius-sheet);
+}
+
+:host.pui-dialog.pui-dialog--danger .pui-dialog__title {
+  color: var(--pui-color-danger);
+}

@@ -50,7 +50,7 @@ export class PuiRadioGroupComponent implements ControlValueAccessor {
   readonly name = input<string | null>(null);
   readonly ariaLabel = input<string | null>(null);
 
-  readonly valueChange = output<PuiRadioValue | null>();
+  readonly selectionChange = output<PuiRadioValue | null>();
 
   isDisabled(): boolean {
     return this.disabled() || this.cva.formDisabled();
@@ -76,7 +76,7 @@ export class PuiRadioGroupComponent implements ControlValueAccessor {
 
     this.value.set(itemValue);
     this.cva.commit(itemValue);
-    this.valueChange.emit(itemValue);
+    this.selectionChange.emit(itemValue);
   }
 
   markTouched(): void {

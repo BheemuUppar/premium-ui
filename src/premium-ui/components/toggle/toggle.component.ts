@@ -72,8 +72,7 @@ export class PuiToggleComponent implements ControlValueAccessor {
   readonly ariaLabel = input<string | null>(null);
   readonly value = input<PuiToggleValue | undefined>(undefined);
 
-  readonly pressedChange = output<boolean>();
-  readonly valueChange = output<PuiToggleValue | boolean>();
+  readonly change = output<PuiToggleValue | boolean>();
 
   private readonly toggleId = createPuiId('pui-toggle');
   private readonly controlRef = viewChild<ElementRef<HTMLButtonElement>>('control');
@@ -199,14 +198,7 @@ export class PuiToggleComponent implements ControlValueAccessor {
 
   private commitStandalone(next: boolean, itemValue: PuiToggleValue | undefined): void {
     this.pressed.set(next);
-    this.pressedChange.emit(next);
-
-    if (itemValue !== undefined) {
-      this.valueChange.emit(itemValue);
-    } else {
-      this.valueChange.emit(next);
-    }
-
+    this.change.emit(itemValue !== undefined ? itemValue : next);
     this.cva.commit(next);
   }
 }

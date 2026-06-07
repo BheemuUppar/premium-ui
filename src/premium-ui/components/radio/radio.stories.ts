@@ -274,7 +274,7 @@ export const ReactiveForms: Story = {
   template: `
     <pui-radio-group
       [value]="selected()"
-      (valueChange)="selected.set($event)"
+      (selectionChange)="selected.set($event)"
       ariaLabel="Theme preference"
     >
       <pui-radio value="light">Light</pui-radio>

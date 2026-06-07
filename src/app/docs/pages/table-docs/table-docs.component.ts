@@ -421,7 +421,7 @@ export class TablePlaygroundComponent {
       type: 'PuiTableSearchChange',
       defaultValue: '-',
       description: 'Emits when the toolbar search query changes.',
-      example: '(searchChange)="onSearch($event)"',
+      example: '(input)="onSearch($event)"',
     },
     {
       name: 'exportClick',

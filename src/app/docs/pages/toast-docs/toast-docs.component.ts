@@ -118,7 +118,7 @@ export class ToastDocsComponent {
   protected readonly durationOptions = toSelectOptions(['2500', '4000', '5000', '8000'] as const);
 
   protected readonly basicExampleTabs = buildServiceExampleTabs({
-    html: `<pui-button (pressed)="save()">Save changes</pui-button>`,
+    html: `<pui-button (click)="save()">Save changes</pui-button>`,
     selector: 'app-save-demo',
     componentClass: 'SaveDemoComponent',
     componentImports: [BUTTON_IMPORT],
@@ -139,7 +139,7 @@ export class ToastDocsComponent {
   });
 
   protected readonly objectApiExampleTabs = buildServiceExampleTabs({
-    html: `<pui-button (pressed)="notify()">Notify with rich payload</pui-button>`,
+    html: `<pui-button (click)="notify()">Notify with rich payload</pui-button>`,
     selector: 'app-toast-object-demo',
     componentClass: 'ToastObjectDemoComponent',
     componentImports: [BUTTON_IMPORT],
@@ -166,10 +166,10 @@ export class ToastDocsComponent {
 
   protected readonly semanticExampleTabs = buildServiceExampleTabs({
     html: `<div class="toast-demo-row">
-  <pui-button (pressed)="showSuccess()">Success</pui-button>
-  <pui-button variant="danger" (pressed)="showError()">Error</pui-button>
-  <pui-button variant="outline" (pressed)="showWarning()">Warning</pui-button>
-  <pui-button variant="ghost" (pressed)="showInfo()">Info</pui-button>
+  <pui-button (click)="showSuccess()">Success</pui-button>
+  <pui-button variant="danger" (click)="showError()">Error</pui-button>
+  <pui-button variant="outline" (click)="showWarning()">Warning</pui-button>
+  <pui-button variant="ghost" (click)="showInfo()">Info</pui-button>
 </div>`,
     selector: 'app-toast-semantic-demo',
     componentClass: 'ToastSemanticDemoComponent',
@@ -187,9 +187,9 @@ export class ToastDocsComponent {
 
   protected readonly iconExampleTabs = buildServiceExampleTabs({
     html: `<div class="toast-demo-row">
-  <pui-button variant="outline" (pressed)="showDefaultIcon()">Default icon</pui-button>
-  <pui-button variant="outline" (pressed)="showCustomIcon()">Custom icon</pui-button>
-  <pui-button variant="ghost" (pressed)="showIconless()">Iconless</pui-button>
+  <pui-button variant="outline" (click)="showDefaultIcon()">Default icon</pui-button>
+  <pui-button variant="outline" (click)="showCustomIcon()">Custom icon</pui-button>
+  <pui-button variant="ghost" (click)="showIconless()">Iconless</pui-button>
 </div>`,
     selector: 'app-toast-icon-demo',
     componentClass: 'ToastIconDemoComponent',
@@ -205,7 +205,7 @@ export class ToastDocsComponent {
   });
 
   protected readonly snackbarExampleTabs = buildServiceExampleTabs({
-    html: `<pui-button variant="secondary" (pressed)="deleteFile()">Delete file</pui-button>`,
+    html: `<pui-button variant="secondary" (click)="deleteFile()">Delete file</pui-button>`,
     selector: 'app-toast-snackbar-demo',
     componentClass: 'ToastSnackbarDemoComponent',
     componentImports: [BUTTON_IMPORT],
@@ -227,7 +227,7 @@ export class ToastDocsComponent {
   });
 
   protected readonly richExampleTabs = buildServiceExampleTabs({
-    html: `<pui-button (pressed)="showDeployment()">Show rich toast</pui-button>`,
+    html: `<pui-button (click)="showDeployment()">Show rich toast</pui-button>`,
     selector: 'app-toast-rich-demo',
     componentClass: 'ToastRichDemoComponent',
     componentImports: [BUTTON_IMPORT],
@@ -251,7 +251,7 @@ export class ToastDocsComponent {
   });
 
   protected readonly promiseExampleTabs = buildServiceExampleTabs({
-    html: `<pui-button variant="outline" (pressed)="upload()">Upload file</pui-button>`,
+    html: `<pui-button variant="outline" (click)="upload()">Upload file</pui-button>`,
     selector: 'app-toast-promise-demo',
     componentClass: 'ToastPromiseDemoComponent',
     componentImports: [BUTTON_IMPORT],
@@ -274,7 +274,7 @@ export class ToastDocsComponent {
   });
 
   protected readonly loadingExampleTabs = buildServiceExampleTabs({
-    html: `<pui-button variant="outline" (pressed)="process()">Process with update</pui-button>`,
+    html: `<pui-button variant="outline" (click)="process()">Process with update</pui-button>`,
     selector: 'app-toast-loading-demo',
     componentClass: 'ToastLoadingDemoComponent',
     componentImports: [BUTTON_IMPORT],
@@ -416,7 +416,7 @@ export class ToastDocsComponent {
   protected readonly playgroundCustomIcon = signal(false);
 
   protected readonly playgroundHtml = computed(
-    () => `<pui-button (pressed)="showToast()">Show toast</pui-button>`
+    () => `<pui-button (click)="showToast()">Show toast</pui-button>`
   );
 
   protected readonly playgroundExampleTabs = computed((): readonly PuiDocCodeTab[] =>

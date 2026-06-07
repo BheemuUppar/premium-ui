@@ -6,6 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PuiDialogContainerComponent } from '../premium-ui/components/dialog';
 import { PuiToastViewportComponent } from '../premium-ui/components/toast';
 import { PuiThemeService } from './docs/services/theme.service';
 
@@ -14,7 +15,7 @@ const SCROLL_END_MS = 800;
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, PuiToastViewportComponent],
+  imports: [RouterOutlet, PuiToastViewportComponent, PuiDialogContainerComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

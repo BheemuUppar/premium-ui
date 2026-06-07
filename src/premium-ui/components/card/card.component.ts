@@ -44,13 +44,13 @@ export class PuiCardComponent {
   readonly highlighted = input(false, { transform: booleanAttribute });
   readonly imageZoom = input(false, { transform: booleanAttribute });
 
-  readonly pressed = output<MouseEvent | KeyboardEvent>();
+  readonly click = output<MouseEvent | KeyboardEvent>();
 
-  protected handleClick(event: MouseEvent): void {
+  protected handleClick(event: MouseEvent | KeyboardEvent): void {
     if (!this.interactive() || this.disabled() || this.loading()) {
       return;
     }
-    this.pressed.emit(event);
+    this.click.emit(event);
   }
 
   protected handleActivate(event: Event): void {
@@ -58,6 +58,6 @@ export class PuiCardComponent {
       return;
     }
     event.preventDefault();
-    this.pressed.emit(event as KeyboardEvent);
+    this.click.emit(event as KeyboardEvent);
   }
 }
