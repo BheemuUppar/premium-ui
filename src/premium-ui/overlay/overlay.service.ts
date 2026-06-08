@@ -120,8 +120,10 @@ export class PuiOverlayService {
       case 'noop':
         return this.overlay.scrollStrategies.noop();
       case 'block':
+        // Body scroll is locked in create()/dispose via lockBodyScroll().
+        return this.overlay.scrollStrategies.noop();
       default:
-        return this.overlay.scrollStrategies.block();
+        return this.overlay.scrollStrategies.noop();
     }
   }
 }
