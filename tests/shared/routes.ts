@@ -26,6 +26,8 @@ export const docsPriorityRoutes: readonly string[] = [
   '/docs/components/card/overview',
   '/docs/components/dialog/overview',
   '/docs/components/dialog/examples',
+  '/docs/components/command/overview',
+  '/docs/components/command/examples',
   '/docs/foundations/colors',
 ];
 

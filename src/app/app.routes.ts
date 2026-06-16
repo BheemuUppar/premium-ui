@@ -124,6 +124,15 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/dialog-docs/dialog-docs.component').then((component) => component.DialogDocsComponent)
       },
       {
+        path: 'components/command',
+        redirectTo: 'components/command/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/command/:tab',
+        loadComponent: () => import('./docs/pages/command-docs/command-docs.component').then((component) => component.CommandDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

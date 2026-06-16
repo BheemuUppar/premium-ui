@@ -72,6 +72,12 @@
 /docs/components/dialog/accessibility
 /docs/components/dialog/theming
 /docs/components/dialog/playground
+/docs/components/command/overview
+/docs/components/command/examples
+/docs/components/command/api
+/docs/components/command/accessibility
+/docs/components/command/theming
+/docs/components/command/playground
 /docs/foundations/colors
 /docs/foundations/typography
 /docs/foundations/spacing

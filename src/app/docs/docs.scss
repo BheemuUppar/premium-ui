@@ -88,6 +88,22 @@ app-root {
   background: color-mix(in srgb, var(--pui-docs-chrome-text) 7%, transparent);
   color: var(--pui-docs-chrome-muted);
   font-size: var(--pui-font-size-xs);
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.pui-search:hover,
+.pui-search:focus-visible {
+  border-color: color-mix(in srgb, var(--pui-color-primary) 40%, var(--pui-docs-chrome-border));
+  outline: 0;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--pui-color-primary) 18%, transparent);
+}
+
+.pui-search__placeholder {
+  min-width: 0;
+  color: var(--pui-docs-chrome-muted);
 }
 
 .pui-search input {

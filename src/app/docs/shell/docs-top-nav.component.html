@@ -7,12 +7,17 @@
     </span>
   </a>
 
-  <label class="pui-search">
-    <span class="pui-sr-only">Search documentation</span>
+  <button
+    type="button"
+    class="pui-search"
+    (click)="openCommandPalette()"
+    aria-label="Open command palette"
+    aria-keyshortcuts="Control+K Meta+K"
+  >
     <span aria-hidden="true">Search</span>
-    <input type="search" placeholder="Search components..." [value]="searchTerm()" (input)="onSearch($event)" />
-    <kbd>Ctrl K</kbd>
-  </label>
+    <span class="pui-search__placeholder">Search documentation…</span>
+    <kbd aria-hidden="true">{{ shortcutLabel() }}</kbd>
+  </button>
 
   <nav class="pui-topnav__links" aria-label="Primary documentation links">
     <a routerLink="/docs/components/button/overview">Docs</a>

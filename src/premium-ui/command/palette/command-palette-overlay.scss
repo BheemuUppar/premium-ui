@@ -1,0 +1,120 @@
+@use '../../internal/styles/motion';
+
+$macos-ease: cubic-bezier(0.16, 1, 0.3, 1);
+$macos-open-duration: 180ms;
+$macos-close-duration: 130ms;
+
+$smooth-ease: cubic-bezier(0.33, 1, 0.68, 1);
+$smooth-open-duration: 260ms;
+$smooth-close-duration: 200ms;
+
+.pui-command-palette-backdrop {
+  background: color-mix(in srgb, var(--pui-color-text) 32%, transparent);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition:
+    opacity $macos-open-duration $macos-ease,
+    backdrop-filter $macos-open-duration $macos-ease,
+    -webkit-backdrop-filter $macos-open-duration $macos-ease;
+}
+
+.pui-command-palette-backdrop.pui-overlay-backdrop--open {
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+}
+
+.cdk-overlay-pane.pui-command-palette-panel {
+  opacity: 0;
+  transform: scale(0.94);
+  transform-origin: var(--pui-command-palette-origin-x, 50%) var(--pui-command-palette-origin-y, 20%);
+  will-change: transform, opacity;
+  transition:
+    opacity $macos-open-duration $macos-ease,
+    transform $macos-open-duration $macos-ease;
+}
+
+.cdk-overlay-pane.pui-command-palette-panel.pui-overlay-panel--open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--closing {
+  opacity: 0;
+  transform: scale(0.96);
+  transition-duration: $macos-close-duration, $macos-close-duration;
+}
+
+.pui-command-palette-backdrop.pui-command-palette-backdrop--closing {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition-duration: $macos-close-duration, $macos-close-duration, $macos-close-duration;
+}
+
+.cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--minimal {
+  transform: translateY(-6px);
+  transition:
+    opacity 140ms $macos-ease,
+    transform 140ms $macos-ease;
+}
+
+.cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--minimal.pui-overlay-panel--open {
+  transform: translateY(0);
+}
+
+.cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--smooth {
+  opacity: 0;
+  transform: scale(0.96) translateY(12px);
+  filter: blur(6px);
+  transform-origin: var(--pui-command-palette-origin-x, 50%) var(--pui-command-palette-origin-y, 30%);
+  will-change: transform, opacity, filter;
+  transition:
+    opacity $smooth-open-duration $smooth-ease,
+    transform $smooth-open-duration $smooth-ease,
+    filter $smooth-open-duration $smooth-ease;
+}
+
+.cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--smooth.pui-overlay-panel--open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
+
+.cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--smooth.pui-command-palette-panel--closing {
+  opacity: 0;
+  transform: scale(0.98) translateY(8px);
+  filter: blur(3px);
+  transition-duration: $smooth-close-duration, $smooth-close-duration, $smooth-close-duration;
+}
+
+.pui-command-palette-backdrop.pui-command-palette-backdrop--smooth {
+  transition:
+    opacity $smooth-open-duration $smooth-ease,
+    backdrop-filter $smooth-open-duration $smooth-ease,
+    -webkit-backdrop-filter $smooth-open-duration $smooth-ease;
+}
+
+.pui-command-palette-backdrop.pui-command-palette-backdrop--smooth.pui-overlay-backdrop--open {
+  backdrop-filter: blur(14px) saturate(125%);
+  -webkit-backdrop-filter: blur(14px) saturate(125%);
+}
+
+.pui-command-palette-backdrop.pui-command-palette-backdrop--smooth.pui-command-palette-backdrop--closing {
+  transition-duration: $smooth-close-duration, $smooth-close-duration, $smooth-close-duration;
+}
+
+@include motion.pui-reduced-motion {
+  .cdk-overlay-pane.pui-command-palette-panel,
+  .cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--minimal,
+  .cdk-overlay-pane.pui-command-palette-panel.pui-command-palette-panel--smooth {
+    transform: none;
+    filter: none;
+    transition: opacity 120ms linear;
+  }
+
+  .pui-command-palette-backdrop {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: opacity 120ms linear;
+  }
+}

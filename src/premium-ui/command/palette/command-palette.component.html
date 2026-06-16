@@ -1,0 +1,143 @@
+<div
+  class="pui-command-palette"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="ariaLabel()"
+  (keydown)="handleKeydown($event)"
+>
+  <div class="pui-command-palette__search">
+    <svg
+      class="pui-command-palette__search-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+      <path d="M21 21l-4.3-4.3" />
+    </svg>
+
+    <input
+      #queryInput
+      class="pui-command-palette__input"
+      type="text"
+      role="combobox"
+      aria-autocomplete="list"
+      [attr.aria-controls]="listboxId"
+      [attr.aria-expanded]="true"
+      [attr.aria-activedescendant]="activeOptionId()"
+      [placeholder]="resolvedConfig().placeholder"
+      [value]="query()"
+      (input)="handleQueryInput($event)"
+    />
+  </div>
+
+  <div
+    class="pui-command-palette__list"
+    [id]="listboxId"
+    role="listbox"
+    [attr.aria-label]="'Commands'"
+  >
+    @if (flatCommands().length === 0) {
+      <div class="pui-command-palette__empty" role="status">
+        <svg
+          class="pui-command-palette__empty-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+          <path d="M21 21l-4.3-4.3" />
+        </svg>
+        <p class="pui-command-palette__empty-title">{{ resolvedConfig().emptyLabel }}</p>
+        <p class="pui-command-palette__empty-description">{{ resolvedConfig().emptyDescription }}</p>
+      </div>
+    } @else {
+      @for (group of groupedCommands(); track group.id) {
+        <div class="pui-command-palette__group" role="presentation">
+          <div
+            class="pui-command-palette__group-label"
+            [id]="groupLabelId(group.id)"
+            role="presentation"
+          >
+            {{ group.label }}
+          </div>
+
+          @for (command of group.commands; track command.id) {
+            @if (itemTemplate(); as template) {
+              <div
+                class="pui-command-palette__option"
+                role="option"
+                [id]="optionId(command.id)"
+                [attr.data-active]="isActive(command.id)"
+                [attr.data-disabled]="command.disabled ?? false"
+                [attr.aria-selected]="isActive(command.id)"
+                [attr.aria-disabled]="command.disabled ?? false"
+                (mouseenter)="setActiveById(command.id)"
+                (mousedown)="handleOptionMouseDown($event, command.id)"
+              >
+                <ng-container
+                  [ngTemplateOutlet]="template"
+                  [ngTemplateOutletContext]="{ $implicit: command }"
+                />
+              </div>
+            } @else {
+              <div
+                class="pui-command-palette__option"
+                role="option"
+                [id]="optionId(command.id)"
+                [attr.data-active]="isActive(command.id)"
+                [attr.data-disabled]="command.disabled ?? false"
+                [attr.aria-selected]="isActive(command.id)"
+                [attr.aria-disabled]="command.disabled ?? false"
+                (mouseenter)="setActiveById(command.id)"
+                (mousedown)="handleOptionMouseDown($event, command.id)"
+              >
+                @if (iconPaths(command.icon).length > 0) {
+                  <svg
+                    class="pui-command-palette__option-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    @for (path of iconPaths(command.icon); track path) {
+                      <path [attr.d]="path" />
+                    }
+                  </svg>
+                }
+
+                <div class="pui-command-palette__option-body">
+                  <div class="pui-command-palette__option-label">{{ command.label }}</div>
+                  @if (command.description) {
+                    <div class="pui-command-palette__option-description">
+                      {{ command.description }}
+                    </div>
+                  }
+                </div>
+
+                @if (command.shortcut) {
+                  <kbd class="pui-command-palette__shortcut">{{ command.shortcut }}</kbd>
+                }
+              </div>
+            }
+          }
+        </div>
+      }
+    }
+  </div>
+
+  <div class="pui-command-palette__footer" aria-hidden="true">
+    <span>↑↓ navigate</span>
+    <span>↵ select</span>
+    <span>esc close</span>
+  </div>
+</div>

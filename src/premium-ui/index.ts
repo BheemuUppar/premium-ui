@@ -10,5 +10,6 @@ export * from './components/tabs';
 export * from './components/toast';
 export * from './components/table';
 export * from './components/dialog';
+export * from './command';
 export * from './overlay';
 export * from './types/common.types';

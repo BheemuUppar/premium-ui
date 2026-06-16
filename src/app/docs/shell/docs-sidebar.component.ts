@@ -60,6 +60,7 @@ export class DocsSidebarComponent {
       label: 'Navigation',
       items: [
         { label: 'Tabs', route: ['/docs/components/tabs/overview'], badge: 'Ready' },
+        { label: 'Command Palette', route: ['/docs/components/command/overview'], badge: 'Ready' },
         { label: 'Breadcrumb', route: ['/docs/components/breadcrumb'] }
       ]
     },

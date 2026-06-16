@@ -1,0 +1,206 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero" id="overview">
+    <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/docs/components/command/overview">Home</a>
+      <span aria-hidden="true">/</span>
+      <a routerLink="/docs/components/command/overview">Components</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Command Palette</span>
+    </nav>
+    <h1>Angular Command System</h1>
+    <p>
+      Premium UI ships a reusable command infrastructure — registry, search, execution, and a
+      keyboard-first palette inspired by Spotlight, Raycast, and Linear. Register commands from any
+      module; open the palette globally with ⌘K / Ctrl+K. By default it opens near your cursor with
+      a macOS-style scale and fade animation. Use <code>animation: 'smooth'</code> for a fluid
+      fade/slide or <code>animation: 'minimal'</code> for a lighter entrance.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Command palette documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a
+        class="pui-tab"
+        [routerLink]="tab.route"
+        routerLinkActive="pui-tab--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section" id="basic-usage" aria-labelledby="overview-title">
+          <h2 id="overview-title">Overview</h2>
+          <p>
+            The command system is intentionally decoupled from UI. Modules register commands through
+            <code>PuiCommandRegistry</code>; the palette is one consumer. Search, grouping, recents,
+            and execution live in services — not inside the component.
+          </p>
+
+          <pui-doc-example
+            exampleId="command-basic"
+            title="Open the palette"
+            description="Use PuiCommandPaletteService from anywhere. Press ⌘K / Ctrl+K anywhere in the docs."
+            [tabs]="basicExampleTabs"
+          >
+            <pui-button (click)="openPalette()">Open command palette</pui-button>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" id="registering" aria-labelledby="registering-title">
+          <h2 id="registering-title">Registering commands</h2>
+          <p>
+            Never hardcode command arrays inside the palette component. Register from feature modules
+            so table, admin, analytics, and docs modules can extend the system independently.
+          </p>
+          <pui-doc-example
+            exampleId="command-register"
+            title="Dynamic registration"
+            description="Register commands at module init or bootstrap with providePuiCommands()."
+            [tabs]="registerExampleTabs"
+          />
+        </section>
+
+        <section class="pui-doc-section" id="shortcuts" aria-labelledby="shortcuts-title">
+          <h2 id="shortcuts-title">Keyboard shortcuts</h2>
+          <p>
+            Add <code>puiCommandPaletteShortcut</code> to your app shell. Shortcuts are configurable,
+            SSR-safe, and cleaned up on destroy.
+          </p>
+          <pui-doc-example
+            exampleId="command-shortcuts"
+            title="Global shortcut"
+            description="Default bindings: meta+k and ctrl+k."
+            [tabs]="shortcutExampleTabs"
+          />
+        </section>
+      }
+
+      @case ('examples') {
+        <section class="pui-doc-section" id="animations" aria-labelledby="animations-title">
+          <h2 id="animations-title">Animation variants</h2>
+          <p>
+            Choose an entrance style via the <code>animation</code> config. <strong>macos</strong> scales from
+            the cursor, <strong>smooth</strong> adds a fluid fade/slide with soft blur, and
+            <strong>minimal</strong> is a quick slide-up.
+          </p>
+          <div class="pui-doc-button-row">
+            <pui-button (click)="openPalette()">macOS</pui-button>
+            <pui-button (click)="openSmoothPalette()">Smooth</pui-button>
+            <pui-button (click)="openMinimalPalette()">Minimal</pui-button>
+          </div>
+        </section>
+
+        <section class="pui-doc-section" id="grouped" aria-labelledby="grouped-title">
+          <h2 id="grouped-title">Grouped commands</h2>
+          <p>Commands with a <code>group</code> field render under section headers.</p>
+          <pui-button (click)="openPalette()">Open grouped palette</pui-button>
+        </section>
+
+        <section class="pui-doc-section" id="custom-template" aria-labelledby="custom-template-title">
+          <h2 id="custom-template-title">Custom templates</h2>
+          <p>Provide a fully custom item renderer with <code>puiCommandItem</code>.</p>
+
+          <ng-template puiCommandItem let-command>
+            <strong>{{ command.label }}</strong>
+            @if (command.description) {
+              <span style="margin-left: 0.5rem; color: var(--pui-muted);">
+                — {{ command.description }}
+              </span>
+            }
+          </ng-template>
+
+          <pui-doc-example
+            exampleId="command-template"
+            title="Custom item template"
+            description="Pass the template ref when opening the palette."
+            [tabs]="templateExampleTabs"
+          >
+            <pui-button (click)="openCustomTemplatePalette()">Open custom template palette</pui-button>
+          </pui-doc-example>
+        </section>
+
+        <section class="pui-doc-section" id="recent" aria-labelledby="recent-title">
+          <h2 id="recent-title">Recent commands</h2>
+          <p>
+            Successful executions are stored in session storage and surfaced when the query is empty.
+          </p>
+        </section>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section" id="registry-api" aria-labelledby="registry-api-title">
+          <h2 id="registry-api-title">PuiCommandRegistry</h2>
+          <pui-doc-api-table [rows]="registryApiRows" />
+        </section>
+
+        <section class="pui-doc-section" id="command-service-api" aria-labelledby="command-service-api-title">
+          <h2 id="command-service-api-title">PuiCommandService</h2>
+          <pui-doc-api-table [rows]="commandApiRows" />
+        </section>
+
+        <section class="pui-doc-section" id="palette-service-api" aria-labelledby="palette-service-api-title">
+          <h2 id="palette-service-api-title">PuiCommandPaletteService</h2>
+          <pui-doc-api-table [rows]="paletteApiRows" />
+        </section>
+
+        <section class="pui-doc-section" id="command-interface" aria-labelledby="command-interface-title">
+          <h2 id="command-interface-title">PuiCommand</h2>
+          <pre><code>export interface PuiCommand &#123;
+  id: string;
+  label: string;
+  description?: string;
+  icon?: string;
+  group?: string;
+  keywords?: string[];
+  shortcut?: string;
+  disabled?: boolean;
+  hidden?: boolean;
+  action?: () =&gt; void | Promise&lt;void&gt;;
+  metadata?: Record&lt;string, unknown&gt;;
+&#125;</code></pre>
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section" id="a11y" aria-labelledby="a11y-title">
+          <h2 id="a11y-title">Accessibility</h2>
+          <pui-doc-a11y-list [items]="a11yItems" />
+        </section>
+      }
+
+      @case ('theming') {
+        <section class="pui-doc-section" id="theming" aria-labelledby="theming-title">
+          <h2 id="theming-title">Theming</h2>
+          <pui-doc-example
+            exampleId="command-theme"
+            title="CSS variables"
+            description="Palette surfaces, borders, and motion use Premium UI tokens."
+            [tabs]="themeTabs"
+          />
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section" id="playground" aria-labelledby="playground-title">
+          <h2 id="playground-title">Playground</h2>
+          <p>Open the palette and try navigation vs action commands registered on this page.</p>
+          <pui-doc-example
+            exampleId="command-playground"
+            title="Interactive palette"
+            description="Use ⌘K / Ctrl+K or the button below."
+            [tabs]="playgroundTabs"
+          >
+            <pui-button (click)="openPalette()">Open palette</pui-button>
+          </pui-doc-example>
+        </section>
+      }
+    }
+  </div>
+
+  <pui-doc-related-links [links]="relatedLinks" />
+</article>

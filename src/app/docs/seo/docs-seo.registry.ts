@@ -257,6 +257,26 @@ export const DOCS_COMPONENT_SEO: Readonly<Record<string, PuiDocsComponentSeo>> =
       { label: 'Table', route: ['/docs/components/table/overview'] },
     ],
   },
+  command: {
+    slug: 'command',
+    name: 'Command Palette',
+    titlePrefix: 'Angular Command System',
+    keywords: 'angular command palette, spotlight angular, raycast angular, keyboard shortcuts angular, premium ui command',
+    tabs: tabs(
+      'Reusable command infrastructure — registry, search, execution, and a keyboard-first palette inspired by Spotlight and Linear.',
+      'Command palette examples — grouped commands, route navigation, actions, custom templates, and recent commands.',
+      'Command system API — PuiCommandRegistry, PuiCommandService, PuiCommandPaletteService, and PuiCommand model.',
+      'Command palette accessibility — dialog semantics, listbox options, combobox search, and focus restoration.',
+      'Command palette theming — elevated surfaces, blur backdrop, and motion tokens.',
+      'Interactive command palette playground — groups, icons, shortcuts, and search.',
+      'Angular Command System'
+    ),
+    relatedLinks: [
+      { label: 'Dialog', route: ['/docs/components/dialog/overview'] },
+      { label: 'Select', route: ['/docs/components/select/overview'] },
+      { label: 'Tabs', route: ['/docs/components/tabs/overview'] },
+    ],
+  },
   table: {
     slug: 'table',
     name: 'Table',

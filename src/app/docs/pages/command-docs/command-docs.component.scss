@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.pui-doc-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pui-space-sm);
+}
