@@ -1,0 +1,6 @@
+<div class="pui-sparkline" [style.min-height.px]="height()">
+  <div class="pui-sparkline__canvas" [style.min-height.px]="height()"></div>
+  @if (isEmpty() && !loading()) {
+    <span class="pui-chart__sr-summary">{{ config()?.emptyLabel ?? 'No data available' }}</span>
+  }
+</div>

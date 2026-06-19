@@ -28,6 +28,9 @@ export const docsPriorityRoutes: readonly string[] = [
   '/docs/components/dialog/examples',
   '/docs/components/command/overview',
   '/docs/components/command/examples',
+  '/docs/components/charts/doc',
+  '/docs/components/charts/pie-chart',
+  '/docs/components/charts/line-chart',
   '/docs/foundations/colors',
 ];
 

@@ -1,4 +1,5 @@
 import type { PuiCommand } from '../../../premium-ui/command';
+import { CHARTS_SIDEBAR_ITEMS } from '../pages/charts-docs/charts-docs.nav';
 
 export interface PuiDocsCommandEntry {
   readonly id: string;
@@ -37,6 +38,16 @@ export const DOCS_COMMAND_ENTRIES: readonly PuiDocsCommandEntry[] = [
 
   { id: 'docs-card', label: 'Card', description: 'Card component docs', route: ['/docs/components/card/overview'], group: 'Data Display', icon: 'layout-dashboard', keywords: ['surface', 'panel'] },
   { id: 'docs-table', label: 'Table', description: 'Data grid docs', route: ['/docs/components/table/overview'], group: 'Data Display', icon: 'layout-dashboard', keywords: ['data grid', 'rows'] },
+  { id: 'docs-charts', label: 'Charts', description: 'Premium charts platform documentation', route: ['/docs/components/charts/doc'], group: 'Charts', icon: 'layout-dashboard', keywords: ['analytics', 'visualization', 'dashboard'] },
+  ...CHARTS_SIDEBAR_ITEMS.filter((item) => item.label !== 'Documentation').map((item) => ({
+    id: `docs-charts-${item.route[0]?.split('/').pop() ?? item.label}`,
+    label: item.label,
+    description: `${item.label} — Premium UI Charts`,
+    route: item.route,
+    group: 'Charts' as const,
+    icon: 'layout-dashboard' as const,
+    keywords: ['chart', 'analytics', item.label.toLowerCase()] as readonly string[],
+  })),
   { id: 'docs-badge', label: 'Badge', description: 'Badge component docs', route: ['/docs/components/badge'], group: 'Data Display', icon: 'file-text', keywords: ['label', 'status'] },
 
   { id: 'docs-container', label: 'Container', description: 'Container layout docs', route: ['/docs/components/container'], group: 'Layout', icon: 'layout-dashboard', keywords: ['width', 'wrapper'] },

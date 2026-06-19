@@ -22,12 +22,12 @@
 
         @if (!isCollapsed(group.id)) {
           <div class="pui-nav-group__items" [id]="'nav-group-' + group.id">
-            @for (item of group.items; track item.label) {
+            @for (item of group.items; track item.route.join('/')) {
               <a
                 class="pui-sidebar-link"
                 [routerLink]="item.route"
                 routerLinkActive="pui-sidebar-link--active"
-                [routerLinkActiveOptions]="{ exact: false }"
+                [routerLinkActiveOptions]="{ exact: true }"
               >
                 <span>{{ item.label }}</span>
                 @if (item.badge) {

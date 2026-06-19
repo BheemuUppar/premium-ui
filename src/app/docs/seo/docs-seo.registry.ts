@@ -1,4 +1,5 @@
 import type { PuiDocsComponentSeo, PuiDocsSeoTabMeta } from './docs-seo.types';
+import { CHART_DOC_PAGES } from '../pages/charts-docs/charts-docs.registry';
 
 function tabs(
   overview: string,
@@ -275,6 +276,47 @@ export const DOCS_COMPONENT_SEO: Readonly<Record<string, PuiDocsComponentSeo>> =
       { label: 'Dialog', route: ['/docs/components/dialog/overview'] },
       { label: 'Select', route: ['/docs/components/select/overview'] },
       { label: 'Tabs', route: ['/docs/components/tabs/overview'] },
+    ],
+  },
+  charts: {
+    slug: 'charts',
+    name: 'Charts',
+    titlePrefix: 'Premium Charts Platform',
+    keywords: 'angular charts, echarts angular wrapper, dashboard charts, premium ui charts, line chart angular, bar chart angular',
+    tabs: {
+      ...tabs(
+        'Premium chart platform with config-driven APIs, token theming, and enterprise defaults — built on ECharts internally without exposing raw options.',
+        'Chart examples — progressive line, bar, pie, scatter, radar, heatmap, treemap, funnel, gauge, and sparkline demos driven by config.',
+        'Charts API — PuiChartData, Pui*ChartConfig, PuiChartTheme, PuiChartAdapter, and shared inputs.',
+        'Chart accessibility — aria labels, loading states, reduced motion, and token-based contrast.',
+        'Chart theming — CSS variables for palette, grid, tooltip, and surface tokens.',
+        'Interactive charts playground — tune appearance, axis, and interaction config live.',
+        'Premium Charts Platform'
+      ),
+      doc: {
+        title: 'Premium Charts Platform — Documentation',
+        description:
+          'Install @premium-ui/charts, bootstrap providers, and use config-driven chart components with premium defaults.',
+      },
+      'configuration-playground': {
+        title: 'Configuration Playground | Premium UI Charts',
+        description:
+          'Live chart configuration playground — tune legend, colors, tooltip, animation, grid, dark mode, smooth curves, area fill, and data labels.',
+      },
+      ...Object.fromEntries(
+        CHART_DOC_PAGES.map((page) => [
+          page.slug,
+          {
+            title: `${page.title} | Premium UI Charts`,
+            description: page.overview.what,
+          } satisfies PuiDocsSeoTabMeta,
+        ])
+      ),
+    },
+    relatedLinks: [
+      { label: 'Table', route: ['/docs/components/table/overview'] },
+      { label: 'Card', route: ['/docs/components/card/overview'] },
+      { label: 'Command Palette', route: ['/docs/components/command/overview'] },
     ],
   },
   table: {

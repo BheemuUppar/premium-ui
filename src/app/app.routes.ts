@@ -133,6 +133,25 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/command-docs/command-docs.component').then((component) => component.CommandDocsComponent)
       },
       {
+        path: 'components/charts',
+        redirectTo: 'components/charts/doc',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/charts/overview',
+        redirectTo: 'components/charts/doc',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/charts/examples',
+        redirectTo: 'components/charts/doc',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/charts/:slug',
+        loadComponent: () => import('./docs/pages/charts-docs/charts-docs.component').then((component) => component.ChartsDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

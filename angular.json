@@ -109,6 +109,29 @@
           }
         }
       }
+    },
+    "premium-ui-charts": {
+      "projectType": "library",
+      "root": "projects/premium-ui-charts",
+      "sourceRoot": "projects/premium-ui-charts/src",
+      "prefix": "pui",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "projects/premium-ui-charts/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/premium-ui-charts/tsconfig.lib.json"
+            },
+            "development": {
+              "tsConfig": "projects/premium-ui-charts/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
     }
   }
 }

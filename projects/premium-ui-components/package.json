@@ -1,0 +1,14 @@
+{
+  "name": "@premium-ui/components",
+  "version": "0.1.0",
+  "description": "Premium UI Angular component library",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

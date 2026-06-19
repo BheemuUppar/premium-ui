@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import type { PuiDocsNavGroup } from '../docs.types';
 import { PuiDocsSearchService } from '../services/docs-search.service';
+import { CHARTS_SIDEBAR_ITEMS } from '../pages/charts-docs/charts-docs.nav';
 
 @Component({
   selector: 'app-docs-sidebar',
@@ -80,6 +81,11 @@ export class DocsSidebarComponent {
         { label: 'Table', route: ['/docs/components/table/overview'], badge: 'Ready' },
         { label: 'Badge', route: ['/docs/components/badge'] },
       ]
+    },
+    {
+      id: 'charts',
+      label: 'Charts',
+      items: CHARTS_SIDEBAR_ITEMS
     },
     {
       id: 'layout',

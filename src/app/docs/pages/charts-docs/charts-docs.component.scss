@@ -1,0 +1,52 @@
+:host {
+  display: block;
+}
+
+.pui-charts-grid {
+  display: grid;
+  gap: var(--pui-space-lg, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.pui-doc-examples {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-xl, 2rem);
+}
+
+.pui-chart-type-list {
+  display: grid;
+  gap: var(--pui-space-sm, 0.75rem);
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pui-chart-type-list a {
+  display: block;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--pui-color-border-subtle, #e7edf5);
+  border-radius: var(--pui-radius-md, 10px);
+  color: var(--pui-color-text, #0f172a);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.pui-chart-type-list a:hover {
+  border-color: var(--pui-color-primary, #635bff);
+  background: color-mix(in srgb, var(--pui-color-primary, #635bff) 6%, transparent);
+}
+
+.pui-example-delta {
+  padding: 0.75rem 1rem;
+  margin: 0 0 0.75rem;
+  border-left: 3px solid var(--pui-color-primary, #635bff);
+  background: color-mix(in srgb, var(--pui-color-primary, #635bff) 6%, transparent);
+  border-radius: 0 var(--pui-radius-sm, 6px) var(--pui-radius-sm, 6px) 0;
+}
+
+.pui-sparkline-demo {
+  max-width: 280px;
+  padding: 0.5rem 0;
+}

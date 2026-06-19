@@ -1,0 +1,414 @@
+@if (isChartPage()) {
+  @if (activePage(); as page) {
+    <article class="pui-doc-page">
+      <header class="pui-doc-hero" id="overview">
+        <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+          <a routerLink="/docs/components/charts/doc">Charts</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{{ page.title }}</span>
+        </nav>
+        <h1>{{ page.title }}</h1>
+      </header>
+
+      <section class="pui-doc-section" id="chart-overview" aria-labelledby="chart-overview-title">
+        <h2 id="chart-overview-title">Overview</h2>
+        <p>{{ page.overview.what }}</p>
+        <h3>When to use</h3>
+        <p>{{ page.overview.whenToUse }}</p>
+        <h3>Best practices</h3>
+        <ul>
+          @for (item of page.overview.bestPractices; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+        <h3>Accessibility</h3>
+        <ul>
+          @for (item of page.overview.accessibility; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+        <h3>Performance</h3>
+        <ul>
+          @for (item of page.overview.performance; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+      </section>
+
+      <section class="pui-doc-section" id="examples" aria-labelledby="examples-title">
+        <h2 id="examples-title">Examples</h2>
+        <p>
+          Each example builds on the previous one. Compare the config tab to see exactly what changed.
+        </p>
+
+        <div class="pui-doc-examples">
+          @for (example of page.examples; track example.id; let first = $first) {
+            <section [id]="example.id" [attr.aria-labelledby]="example.id + '-title'">
+              <h3 [id]="example.id + '-title'">{{ example.title }}</h3>
+              @if (!first) {
+                <p class="pui-example-delta"><strong>What changed:</strong> {{ example.whatChanged }}</p>
+              }
+              <p>{{ example.description }}</p>
+
+              <pui-doc-example
+                [exampleId]="'charts-' + example.id"
+                [title]="example.title"
+                [description]="example.description"
+                [tabs]="exampleTabs(example)"
+                [allowFullCopy]="true"
+              >
+                @switch (page.kind) {
+                  @case ('line') {
+                    <pui-line-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('bar') {
+                    <pui-bar-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('pie') {
+                    <pui-pie-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('scatter') {
+                    <pui-scatter-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('radar') {
+                    <pui-radar-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('heatmap') {
+                    <pui-heatmap-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('treemap') {
+                    <pui-treemap-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('funnel') {
+                    <pui-funnel-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('gauge') {
+                    <pui-gauge-chart
+                      [data]="exampleData(example)"
+                      [config]="exampleConfig(example)"
+                      [height]="exampleHeight(page.kind)"
+                      [attr.ariaLabel]="page.title + ' — ' + example.title"
+                    />
+                  }
+                  @case ('sparkline') {
+                    <div class="pui-sparkline-demo">
+                      <pui-sparkline
+                        [data]="exampleData(example)"
+                        [config]="exampleConfig(example)"
+                        [attr.ariaLabel]="page.title + ' — ' + example.title"
+                      />
+                    </div>
+                  }
+                }
+              </pui-doc-example>
+            </section>
+          }
+        </div>
+      </section>
+
+      <pui-doc-related-links [links]="relatedLinks" />
+    </article>
+  }
+} @else if (isConfigPlayground()) {
+  <article class="pui-doc-page">
+    <header class="pui-doc-hero" id="overview">
+      <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+        <a routerLink="/docs/components/charts/doc">Charts</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Configuration Playground</span>
+      </nav>
+      <h1>Configuration Playground</h1>
+      <p>
+        Tune shared chart config options and watch a live line chart update. Every chart component
+        accepts the same base config shape — visual variants are never separate components.
+      </p>
+    </header>
+
+    <section class="pui-doc-section" id="configuration-playground" aria-labelledby="playground-config-title">
+      <h2 id="playground-config-title">Live config</h2>
+      <div class="pui-playground">
+        <div class="pui-playground__controls">
+          <div class="pui-playground-field">
+            <span class="pui-playground-field__label">Legend position</span>
+            <pui-select
+              [options]="legendPositionOptions"
+              [value]="playgroundLegendPosition()"
+              (valueChange)="setPlaygroundLegendPosition($event)"
+              ariaLabel="Legend position"
+            />
+          </div>
+          <div class="pui-playground-field">
+            <pui-checkbox
+              [checked]="playgroundTooltip()"
+              (checkedChange)="playgroundTooltip.set($event)"
+            >
+              Tooltip enabled
+            </pui-checkbox>
+          </div>
+          <div class="pui-playground-field">
+            <pui-checkbox
+              [checked]="playgroundAnimation()"
+              (checkedChange)="playgroundAnimation.set($event)"
+            >
+              Animation enabled
+            </pui-checkbox>
+          </div>
+          <div class="pui-playground-field">
+            <pui-checkbox
+              [checked]="playgroundGrid()"
+              (checkedChange)="playgroundGrid.set($event)"
+            >
+              Grid enabled
+            </pui-checkbox>
+          </div>
+          <div class="pui-playground-field">
+            <pui-checkbox
+              [checked]="playgroundDarkMode()"
+              (checkedChange)="playgroundDarkMode.set($event)"
+            >
+              Dark mode
+            </pui-checkbox>
+          </div>
+          <div class="pui-playground-field">
+            <pui-checkbox
+              [checked]="playgroundSmooth()"
+              (checkedChange)="playgroundSmooth.set($event)"
+            >
+              Smooth curve
+            </pui-checkbox>
+          </div>
+          <div class="pui-playground-field">
+            <pui-checkbox
+              [checked]="playgroundArea()"
+              (checkedChange)="playgroundArea.set($event)"
+            >
+              Area fill
+            </pui-checkbox>
+          </div>
+          <div class="pui-playground-field">
+            <pui-checkbox
+              [checked]="playgroundDataLabels()"
+              (checkedChange)="playgroundDataLabels.set($event)"
+            >
+              Data labels
+            </pui-checkbox>
+          </div>
+        </div>
+
+        <div
+          class="pui-playground__preview"
+          [attr.data-theme]="playgroundDarkMode() ? 'dark' : null"
+        >
+          <pui-line-chart
+            [data]="revenueData"
+            [config]="playgroundConfig()"
+            [height]="320"
+            ariaLabel="Configuration playground line chart"
+          />
+        </div>
+      </div>
+    </section>
+
+    <pui-doc-related-links [links]="relatedLinks" />
+  </article>
+} @else {
+  <article class="pui-doc-page">
+    <header class="pui-doc-hero" id="overview">
+      <nav class="pui-breadcrumb" aria-label="Breadcrumb">
+        <a routerLink="/docs/components/charts/doc">Home</a>
+        <span aria-hidden="true">/</span>
+        <a routerLink="/docs/components/charts/doc">Charts</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Documentation</span>
+      </nav>
+      <h1>Premium Charts Platform</h1>
+      <p>
+        Install <code>@premium-ui/charts</code> independently — no dependency on
+        <code>@premium-ui/components</code>. Apache ECharts powers rendering internally; developers
+        interact only with config-driven Premium UI APIs, token-based theming, and premium defaults.
+      </p>
+    </header>
+
+    <nav class="pui-tabs" aria-label="Charts documentation tabs">
+      @for (tab of docTabs; track tab.label) {
+        <a
+          class="pui-tab"
+          [routerLink]="tab.route"
+          routerLinkActive="pui-tab--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ tab.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="pui-tab-panel">
+      @switch (currentDocTab()) {
+        @case ('overview') {
+          <section class="pui-doc-section" id="installation" aria-labelledby="installation-title">
+            <h2 id="installation-title">Installation</h2>
+            <p>
+              Charts ship as a standalone product. Install the package and ECharts peer dependency,
+              optionally bootstrap theme defaults, and include chart tokens in your global styles.
+            </p>
+            <pui-doc-example
+              exampleId="charts-install"
+              title="Quick start"
+              description="Install, bootstrap, and style @premium-ui/charts."
+              [tabs]="installTabs"
+            />
+            <pui-doc-installation
+              importPath="@premium-ui/charts"
+              importSymbols="PuiLineChartComponent, type PuiChartData"
+            />
+          </section>
+
+          <section class="pui-doc-section" id="basic-usage" aria-labelledby="basic-title">
+            <h2 id="basic-title">Premium defaults</h2>
+            <p>
+              Pass only <code>[data]</code> and receive premium colors, animations, tooltips, hover
+              emphasis, and responsive resize behavior.
+            </p>
+            <pui-doc-example
+              exampleId="charts-basic-line"
+              title="Line chart"
+              description="Zero-config chart with premium defaults."
+              [tabs]="basicExampleTabs"
+            >
+              <pui-line-chart [data]="revenueData" [height]="320" ariaLabel="Monthly revenue line chart" />
+            </pui-doc-example>
+          </section>
+
+          <section class="pui-doc-section" id="config" aria-labelledby="config-title">
+            <h2 id="config-title">Config-driven customization</h2>
+            <p>
+              Avoid prop hell — pass a single <code>[config]</code> object for colors, legend,
+              tooltip, grid, animation, theme, and type-specific options.
+            </p>
+            <pui-doc-example
+              exampleId="charts-config"
+              title="Bar chart config"
+              description="Shared base config plus bar-specific mode and orientation."
+              [tabs]="configExampleTabs"
+            >
+              <pui-bar-chart
+                [data]="multiSeriesData"
+                [config]="{ xField: 'category', yField: 'value', seriesField: 'series' }"
+                [height]="320"
+              />
+            </pui-doc-example>
+          </section>
+
+          <section class="pui-doc-section" id="chart-types" aria-labelledby="chart-types-title">
+            <h2 id="chart-types-title">Chart types</h2>
+            <p>
+              Ten chart components cover every visualization. Each page demonstrates progressive
+              examples — area charts, donuts, stacked bars, and gauges are all config options.
+            </p>
+            <ul class="pui-chart-type-list">
+              @for (item of chartNavItems; track item.route[0]) {
+                <li>
+                  <a [routerLink]="item.route">{{ item.label }}</a>
+                </li>
+              }
+            </ul>
+            <p>
+              <a routerLink="/docs/components/charts/configuration-playground">Open the Configuration Playground</a>
+              to tune shared options live.
+            </p>
+          </section>
+        }
+
+        @case ('api') {
+          <section class="pui-doc-section" id="chart-inputs" aria-labelledby="chart-inputs-title">
+            <h2 id="chart-inputs-title">Shared chart inputs</h2>
+            <pui-doc-api-table [rows]="chartApiRows" />
+          </section>
+
+          <section class="pui-doc-section" id="components-api" aria-labelledby="components-api-title">
+            <h2 id="components-api-title">Chart components</h2>
+            <pui-doc-api-table [rows]="componentApiRows" />
+          </section>
+
+          <section class="pui-doc-section" id="config-api" aria-labelledby="config-api-title">
+            <h2 id="config-api-title">Base config</h2>
+            <pui-doc-api-table [rows]="configApiRows" />
+          </section>
+        }
+
+        @case ('accessibility') {
+          <section class="pui-doc-section" id="a11y" aria-labelledby="a11y-title">
+            <h2 id="a11y-title">Accessibility</h2>
+            <pui-doc-a11y-list [items]="a11yItems" />
+          </section>
+        }
+
+        @case ('theming') {
+          <section class="pui-doc-section" id="theme" aria-labelledby="theme-title">
+            <h2 id="theme-title">Theming</h2>
+            <pui-doc-example exampleId="charts-theme" title="Chart CSS variables" [tabs]="themeTabs" />
+          </section>
+        }
+
+        @case ('playground') {
+          <section class="pui-doc-section" id="playground" aria-labelledby="playground-title">
+            <h2 id="playground-title">Playground</h2>
+            <p>
+              For the full interactive config panel, visit the
+              <a routerLink="/docs/components/charts/configuration-playground">Configuration Playground</a>.
+            </p>
+            <pui-doc-example exampleId="charts-playground" title="Interactive line chart">
+              <pui-line-chart
+                [data]="revenueData"
+                [config]="{ xField: 'category', yField: 'value' }"
+                [height]="320"
+              />
+            </pui-doc-example>
+          </section>
+        }
+      }
+    </div>
+
+    <pui-doc-related-links [links]="relatedLinks" />
+  </article>
+}
