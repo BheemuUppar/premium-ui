@@ -1,0 +1,11 @@
+.pui-datetime-picker__grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+}
+
+@media (max-width: 640px) {
+  .pui-datetime-picker__grid {
+    grid-template-columns: 1fr;
+  }
+}

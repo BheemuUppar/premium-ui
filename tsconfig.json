@@ -17,7 +17,9 @@
     "baseUrl": ".",
     "paths": {
       "@premium-ui/charts": ["projects/premium-ui-charts/src/public-api.ts"],
-      "@premium-ui/charts/*": ["projects/premium-ui-charts/src/*"]
+      "@premium-ui/charts/*": ["projects/premium-ui-charts/src/*"],
+      "@premium-ui/date": ["projects/premium-ui-date/src/public-api.ts"],
+      "@premium-ui/date/*": ["projects/premium-ui-date/src/*"]
     }
   },
   "angularCompilerOptions": {

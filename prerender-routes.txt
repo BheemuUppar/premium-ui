@@ -94,6 +94,11 @@
 /docs/components/charts/funnel-chart
 /docs/components/charts/gauge-chart
 /docs/components/charts/sparkline
+/docs/components/date/overview
+/docs/components/date/examples
+/docs/components/date/api
+/docs/components/date/accessibility
+/docs/components/date/playground
 /docs/foundations/colors
 /docs/foundations/typography
 /docs/foundations/spacing

@@ -1,0 +1,44 @@
+<div class="pui-calendar__header">
+  @if (showNavigation()) {
+    <button type="button" class="pui-calendar__nav" (click)="previousMonth()" aria-label="Previous month">
+      <pui-date-icon name="chevron-left" />
+    </button>
+  }
+  <div class="pui-calendar__title" aria-live="polite">{{ monthLabel() }}</div>
+  @if (showNavigation()) {
+    <button type="button" class="pui-calendar__nav" (click)="nextMonth()" aria-label="Next month">
+      <pui-date-icon name="chevron-right" />
+    </button>
+  }
+</div>
+
+<div class="pui-calendar__weekdays" aria-hidden="true">
+  @for (day of weekdays(); track day) {
+    <span class="pui-calendar__weekday">{{ day }}</span>
+  }
+</div>
+
+<div class="pui-calendar__grid" role="grid">
+  @for (cell of cells(); track cell.iso) {
+    <button
+      type="button"
+      class="pui-calendar__cell"
+      role="gridcell"
+      [class.pui-calendar__cell--outside]="!cell.isCurrentMonth"
+      [class.pui-calendar__cell--today]="cell.isToday"
+      [class.pui-calendar__cell--selected]="cell.isSelected"
+      [class.pui-calendar__cell--in-range]="cell.isInRange"
+      [class.pui-calendar__cell--in-preview]="cell.isInPreview"
+      [class.pui-calendar__cell--range-start]="cell.isRangeStart"
+      [class.pui-calendar__cell--range-end]="cell.isRangeEnd"
+      [class.pui-calendar__cell--disabled]="cell.isDisabled"
+      [disabled]="cell.isDisabled"
+      [attr.aria-label]="cell.iso"
+      [attr.aria-selected]="cell.isSelected"
+      (click)="selectDate(cell.date, cell.isDisabled)"
+      (mouseenter)="previewRange(cell.date, cell.isDisabled)"
+    >
+      {{ cell.label }}
+    </button>
+  }
+</div>

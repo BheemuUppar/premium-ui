@@ -1,0 +1,16 @@
+<div class="pui-doc-output-viewer">
+  <div class="pui-doc-output-viewer__header">
+    <span class="pui-doc-output-viewer__label">{{ label() }}</span>
+    <div class="pui-doc-output-viewer__actions">
+      <button type="button" class="pui-doc-output-viewer__action" (click)="toggleExpanded()">
+        {{ isCollapsed() ? 'Expand' : 'Collapse' }}
+      </button>
+      <button type="button" class="pui-doc-output-viewer__action" (click)="copyValue()">
+        {{ copied() ? 'Copied' : 'Copy' }}
+      </button>
+    </div>
+  </div>
+  @if (!isCollapsed()) {
+    <pre class="pui-doc-output-viewer__body"><code>{{ formatted() }}</code></pre>
+  }
+</div>

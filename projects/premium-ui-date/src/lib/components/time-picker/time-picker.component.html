@@ -1,0 +1,74 @@
+<div class="pui-time-picker__fields" role="group" aria-label="Time picker">
+  <pui-date-icon name="clock" />
+
+  <div class="pui-time-picker__column" role="listbox" aria-label="Hour">
+    @for (hour of hours(); track hour) {
+      <button
+        type="button"
+        class="pui-time-picker__option"
+        role="option"
+        [class.pui-time-picker__option--selected]="displayHour() === hour"
+        [disabled]="disabled()"
+        [attr.aria-selected]="displayHour() === hour"
+        (click)="updateHour(hour)"
+      >
+        {{ hour | number: '2.0' }}
+      </button>
+    }
+  </div>
+
+  <span class="pui-time-picker__separator" aria-hidden="true">:</span>
+
+  <div class="pui-time-picker__column" role="listbox" aria-label="Minute">
+    @for (minute of minutes(); track minute) {
+      <button
+        type="button"
+        class="pui-time-picker__option"
+        role="option"
+        [class.pui-time-picker__option--selected]="value().minute === minute"
+        [disabled]="disabled()"
+        [attr.aria-selected]="value().minute === minute"
+        (click)="updateMinute(minute)"
+      >
+        {{ minute | number: '2.0' }}
+      </button>
+    }
+  </div>
+
+  @if (seconds().length) {
+    <span class="pui-time-picker__separator" aria-hidden="true">:</span>
+    <div class="pui-time-picker__column" role="listbox" aria-label="Second">
+      @for (second of seconds(); track second) {
+        <button
+          type="button"
+          class="pui-time-picker__option"
+          role="option"
+          [class.pui-time-picker__option--selected]="value().second === second"
+          [disabled]="disabled()"
+          [attr.aria-selected]="value().second === second"
+          (click)="updateSecond(second)"
+        >
+          {{ second | number: '2.0' }}
+        </button>
+      }
+    </div>
+  }
+
+  @if (is12Hour()) {
+    <div class="pui-time-picker__period" role="listbox" aria-label="AM or PM">
+      @for (period of ['AM', 'PM']; track period) {
+        <button
+          type="button"
+          class="pui-time-picker__option pui-time-picker__option--period"
+          role="option"
+          [class.pui-time-picker__option--selected]="value().period === period"
+          [disabled]="disabled()"
+          [attr.aria-selected]="value().period === period"
+          (click)="updatePeriod($any(period))"
+        >
+          {{ period }}
+        </button>
+      }
+    </div>
+  }
+</div>

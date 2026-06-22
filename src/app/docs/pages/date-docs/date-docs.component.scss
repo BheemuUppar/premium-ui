@@ -1,0 +1,26 @@
+.pui-date-docs-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.pui-date-docs-preview {
+  display: block;
+  max-width: 20rem;
+}
+
+.pui-date-docs-code,
+pre {
+  padding: 1rem;
+  border-radius: var(--pui-radius-md, 10px);
+  background: var(--pui-color-surface-muted, #f8fafc);
+  overflow: auto;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.pui-doc-examples {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pui-space-xl, 2rem);
+}

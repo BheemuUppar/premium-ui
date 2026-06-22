@@ -1,0 +1,35 @@
+@use '../../core/tokens/date.tokens';
+
+:host {
+  display: block;
+  background: var(--pui-date-surface);
+  border: 1px solid var(--pui-date-border);
+  border-radius: var(--pui-date-radius);
+  padding: 0.75rem;
+}
+
+.pui-month-picker__header {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.pui-month-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.375rem;
+}
+
+.pui-month-picker__cell {
+  border: 1px solid var(--pui-date-border);
+  border-radius: calc(var(--pui-date-radius) - 4px);
+  background: transparent;
+  padding: 0.625rem;
+  cursor: pointer;
+  color: var(--pui-date-text);
+}
+
+.pui-month-picker__cell--selected {
+  background: var(--pui-date-accent);
+  border-color: var(--pui-date-accent);
+  color: #fff;
+}

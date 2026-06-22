@@ -8,7 +8,8 @@
   "include": [
     ".storybook/**/*.ts",
     "src/**/*.ts",
-    "projects/premium-ui-charts/src/**/*.ts"
+    "projects/premium-ui-charts/src/**/*.ts",
+    "projects/premium-ui-date/src/**/*.ts"
   ],
   "exclude": [
     "src/**/*.spec.ts"

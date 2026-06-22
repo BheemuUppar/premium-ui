@@ -11,6 +11,7 @@ export * from './components/doc-code-block/doc-code-block.component';
 export * from './components/doc-api-table/doc-api-table.component';
 export * from './components/doc-callout/doc-callout.component';
 export * from './components/doc-playground/doc-playground.component';
+export * from './components/doc-output-viewer/doc-output-viewer.component';
 export * from './components/doc-keyboard-shortcuts/doc-keyboard-shortcuts.component';
 export * from './components/doc-a11y-list/doc-a11y-list.component';
 export * from './utils/doc-syntax.utils';

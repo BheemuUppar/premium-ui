@@ -1,0 +1,22 @@
+{
+  "name": "@premium-ui/date",
+  "version": "0.1.0",
+  "description": "Premium UI Date System — locale-aware date, time, and calendar components for Angular",
+  "keywords": ["angular", "datepicker", "calendar", "datetime", "i18n", "premium-ui"],
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/cdk": "^21.0.0",
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
+    "@internationalized/date": "^3.0.0",
+    "rxjs": "^7.8.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

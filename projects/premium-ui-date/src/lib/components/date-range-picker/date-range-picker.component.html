@@ -1,0 +1,76 @@
+<div class="pui-date-range-picker__field" #trigger>
+  <input
+    #input
+    class="pui-date-range-picker__input"
+    type="text"
+    readonly
+    tabindex="0"
+    [value]="displayValue()"
+    [placeholder]="merged().placeholder ?? 'Select date range'"
+    [disabled]="isDisabled()"
+    [attr.aria-label]="ariaLabel() ?? 'Date range picker'"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="dialog"
+    (click)="openPanel()"
+    (keydown)="onInputKeydown($event)"
+  />
+  @if (showClearButton()) {
+    <button type="button" class="pui-date-range-picker__clear" aria-label="Clear date range" (click)="clearValue($event)">
+      <pui-date-icon name="clear" />
+    </button>
+  }
+  <button
+    type="button"
+    class="pui-date-range-picker__trigger"
+    [disabled]="isDisabled()"
+    aria-label="Open range calendar"
+    (click)="openPanel()"
+  >
+    <pui-date-icon name="calendar" />
+  </button>
+</div>
+
+<ng-template #panelTemplate>
+  <div class="pui-date-range-picker__panel" role="dialog" aria-modal="true" aria-label="Choose date range">
+    <div class="pui-date-range-picker__layout">
+      @if (presets().length) {
+        <aside class="pui-date-range-picker__presets" role="listbox" aria-label="Range presets">
+          @for (preset of presets(); track preset.id) {
+            <button type="button" class="pui-date-range-picker__preset" (click)="applyPreset(preset)">
+              {{ preset.label }}
+            </button>
+          }
+        </aside>
+      }
+      <div class="pui-date-range-picker__calendars" [class.pui-date-range-picker__calendars--stacked]="merged().mobileSheet">
+        <pui-calendar
+          [config]="calendarConfig()"
+          [value]="pendingRange()"
+          [showNavigation]="true"
+          [monthOffset]="0"
+          (rangeChange)="onRangeChange($event)"
+          (monthChange)="onAnchorMonthChange($event)"
+        />
+        @if (showDualMonths()) {
+          <pui-calendar
+            [config]="calendarConfig()"
+            [value]="pendingRange()"
+            [showNavigation]="false"
+            [monthOffset]="1"
+            [baseYear]="anchorMonth()?.year ?? null"
+            [baseMonth]="anchorMonth()?.month ?? null"
+            (rangeChange)="onRangeChange($event)"
+          />
+        }
+      </div>
+    </div>
+    @if (merged().showFooter || merged().confirmOnApply) {
+      <footer class="pui-date-range-picker__footer">
+        <button type="button" class="pui-date-range-picker__footer-btn" (click)="cancelSelection()">Cancel</button>
+        <button type="button" class="pui-date-range-picker__footer-btn pui-date-range-picker__footer-btn--primary" (click)="applySelection()">
+          Apply
+        </button>
+      </footer>
+    }
+  </div>
+</ng-template>

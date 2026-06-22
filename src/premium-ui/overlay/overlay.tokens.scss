@@ -12,6 +12,28 @@
   opacity: 1;
 }
 
+.pui-overlay-backdrop--transparent {
+  background: transparent;
+  opacity: 1;
+}
+
+.pui-overlay-backdrop--anchored.pui-overlay-backdrop--transparent {
+  pointer-events: auto;
+}
+
+.cdk-overlay-pane.pui-overlay-panel--anchored {
+  transform: none;
+  opacity: 1;
+  transition: none;
+}
+
+.cdk-overlay-pane.pui-overlay-panel--sheet {
+  width: 100% !important;
+  max-width: 100% !important;
+  align-self: flex-end;
+  border-radius: var(--pui-radius-lg, 16px) var(--pui-radius-lg, 16px) 0 0;
+}
+
 .cdk-overlay-pane.pui-overlay-panel {
   display: flex;
   flex-direction: column;

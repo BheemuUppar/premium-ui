@@ -152,6 +152,20 @@ export const routes: Routes = [
         loadComponent: () => import('./docs/pages/charts-docs/charts-docs.component').then((component) => component.ChartsDocsComponent)
       },
       {
+        path: 'components/date',
+        redirectTo: 'components/date/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/date/doc',
+        redirectTo: 'components/date/overview',
+        pathMatch: 'full'
+      },
+      {
+        path: 'components/date/:tab',
+        loadComponent: () => import('./docs/pages/date-docs/date-docs.component').then((component) => component.DateDocsComponent)
+      },
+      {
         path: 'foundations/:section',
         loadComponent: () => import('./docs/pages/foundation-docs/foundation-docs.component').then((component) => component.FoundationDocsComponent)
       },

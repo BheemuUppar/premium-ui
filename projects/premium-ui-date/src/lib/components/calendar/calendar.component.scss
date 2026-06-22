@@ -1,0 +1,99 @@
+@use '../../core/tokens/date.tokens';
+
+:host {
+  display: block;
+  background: var(--pui-date-surface);
+  border: 1px solid var(--pui-date-border);
+  border-radius: var(--pui-date-radius);
+  padding: 0.75rem;
+  color: var(--pui-date-text);
+  min-width: 18rem;
+}
+
+.pui-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.pui-calendar__title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.pui-calendar__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--pui-date-border);
+  border-radius: calc(var(--pui-date-radius) - 2px);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pui-calendar__nav:hover {
+  border-color: var(--pui-date-accent);
+  color: var(--pui-date-accent);
+}
+
+.pui-calendar__weekdays,
+.pui-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.125rem;
+}
+
+.pui-calendar__weekday {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--pui-date-text-muted);
+  padding: 0.25rem 0;
+}
+
+.pui-calendar__cell {
+  width: 100%;
+  min-height: var(--pui-date-cell-size);
+  border: none;
+  border-radius: calc(var(--pui-date-radius) - 4px);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.pui-calendar__cell:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--pui-date-accent) 10%, transparent);
+}
+
+.pui-calendar__cell--outside {
+  color: var(--pui-date-text-muted);
+}
+
+.pui-calendar__cell--today {
+  box-shadow: inset 0 0 0 1px var(--pui-date-accent);
+}
+
+.pui-calendar__cell--selected,
+.pui-calendar__cell--range-start,
+.pui-calendar__cell--range-end {
+  background: var(--pui-date-accent);
+  color: #fff;
+}
+
+.pui-calendar__cell--in-range:not(.pui-calendar__cell--range-start):not(.pui-calendar__cell--range-end) {
+  background: color-mix(in srgb, var(--pui-date-accent) 16%, transparent);
+}
+
+.pui-calendar__cell--in-preview:not(.pui-calendar__cell--range-start):not(.pui-calendar__cell--range-end) {
+  background: color-mix(in srgb, var(--pui-date-accent) 10%, transparent);
+}
+
+.pui-calendar__cell--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

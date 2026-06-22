@@ -22,10 +22,11 @@
 
         @if (!isCollapsed(group.id)) {
           <div class="pui-nav-group__items" [id]="'nav-group-' + group.id">
-            @for (item of group.items; track item.route.join('/')) {
+            @for (item of group.items; track item.label) {
               <a
                 class="pui-sidebar-link"
                 [routerLink]="item.route"
+                [fragment]="item.fragment"
                 routerLinkActive="pui-sidebar-link--active"
                 [routerLinkActiveOptions]="{ exact: true }"
               >

@@ -1,0 +1,16 @@
+<div class="pui-month-picker__header">{{ year() }}</div>
+<div class="pui-month-picker__grid" role="listbox" aria-label="Choose month">
+  @for (month of months(); track month; let index = $index) {
+    <button
+      type="button"
+      class="pui-month-picker__cell"
+      role="option"
+      [class.pui-month-picker__cell--selected]="value() === index + 1"
+      [disabled]="disabled()"
+      [attr.aria-selected]="value() === index + 1"
+      (click)="selectMonth(index)"
+    >
+      {{ month }}
+    </button>
+  }
+</div>

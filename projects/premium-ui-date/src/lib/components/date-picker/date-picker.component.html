@@ -1,0 +1,43 @@
+<div class="pui-date-picker__field" #trigger>
+  <input
+    #input
+    class="pui-date-picker__input"
+    type="text"
+    [value]="displayValue()"
+    [placeholder]="placeholder() ?? merged().placeholder ?? 'Select date'"
+    [disabled]="isDisabled()"
+    [readonly]="readonly()"
+    [attr.aria-label]="ariaLabel() ?? 'Date picker'"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="dialog"
+    (click)="onInputClick()"
+    (input)="onInputChange($event)"
+    (focus)="onInputFocus()"
+    (blur)="onInputBlur($event)"
+    (keydown)="onInputKeydown($event)"
+  />
+  @if (showClearButton()) {
+    <button type="button" class="pui-date-picker__clear" aria-label="Clear date" (click)="clearValue($event)">
+      <pui-date-icon name="clear" />
+    </button>
+  }
+  <button
+    type="button"
+    class="pui-date-picker__trigger"
+    [disabled]="isDisabled()"
+    aria-label="Open calendar"
+    (click)="openPanel()"
+  >
+    <pui-date-icon name="calendar" />
+  </button>
+</div>
+
+<ng-template #panelTemplate>
+  <div class="pui-date-picker__panel" role="dialog" aria-modal="true" aria-label="Choose date">
+    <pui-calendar
+      [config]="calendarConfig()"
+      [value]="value()"
+      (valueChange)="onCalendarSelect($event)"
+    />
+  </div>
+</ng-template>

@@ -2,6 +2,7 @@ export interface PuiDocsNavItem {
   readonly label: string;
   readonly route: readonly string[];
   readonly badge?: string;
+  readonly fragment?: string;
 }
 
 export interface PuiDocsNavGroup {

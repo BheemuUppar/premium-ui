@@ -132,6 +132,29 @@
           "defaultConfiguration": "production"
         }
       }
+    },
+    "premium-ui-date": {
+      "projectType": "library",
+      "root": "projects/premium-ui-date",
+      "sourceRoot": "projects/premium-ui-date/src",
+      "prefix": "pui",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "projects/premium-ui-date/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/premium-ui-date/tsconfig.lib.json"
+            },
+            "development": {
+              "tsConfig": "projects/premium-ui-date/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        }
+      }
     }
   }
 }

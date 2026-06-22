@@ -1,0 +1,14 @@
+<div class="pui-datetime-picker__grid">
+  <pui-date-picker
+    [config]="dateConfig()"
+    [value]="datePart()"
+    [disabled]="disabled()"
+    (valueChange)="onDatePartsChange($event)"
+  />
+  <pui-time-picker
+    [config]="timeConfig()"
+    [value]="timePart()"
+    [disabled]="disabled()"
+    (valueChange)="onTimeChange($event)"
+  />
+</div>

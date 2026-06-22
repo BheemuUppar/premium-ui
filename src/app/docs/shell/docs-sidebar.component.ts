@@ -83,6 +83,15 @@ export class DocsSidebarComponent {
       ]
     },
     {
+      id: 'date',
+      label: 'Date',
+      items: [
+        { label: 'Documentation', route: ['/docs/components/date/overview'], badge: 'Ready' },
+        { label: 'Date Picker', route: ['/docs/components/date/examples'], fragment: 'date-picker' },
+        { label: 'Calendar', route: ['/docs/components/date/examples'], fragment: 'calendar' },
+      ],
+    },
+    {
       id: 'charts',
       label: 'Charts',
       items: CHARTS_SIDEBAR_ITEMS

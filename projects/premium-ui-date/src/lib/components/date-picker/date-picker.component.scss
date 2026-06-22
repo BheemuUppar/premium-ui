@@ -1,0 +1,74 @@
+@use '../../core/tokens/date.tokens';
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.pui-date-picker__field {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--pui-date-border);
+  border-radius: var(--pui-date-radius);
+  background: var(--pui-date-surface);
+  overflow: hidden;
+}
+
+.pui-date-picker__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--pui-date-text);
+  padding: 0.625rem 0.75rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pui-date-picker__input:not([readonly]) {
+  cursor: text;
+}
+
+.pui-date-picker__input:focus {
+  outline: none;
+}
+
+.pui-date-picker__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  padding: 0 0.375rem;
+  cursor: pointer;
+  color: var(--pui-date-text-muted);
+}
+
+.pui-date-picker__clear:hover {
+  color: var(--pui-date-text);
+}
+
+.pui-date-picker__trigger {
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-left: 1px solid var(--pui-date-border);
+  background: transparent;
+  padding: 0 0.75rem;
+  cursor: pointer;
+  color: var(--pui-date-text-muted);
+}
+
+.pui-date-picker__panel {
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+}
+
+:host(.pui-date-picker--open) .pui-date-picker__field {
+  border-color: var(--pui-date-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pui-date-accent) 18%, transparent);
+}
+
+:host(.pui-date-picker--disabled) {
+  opacity: 0.6;
+  pointer-events: none;
+}

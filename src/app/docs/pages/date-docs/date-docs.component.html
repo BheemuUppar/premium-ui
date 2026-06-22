@@ -1,0 +1,265 @@
+<article class="pui-doc-page">
+  <header class="pui-doc-hero">
+    <h1>Premium Date System</h1>
+    <p>
+      Locale-aware date, time, and calendar components powered by a shared <code>DateEngine</code>.
+      Configure behavior through a single <code>config</code> object — each example below shows the UI and the code to reproduce it.
+    </p>
+  </header>
+
+  <nav class="pui-tabs" aria-label="Date documentation tabs">
+    @for (tab of tabs; track tab.label) {
+      <a class="pui-tab" [routerLink]="tab.route" routerLinkActive="pui-tab--active" [routerLinkActiveOptions]="{ exact: true }">
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="pui-tab-panel">
+    @switch (currentTab()) {
+      @case ('overview') {
+        <section class="pui-doc-section">
+          <h2>Installation</h2>
+          <pui-doc-installation importPath="@premium-ui/date" importSymbols="PuiDatePickerComponent, providePuiDate" />
+        </section>
+        <section class="pui-doc-section">
+          <h2>Config-driven API</h2>
+          <p>Pass one config object to control locale, format, output type, presets, and overlay behavior.</p>
+          <pre class="pui-date-docs-code"><code>{{ configExample }}</code></pre>
+        </section>
+      }
+
+      @case ('examples') {
+        <div class="pui-doc-examples">
+          <pui-doc-example
+            exampleId="date-basic"
+            title="Basic date picker"
+            description="Default US locale. Opens on input or calendar icon; closes on selection."
+            [tabs]="examples[0].tabs"
+          >
+            <pui-date-picker
+              class="pui-date-docs-preview"
+              [value]="dateValue()"
+              (valueChange)="dateValue.set($event)"
+              [config]="{ locale: 'en-US', format: 'MM/dd/yyyy' }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="date-locale"
+            title="Locale & format"
+            description="Regional formatting with locale and timezone."
+            [tabs]="examples[1].tabs"
+          >
+            <pui-date-picker
+              class="pui-date-docs-preview"
+              [value]="localeDateValue()"
+              (valueChange)="localeDateValue.set($event)"
+              [config]="{ locale: 'en-IN', format: 'dd/MM/yyyy', timezone: 'Asia/Kolkata' }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="date-output-type"
+            title="Output type"
+            description="Set outputType to control what puiValueChange emits."
+            [tabs]="examples[2].tabs"
+          >
+            <pui-date-picker
+              class="pui-date-docs-preview"
+              [value]="outputTypeDateValue()"
+              (valueChange)="outputTypeDateValue.set($event)"
+              [config]="{ locale: 'en-US', outputType: 'iso' }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="date-allow-clear"
+            title="Allow clear"
+            description="Clear button appears only when allowClear is true."
+            [tabs]="examples[3].tabs"
+          >
+            <pui-date-picker
+              class="pui-date-docs-preview"
+              [value]="clearableDateValue()"
+              (valueChange)="clearableDateValue.set($event)"
+              [config]="{ locale: 'en-US', allowClear: true }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="date-range"
+            title="Date range picker"
+            description="Presets column with dual month calendars."
+            [tabs]="examples[4].tabs"
+          >
+            <pui-date-range-picker
+              class="pui-date-docs-preview"
+              [value]="rangeValue()"
+              (valueChange)="rangeValue.set($event)"
+              [config]="{ locale: 'en-US', presets: true, monthsVisible: 2 }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="date-range-footer"
+            title="Range with Apply footer"
+            description="Require explicit Apply before committing the range."
+            [tabs]="examples[5].tabs"
+          >
+            <pui-date-range-picker
+              class="pui-date-docs-preview"
+              [value]="rangeFooterValue()"
+              (valueChange)="rangeFooterValue.set($event)"
+              [config]="{ locale: 'en-US', presets: true, showFooter: true }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="calendar-inline"
+            title="Inline calendar"
+            description="Calendar embedded directly in the page."
+            [tabs]="examples[6].tabs"
+          >
+            <pui-calendar
+              [value]="dateValue()"
+              (valueChange)="dateValue.set($event)"
+              [config]="{ locale: 'en-US', selectionMode: 'single' }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="datetime"
+            title="Date & time"
+            description="Combined date and time with 12-hour cycle."
+            [tabs]="examples[7].tabs"
+          >
+            <pui-datetime-picker [config]="{ locale: 'en-US', hourCycle: 12, timezone: 'Asia/Kolkata' }" />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="time"
+            title="Time picker"
+            description="Standalone hour, minute, and AM/PM columns."
+            [tabs]="examples[8].tabs"
+          >
+            <pui-time-picker
+              [config]="{ hourCycle: 12 }"
+              [value]="timeValue()"
+              (valueChange)="timeValue.set($event)"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="month-year-quarter"
+            title="Month, year & quarter"
+            description="Compact pickers for filters and analytics."
+            [tabs]="examples[9].tabs"
+          >
+            <div class="pui-date-docs-grid">
+              <pui-month-picker [config]="{ locale: 'en-US' }" [value]="monthValue()" (valueChange)="monthValue.set($event)" />
+              <pui-year-picker [value]="yearValue()" (valueChange)="yearValue.set($event)" />
+              <pui-quarter-picker [value]="quarterValue()" (valueChange)="quarterValue.set($event)" />
+            </div>
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="reactive-form"
+            title="Reactive forms"
+            description="Works with FormControl and formControlName."
+            [tabs]="examples[10].tabs"
+          >
+            <pui-date-picker
+              class="pui-date-docs-preview"
+              [formControl]="reactiveControl"
+              [config]="{ locale: 'en-IN', format: 'dd/MM/yyyy' }"
+            />
+          </pui-doc-example>
+
+          <pui-doc-example
+            exampleId="min-max"
+            title="Min & max dates"
+            description="Restrict selectable dates to a bounded range."
+            [tabs]="examples[11].tabs"
+          >
+            <pui-date-picker
+              class="pui-date-docs-preview"
+              [value]="boundedDateValue()"
+              (valueChange)="boundedDateValue.set($event)"
+              [config]="{
+                locale: 'en-US',
+                min: { year: 2026, month: 1, day: 1 },
+                max: { year: 2026, month: 12, day: 31 },
+              }"
+            />
+          </pui-doc-example>
+        </div>
+      }
+
+      @case ('api') {
+        <section class="pui-doc-section">
+          <h2>Components</h2>
+          <pui-doc-api-table [rows]="componentApiRows" />
+        </section>
+        <section class="pui-doc-section">
+          <h2>PuiDateConfig</h2>
+          <pui-doc-api-table [rows]="configApiRows" />
+        </section>
+        <section class="pui-doc-section">
+          <h2>Outputs</h2>
+          <pui-doc-api-table [rows]="outputApiRows" />
+        </section>
+      }
+
+      @case ('accessibility') {
+        <section class="pui-doc-section">
+          <pui-doc-a11y-list [items]="a11yItems" />
+        </section>
+      }
+
+      @case ('playground') {
+        <section class="pui-doc-section">
+          <h2>Configuration playground</h2>
+          <p>Adjust options below — the picker updates live. Copy the generated config into your app.</p>
+          <div class="pui-playground">
+            <div class="pui-playground-field">
+              <span class="pui-playground-field__label">Locale</span>
+              <pui-select
+                [options]="localeOptions"
+                [value]="playgroundLocale()"
+                (valueChange)="setPlaygroundLocale($event)"
+                ariaLabel="Playground locale"
+              />
+            </div>
+            <div class="pui-playground-field">
+              <span class="pui-playground-field__label">Output type</span>
+              <pui-select
+                [options]="outputTypeOptions"
+                [value]="playgroundOutputType()"
+                (valueChange)="setPlaygroundOutputType($event)"
+                ariaLabel="Playground output type"
+              />
+            </div>
+            <div class="pui-playground-field">
+              <span class="pui-playground-field__label">Allow clear</span>
+              <pui-select
+                [options]="booleanOptions"
+                [value]="playgroundAllowClear() ? 'true' : 'false'"
+                (valueChange)="setPlaygroundAllowClear($event)"
+                ariaLabel="Playground allow clear"
+              />
+            </div>
+            <pui-date-picker
+              class="pui-date-docs-preview"
+              [config]="playgroundConfig()"
+              [value]="playgroundValue()"
+              (valueChange)="playgroundValue.set($event)"
+            />
+          </div>
+          <h3>Generated config</h3>
+          <pre class="pui-date-docs-code"><code>{{ playgroundConfigSnippet() }}</code></pre>
+        </section>
+      }
+    }
+  </div>
+</article>

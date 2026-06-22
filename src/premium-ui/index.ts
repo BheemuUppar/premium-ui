@@ -12,5 +12,6 @@ export * from './components/table';
 export * from './components/dialog';
 export * from './command';
 export * from '@premium-ui/charts';
+export * from '@premium-ui/date';
 export * from './overlay';
 export * from './types/common.types';

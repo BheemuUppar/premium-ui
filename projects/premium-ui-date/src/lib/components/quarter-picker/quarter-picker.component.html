@@ -1,0 +1,15 @@
+<div class="pui-quarter-picker__header">{{ year() }}</div>
+<div class="pui-quarter-picker__grid" role="listbox" aria-label="Choose quarter">
+  @for (item of quarters(); track item.quarter) {
+    <button
+      type="button"
+      class="pui-quarter-picker__cell"
+      role="option"
+      [class.pui-quarter-picker__cell--selected]="value()?.quarter === item.quarter && value()?.year === year()"
+      [disabled]="disabled()"
+      (click)="selectQuarter(item.quarter)"
+    >
+      {{ item.label }}
+    </button>
+  }
+</div>

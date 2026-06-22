@@ -278,6 +278,24 @@ export const DOCS_COMPONENT_SEO: Readonly<Record<string, PuiDocsComponentSeo>> =
       { label: 'Tabs', route: ['/docs/components/tabs/overview'] },
     ],
   },
+  date: {
+    slug: 'date',
+    name: 'Date',
+    titlePrefix: 'Premium Date System',
+    keywords: 'angular datepicker, date range picker, calendar angular, datetime picker, premium ui date',
+    tabs: {
+      overview: { title: 'Premium Date System — Overview', description: 'Locale-aware date, time, and calendar components with shared DateEngine.' },
+      examples: { title: 'Date Examples', description: 'Date picker, range picker, calendar, datetime, month, year, and quarter examples.' },
+      api: { title: 'Date API', description: 'PuiDateConfig, picker components, and DateEngine service reference.' },
+      accessibility: { title: 'Date Accessibility', description: 'Keyboard navigation, ARIA, and focus management for date components.' },
+      playground: { title: 'Date Playground', description: 'Live locale and format playground for date pickers.' },
+    },
+    relatedLinks: [
+      { label: 'Select', route: ['/docs/components/select/overview'] },
+      { label: 'Input', route: ['/docs/components/input/overview'] },
+      { label: 'Charts', route: ['/docs/components/charts/doc'] },
+    ],
+  },
   charts: {
     slug: 'charts',
     name: 'Charts',

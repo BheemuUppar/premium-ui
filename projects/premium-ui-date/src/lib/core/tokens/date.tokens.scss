@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  --pui-date-accent: var(--pui-color-primary, #635bff);
+  --pui-date-surface: var(--pui-color-surface-elevated, #fff);
+  --pui-date-border: var(--pui-color-border-subtle, #e7edf5);
+  --pui-date-text: var(--pui-color-text, #0f172a);
+  --pui-date-text-muted: var(--pui-color-text-muted, #64748b);
+  --pui-date-radius: var(--pui-radius-md, 10px);
+  --pui-date-cell-size: 2.25rem;
+}
+
+:host([data-theme='dark']) {
+  --pui-date-surface: var(--pui-color-surface-elevated, #111827);
+  --pui-date-border: color-mix(in srgb, #fff 12%, transparent);
+  --pui-date-text: #f8fafc;
+  --pui-date-text-muted: #94a3b8;
+}
